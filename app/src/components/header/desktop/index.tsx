@@ -1,11 +1,11 @@
 import { DocsIcon, ModeIcon } from '@nebula-js/icons';
-import { TransparentButton } from '@nebula-js/ui';
+import { EmptyButton } from '@nebula-js/ui';
 import logoImage from 'components/assets/nebula-wide.svg';
 import { useTheme } from 'contexts/theme';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { Wallet } from './Wallet';
+import { Wallet } from '../desktop-wallet-button/Wallet';
 
 export interface DesktopHeaderProps {
   className?: string;
@@ -21,16 +21,16 @@ function DesktopHeaderBase({ className }: DesktopHeaderProps) {
 
         <div />
 
-        <TransparentButton size={18}>
+        <EmptyButton size={18}>
           <DocsIcon />
-        </TransparentButton>
+        </EmptyButton>
 
-        <TransparentButton
+        <EmptyButton
           size={18}
           onClick={() => updateTheme(themeColor === 'dark' ? 'light' : 'dark')}
         >
           <ModeIcon />
-        </TransparentButton>
+        </EmptyButton>
       </div>
 
       <div>
@@ -60,6 +60,9 @@ export const DesktopHeader = styled(DesktopHeaderBase)`
   flex-direction: column;
   justify-content: space-between;
 
+  --first-line-height: 18px;
+  --second-line-height: 32px;
+
   > div {
     max-width: 1080px;
     width: 100%;
@@ -70,7 +73,10 @@ export const DesktopHeader = styled(DesktopHeaderBase)`
       align-items: flex-start;
       gap: 20px;
 
-      height: 18px;
+      color: #858585;
+
+      font-size: var(--first-line-height);
+      height: var(--first-line-height);
 
       > div:empty {
         flex: 1;
@@ -80,9 +86,9 @@ export const DesktopHeader = styled(DesktopHeaderBase)`
     &:last-child {
       display: flex;
       justify-content: space-between;
-      align-items: flex-end;
+      align-items: center;
 
-      height: 32px;
+      height: var(--second-line-height);
 
       ul {
         padding: 0;
