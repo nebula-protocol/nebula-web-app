@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "multiplerun dev",
     "app:dev": "vite",
-    "app:dev:browser": "HTTPS=true PORT=9444 TS_NODE_PROJECT=tsconfig.script.json node -r ts-node/register -r tsconfig-paths/register scripts/start.ts",
-    "start": "vite",
+    "app:dev:browser": "HTTPS=true PORT=3000 TS_NODE_PROJECT=tsconfig.script.json node -r ts-node/register -r tsconfig-paths/register scripts/start.ts",
+    "start": "yarn run app:dev",
     "build": "tsc --noEmit && vite build",
     "pack": "rocket-punch build",
     "publish": "rocket-punch publish"
@@ -15,10 +15,13 @@
   "multiplerun": {
     "dev": [
       "yarn run app:dev",
-      {
-        "command": "yarn run app:dev:browser",
-        "wait": "20000"
-      }
+      [
+        "tsc --watch",
+        {
+          "command": "yarn run app:dev:browser",
+          "wait": "5000"
+        }
+      ]
     ]
   },
   "eslintConfig": {
