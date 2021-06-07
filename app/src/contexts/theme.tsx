@@ -4,7 +4,7 @@ import {
   ThemeProvider as NebulaThemeProvider,
 } from '@nebula-js/ui';
 import type { ReactNode } from 'react';
-import {
+import React, {
   Consumer,
   Context,
   createContext,

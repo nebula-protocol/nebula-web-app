@@ -12,7 +12,7 @@ import {
   BankProvider,
   TerraWebappProvider,
 } from '@terra-money/webapp-provider';
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter as Router } from 'react-router-dom';
 import {

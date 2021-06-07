@@ -1,4 +1,4 @@
-const { launch } = require('puppeteer');
+import { launch } from 'puppeteer';
 
 (async () => {
   // chromium debugging port
