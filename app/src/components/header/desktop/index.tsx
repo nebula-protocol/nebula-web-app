@@ -73,13 +73,19 @@ export const DesktopHeader = styled(DesktopHeaderBase)`
       align-items: flex-start;
       gap: 20px;
 
-      color: #858585;
-
       font-size: var(--first-line-height);
       height: var(--first-line-height);
 
       > div:empty {
         flex: 1;
+      }
+
+      .Nebula-EmptyButton {
+        color: #858585;
+
+        &:hover {
+          color: #24deff;
+        }
       }
     }
 

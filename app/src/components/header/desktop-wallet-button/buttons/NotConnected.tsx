@@ -1,7 +1,17 @@
 import { ClickAwayListener, Popper } from '@material-ui/core';
-import { ChevronRightIcon, WalletIcon } from '@nebula-js/icons';
+import {
+  ChevronRightIcon,
+  TerraIcon,
+  WalletconnectIcon,
+  WalletIcon,
+} from '@nebula-js/icons';
 import { EmptyButton, EmptyButtonProps, EmptyIconHolder } from '@nebula-js/ui';
-import { useWallet, WalletStatus } from '@terra-money/wallet-provider';
+import {
+  ConnectType,
+  useWallet,
+  WalletStatus,
+} from '@terra-money/wallet-provider';
+import { dropdownContainerStyle } from 'components/header/styles';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { walletButtonMeasure } from './walletButtonMeasure';
@@ -12,9 +22,10 @@ export interface NotConnectedProps
 function NotConnectedBase({ ...buttonProps }: NotConnectedProps) {
   const {
     status,
-    //availableConnectTypes,
-    //availableInstallTypes,
-    //connect,
+    availableConnectTypes,
+    availableInstallTypes,
+    connect,
+    install,
   } = useWallet();
 
   const [anchorElement, setAnchorElement] = useState<HTMLElement | null>(null);
@@ -50,15 +61,126 @@ function NotConnectedBase({ ...buttonProps }: NotConnectedProps) {
           anchorEl={anchorElement}
           placement="bottom-end"
         >
-          <div>Hello?</div>
+          <Dropdown>
+            <h2>Connect</h2>
+            {availableConnectTypes.includes(ConnectType.WALLETCONNECT) && (
+              <ConnectButton onClick={() => connect(ConnectType.WALLETCONNECT)}>
+                <span>Terra Station Mobile</span>
+                <WalletconnectIcon />
+              </ConnectButton>
+            )}
+            {availableConnectTypes.includes(ConnectType.CHROME_EXTENSION) && (
+              <ConnectButton
+                onClick={() => connect(ConnectType.CHROME_EXTENSION)}
+              >
+                <span>Terra Station Extension</span>
+                <TerraIcon />
+              </ConnectButton>
+            )}
+            {availableConnectTypes.includes(ConnectType.WEBEXTENSION) && (
+              <ConnectButton onClick={() => connect(ConnectType.WEBEXTENSION)}>
+                <span>Terra Station Extension</span>
+                <TerraIcon />
+              </ConnectButton>
+            )}
+            {availableInstallTypes.includes(ConnectType.CHROME_EXTENSION) && (
+              <ConnectButton
+                onClick={() => install(ConnectType.CHROME_EXTENSION)}
+              >
+                <span>Install Station Extension</span>
+                <TerraIcon />
+              </ConnectButton>
+            )}
+            {availableInstallTypes.includes(ConnectType.WEBEXTENSION) && (
+              <ConnectButton onClick={() => install(ConnectType.WEBEXTENSION)}>
+                <span>Install Station Extension</span>
+                <TerraIcon />
+              </ConnectButton>
+            )}
+            {availableConnectTypes.includes(ConnectType.READONLY) && (
+              <>
+                <hr />
+                <AddressButton onClick={() => connect(ConnectType.READONLY)}>
+                  View Address
+                </AddressButton>
+              </>
+            )}
+          </Dropdown>
         </Popper>
       </div>
     </ClickAwayListener>
   );
 }
 
+const ConnectButton = styled(EmptyButton)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  color: #23bed9;
+
+  background-color: ${({ theme }) => theme.colors.gray11};
+
+  svg {
+    transform: scale(1.1);
+  }
+
+  &:hover {
+    color: #24deff;
+  }
+`;
+
+const AddressButton = styled(EmptyButton)`
+  display: grid;
+  place-content: center;
+
+  color: ${({ theme }) => theme.colors.white64};
+
+  background-color: ${({ theme }) => theme.colors.gray18};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.white80};
+  }
+`;
+
+const Dropdown = styled.div`
+  ${dropdownContainerStyle};
+
+  h2 {
+    font-size: 16px;
+    text-align: center;
+    color: ${({ theme }) => theme.colors.white92};
+
+    margin-bottom: 20px;
+  }
+
+  button {
+    padding: 0 16px;
+    border-radius: 8px;
+    margin: 12px 0;
+
+    width: 100%;
+    min-width: 212px;
+    min-height: 42px;
+
+    font-size: 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px solid ${({ theme }) => theme.colors.gray08};
+    margin: 16px 0;
+  }
+`;
+
 export const NotConnected = styled(NotConnectedBase)`
   ${walletButtonMeasure};
+
+  transition: border-color 0.3s ease-out, color 0.3s ease-out;
 
   border: 1px solid ${({ theme }) => theme.colors.gray24};
   color: #24deff;

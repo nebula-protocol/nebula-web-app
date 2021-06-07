@@ -6,6 +6,7 @@ import { AppProviders } from 'configurations/app';
 import { ThemeProvider } from 'contexts/theme';
 import * as React from 'react';
 import { render } from 'react-dom';
+import './polyfills/terra.polyfill';
 
 function App() {
   const {

@@ -610,6 +610,7 @@ __metadata:
     "@rx-stream/pipe": ^0.7.0
     "@rx-stream/react": ^0.7.0
     "@sentry/react": ^6.5.1
+    "@terra-dev/big-interpolate": ^0.15.0
     "@terra-dev/patch-react-query-focus-refetching": ^0.15.0
     "@terra-dev/use-browser-inactive": ^0.15.0
     "@terra-dev/use-google-analytics": ^0.15.0
@@ -622,6 +623,8 @@ __metadata:
     "@testing-library/react": ^11.2.7
     "@testing-library/user-event": ^13.1.9
     "@types/big.js": ^6.1.0
+    "@types/d3-ease": ^2.0.0
+    "@types/d3-timer": ^2.0.0
     "@types/jest": ^26.0.23
     "@types/node": ^15.6.1
     "@types/numeral": ^2.0.1
@@ -637,8 +640,11 @@ __metadata:
     "@types/testing-library__user-event": ^4.2.0
     "@vitejs/plugin-react-refresh": ^1.3.1
     big.js: ^6.1.1
+    d3-ease: ^3.0.1
+    d3-timer: ^3.0.1
     graphql: ^15.5.0
     multiplerun: ^2.0.1
+    numeral: ^2.0.6
     puppeteer: ^10.0.0
     react: ^17.0.2
     react-dom: ^17.0.2
@@ -1119,6 +1125,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@terra-dev/big-interpolate@npm:^0.15.0":
+  version: 0.15.0
+  resolution: "@terra-dev/big-interpolate@npm:0.15.0"
+  dependencies:
+    big.js: ^6.1.1
+    d3-ease: ^2.0.0
+  checksum: 2e6b856b2eed266e88a589a0e5fee3a5c08829be1a0d99852ebaa5cc97b2cd579db19ed2558c49f1c0e1dd6fcded4dc31a13cfc087dcf7ed85b65a6ebc4eb80d
+  languageName: node
+  linkType: hard
+
 "@terra-dev/chrome-extension@npm:^0.15.0":
   version: 0.15.0
   resolution: "@terra-dev/chrome-extension@npm:0.15.0"
@@ -1516,6 +1532,20 @@ __metadata:
   version: 1.1.1
   resolution: "@types/color-name@npm:1.1.1"
   checksum: b71fcad728cc68abcba1d405742134410c8f8eb3c2ef18113b047afca158ad23a4f2c229bcf71a38f4a818dead375c45b20db121d0e69259c2d81e97a740daa6
+  languageName: node
+  linkType: hard
+
+"@types/d3-ease@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@types/d3-ease@npm:2.0.0"
+  checksum: 8c7209e26c2dcdf6c1c45e8a02af61193f32b958155024c35f9175410e9f51c856113f1c05c306f0144aa73f580c3be5e52f210aed7fba393a420af42324692b
+  languageName: node
+  linkType: hard
+
+"@types/d3-timer@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@types/d3-timer@npm:2.0.0"
+  checksum: ccca47c1359062ece5db911c18cfea6317e1199abebf4522ee41d4f166d938b543ffe5a35e44b3fbd4036cc4179e0f3d86ac01957e3de470e18ceb6d54f77cc1
   languageName: node
   linkType: hard
 
@@ -3576,6 +3606,27 @@ __metadata:
   version: 3.0.8
   resolution: "csstype@npm:3.0.8"
   checksum: 5939a003858a31a32cbc52a8f45496aa0c2bcb4629b21c5bc14a7ddcac1a3d4adfd655f56843dc14940f60563378e9444af2c9c373b3f212601b9eeb6740b8db
+  languageName: node
+  linkType: hard
+
+"d3-ease@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "d3-ease@npm:2.0.0"
+  checksum: 1a9f6dfc836f0c66fba1ed28f0a3ad170d7c4f4812d442c6b562163e1a60283cc697e72a2cc4ba64abff9e77ad56354847986a5964e0c661af9b6d132c642e29
+  languageName: node
+  linkType: hard
+
+"d3-ease@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "d3-ease@npm:3.0.1"
+  checksum: 06e2ee5326d1e3545eab4e2c0f84046a123dcd3b612e68858219aa034da1160333d9ce3da20a1d3486d98cb5c2a06f7d233eee1bc19ce42d1533458bd85dedcd
+  languageName: node
+  linkType: hard
+
+"d3-timer@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "d3-timer@npm:3.0.1"
+  checksum: 1cfddf86d7bca22f73f2c427f52dfa35c49f50d64e187eb788dcad6e927625c636aa18ae4edd44d084eb9d1f81d8ca4ec305dae7f733c15846a824575b789d73
   languageName: node
   linkType: hard
 
@@ -6507,6 +6558,13 @@ fsevents@~2.3.1:
   version: 1.0.1
   resolution: "number-is-nan@npm:1.0.1"
   checksum: 13656bc9aa771b96cef209ffca31c31a03b507ca6862ba7c3f638a283560620d723d52e626d57892c7fff475f4c36ac07f0600f14544692ff595abff214b9ffb
+  languageName: node
+  linkType: hard
+
+"numeral@npm:^2.0.6":
+  version: 2.0.6
+  resolution: "numeral@npm:2.0.6"
+  checksum: 89f011116539692bf53fde380adeb0579623d00f782703c71c0062d4a8686770c404a041ff4eef454de53925a9f75bba1fa52726057b13d40473f707730b07c2
   languageName: node
   linkType: hard
 

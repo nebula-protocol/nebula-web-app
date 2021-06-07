@@ -17,8 +17,14 @@ export interface EmptyButtonProps
   fontSize?: number;
 }
 
-function EmptyButtonBase({ size, ...buttonProps }: EmptyButtonProps) {
-  return <button {...buttonProps} />;
+function EmptyButtonBase({
+  size,
+  className,
+  ...buttonProps
+}: EmptyButtonProps) {
+  return (
+    <button className={className + ' Nebula-EmptyButton'} {...buttonProps} />
+  );
 }
 
 export const EmptyButton = styled(EmptyButtonBase)`
@@ -41,5 +47,7 @@ export const EmptyButton = styled(EmptyButtonBase)`
   img {
     font-size: 1em;
     width: 1em;
+
+    transition: color 0.4s ease-out;
   }
 `;
