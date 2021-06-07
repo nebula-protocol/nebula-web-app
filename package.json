@@ -5,7 +5,8 @@
   "license": "MIT",
   "repository": "https://github.com/nebula-protocol/nebula-web-app",
   "workspaces": [
-    "app"
+    "app",
+    "terrajs-repack"
   ],
   "scripts": {
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
