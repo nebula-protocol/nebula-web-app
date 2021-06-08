@@ -15,7 +15,7 @@ import {
   BankProvider,
   TerraWebappProvider,
 } from '@terra-money/webapp-provider';
-import { useReadonlyWalletDialog } from 'components/header/connect/useReadonlyWalletDialog';
+import { useReadonlyWalletDialog } from 'components/dialogs/useReadonlyWalletDialog';
 import { ThemeProvider } from 'contexts/theme';
 import React, { ReactNode, useCallback } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
