@@ -1,6 +1,6 @@
 import { Token, uToken } from '@nebula-js/types';
 import big, { BigSource } from 'big.js';
-import { MICRO } from './currency';
+import { demicrofy, MICRO } from './currency';
 import { formatDemimal, formatInteger } from './unit.format';
 
 // ---------------------------------------------
@@ -56,6 +56,10 @@ export function formatInput(n: Token<BigSource>): Token {
 
 export function formatToken(n: Token<BigSource>): string {
   return d6Formatter(n);
+}
+
+export function formatUToken(n: uToken<BigSource>): string {
+  return d6Formatter(demicrofy(n));
 }
 
 export function formatTokenWithPostfixUnits(n: Token<BigSource>): string {

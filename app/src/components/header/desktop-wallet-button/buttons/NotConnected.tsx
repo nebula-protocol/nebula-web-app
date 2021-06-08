@@ -5,7 +5,12 @@ import {
   WalletconnectIcon,
   WalletIcon,
 } from '@nebula-js/icons';
-import { EmptyButton, EmptyButtonProps, EmptyIconHolder } from '@nebula-js/ui';
+import {
+  buttonColorStyle,
+  EmptyButton,
+  EmptyButtonProps,
+  EmptyIconHolder,
+} from '@nebula-js/ui';
 import {
   ConnectType,
   useWallet,
@@ -117,16 +122,10 @@ const ConnectButton = styled(EmptyButton)`
   justify-content: space-between;
   align-items: center;
 
-  color: #23bed9;
-
-  background-color: ${({ theme }) => theme.colors.gray11};
+  ${buttonColorStyle('dark')};
 
   svg {
     transform: scale(1.1);
-  }
-
-  &:hover {
-    color: #24deff;
   }
 `;
 
@@ -134,13 +133,7 @@ const AddressButton = styled(EmptyButton)`
   display: grid;
   place-content: center;
 
-  color: ${({ theme }) => theme.colors.white64};
-
-  background-color: ${({ theme }) => theme.colors.gray18};
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.white80};
-  }
+  ${buttonColorStyle('dim')};
 `;
 
 const Dropdown = styled.div`
@@ -183,10 +176,12 @@ export const NotConnected = styled(NotConnectedBase)`
   transition: border-color 0.3s ease-out, color 0.3s ease-out;
 
   border: 1px solid ${({ theme }) => theme.colors.gray24};
-  color: #24deff;
+
+  color: ${({ theme }) => theme.colors.paleblue.main};
 
   &:hover {
-    border-color: #23bed9;
+    color: ${({ theme }) => theme.colors.paleblue.light};
+    border-color: ${({ theme }) => theme.colors.paleblue.main};
   }
 
   display: flex;

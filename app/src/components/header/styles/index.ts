@@ -1,6 +1,8 @@
 import { css } from 'styled-components';
 
 export const dropdownContainerStyle = css`
+  min-width: 260px;
+
   padding: 28px 24px;
   background-color: ${({ theme }) => theme.colors.gray14};
 

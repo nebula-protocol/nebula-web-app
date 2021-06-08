@@ -2,22 +2,24 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import type { DefaultTheme } from 'styled-components';
 import { muiThemeBase } from './muiThemeBase';
 
-export const darkTheme: DefaultTheme = {
-  ...createMuiTheme({
-    ...muiThemeBase,
+const muiTheme = createMuiTheme({
+  ...muiThemeBase,
 
-    palette: {
-      type: 'dark',
-    },
+  palette: {
+    type: 'dark',
+  },
 
-    overrides: {
-      MuiTouchRipple: {
-        root: {
-          opacity: 0.15,
-        },
+  overrides: {
+    MuiTouchRipple: {
+      root: {
+        opacity: 0.15,
       },
     },
-  }),
+  },
+});
+
+export const darkTheme: DefaultTheme = {
+  ...muiTheme,
 
   colors: {
     gray08: '#0c0c0c',
@@ -33,5 +35,11 @@ export const darkTheme: DefaultTheme = {
     white80: '#cccccc',
     white92: '#ebebeb',
     white100: '#ffffff',
+
+    paleblue: muiTheme.palette.augmentColor({
+      main: '#23bed9',
+      light: '#4fcbe0',
+      contrastText: '#ffffff',
+    }),
   },
 };

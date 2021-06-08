@@ -81,10 +81,10 @@ export const DesktopHeader = styled(DesktopHeaderBase)`
       }
 
       .Nebula-EmptyButton {
-        color: #858585;
+        color: ${({ theme }) => theme.colors.white52};
 
         &:hover {
-          color: #24deff;
+          color: ${({ theme }) => theme.colors.paleblue.main};
         }
       }
     }
