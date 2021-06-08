@@ -1,10 +1,10 @@
-import type { PaletteColor } from '@material-ui/core/styles/createPalette';
-import styled, { css } from 'styled-components';
-import React from 'react';
 import {
   ButtonBase as MuiButtonBase,
   ButtonBaseProps as MuiButtonBaseProps,
 } from '@material-ui/core';
+import type { PaletteColor } from '@material-ui/core/styles/createPalette';
+import React from 'react';
+import styled, { css } from 'styled-components';
 
 export interface ButtonProps extends Omit<MuiButtonBaseProps, 'ref' | 'color'> {
   size?: 'normal' | 'medium' | 'small' | 'tiny';
@@ -27,7 +27,7 @@ export const buttonSizeStyle = {
     }
   `,
   medium: css`
-    height: 42px;
+    height: 44px;
     font-size: 14px;
     border-radius: 8px;
 

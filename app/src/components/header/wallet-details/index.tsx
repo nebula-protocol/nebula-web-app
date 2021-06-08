@@ -1,6 +1,6 @@
 import { CallMade, Check } from '@material-ui/icons';
 import { formatUToken, truncate } from '@nebula-js/notation';
-import { Button } from '@nebula-js/ui';
+import { Button, Tooltip } from '@nebula-js/ui';
 import { NebulaTokenBalances } from '@nebula-js/webapp-fns';
 import { useConnectedWallet, useWallet } from '@terra-money/wallet-provider';
 import { useBank } from '@terra-money/webapp-provider';
@@ -36,10 +36,12 @@ function WalletDetailsBase({ className }: WalletDetailsProps) {
   return (
     <div className={className}>
       <header>
-        <h2>
-          {truncate(connectedWallet.walletAddress)}
-          <CallMade />
-        </h2>
+        <Tooltip title="View on Terra Finder" placement="top">
+          <h2>
+            {truncate(connectedWallet.walletAddress)}
+            <CallMade />
+          </h2>
+        </Tooltip>
 
         <Button size="tiny" color="dim" onClick={setCopied}>
           COPY ADDRESS

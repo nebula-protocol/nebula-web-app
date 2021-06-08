@@ -1,9 +1,7 @@
-import { GlobalStyle } from '@nebula-js/ui';
 import { useWallet, WalletStatus } from '@terra-money/wallet-provider';
 import { Header } from 'components/header';
 import { MainLayout } from 'components/layouts/MainLayout';
 import { AppProviders } from 'configurations/app';
-import { ThemeProvider } from 'contexts/theme';
 import * as React from 'react';
 import { render } from 'react-dom';
 import './polyfills/terra.polyfill';
@@ -53,10 +51,7 @@ function App() {
 
 render(
   <AppProviders>
-    <ThemeProvider>
-      <GlobalStyle />
-      <App />
-    </ThemeProvider>
+    <App />
   </AppProviders>,
   document.querySelector('#root'),
 );

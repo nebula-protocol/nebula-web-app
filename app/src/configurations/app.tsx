@@ -1,18 +1,23 @@
+import { GlobalStyle } from '@nebula-js/ui';
 import {
   NEBULA_TX_REFETCH_MAP,
   NebulaWebappProvider,
 } from '@nebula-js/webapp-provider';
 import { captureException } from '@sentry/react';
 import { patchReactQueryFocusRefetching } from '@terra-dev/patch-react-query-focus-refetching';
+import { ReadonlyWalletSession } from '@terra-dev/readonly-wallet';
 import { BrowserInactiveProvider } from '@terra-dev/use-browser-inactive';
 import { GoogleAnalytics } from '@terra-dev/use-google-analytics';
 import { RouterScrollRestoration } from '@terra-dev/use-router-scroll-restoration';
+import { NetworkInfo } from '@terra-dev/wallet-types';
 import { WalletProvider } from '@terra-money/wallet-provider';
 import {
   BankProvider,
   TerraWebappProvider,
 } from '@terra-money/webapp-provider';
-import React, { ReactNode } from 'react';
+import { useReadonlyWalletDialog } from 'components/header/connect/useReadonlyWalletDialog';
+import { ThemeProvider } from 'contexts/theme';
+import React, { ReactNode, useCallback } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter as Router } from 'react-router-dom';
 import {
@@ -32,6 +37,20 @@ const errorReporter =
   process.env.NODE_ENV === 'production' ? captureException : undefined;
 
 export function AppProviders({ children }: { children: ReactNode }) {
+  const [
+    openReadonlyWalletSelector,
+    readonlyWalletSelectorElement,
+  ] = useReadonlyWalletDialog();
+
+  const createReadonlyWalletSession = useCallback(
+    (networks: NetworkInfo[]): Promise<ReadonlyWalletSession | null> => {
+      return openReadonlyWalletSelector({
+        networks,
+      });
+    },
+    [openReadonlyWalletSelector],
+  );
+
   return (
     <WalletProvider
       defaultNetwork={DEFAULT_NETWORK}
@@ -41,6 +60,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
           ? 'https://walletconnect.terra.dev/'
           : 'https://tequila-walletconnect.terra.dev/',
       }}
+      createReadonlyWalletSession={createReadonlyWalletSession}
     >
       <Router>
         <QueryClientProvider client={queryClient}>
@@ -57,7 +77,11 @@ export function AppProviders({ children }: { children: ReactNode }) {
                 <NebulaWebappProvider>
                   <GoogleAnalytics trackingId={GA_TRACKING_ID} />
                   <RouterScrollRestoration />
-                  {children}
+                  <ThemeProvider>
+                    <GlobalStyle />
+                    {children}
+                    {readonlyWalletSelectorElement}
+                  </ThemeProvider>
                 </NebulaWebappProvider>
               </BankProvider>
             </TerraWebappProvider>

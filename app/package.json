@@ -58,6 +58,7 @@
     "@terra-dev/big-interpolate": "^0.15.0",
     "@terra-dev/patch-react-query-focus-refetching": "^0.15.0",
     "@terra-dev/use-browser-inactive": "^0.15.0",
+    "@terra-dev/use-dialog": "^0.15.0",
     "@terra-dev/use-google-analytics": "^0.15.0",
     "@terra-dev/use-interval": "^0.15.0",
     "@terra-dev/use-router-scroll-restoration": "^0.15.0",

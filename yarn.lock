@@ -613,6 +613,7 @@ __metadata:
     "@terra-dev/big-interpolate": ^0.15.0
     "@terra-dev/patch-react-query-focus-refetching": ^0.15.0
     "@terra-dev/use-browser-inactive": ^0.15.0
+    "@terra-dev/use-dialog": ^0.15.0
     "@terra-dev/use-google-analytics": ^0.15.0
     "@terra-dev/use-interval": ^0.15.0
     "@terra-dev/use-router-scroll-restoration": ^0.15.0
@@ -1230,6 +1231,15 @@ __metadata:
   peerDependencies:
     react: ^17.0.0
   checksum: 287f28abe8fb4bbe1509a6fb5e2392d3fd52867b478f98df3c1b3c9dee4e998bab20b3a38fdb0aab9edb9273e6cdeb0220fa66933c47bc029c5ad0da48756ef9
+  languageName: node
+  linkType: hard
+
+"@terra-dev/use-dialog@npm:^0.15.0":
+  version: 0.15.0
+  resolution: "@terra-dev/use-dialog@npm:0.15.0"
+  peerDependencies:
+    react: ^17.0.0
+  checksum: 48ac86cba31d07a54a97424068eb27f913f6962075d94fa534218a6ca4594af53a30a3673b3a0bf02f40f734a9329473e52d742e534570d8e6fcaef0fc7c1057
   languageName: node
   linkType: hard
 
