@@ -5,10 +5,10 @@ import { EmptyButton, EmptyButtonProps, EmptyIconHolder } from '@nebula-js/ui';
 import { NebulaTokenBalances } from '@nebula-js/webapp-fns';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useBank } from '@terra-money/webapp-provider';
-import { WalletDetails } from 'components/header/wallet-details';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { dropdownContainerStyle } from '../../styles';
+import { WalletDetails } from '../../wallet-details';
+import { dropdownContainerStyle } from '../styles';
 import { walletButtonMeasure } from './walletButtonMeasure';
 
 export interface ConnectedProps
@@ -55,7 +55,7 @@ function ConnectedBase({ ...buttonProps }: ConnectedProps) {
           placement="bottom-end"
         >
           <Dropdown>
-            <WalletDetails />
+            <WalletDetails buttonSize="small" />
           </Dropdown>
         </Popper>
       </div>

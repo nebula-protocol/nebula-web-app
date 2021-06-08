@@ -3,9 +3,9 @@ import { EmptyButton } from '@nebula-js/ui';
 import logoImage from 'components/assets/nebula-wide.svg';
 import { useTheme } from 'contexts/theme';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Wallet } from '../desktop-wallet-button/Wallet';
+import { Wallet } from './Wallet';
 
 export interface DesktopHeaderProps {
   className?: string;
@@ -17,7 +17,9 @@ function DesktopHeaderBase({ className }: DesktopHeaderProps) {
   return (
     <header className={className}>
       <div>
-        <img src={logoImage} alt="Nebula Protocol" />
+        <Link to="/">
+          <img src={logoImage} alt="Nebula Protocol" />
+        </Link>
 
         <div />
 
@@ -34,12 +36,12 @@ function DesktopHeaderBase({ className }: DesktopHeaderProps) {
       </div>
 
       <div>
-        <ul>
+        <nav>
           <NavLink to="/clusters">Clusters</NavLink>
           <NavLink to="/staking">Staking</NavLink>
           <NavLink to="/governance">Governance</NavLink>
           <NavLink to="/mypage">My Page</NavLink>
-        </ul>
+        </nav>
 
         <Wallet />
       </div>
@@ -96,10 +98,7 @@ export const DesktopHeader = styled(DesktopHeaderBase)`
 
       height: var(--second-line-height);
 
-      ul {
-        padding: 0;
-        margin: 0;
-
+      nav {
         display: flex;
         gap: 40px;
 

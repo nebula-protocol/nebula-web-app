@@ -16,9 +16,9 @@ import {
   useWallet,
   WalletStatus,
 } from '@terra-money/wallet-provider';
-import { dropdownContainerStyle } from 'components/header/styles';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { dropdownContainerStyle } from '../styles';
 import { walletButtonMeasure } from './walletButtonMeasure';
 
 export interface NotConnectedProps

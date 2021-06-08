@@ -1,6 +1,7 @@
 import { useWallet, WalletStatus } from '@terra-money/wallet-provider';
 import { Header } from 'components/header';
 import { MainLayout } from 'components/layouts/MainLayout';
+import { DisableOverflowXStyle } from 'components/styles/DisableOverflowXStyle';
 import { AppProviders } from 'configurations/app';
 import * as React from 'react';
 import { render } from 'react-dom';
@@ -51,6 +52,7 @@ function App() {
 
 render(
   <AppProviders>
+    <DisableOverflowXStyle />
     <App />
   </AppProviders>,
   document.querySelector('#root'),

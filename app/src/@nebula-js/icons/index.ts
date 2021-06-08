@@ -4,3 +4,5 @@ export { ReactComponent as WalletIcon } from './assets/wallet.svg';
 export { ReactComponent as ChevronRightIcon } from './assets/chevron-r.svg';
 export { ReactComponent as TerraIcon } from './assets/terra.svg';
 export { ReactComponent as WalletconnectIcon } from './assets/walletconnect.svg';
+export { ReactComponent as MenuIcon } from './assets/menu.svg';
+export { ReactComponent as CloseIcon } from './assets/close.svg';

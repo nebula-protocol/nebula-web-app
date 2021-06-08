@@ -1,7 +1,9 @@
-import React, { DetailedHTMLProps, HTMLAttributes } from 'react';
-import { forwardRef } from 'react';
+import { CloseIcon } from '@nebula-js/icons';
+import React, { DetailedHTMLProps, forwardRef, HTMLAttributes } from 'react';
 import styled, { createGlobalStyle, keyframes } from 'styled-components';
+import { buttonColorStyle } from './Button';
 import { getErrorBoundary } from './configErrorBoundary';
+import { EmptyButton } from './EmptyButton';
 
 export interface DialogProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
@@ -21,20 +23,9 @@ const DialogBase = forwardRef<HTMLDivElement, DialogProps>(
           <ErrorBoundary>{children}</ErrorBoundary>
         </div>
         {onClose && (
-          <svg
-            className="dialog-close-button"
-            viewBox="0 0 16 16"
-            onClick={onClose}
-          >
-            <g transform="matrix(1,0,0,1,-953.896,-435.63)">
-              <g transform="matrix(0.405863,0.405863,-0.354409,0.354409,674.668,-219.158)">
-                <path d="M1152.39,529.839L1187.24,529.839" />
-              </g>
-              <g transform="matrix(-0.405863,0.405863,-0.354409,-0.354409,1624.24,156.402)">
-                <path d="M1152.39,529.839L1187.24,529.839" />
-              </g>
-            </g>
-          </svg>
+          <EmptyButton className="dialog-close-button" size={12} fontSize={12}>
+            <CloseIcon onClick={onClose} />
+          </EmptyButton>
         )}
 
         <ScrollLock />
@@ -100,25 +91,12 @@ export const Dialog = styled(DialogBase)`
 
   .dialog-close-button {
     position: absolute;
-    top: 24px;
-    right: 24px;
+    top: 20px;
+    right: 20px;
 
-    width: 15px;
-    height: 15px;
+    ${buttonColorStyle('dim')};
 
-    cursor: pointer;
-
-    path {
-      fill: none;
-      stroke-width: 2px;
-      stroke: ${({ theme }) => theme.colors.gray34};
-    }
-
-    &:hover {
-      path {
-        stroke: ${({ theme }) => theme.colors.white52};
-      }
-    }
+    background-color: transparent;
   }
 
   @media (min-width: 700px) {

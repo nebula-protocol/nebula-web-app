@@ -11,9 +11,10 @@ import styled from 'styled-components';
 
 export interface WalletDetailsProps {
   className?: string;
+  buttonSize: 'small' | 'medium';
 }
 
-function WalletDetailsBase({ className }: WalletDetailsProps) {
+function WalletDetailsBase({ className, buttonSize }: WalletDetailsProps) {
   const { disconnect } = useWallet();
 
   const connectedWallet = useConnectedWallet();
@@ -65,11 +66,11 @@ function WalletDetailsBase({ className }: WalletDetailsProps) {
       </ul>
 
       <footer>
-        <Button size="small" color="paleblue" fullWidth>
+        <Button size={buttonSize} color="paleblue" fullWidth>
           Send
         </Button>
 
-        <Button size="small" color="dim" fullWidth onClick={disconnect}>
+        <Button size={buttonSize} color="dim" fullWidth onClick={disconnect}>
           Disconnect
         </Button>
       </footer>
