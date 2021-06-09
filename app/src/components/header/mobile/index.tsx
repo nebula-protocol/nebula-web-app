@@ -7,6 +7,7 @@ import {
   WalletStatus,
 } from '@terra-money/wallet-provider';
 import logoImage from 'components/assets/nebula-wide.svg';
+import { ViewAddressButton } from 'components/header/mobile/ViewAddressButton';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
@@ -41,6 +42,14 @@ function MobileHeaderBase({ className }: MobileHeaderProps) {
     }
   }, [connect, openWalletDetail, status]);
 
+  const viewAddress = useCallback(() => {
+    setOpen(false);
+
+    if (status === WalletStatus.WALLET_NOT_CONNECTED) {
+      connect(ConnectType.READONLY);
+    }
+  }, [connect, status]);
+
   return (
     <header className={className}>
       <section>
@@ -68,6 +77,10 @@ function MobileHeaderBase({ className }: MobileHeaderProps) {
           <NavLink to="/staking">Staking</NavLink>
           <NavLink to="/governance">Governance</NavLink>
           <NavLink to="/mypage">My Page</NavLink>
+
+          {status === WalletStatus.WALLET_NOT_CONNECTED && (
+            <ViewAddressButton onClick={viewAddress} />
+          )}
         </nav>
       )}
       {walletDetailElement}
