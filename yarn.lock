@@ -628,6 +628,7 @@ __metadata:
     "@types/d3-ease": ^2.0.0
     "@types/d3-timer": ^2.0.0
     "@types/jest": ^26.0.23
+    "@types/loadable__component": ^5.13.3
     "@types/node": ^15.12.2
     "@types/numeral": ^2.0.1
     "@types/puppeteer": ^5.4.3
@@ -1666,6 +1667,15 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: ee0d098693bf4af44be756eed02daf95f5d0fd4b5b02da952a5952e08842baddf6a986a9ea5f9e460729782f1a0a47848c892ad96ea188b66a363feb49a1536f
+  languageName: node
+  linkType: hard
+
+"@types/loadable__component@npm:^5.13.3":
+  version: 5.13.3
+  resolution: "@types/loadable__component@npm:5.13.3"
+  dependencies:
+    "@types/react": "*"
+  checksum: 9b25ac9ecc0d825d09162e59c4cf36f6a11794739f79ee434ed6e61797115911db31f7a33847d4b1a63a4707eb06738cd8026f95ba0cf10516193afa1a49d87f
   languageName: node
   linkType: hard
 

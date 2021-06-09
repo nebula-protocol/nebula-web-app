@@ -93,6 +93,7 @@
     "@types/d3-ease": "^2.0.0",
     "@types/d3-timer": "^2.0.0",
     "@types/jest": "^26.0.23",
+    "@types/loadable__component": "^5.13.3",
     "@types/node": "^15.12.2",
     "@types/numeral": "^2.0.1",
     "@types/puppeteer": "^5.4.3",

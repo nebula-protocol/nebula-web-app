@@ -75,8 +75,8 @@ function MobileHeaderBase({ className }: MobileHeaderProps) {
         <nav>
           <NavLink to="/clusters">Clusters</NavLink>
           <NavLink to="/staking">Staking</NavLink>
-          <NavLink to="/governance">Governance</NavLink>
-          <NavLink to="/mypage">My Page</NavLink>
+          <NavLink to="/gov">Governance</NavLink>
+          <NavLink to="/my">My Page</NavLink>
 
           {status === WalletStatus.WALLET_NOT_CONNECTED && (
             <ViewAddressButton onClick={viewAddress} />
