@@ -4,7 +4,7 @@ import React, {
   ReactNode,
 } from 'react';
 import styled from 'styled-components';
-import { specificSizeStyle } from './internal/internalSpecificSizeStyle';
+import { specificSizeStyle } from '../internal/internalSpecificSizeStyle';
 
 export interface EmptyButtonProps
   extends DetailedHTMLProps<

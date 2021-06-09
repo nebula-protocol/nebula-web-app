@@ -1,16 +1,16 @@
 import { SearchIcon } from '@nebula-js/icons';
-import { EmptyTextInput } from './EmptyTextInput';
-import styled from 'styled-components';
 import React, { DetailedHTMLProps, InputHTMLAttributes } from 'react';
+import styled from 'styled-components';
 import { screen } from '../env';
+import { EmptyTextInput } from '../form/EmptyTextInput';
 
-export interface SearchInputProps
+export interface SearchProps
   extends Omit<
     DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
     'ref'
   > {}
 
-function SearchInputBase({ className, ...inputProps }: SearchInputProps) {
+function SearchBase({ className, ...inputProps }: SearchProps) {
   return (
     <div className={className}>
       <SearchIcon />
@@ -19,7 +19,7 @@ function SearchInputBase({ className, ...inputProps }: SearchInputProps) {
   );
 }
 
-export const SearchInput = styled(SearchInputBase)`
+export const Search = styled(SearchBase)`
   height: 4rem;
 
   background-color: ${({ theme }) => theme.colors.gray14};

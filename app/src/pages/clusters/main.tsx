@@ -1,8 +1,14 @@
 import { ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
-import { HorizontalScrollTable, SearchInput } from '@nebula-js/ui';
+import {
+  HorizontalScrollTable,
+  IconAndLabels,
+  Search,
+  useScreenSizeValue,
+} from '@nebula-js/ui';
 import { useQueryBoundInput } from '@nebula-js/use-query-bound-input';
 import { MainLayout } from 'components/layouts/MainLayout';
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 export interface ClustersMainProps {
@@ -14,6 +20,7 @@ const data = Array.from({ length: Math.floor(Math.random() * 30) }, (_, i) => {
 
   return {
     index: i,
+    id: `cluster-${i}`.toUpperCase(),
     name: `New is always better ${i}`,
     nameLowerCase: `New is always better ${i}`.toLowerCase(),
     description: `NIAL ${i}`,
@@ -26,6 +33,15 @@ const data = Array.from({ length: Math.floor(Math.random() * 30) }, (_, i) => {
 });
 
 function ClustersMainBase({ className }: ClustersMainProps) {
+  const history = useHistory();
+
+  const tableMinWidth = useScreenSizeValue({
+    mobile: 700,
+    tablet: 1000,
+    pc: 1000,
+    monitor: 1000,
+  });
+
   const { value, updateValue } = useQueryBoundInput({ queryParam: 'search' });
 
   const filteredData = useMemo(() => {
@@ -42,11 +58,18 @@ function ClustersMainBase({ className }: ClustersMainProps) {
     });
   }, [value]);
 
+  const gotoCluster = useCallback(
+    (clusterId: string) => {
+      history.push(`/clusters/${clusterId}`);
+    },
+    [history],
+  );
+
   return (
     <MainLayout className={className}>
       <h1>Clusters</h1>
 
-      <SearchInput
+      <Search
         className="search"
         type="text"
         value={value ?? ''}
@@ -55,7 +78,7 @@ function ClustersMainBase({ className }: ClustersMainProps) {
         }
       />
 
-      <Table minWidth={1000}>
+      <Table minWidth={tableMinWidth}>
         <thead>
           <tr>
             <th>
@@ -80,6 +103,7 @@ function ClustersMainBase({ className }: ClustersMainProps) {
           {filteredData.map(
             ({
               index,
+              id,
               name,
               description,
               price,
@@ -88,13 +112,9 @@ function ClustersMainBase({ className }: ClustersMainProps) {
               marketCap,
               volume,
             }) => (
-              <tr key={'row' + index}>
+              <tr key={'row' + index} onClick={() => gotoCluster(id)}>
                 <td>
-                  <i />
-                  <div>
-                    <h4>{name}</h4>
-                    <p>{description}</p>
-                  </div>
+                  <IconAndLabels text={name} subtext={description} />
                 </td>
                 <td>{price} UST</td>
                 <td data-diff={hr24diff}>
@@ -126,32 +146,6 @@ const Table = styled(HorizontalScrollTable)`
   }
 
   td {
-    &:first-child {
-      display: flex;
-      align-items: center;
-
-      i {
-        display: inline-block;
-        width: 2.2em;
-        height: 2.2em;
-        background-color: ${({ theme }) => theme.colors.gray34};
-        border-radius: 50%;
-
-        margin-right: 0.9em;
-      }
-
-      h4 {
-        font-weight: 500;
-        color: ${({ theme }) => theme.colors.white92};
-      }
-
-      p {
-        font-size: 0.9em;
-        font-weight: 500;
-        color: ${({ theme }) => theme.colors.white44};
-      }
-    }
-
     svg {
       font-size: 1em;
       transform: translateY(2px);
@@ -167,6 +161,14 @@ const Table = styled(HorizontalScrollTable)`
   }
 
   tbody {
+    tr {
+      cursor: pointer;
+
+      &:hover {
+        background-color: ${({ theme }) => theme.colors.gray22};
+      }
+    }
+
     tr:not(:last-child) {
       td {
         border-bottom: 1px solid ${({ theme }) => theme.colors.gray11};

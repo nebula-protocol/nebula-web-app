@@ -4,7 +4,7 @@ import {
   Dialog,
   NativeSelect,
   TextInput,
-  useResponsiveSize,
+  useScreenSizeValue,
 } from '@nebula-js/ui';
 import { ReadonlyWalletSession } from '@terra-dev/readonly-wallet';
 import { DialogProps, OpenDialog, useDialog } from '@terra-dev/use-dialog';
@@ -41,7 +41,12 @@ function ComponentBase({
   const [chainID, setChainID] = useState<string>(() => networks[1].chainID);
   const [address, setAddress] = useState<string>('');
 
-  const buttonSize = useResponsiveSize('normal', 'medium');
+  const buttonSize = useScreenSizeValue<'medium' | 'normal'>({
+    mobile: 'medium',
+    tablet: 'normal',
+    pc: 'normal',
+    monitor: 'normal',
+  });
 
   const invalidAddress = useMemo(() => {
     if (address.length === 0) {

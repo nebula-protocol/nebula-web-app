@@ -1,9 +1,9 @@
 import { CloseIcon } from '@nebula-js/icons';
 import React, { DetailedHTMLProps, forwardRef, HTMLAttributes } from 'react';
 import styled, { createGlobalStyle, keyframes } from 'styled-components';
-import { buttonColorStyle } from './Button';
-import { getErrorBoundary } from './configErrorBoundary';
-import { EmptyButton } from './EmptyButton';
+import { buttonColorStyle } from '../buttons/Button';
+import { EmptyButton } from '../buttons/EmptyButton';
+import { getErrorBoundary } from '../error/configErrorBoundary';
 
 export interface DialogProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {

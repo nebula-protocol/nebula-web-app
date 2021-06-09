@@ -28,7 +28,7 @@ export const MainLayout = styled(MainLayoutBase)`
     }
   }
 
-  // mobile
+  // small layout
   @media (max-width: ${screen.tablet.max}px) {
     padding: 24px 16px 16px 16px;
 

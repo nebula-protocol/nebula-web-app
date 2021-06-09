@@ -1,2 +1,2 @@
-export * from './useResponsiveSize';
 export * from './useScreenSize';
+export * from './useScreenSizeValue';
