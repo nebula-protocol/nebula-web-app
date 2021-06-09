@@ -18,8 +18,8 @@ function ButtonBase({ size, color, fullWidth, ...buttonProps }: ButtonProps) {
 
 export const buttonSizeStyle = {
   normal: css`
-    height: 64px;
-    font-size: 18px;
+    height: 4.5rem;
+    font-size: 1.3rem;
     border-radius: 8px;
 
     svg {
@@ -27,8 +27,8 @@ export const buttonSizeStyle = {
     }
   `,
   medium: css`
-    height: 44px;
-    font-size: 14px;
+    height: 3.14rem;
+    font-size: 1rem;
     border-radius: 8px;
 
     svg {
@@ -36,8 +36,8 @@ export const buttonSizeStyle = {
     }
   `,
   small: css`
-    height: 32px;
-    font-size: 12px;
+    height: 2.3rem;
+    font-size: 1rem;
     border-radius: 8px;
 
     svg {
@@ -45,8 +45,8 @@ export const buttonSizeStyle = {
     }
   `,
   tiny: css`
-    height: 20px;
-    font-size: 10px;
+    height: 1.4rem;
+    font-size: 0.7rem;
     border-radius: 10px;
     padding: 1px 10px 0 10px;
 

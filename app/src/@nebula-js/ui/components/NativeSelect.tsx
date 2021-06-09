@@ -9,14 +9,14 @@ import { NativeSelect as MuiNativeSelect } from '@material-ui/core';
 export const NativeSelect = styled(MuiNativeSelect)`
   border-radius: 8px;
 
-  font-size: 14px;
+  font-size: 1rem;
 
-  height: 55px;
+  height: 4rem;
 
-  padding-left: 20px;
+  padding-left: 1.5rem;
 
   .MuiNativeSelect-icon {
-    right: 20px;
+    right: 1.5rem;
   }
 
   border: 1px solid ${({ theme }) => theme.colors.gray34};

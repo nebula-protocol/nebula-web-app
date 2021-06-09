@@ -1,5 +1,6 @@
 import { createGlobalStyle, css } from 'styled-components';
-import { NebulaTheme } from './Theme';
+import { NebulaTheme } from './theme';
+import { screen } from './env';
 
 function bodyStyleIfThemeExists(theme?: NebulaTheme): string {
   if (!theme) return '';
@@ -28,11 +29,15 @@ export const globalStyle = css`
       sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-size: 16px;
+    font-size: 14px;
     word-spacing: 1px;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
     box-sizing: border-box;
+  }
+
+  @media (max-width: ${screen.mobile.max}px) {
+    font-size: 12px;
   }
 
   *,

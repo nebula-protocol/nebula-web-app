@@ -1,3 +1,4 @@
+import { screen } from '@nebula-js/ui';
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
@@ -20,5 +21,21 @@ export const MainLayout = styled(MainLayoutBase)`
   > div {
     max-width: 1080px;
     margin: 0 auto;
+
+    h1 {
+      font-size: 32px;
+      font-weight: 500;
+    }
+  }
+
+  // mobile
+  @media (max-width: ${screen.tablet.max}px) {
+    padding: 24px 16px 16px 16px;
+
+    > div {
+      h1 {
+        font-size: 24px;
+      }
+    }
   }
 `;

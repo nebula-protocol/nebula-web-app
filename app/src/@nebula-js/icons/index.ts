@@ -6,3 +6,4 @@ export { ReactComponent as TerraIcon } from './assets/terra.svg';
 export { ReactComponent as WalletconnectIcon } from './assets/walletconnect.svg';
 export { ReactComponent as MenuIcon } from './assets/menu.svg';
 export { ReactComponent as CloseIcon } from './assets/close.svg';
+export { ReactComponent as SearchIcon } from './assets/search.svg';
