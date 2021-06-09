@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
-import { screen } from '../env';
+import { breakpoints } from '../env';
 
-export type ScreenSize = keyof typeof screen;
+export type ScreenSize = keyof typeof breakpoints;
 
 export function checkScreenSize(): ScreenSize {
   const width = window.innerWidth;
 
-  if (width >= screen.monitor.min) {
+  if (width >= breakpoints.monitor.min) {
     return 'monitor';
-  } else if (width >= screen.pc.min && width <= screen.pc.max) {
+  } else if (width >= breakpoints.pc.min && width <= breakpoints.pc.max) {
     return 'pc';
-  } else if (width >= screen.tablet.min && width <= screen.tablet.max) {
+  } else if (
+    width >= breakpoints.tablet.min &&
+    width <= breakpoints.tablet.max
+  ) {
     return 'tablet';
   }
   return 'mobile';

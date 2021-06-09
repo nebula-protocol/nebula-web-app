@@ -1,6 +1,6 @@
 import React, { DetailedHTMLProps, TableHTMLAttributes } from 'react';
 import styled from 'styled-components';
-import { screen } from '../env';
+import { breakpoints } from '../env';
 
 export interface HorizontalScrollTableProps
   extends DetailedHTMLProps<
@@ -14,6 +14,8 @@ export interface HorizontalScrollTableProps
   startPadding?: `${number}rem`;
 
   endPadding?: `${number}rem`;
+
+  fontSize?: 'normal' | 'small';
 }
 
 const _startPadding = '2rem';
@@ -36,7 +38,8 @@ function HorizontalScrollTableBase({
 }
 
 export const HorizontalScrollTable = styled(HorizontalScrollTableBase)`
-  font-size: 1.15rem;
+  font-size: ${({ fontSize = 'normal' }) =>
+    fontSize === 'normal' ? '1.15rem' : '0.9rem'};
 
   > .scroll-container {
     overflow-x: scroll;
@@ -57,7 +60,7 @@ export const HorizontalScrollTable = styled(HorizontalScrollTableBase)`
           font-size: 1em;
 
           span {
-            font-size: 0.75em;
+            font-size: 12px;
           }
 
           color: ${({ theme }) => theme.colors.white44};
@@ -115,7 +118,7 @@ export const HorizontalScrollTable = styled(HorizontalScrollTableBase)`
   }
 
   // mobile
-  @media (max-width: ${screen.mobile.max}px) {
+  @media (max-width: ${breakpoints.mobile.max}px) {
     font-size: 0.85rem;
 
     > .scroll-container {

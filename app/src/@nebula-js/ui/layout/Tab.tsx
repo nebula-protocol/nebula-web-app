@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import React, { HTMLAttributes, ReactNode } from 'react';
 import { DetailedHTMLProps } from 'react';
-import { screen } from '../env';
+import { breakpoints } from '../env';
 
 export interface TabItem {
   id: string;
@@ -35,13 +35,10 @@ function TabBase({ items, selectedItem, onChange, ...ulProps }: TabProps) {
   );
 }
 
-export const Tab = styled(TabBase)`
+export const tabStyle = css`
   margin: 0;
   padding: 0;
   list-style: none;
-
-  font-size: 14px;
-  height: 4.2rem;
 
   display: flex;
   gap: 1px;
@@ -70,7 +67,16 @@ export const Tab = styled(TabBase)`
       background-color: ${({ theme }) => theme.colors.gray18};
       color: ${({ theme }) => theme.colors.white80};
     }
+  }
+`;
 
+export const Tab = styled(TabBase)`
+  ${tabStyle};
+
+  font-size: 14px;
+  height: 4.2rem;
+
+  > li {
     &:first-child {
       border-top-left-radius: 8px;
       border-bottom-left-radius: 8px;
@@ -83,7 +89,7 @@ export const Tab = styled(TabBase)`
   }
 
   // small layout
-  @media (max-width: ${screen.mobile.max}px) {
+  @media (max-width: ${breakpoints.mobile.max}px) {
     height: 3.7rem;
   }
 `;

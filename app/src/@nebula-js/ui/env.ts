@@ -1,4 +1,4 @@
-export const screen = {
+export const breakpoints = {
   mobile: { max: 530 },
   // mobile : @media (max-width: ${screen.mobile.max}px)
   tablet: { min: 531, max: 830 },

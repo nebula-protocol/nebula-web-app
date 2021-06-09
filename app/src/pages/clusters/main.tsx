@@ -1,5 +1,5 @@
-import { ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
 import {
+  DiffSpan,
   HorizontalScrollTable,
   IconAndLabels,
   Search,
@@ -15,22 +15,23 @@ export interface ClustersMainProps {
   className?: string;
 }
 
-const data = Array.from({ length: Math.floor(Math.random() * 30) }, (_, i) => {
-  const diff = i % 2 === 0;
-
-  return {
-    index: i,
-    id: `cluster-${i}`.toUpperCase(),
-    name: `New is always better ${i}`,
-    nameLowerCase: `New is always better ${i}`.toLowerCase(),
-    description: `NIAL ${i}`,
-    price: '102.01',
-    hr24diff: diff ? 'up' : 'down',
-    hr24: '60.78',
-    marketCap: '254,100.062',
-    volume: '254,100.62',
-  };
-});
+const data = Array.from(
+  { length: Math.floor(Math.random() * 15) + 10 },
+  (_, i) => {
+    return {
+      index: i,
+      id: `cluster-${i}`.toUpperCase(),
+      name: `New is always better ${i}`,
+      nameLowerCase: `New is always better ${i}`.toLowerCase(),
+      description: `NIAL ${i}`,
+      price: '102.01',
+      hr24diff: (i % 3) - 1,
+      hr24: '60.78',
+      marketCap: '254,100.062',
+      volume: '254,100.62',
+    };
+  },
+);
 
 function ClustersMainBase({ className }: ClustersMainProps) {
   const history = useHistory();
@@ -117,9 +118,8 @@ function ClustersMainBase({ className }: ClustersMainProps) {
                   <IconAndLabels text={name} subtext={description} />
                 </td>
                 <td>{price} UST</td>
-                <td data-diff={hr24diff}>
-                  {hr24diff === 'up' ? <ArrowDropUp /> : <ArrowDropDown />}{' '}
-                  {hr24}%
+                <td>
+                  <DiffSpan diff={hr24diff}>{hr24}%</DiffSpan>
                 </td>
                 <td>{marketCap} UST</td>
                 <td>{volume} UST</td>

@@ -1,7 +1,7 @@
 import { SearchIcon } from '@nebula-js/icons';
 import React, { DetailedHTMLProps, InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
-import { screen } from '../env';
+import { breakpoints } from '../env';
 import { EmptyTextInput } from '../form/EmptyTextInput';
 
 export interface SearchProps
@@ -41,7 +41,7 @@ export const Search = styled(SearchBase)`
   }
 
   // mobile
-  @media (max-width: ${screen.mobile.max}px) {
+  @media (max-width: ${breakpoints.mobile.max}px) {
     height: 3rem;
     padding-left: 1.7rem;
   }

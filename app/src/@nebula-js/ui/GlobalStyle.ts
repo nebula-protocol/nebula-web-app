@@ -1,6 +1,6 @@
 import { createGlobalStyle, css } from 'styled-components';
 import { NebulaTheme } from './theme';
-import { screen } from './env';
+import { breakpoints } from './env';
 
 function bodyStyleIfThemeExists(theme?: NebulaTheme): string {
   if (!theme) return '';
@@ -36,7 +36,7 @@ export const globalStyle = css`
     box-sizing: border-box;
   }
 
-  @media (max-width: ${screen.mobile.max}px) {
+  @media (max-width: ${breakpoints.mobile.max}px) {
     font-size: 12px;
   }
 

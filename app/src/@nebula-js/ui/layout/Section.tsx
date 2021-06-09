@@ -1,6 +1,6 @@
 import React, { DetailedHTMLProps, HTMLAttributes } from 'react';
 import styled, { css } from 'styled-components';
-import { screen } from '../env';
+import { breakpoints } from '../env';
 
 export interface SectionProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> {
@@ -35,7 +35,7 @@ export const Section = styled(SectionBase)`
   }
 
   // small layout
-  @media (max-width: ${screen.tablet.max}px) {
+  @media (max-width: ${breakpoints.tablet.max}px) {
     padding: 2.6rem 2rem;
 
     h1 {
