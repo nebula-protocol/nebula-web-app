@@ -1,11 +1,10 @@
+import React, { DetailedHTMLProps, HTMLAttributes } from 'react';
 import styled, { css } from 'styled-components';
-import React, { DetailedHTMLProps, HTMLAttributes, ReactNode } from 'react';
 import { screen } from '../env';
 
 export interface SectionProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> {
   isLoading?: boolean;
-  children: ReactNode;
 }
 
 function SectionBase({ isLoading, children, ...sectionProps }: SectionProps) {
