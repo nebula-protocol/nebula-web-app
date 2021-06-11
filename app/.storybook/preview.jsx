@@ -22,11 +22,11 @@ export const parameters = {
     values: [
       {
         name: 'dark',
-        value: darkTheme.colors.gray11,
+        value: darkTheme.colors.gray18,
       },
       {
         name: 'light',
-        value: lightTheme.colors.gray11,
+        value: lightTheme.colors.gray18,
       },
     ],
   },
@@ -36,9 +36,9 @@ export const decorators = [
   (Story, { globals }) => (
     <ThemeProvider
       theme={
-        globals?.backgrounds?.value === darkTheme.backgroundColor
-          ? darkTheme
-          : lightTheme
+        globals?.backgrounds?.value === lightTheme.colors.gray18
+          ? lightTheme
+          : darkTheme
       }
     >
       <GlobalStyle />

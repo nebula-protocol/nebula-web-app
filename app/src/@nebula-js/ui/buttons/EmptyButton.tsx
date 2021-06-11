@@ -32,6 +32,8 @@ export const EmptyButton = styled(EmptyButtonBase)`
   border: 0;
   background-color: transparent;
   cursor: pointer;
+  padding: 0;
+  margin: 0;
 
   ${({ size }) => (!!size ? specificSizeStyle(size) : '')};
 
@@ -42,6 +44,9 @@ export const EmptyButton = styled(EmptyButtonBase)`
 
   line-height: 1em;
   max-height: 1em;
+
+  display: inline-flex;
+  align-items: center;
 
   svg,
   img {

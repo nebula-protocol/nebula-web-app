@@ -1,3 +1,8 @@
+const {getWebpackAlias} = require('@rocket-scripts/utils');
+const path = require('path');
+
+const alias = getWebpackAlias(path.resolve(__dirname, '..'));
+
 module.exports = {
   stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
   typescript: {
@@ -14,8 +19,19 @@ module.exports = {
     },
     '@storybook/addon-links',
     '@storybook/addon-essentials',
+    {
+      name: '@storybook/preset-create-react-app',
+      options: {
+        scriptsPackageName: path.dirname(require.resolve('react-scripts/package.json')),
+      },
+    },
   ],
-  //core: {
-  //  builder: 'storybook-builder-vite',
+  //webpackFinal: async (config, { configType }) => {
+  //  config.resolve.alias = {
+  //    ...config.resolve.alias,
+  //    ...alias,
+  //  };
+  //
+  //  return config;
   //},
 };

@@ -1,9 +1,21 @@
-export { ReactComponent as DocsIcon } from './assets/docs.svg';
-export { ReactComponent as ModeIcon } from './assets/mode.svg';
-export { ReactComponent as WalletIcon } from './assets/wallet.svg';
-export { ReactComponent as ChevronRightIcon } from './assets/chevron-r.svg';
-export { ReactComponent as TerraIcon } from './assets/terra.svg';
-export { ReactComponent as WalletconnectIcon } from './assets/walletconnect.svg';
-export { ReactComponent as MenuIcon } from './assets/menu.svg';
-export { ReactComponent as CloseIcon } from './assets/close.svg';
-export { ReactComponent as SearchIcon } from './assets/search.svg';
+import { createMaterialIcon } from './createMaterialIcon';
+
+import { ReactComponent as DocsSvg } from './assets/docs.svg';
+import { ReactComponent as ModeSvg } from './assets/mode.svg';
+import { ReactComponent as WalletSvg } from './assets/wallet.svg';
+import { ReactComponent as ChevronRightSvg } from './assets/chevron-r.svg';
+import { ReactComponent as TerraSvg } from './assets/terra.svg';
+import { ReactComponent as WalletconnectSvg } from './assets/walletconnect.svg';
+import { ReactComponent as MenuSvg } from './assets/menu.svg';
+import { ReactComponent as CloseSvg } from './assets/close.svg';
+import { ReactComponent as SearchSvg } from './assets/search.svg';
+
+export const DocsIcon = createMaterialIcon(DocsSvg);
+export const ModeIcon = createMaterialIcon(ModeSvg);
+export const WalletIcon = createMaterialIcon(WalletSvg);
+export const ChevronRightIcon = createMaterialIcon(ChevronRightSvg);
+export const TerraIcon = createMaterialIcon(TerraSvg);
+export const WalletconnectIcon = createMaterialIcon(WalletconnectSvg);
+export const MenuIcon = createMaterialIcon(MenuSvg);
+export const CloseIcon = createMaterialIcon(CloseSvg);
+export const SearchIcon = createMaterialIcon(SearchSvg);

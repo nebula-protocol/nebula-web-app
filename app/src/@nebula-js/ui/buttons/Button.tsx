@@ -12,36 +12,48 @@ export interface ButtonProps extends Omit<MuiButtonBaseProps, 'ref' | 'color'> {
   fullWidth?: boolean;
 }
 
-function ButtonBase({ size, color, fullWidth, ...buttonProps }: ButtonProps) {
-  return <MuiButtonBase {...buttonProps} />;
+function ButtonBase({
+  size = 'normal',
+  color,
+  fullWidth,
+  ...buttonProps
+}: ButtonProps) {
+  return <MuiButtonBase {...buttonProps} data-size={size} />;
 }
+
+const svgStyle = css`
+  font-size: 1em;
+`;
 
 export const buttonSizeStyle = {
   normal: css`
     height: 4.5rem;
     font-size: 1.3rem;
     border-radius: 8px;
+    padding: 0 20px;
 
     svg {
-      font-size: 1em;
+      ${svgStyle};
     }
   `,
   medium: css`
     height: 3.14rem;
     font-size: 1rem;
     border-radius: 8px;
+    padding: 0 15px;
 
     svg {
-      font-size: 1em;
+      ${svgStyle};
     }
   `,
   small: css`
     height: 2.3rem;
     font-size: 1rem;
     border-radius: 8px;
+    padding: 0 10px;
 
     svg {
-      font-size: 1em;
+      ${svgStyle};
     }
   `,
   tiny: css`
@@ -51,7 +63,7 @@ export const buttonSizeStyle = {
     padding: 1px 10px 0 10px;
 
     svg {
-      font-size: 1em;
+      ${svgStyle};
     }
   `,
 };
