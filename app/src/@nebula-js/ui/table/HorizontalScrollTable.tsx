@@ -39,7 +39,7 @@ function HorizontalScrollTableBase({
 
 export const HorizontalScrollTable = styled(HorizontalScrollTableBase)`
   font-size: ${({ fontSize = 'normal' }) =>
-    fontSize === 'normal' ? '1.15rem' : '0.9rem'};
+    fontSize === 'normal' ? '1.15rem' : '1rem'};
 
   > .scroll-container {
     overflow-x: scroll;

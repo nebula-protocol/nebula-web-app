@@ -9,3 +9,4 @@ export * from './layout';
 export * from './table';
 export * from './text';
 export * from './tooltip';
+export * from './datavis';

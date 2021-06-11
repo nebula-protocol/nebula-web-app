@@ -1,5 +1,6 @@
 import { JSDateTime, uUST } from '@nebula-js/types';
 import {
+  BarGraph,
   breakpoints,
   Descriptions,
   DiffSpan,
@@ -195,9 +196,10 @@ function ClustersDetailBase({
                 <span>
                   Portfolio Ratio
                   <br />
-                  Current (Target)
+                  <span style={{ opacity: 0.6 }}>Current (Target)</span>
                 </span>
               </th>
+              <th />
             </tr>
           </thead>
 
@@ -225,8 +227,10 @@ function ClustersDetailBase({
                   </td>
                   <td>
                     {current}% <span>({target}%)</span>
-                    <br />
-                    {amount}
+                  </td>
+                  <td className="graph">
+                    <BarGraph ratio={Math.random()} width={300} height={8} />
+                    <div>{amount}</div>
                   </td>
                 </tr>
               ),
@@ -283,11 +287,16 @@ const Table = styled(HorizontalScrollTable)`
     }
   }
 
-  td {
+  td:not(.graph) {
     svg {
       font-size: 1em;
       transform: translateY(2px);
     }
+  }
+
+  td.graph {
+    text-align: left;
+    padding-left: 4em !important;
   }
 
   thead {
