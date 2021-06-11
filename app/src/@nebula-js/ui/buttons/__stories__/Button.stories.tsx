@@ -62,6 +62,9 @@ export const Colors = () => {
           <Button size={size} color="dim">
             <span>DIM</span>
           </Button>
+          <Button size={size} color="border">
+            <span>BORDER</span>
+          </Button>
           <Button size={size} disabled>
             <span>DISABLED</span>
           </Button>

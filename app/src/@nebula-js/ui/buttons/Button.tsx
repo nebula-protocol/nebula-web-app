@@ -8,7 +8,7 @@ import styled, { css } from 'styled-components';
 
 export interface ButtonProps extends Omit<MuiButtonBaseProps, 'ref' | 'color'> {
   size?: 'normal' | 'medium' | 'small' | 'tiny';
-  color?: 'paleblue' | 'gray' | 'dark' | 'dim' | PaletteColor;
+  color?: 'paleblue' | 'gray' | 'dark' | 'dim' | 'border' | PaletteColor;
   fullWidth?: boolean;
 }
 
@@ -122,6 +122,22 @@ export const buttonColorStyle = (color: ButtonProps['color']) => {
 
       &:disabled {
         color: ${({ theme }) => theme.colors.gray34};
+      }
+    `;
+  } else if (color === 'border') {
+    return css`
+      color: ${({ theme }) => theme.colors.white44};
+      background-color: transparent;
+      border: 1px solid ${({ theme }) => theme.colors.gray22};
+
+      &:hover {
+        color: ${({ theme }) => theme.colors.paleblue.main};
+        border-color: ${({ theme }) => theme.colors.paleblue.main};
+      }
+
+      &:disabled {
+        color: ${({ theme }) => theme.colors.gray34};
+        border-color: ${({ theme }) => theme.colors.gray34};
       }
     `;
   } else if (color)

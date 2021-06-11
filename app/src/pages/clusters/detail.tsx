@@ -308,14 +308,6 @@ const Table = styled(HorizontalScrollTable)`
   }
 
   tbody {
-    tr {
-      cursor: pointer;
-
-      &:hover {
-        background-color: ${({ theme }) => theme.colors.gray22};
-      }
-    }
-
     tr:not(:last-child) {
       td {
         border-bottom: 1px solid ${({ theme }) => theme.colors.gray11};

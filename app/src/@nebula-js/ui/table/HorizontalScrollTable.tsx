@@ -87,7 +87,7 @@ export const HorizontalScrollTable = styled(HorizontalScrollTableBase)`
           font-weight: 300;
 
           color: ${({ theme }) => theme.colors.white80};
-          padding: 1.5em 0.7em;
+          padding: 1.5em 1em;
 
           &:first-child {
             padding-left: ${({ startPadding = _startPadding }) => startPadding};
