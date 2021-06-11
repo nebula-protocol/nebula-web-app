@@ -1,4 +1,6 @@
-import { JSDateTime, uUST } from '@nebula-js/types';
+import { formatToken } from '@nebula-js/notation';
+import { JSDateTime, UST, uUST } from '@nebula-js/types';
+import { DiffSpan } from '@nebula-js/ui';
 import {
   ArcElement,
   BarController,
@@ -24,7 +26,8 @@ import {
   Title,
   Tooltip,
 } from 'chart.js';
-import { format, toDate } from 'date-fns';
+import c from 'color';
+import { format } from 'date-fns';
 import React, { Component, createRef } from 'react';
 import styled, { DefaultTheme } from 'styled-components';
 
@@ -72,6 +75,13 @@ export class PriceChart extends Component<PriceChartProps> {
     return (
       <Container>
         <canvas ref={this.canvasRef} />
+        <div>
+          <h3>CURRENT PRICE</h3>
+          <p>
+            1,200<sub>.99 USD</sub>
+          </p>
+          <DiffSpan diff={10}>10.00</DiffSpan>
+        </div>
       </Container>
     );
   }
@@ -98,6 +108,16 @@ export class PriceChart extends Component<PriceChartProps> {
       this.chart.data.datasets[0].data = this.props.data.map(({ y }) => y);
     }
 
+    if (prevProps.theme !== this.props.theme) {
+      this.chart.data.datasets[0].backgroundColor = c(
+        this.props.theme.colors.paleblue.main,
+      )
+        .alpha(0.05)
+        .toString();
+      this.chart.data.datasets[0].borderColor =
+        this.props.theme.colors.paleblue.main;
+    }
+
     this.chart.update();
   }
 
@@ -110,9 +130,16 @@ export class PriceChart extends Component<PriceChartProps> {
           legend: {
             display: false,
           },
-          //tooltip: {
-          //
-          //},
+          tooltip: {
+            displayColors: false,
+            callbacks: {
+              label: (tooltipItem): string | string[] => {
+                return (
+                  formatToken(tooltipItem.parsed.y as UST<number>) + ' UST'
+                );
+              },
+            },
+          },
         },
         interaction: {
           intersect: false,
@@ -120,12 +147,7 @@ export class PriceChart extends Component<PriceChartProps> {
         },
         scales: {
           x: {
-            grid: {
-              display: false,
-            },
-            ticks: {
-              display: false,
-            },
+            display: false,
           },
           y: {
             grace: '25%',
@@ -145,8 +167,11 @@ export class PriceChart extends Component<PriceChartProps> {
             data: this.props.data?.map(({ y }) => y),
             fill: 'start',
 
-            backgroundColor: '#eeeeee',
-            borderColor: '#cccccc',
+            backgroundColor: c(this.props.theme.colors.paleblue.main)
+              .alpha(0.05)
+              .toString(),
+            borderColor: this.props.theme.colors.paleblue.main,
+            borderWidth: 2,
           },
         ],
       },
@@ -154,30 +179,9 @@ export class PriceChart extends Component<PriceChartProps> {
   };
 }
 
-function checkTickPrint(i: number, length: number, timestamp: number): boolean {
-  const date = toDate(timestamp).getDate();
-
-  // always print
-  // if the tick is first of ticks
-  if (i === 0) {
-    return true;
-  }
-  // print 1 or 15
-  // if the tick is not near first or last
-  else if (date === 1 || date === 15) {
-    return i > 3 && i < length - 4;
-  }
-
-  return false;
-}
-
 export function xTimestampAixs(datetimes: JSDateTime[]): string[] {
-  return datetimes.map((timestamp, i) => {
-    return i === datetimes.length - 1
-      ? 'Now'
-      : checkTickPrint(i, datetimes.length, timestamp)
-      ? format(timestamp, 'MMM d')
-      : '';
+  return datetimes.map((timestamp) => {
+    return format(timestamp, 'MMM d, yyyy');
   });
 }
 
@@ -186,8 +190,42 @@ const Container = styled.div`
   height: 345px;
   position: relative;
 
-  background-color: ${({ theme }) => theme.colors.gray14};
+  canvas {
+    background-color: ${({ theme }) => theme.colors.gray14};
 
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  div {
+    position: absolute;
+    top: 40px;
+    left: 32px;
+
+    > h3 {
+      font-size: 12px;
+      font-weight: 500;
+      color: ${({ theme }) => theme.colors.white44};
+    }
+
+    > p {
+      color: ${({ theme }) => theme.colors.white92};
+
+      font-size: 32px;
+      font-weight: 500;
+
+      sub {
+        font-size: 12px;
+        vertical-align: unset;
+      }
+    }
+
+    > span {
+      font-size: 12px;
+
+      svg {
+        transform: translateY(2px);
+      }
+    }
+  }
 `;
