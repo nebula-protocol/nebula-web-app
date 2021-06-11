@@ -1,3 +1,4 @@
+import { JSDateTime, uUST } from '@nebula-js/types';
 import {
   breakpoints,
   Descriptions,
@@ -11,9 +12,20 @@ import {
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { MainLayout } from 'components/layouts/MainLayout';
-import React, { useState } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
-import styled from 'styled-components';
+import { PriceChart } from 'pages/clusters/components/PriceChart';
+import React, { useCallback, useMemo, useState } from 'react';
+import {
+  Redirect,
+  Route,
+  RouteComponentProps,
+  Switch,
+  useRouteMatch,
+} from 'react-router-dom';
+import styled, { useTheme } from 'styled-components';
+import { ClusterBurn } from './components/Burn';
+import { ClusterBuy } from './components/Buy';
+import { ClusterMint } from './components/Mint';
+import { ClusterSell } from './components/Sell';
 
 export interface ClustersDetailProps
   extends RouteComponentProps<{ cluster: string }> {
@@ -52,7 +64,39 @@ const data = Array.from(
   },
 );
 
-function ClustersDetailBase({ className, match }: ClustersDetailProps) {
+const chartData = Array.from(
+  { length: Math.floor(Math.random() * 30) + 30 },
+  (_, i) => {
+    return {
+      y: 10 * i + 10 - Math.random() * 20,
+      amount: i.toString() as uUST,
+      date: Date.now() as JSDateTime,
+    };
+  },
+);
+
+function ClustersDetailBase({
+  className,
+  match,
+  history,
+}: ClustersDetailProps) {
+  const pageMatch = useRouteMatch<{ page: string }>(`${match.url}/:page`);
+
+  const tab = useMemo<TabItem | undefined>(() => {
+    return tabItems.find(({ id }) => id === pageMatch?.params.page);
+  }, [pageMatch?.params.page]);
+
+  const tabChange = useCallback(
+    (nextTab: TabItem) => {
+      history.push({
+        pathname: `${match.url}/${nextTab.id}`,
+      });
+    },
+    [history, match.url],
+  );
+
+  const theme = useTheme();
+
   const descriptionDisplay = useScreenSizeValue<'horizontal' | 'vertical'>({
     mobile: 'vertical',
     tablet: 'horizontal',
@@ -74,7 +118,6 @@ function ClustersDetailBase({ className, match }: ClustersDetailProps) {
     monitor: 1000,
   });
 
-  const [tab, setTab] = useState<TabItem>(tabItems[0]);
   const [chartTab, setChartTab] = useState<TabItem>(chartTabItems[0]);
 
   return (
@@ -103,18 +146,28 @@ function ClustersDetailBase({ className, match }: ClustersDetailProps) {
           <Tab
             className="tab"
             items={tabItems}
-            selectedItem={tab}
-            onChange={setTab}
+            selectedItem={tab ?? tabItems[0]}
+            onChange={tabChange}
           />
-          <Section style={{ minHeight: 200 }}>...</Section>
+          <Section style={{ minHeight: 200 }}>
+            <Switch>
+              <Redirect exact path={`${match.url}/`} to={`${match.url}/buy`} />
+              <Route path={`${match.url}/buy`} component={ClusterBuy} />
+              <Route path={`${match.url}/sell`} component={ClusterSell} />
+              <Route path={`${match.url}/mint`} component={ClusterMint} />
+              <Route path={`${match.url}/burn`} component={ClusterBurn} />
+              <Redirect path={`${match.url}/*`} to={`${match.url}/buy`} />
+            </Switch>
+          </Section>
         </div>
 
         <TabSection
+          emptyMain
           items={chartTabItems}
           selectedItem={chartTab}
           onChange={setChartTab}
         >
-          <h1>Chart</h1>
+          <PriceChart data={chartData} theme={theme} />
         </TabSection>
       </section>
 

@@ -22,9 +22,7 @@ function EmptyButtonBase({
   className,
   ...buttonProps
 }: EmptyButtonProps) {
-  return (
-    <button className={className + ' Nebula-EmptyButton'} {...buttonProps} />
-  );
+  return <button className={className} {...buttonProps} />;
 }
 
 export const EmptyButton = styled(EmptyButtonBase)`

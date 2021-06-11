@@ -4,3 +4,4 @@ export * from './Descriptions';
 export * from './DiffSpan';
 export * from './TokenSpan';
 export * from './Span';
+export * from './IconSeparator';

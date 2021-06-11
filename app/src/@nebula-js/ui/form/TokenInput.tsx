@@ -109,6 +109,7 @@ const Container = styled.div`
 
     > input {
       flex: 1;
+      align-self: stretch;
 
       font-size: inherit;
 

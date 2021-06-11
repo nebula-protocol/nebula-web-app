@@ -10,7 +10,7 @@ export interface TabSectionProps
   items: TabItem[];
   selectedItem: TabItem;
   onChange: (nextTab: TabItem) => void;
-  noMainStyle?: boolean;
+  emptyMain?: boolean;
 }
 
 function TabSectionBase({
@@ -18,7 +18,7 @@ function TabSectionBase({
   selectedItem,
   onChange,
   children,
-  noMainStyle,
+  emptyMain,
   ...sectionProps
 }: TabSectionProps) {
   return (
@@ -55,7 +55,7 @@ export const TabSection = styled(TabSectionBase)`
   .TabSection-main {
     border-radius: 8px 8px 0 0;
 
-    ${({ noMainStyle = false }) => (noMainStyle ? '' : mainStyle)};
+    ${({ emptyMain = false }) => (emptyMain ? '' : mainStyle)};
 
     margin-bottom: 1px;
   }
