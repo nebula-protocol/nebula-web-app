@@ -1,6 +1,5 @@
 import { formatToken } from '@nebula-js/notation';
 import { JSDateTime, UST, uUST } from '@nebula-js/types';
-import { DiffSpan, Sub } from '@nebula-js/ui';
 import { Chart } from 'chart.js';
 import c from 'color';
 import { format } from 'date-fns';
@@ -13,12 +12,12 @@ interface ChartData {
   date: JSDateTime;
 }
 
-export interface PriceChartProps {
+export interface AreaChartProps {
   data: ChartData[];
   theme: DefaultTheme;
 }
 
-export class PriceChart extends Component<PriceChartProps> {
+export class AreaChart extends Component<AreaChartProps> {
   private canvasRef = createRef<HTMLCanvasElement>();
   private chart!: Chart;
 
@@ -26,13 +25,6 @@ export class PriceChart extends Component<PriceChartProps> {
     return (
       <Container>
         <canvas ref={this.canvasRef} />
-        <div>
-          <h3>CURRENT PRICE</h3>
-          <p>
-            1,200<Sub>.99 USD</Sub>
-          </p>
-          <DiffSpan diff={10}>10.00</DiffSpan>
-        </div>
       </Container>
     );
   }
@@ -41,7 +33,7 @@ export class PriceChart extends Component<PriceChartProps> {
     this.chart?.destroy();
   }
 
-  shouldComponentUpdate(nextProps: Readonly<PriceChartProps>): boolean {
+  shouldComponentUpdate(nextProps: Readonly<AreaChartProps>): boolean {
     return (
       this.props.data !== nextProps.data || this.props.theme !== nextProps.theme
     );
@@ -51,7 +43,7 @@ export class PriceChart extends Component<PriceChartProps> {
     this.createChart();
   }
 
-  componentDidUpdate(prevProps: Readonly<PriceChartProps>) {
+  componentDidUpdate(prevProps: Readonly<AreaChartProps>) {
     if (prevProps.data !== this.props.data) {
       this.chart.data.labels = xTimestampAixs(
         this.props.data.map(({ date }) => date),
@@ -60,6 +52,12 @@ export class PriceChart extends Component<PriceChartProps> {
     }
 
     if (prevProps.theme !== this.props.theme) {
+      if (this.chart.options.scales?.y?.grid) {
+        this.chart.options.scales.y.grid.color =
+          this.props.theme.palette.type === 'dark'
+            ? 'rgba(255, 255, 255, 0.05)'
+            : 'rgba(0, 0, 0, 0.05)';
+      }
       this.chart.data.datasets[0].backgroundColor = c(
         this.props.theme.colors.paleblue.main,
       )
@@ -98,11 +96,21 @@ export class PriceChart extends Component<PriceChartProps> {
         },
         scales: {
           x: {
-            display: false,
+            grid: {
+              display: false,
+              drawBorder: false,
+            },
           },
           y: {
             grace: '25%',
-            display: false,
+            position: 'right',
+            grid: {
+              drawBorder: false,
+              color:
+                this.props.theme.palette.type === 'dark'
+                  ? 'rgba(255, 255, 255, 0.05)'
+                  : 'rgba(0, 0, 0, 0.05)',
+            },
           },
         },
         elements: {
@@ -132,46 +140,11 @@ export class PriceChart extends Component<PriceChartProps> {
 
 export function xTimestampAixs(datetimes: JSDateTime[]): string[] {
   return datetimes.map((timestamp) => {
-    return format(timestamp, 'MMM d, yyyy');
+    return format(timestamp, 'MMM d');
   });
 }
 
 const Container = styled.div`
   width: 100%;
-  height: 345px;
-  position: relative;
-
-  canvas {
-    background-color: ${({ theme }) => theme.colors.gray14};
-
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-
-  div {
-    position: absolute;
-    top: 40px;
-    left: 32px;
-
-    > h3 {
-      font-size: 12px;
-      font-weight: 500;
-      color: ${({ theme }) => theme.colors.white44};
-    }
-
-    > p {
-      color: ${({ theme }) => theme.colors.white92};
-
-      font-size: 32px;
-      font-weight: 500;
-    }
-
-    > span {
-      font-size: 12px;
-
-      svg {
-        transform: translateY(2px);
-      }
-    }
-  }
+  height: 250px;
 `;

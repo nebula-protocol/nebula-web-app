@@ -5,6 +5,7 @@ import styled from 'styled-components';
 export interface DiffSpanProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLSpanElement>, HTMLSpanElement> {
   diff: number;
+  translateIconY?: string | number;
   riseColor?: string;
   sameColor?: string;
   downColor?: string;
@@ -12,6 +13,7 @@ export interface DiffSpanProps
 
 function DiffSpanBase({
   diff,
+  translateIconY,
   riseColor,
   downColor,
   children,
@@ -34,5 +36,8 @@ function DiffSpanBase({
 export const DiffSpan = styled(DiffSpanBase)`
   svg {
     font-size: 1em;
+
+    ${({ translateIconY }) =>
+      translateIconY ? `transform: translateY(${translateIconY})` : ''};
   }
 `;

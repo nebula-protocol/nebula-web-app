@@ -6,3 +6,4 @@ export * from './TokenSpan';
 export * from './Span';
 export * from './IconSeparator';
 export * from './CoupledIconsHolder';
+export * from './Sub';

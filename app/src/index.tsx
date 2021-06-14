@@ -1,3 +1,28 @@
+import {
+  ArcElement,
+  BarController,
+  BarElement,
+  BubbleController,
+  CategoryScale,
+  Chart,
+  DoughnutController,
+  Filler,
+  Legend,
+  LinearScale,
+  LineController,
+  LineElement,
+  LogarithmicScale,
+  PieController,
+  PointElement,
+  PolarAreaController,
+  RadarController,
+  RadialLinearScale,
+  ScatterController,
+  TimeScale,
+  TimeSeriesScale,
+  Title,
+  Tooltip,
+} from 'chart.js';
 import { Header } from 'components/header';
 import { DisableOverflowXStyle } from 'components/styles/DisableOverflowXStyle';
 import { AppProviders } from 'configurations/app';
@@ -5,6 +30,31 @@ import React, { lazy, Suspense } from 'react';
 import { render } from 'react-dom';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import './polyfills/terra.polyfill';
+
+Chart.register(
+  ArcElement,
+  LineElement,
+  BarElement,
+  PointElement,
+  BarController,
+  BubbleController,
+  DoughnutController,
+  LineController,
+  PieController,
+  PolarAreaController,
+  RadarController,
+  ScatterController,
+  CategoryScale,
+  LinearScale,
+  LogarithmicScale,
+  RadialLinearScale,
+  TimeScale,
+  TimeSeriesScale,
+  Filler,
+  Legend,
+  Title,
+  Tooltip,
+);
 
 const ClustersDetail = lazy(() => import('./pages/clusters/detail'));
 const ClustersMain = lazy(() => import('./pages/clusters/main'));

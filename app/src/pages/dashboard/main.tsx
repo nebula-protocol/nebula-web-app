@@ -1,14 +1,83 @@
-import styled from 'styled-components';
+import { Section } from '@nebula-js/ui';
+import { MainLayout } from 'components/layouts/MainLayout';
 import React from 'react';
+import Masonry from 'react-masonry-css';
+import styled from 'styled-components';
+import { ClusterDistribution } from './components/ClusterDistribution';
+import { ClusterTokenMarketCap } from './components/ClusterTokenMarketCap';
+import { NEBPrice } from './components/NEBPrice';
+import { TopClusters } from './components/TopClusters';
+import { TotalProvided } from './components/TotalProvided';
+import { TradingVolume } from './components/TradingVolume';
 
 export interface DashboardMainProps {
   className?: string;
 }
 
+const breakpointCols = {
+  default: 2,
+  1000: 1,
+};
+
 function DashboardMainBase({ className }: DashboardMainProps) {
-  return <div className={className}>DashboardMain</div>;
+  return (
+    <MainLayout className={className}>
+      <h1>Dashboard</h1>
+
+      <Masonry
+        breakpointCols={breakpointCols}
+        className="masonry-grid"
+        columnClassName="masonry-column"
+      >
+        <Section>
+          <h3>Cluster Token Market Cap</h3>
+          <ClusterTokenMarketCap />
+        </Section>
+        <Section>
+          <h3>NEB Price</h3>
+          <NEBPrice />
+        </Section>
+        <Section>
+          <h3>Cluster Distribution</h3>
+          <ClusterDistribution />
+        </Section>
+        <Section>
+          <h3>Total Provided</h3>
+          <TotalProvided />
+        </Section>
+        <Section>
+          <h3 style={{ marginBottom: '2em' }}>Top Clusters</h3>
+          <TopClusters />
+        </Section>
+        <Section>
+          <h3>Trading Volume</h3>
+          <TradingVolume />
+        </Section>
+      </Masonry>
+    </MainLayout>
+  );
 }
 
 export default styled(DashboardMainBase)`
-  // TODO
+  .masonry-grid {
+    display: flex;
+    width: auto;
+    margin-left: -20px;
+  }
+
+  .masonry-column {
+    padding-left: 20px;
+    background-clip: padding-box;
+
+    > * {
+      margin-bottom: 20px;
+    }
+  }
+
+  h3 {
+    font-size: 1.15em;
+    font-weight: 500;
+    color: ${({ theme }) => theme.colors.white92};
+    margin-bottom: 0.6em;
+  }
 `;
