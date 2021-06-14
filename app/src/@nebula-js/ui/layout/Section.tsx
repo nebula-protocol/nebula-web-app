@@ -36,7 +36,7 @@ export const Section = styled(SectionBase)`
 
   // small layout
   @media (max-width: ${breakpoints.tablet.max}px) {
-    padding: 2.6rem 2rem;
+    padding: 2.3rem 1.7rem;
 
     h1 {
       font-size: 1.6rem;

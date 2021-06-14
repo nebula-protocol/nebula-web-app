@@ -108,6 +108,8 @@ const Container = styled.div`
     color: ${({ theme }) => theme.colors.white92};
 
     > input {
+      min-width: 0;
+
       flex: 1;
       align-self: stretch;
 

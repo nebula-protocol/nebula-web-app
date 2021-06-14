@@ -59,6 +59,10 @@ function DashboardMainBase({ className }: DashboardMainProps) {
 }
 
 export default styled(DashboardMainBase)`
+  h1 {
+    margin-bottom: 24px;
+  }
+
   --grid-gap: 1.5em;
 
   .masonry-grid {
@@ -84,6 +88,10 @@ export default styled(DashboardMainBase)`
   }
 
   @media (max-width: ${breakpoints.tablet.max}px) {
+    h1 {
+      margin-bottom: 20px;
+    }
+
     --grid-gap: 16px;
   }
 `;

@@ -1,4 +1,4 @@
-import { ArrowSouthIcon, WalletIcon } from '@nebula-js/icons';
+import { PlusIcon, WalletIcon } from '@nebula-js/icons';
 import { NEB, UST } from '@nebula-js/types';
 import {
   breakpoints,
@@ -13,11 +13,11 @@ import { FeeBox } from 'components/boxes/FeeBox';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-export interface ClusterBuyProps {
+export interface StakingStakeProps {
   className?: string;
 }
 
-function ClusterBuyBase({ className }: ClusterBuyProps) {
+function StakingStakeBase({ className }: StakingStakeProps) {
   const [fromAmount, setFromAmount] = useState<UST>('' as UST);
   const [toAmount, setToAmount] = useState<NEB>('' as NEB);
 
@@ -49,7 +49,7 @@ function ClusterBuyBase({ className }: ClusterBuyProps) {
       />
 
       <IconSeparator>
-        <ArrowSouthIcon />
+        <PlusIcon />
       </IconSeparator>
 
       <TokenInput
@@ -72,19 +72,27 @@ function ClusterBuyBase({ className }: ClusterBuyProps) {
 
       <FeeBox className="feebox">
         <li>
+          <span>Price</span>
+          <span>1.555555 UST</span>
+        </li>
+        <li>
+          <span>LP Staked from Tx</span>
+          <span>23.321 LP</span>
+        </li>
+        <li>
           <span>Tx Fee</span>
           <span>0.014072 UST</span>
         </li>
       </FeeBox>
 
       <Button className="submit" color="paleblue" size={buttonSize}>
-        Buy
+        Stake
       </Button>
     </div>
   );
 }
 
-export const ClusterBuy = styled(ClusterBuyBase)`
+export const StakingStake = styled(StakingStakeBase)`
   font-size: 1rem;
 
   .feebox {

@@ -322,7 +322,7 @@ export default styled(ClustersDetailBase)`
     justify-content: space-between;
     align-items: flex-end;
 
-    margin-bottom: 1.5em;
+    margin-bottom: 24px;
   }
 
   .main {
@@ -383,6 +383,8 @@ export default styled(ClustersDetailBase)`
       flex-direction: column;
       gap: 1em;
       align-items: flex-start;
+
+      margin-bottom: 20px;
     }
 
     .provided-tokens,

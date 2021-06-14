@@ -20,5 +20,9 @@ export const FeeBox = styled.ul`
     > :first-child {
       color: ${({ theme }) => theme.colors.white44};
     }
+
+    &:not(:first-child) {
+      margin-top: 0.5em;
+    }
   }
 `;

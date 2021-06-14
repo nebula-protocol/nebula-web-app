@@ -2,20 +2,26 @@ import { breakpoints } from '@nebula-js/ui';
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
-export interface MainLayoutProps {
+export interface FormLayoutProps {
   className?: string;
   containerClassName?: string;
+  title: ReactNode;
   children: ReactNode;
 }
 
-function MainLayoutBase({
+function FormLayoutBase({
   className,
   containerClassName,
+  title,
   children,
-}: MainLayoutProps) {
+}: FormLayoutProps) {
   return (
     <Container className={containerClassName}>
-      <div className={className}>{children}</div>
+      <div>
+        <h1>{title}</h1>
+        <hr />
+        <section className={className}>{children}</section>
+      </div>
     </Container>
   );
 }
@@ -27,14 +33,21 @@ const Container = styled.section`
     max-width: 1080px;
     margin: 0 auto;
 
-    h1 {
+    > h1 {
       font-size: 32px;
       font-weight: 500;
+      margin-bottom: 16px;
     }
 
-    h2 {
-      font-size: 25px;
-      font-weight: 500;
+    > hr {
+      border: 0;
+      border-bottom: 1px solid ${({ theme }) => theme.colors.gray18};
+      margin: 0 0 48px;
+    }
+
+    > section {
+      margin: 0 auto;
+      max-width: 650px;
     }
   }
 
@@ -43,15 +56,17 @@ const Container = styled.section`
     padding: 24px 16px 16px 16px;
 
     > div {
-      h1 {
+      > h1 {
         font-size: 24px;
+        border-bottom: 0;
+        margin-bottom: 20px;
       }
 
-      h2 {
-        font-size: 24px;
+      > hr {
+        display: none;
       }
     }
   }
 `;
 
-export const MainLayout = styled(MainLayoutBase)``;
+export const FormLayout = styled(FormLayoutBase)``;

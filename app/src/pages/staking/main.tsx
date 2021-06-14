@@ -1,4 +1,5 @@
 import {
+  breakpoints,
   Button,
   CoupledIconsHolder,
   HorizontalScrollTable,
@@ -199,5 +200,11 @@ export default styled(StakingMainBase)`
 
   .search {
     margin-bottom: 12px;
+  }
+
+  @media (max-width: ${breakpoints.tablet.max}px) {
+    h1 {
+      margin-bottom: 20px;
+    }
   }
 `;

@@ -74,7 +74,7 @@ export const Tab = styled(TabBase)`
   ${tabStyle};
 
   font-size: 14px;
-  height: 4.2rem;
+  height: 4rem;
 
   > li {
     &:first-child {
