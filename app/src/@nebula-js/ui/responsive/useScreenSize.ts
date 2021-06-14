@@ -3,24 +3,26 @@ import { breakpoints } from '../env';
 
 export type ScreenSize = keyof typeof breakpoints;
 
-export function checkScreenSize(): ScreenSize {
+export function checkScreenSize(): [ScreenSize, number] {
   const width = window.innerWidth;
 
   if (width >= breakpoints.monitor.min) {
-    return 'monitor';
+    return ['monitor', width];
   } else if (width >= breakpoints.pc.min && width <= breakpoints.pc.max) {
-    return 'pc';
+    return ['pc', width];
   } else if (
     width >= breakpoints.tablet.min &&
     width <= breakpoints.tablet.max
   ) {
-    return 'tablet';
+    return ['tablet', width];
   }
-  return 'mobile';
+  return ['mobile', width];
 }
 
-export function useScreenSize() {
-  const [value, setValue] = useState<ScreenSize>(() => checkScreenSize());
+export function useScreenSize(): [ScreenSize, number] {
+  const [[value, width], setValue] = useState<[ScreenSize, number]>(() =>
+    checkScreenSize(),
+  );
 
   useEffect(() => {
     function callback() {
@@ -35,5 +37,5 @@ export function useScreenSize() {
     };
   }, []);
 
-  return value;
+  return [value, width];
 }

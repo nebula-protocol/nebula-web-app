@@ -5,7 +5,8 @@ export function useScreenSizeValue<T>(values: {
   tablet: T;
   pc: T;
   monitor: T;
+  hook?: (width: number) => T | null | undefined;
 }): T {
-  const size = useScreenSize();
-  return values[size];
+  const [size, width] = useScreenSize();
+  return values.hook?.(width) ?? values[size];
 }

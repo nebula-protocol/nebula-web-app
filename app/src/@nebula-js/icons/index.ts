@@ -9,6 +9,7 @@ import { ReactComponent as SearchSvg } from './assets/search.svg';
 import { ReactComponent as TerraSvg } from './assets/terra.svg';
 import { ReactComponent as WalletSvg } from './assets/wallet.svg';
 import { ReactComponent as WalletconnectSvg } from './assets/walletconnect.svg';
+import { ReactComponent as SendSvg } from './assets/send.svg';
 import { createMaterialIcon } from './createMaterialIcon';
 
 export const DocsIcon = createMaterialIcon(DocsSvg);
@@ -22,3 +23,4 @@ export const CloseIcon = createMaterialIcon(CloseSvg);
 export const SearchIcon = createMaterialIcon(SearchSvg);
 export const ArrowSouthIcon = createMaterialIcon(ArrowSouthSvg);
 export const PlusIcon = createMaterialIcon(PlusSvg);
+export const SendIcon = createMaterialIcon(SendSvg);
