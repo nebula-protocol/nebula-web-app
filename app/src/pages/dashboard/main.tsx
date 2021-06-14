@@ -1,4 +1,4 @@
-import { Section } from '@nebula-js/ui';
+import { breakpoints, Section } from '@nebula-js/ui';
 import { MainLayout } from 'components/layouts/MainLayout';
 import React from 'react';
 import Masonry from 'react-masonry-css';
@@ -59,18 +59,20 @@ function DashboardMainBase({ className }: DashboardMainProps) {
 }
 
 export default styled(DashboardMainBase)`
+  --grid-gap: 1.5em;
+
   .masonry-grid {
     display: flex;
     width: auto;
-    margin-left: -20px;
+    margin-left: calc(var(--grid-gap) * -1);
   }
 
   .masonry-column {
-    padding-left: 20px;
+    padding-left: var(--grid-gap);
     background-clip: padding-box;
 
     > * {
-      margin-bottom: 20px;
+      margin-bottom: var(--grid-gap);
     }
   }
 
@@ -79,5 +81,9 @@ export default styled(DashboardMainBase)`
     font-weight: 500;
     color: ${({ theme }) => theme.colors.white92};
     margin-bottom: 0.6em;
+  }
+
+  @media (max-width: ${breakpoints.tablet.max}px) {
+    --grid-gap: 16px;
   }
 `;
