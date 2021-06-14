@@ -1,4 +1,9 @@
-import React, { DetailedHTMLProps, TableHTMLAttributes } from 'react';
+import React, {
+  CSSProperties,
+  DetailedHTMLProps,
+  ReactNode,
+  TableHTMLAttributes,
+} from 'react';
 import styled from 'styled-components';
 import { breakpoints } from '../env';
 
@@ -16,6 +21,12 @@ export interface HorizontalScrollTableProps
   endPadding?: `${number}rem`;
 
   fontSize?: 'normal' | 'small';
+
+  headerContents?: ReactNode;
+
+  footerContents?: ReactNode;
+
+  containerStyle?: CSSProperties;
 }
 
 const _startPadding = '2rem';
@@ -26,13 +37,19 @@ function HorizontalScrollTableBase({
   minWidth,
   startPadding = _startPadding,
   endPadding = _endPadding,
+  fontSize,
+  headerContents,
+  footerContents,
+  containerStyle,
   ...tableProps
 }: HorizontalScrollTableProps) {
   return (
-    <div className={className}>
+    <div className={className} style={containerStyle}>
+      {headerContents}
       <div className="scroll-container">
         <table cellPadding="0" cellSpacing="0" {...tableProps} />
       </div>
+      {footerContents}
     </div>
   );
 }
