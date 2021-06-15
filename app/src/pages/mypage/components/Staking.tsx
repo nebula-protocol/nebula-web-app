@@ -4,12 +4,12 @@ import {
   Descriptions,
   EmptyButton,
   HorizontalScrollTable,
+  Table3SectionHeader,
+  TwoLine,
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import React from 'react';
 import styled from 'styled-components';
-import { TableHeader } from './internal/TableHeader';
-import { TwoLine } from './internal/TwoLine';
 
 export interface StakingProps {
   className?: string;
@@ -52,7 +52,7 @@ function StakingBase({ className }: StakingProps) {
       startPadding={startPadding}
       endPadding={startPadding}
       headerContents={
-        <TableHeader>
+        <Table3SectionHeader>
           <h2>Staking</h2>
           <div className="buttons">
             <EmptyButton>
@@ -68,7 +68,7 @@ function StakingBase({ className }: StakingProps) {
               { label: 'Total Reward Value', text: '2,020.06 UST' },
             ]}
           />
-        </TableHeader>
+        </Table3SectionHeader>
       }
     >
       <thead>

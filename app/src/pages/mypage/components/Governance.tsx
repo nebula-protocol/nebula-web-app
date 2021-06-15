@@ -4,11 +4,11 @@ import {
   Descriptions,
   EmptyButton,
   HorizontalScrollTable,
+  Table3SectionHeader,
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import React from 'react';
 import styled from 'styled-components';
-import { TableHeader } from './internal/TableHeader';
 
 export interface GovernanceProps {
   className?: string;
@@ -51,7 +51,7 @@ function GovernanceBase({ className }: GovernanceProps) {
       startPadding={startPadding}
       endPadding={startPadding}
       headerContents={
-        <TableHeader>
+        <Table3SectionHeader>
           <h2>Governance</h2>
           <div className="buttons">
             <EmptyButton>
@@ -70,7 +70,7 @@ function GovernanceBase({ className }: GovernanceProps) {
               { label: 'Voting Reward', text: '2,020.06 UST' },
             ]}
           />
-        </TableHeader>
+        </Table3SectionHeader>
       }
     >
       <thead>

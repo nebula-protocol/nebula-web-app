@@ -1,7 +1,7 @@
-import { breakpoints } from '@nebula-js/ui';
 import styled from 'styled-components';
+import { breakpoints } from '../env';
 
-export const TableHeader = styled.div`
+export const Table3SectionHeader = styled.div`
   padding: 1rem 2rem;
 
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray11};

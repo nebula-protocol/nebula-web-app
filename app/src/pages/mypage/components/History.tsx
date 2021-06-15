@@ -1,5 +1,5 @@
 import { SendIcon } from '@nebula-js/icons';
-import { breakpoints, EmptyButton } from '@nebula-js/ui';
+import { breakpoints, EmptyButton, TableHeader } from '@nebula-js/ui';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -10,14 +10,14 @@ export interface HistoryProps {
 function HistoryBase({ className }: HistoryProps) {
   return (
     <div className={className}>
-      <header>
+      <TableHeader>
         <h2>History</h2>
         <div className="buttons">
           <EmptyButton>
             <SendIcon style={{ marginRight: '0.5em' }} /> CSV
           </EmptyButton>
         </div>
-      </header>
+      </TableHeader>
       <ul>
         {Array.from({ length: Math.floor(Math.random() * 10) + 4 }, (_, i) => (
           <li key={'history' + i}>
@@ -38,30 +38,7 @@ export const History = styled(HistoryBase)`
   border-radius: 8px;
 
   > header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 1rem 2rem;
-
     border-bottom: 1px solid ${({ theme }) => theme.colors.gray11};
-
-    h2 {
-      font-size: 16px;
-      color: ${({ theme }) => theme.colors.paleblue.main};
-    }
-
-    .buttons {
-      font-size: 12px;
-
-      button {
-        color: ${({ theme }) => theme.colors.paleblue.main};
-
-        &:hover {
-          color: ${({ theme }) => theme.colors.paleblue.light};
-        }
-      }
-    }
   }
 
   > ul {
@@ -99,10 +76,6 @@ export const History = styled(HistoryBase)`
   }
 
   @media (max-width: ${breakpoints.tablet.max}px) {
-    > header {
-      padding: 1rem;
-    }
-
     > ul {
       li {
         padding: 1rem;

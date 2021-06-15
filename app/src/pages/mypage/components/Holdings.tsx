@@ -4,12 +4,12 @@ import {
   Descriptions,
   EmptyButton,
   HorizontalScrollTable,
+  Table3SectionHeader,
+  TwoLine,
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import React from 'react';
 import styled from 'styled-components';
-import { TableHeader } from './internal/TableHeader';
-import { TwoLine } from './internal/TwoLine';
 
 export interface HoldingsProps {
   className?: string;
@@ -51,7 +51,7 @@ function HoldingsBase({ className }: HoldingsProps) {
       startPadding={startPadding}
       endPadding={startPadding}
       headerContents={
-        <TableHeader>
+        <Table3SectionHeader>
           <h2>Holdings</h2>
           <div className="buttons">
             <EmptyButton>
@@ -65,7 +65,7 @@ function HoldingsBase({ className }: HoldingsProps) {
               { label: 'Total Holdings Value', text: '2,020.06 UST' },
             ]}
           />
-        </TableHeader>
+        </Table3SectionHeader>
       }
     >
       <thead>
