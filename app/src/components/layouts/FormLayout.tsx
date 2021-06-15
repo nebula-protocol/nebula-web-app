@@ -1,6 +1,7 @@
 import { breakpoints } from '@nebula-js/ui';
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
+import { Footer } from './Footer';
 
 export interface FormLayoutProps {
   className?: string;
@@ -21,6 +22,7 @@ function FormLayoutBase({
         <h1>{title}</h1>
         <hr />
         <section className={className}>{children}</section>
+        <Footer />
       </div>
     </Container>
   );

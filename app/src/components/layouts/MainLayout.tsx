@@ -1,6 +1,7 @@
 import { breakpoints } from '@nebula-js/ui';
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
+import { Footer } from './Footer';
 
 export interface MainLayoutProps {
   className?: string;
@@ -15,7 +16,10 @@ function MainLayoutBase({
 }: MainLayoutProps) {
   return (
     <Container className={containerClassName}>
-      <div className={className}>{children}</div>
+      <div className={className}>
+        {children}
+        <Footer />
+      </div>
     </Container>
   );
 }
