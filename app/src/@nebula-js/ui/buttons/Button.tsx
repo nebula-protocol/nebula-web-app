@@ -10,15 +10,19 @@ export interface ButtonProps extends Omit<MuiButtonBaseProps, 'ref' | 'color'> {
   size?: 'normal' | 'medium' | 'small' | 'tiny';
   color?: 'paleblue' | 'gray' | 'dark' | 'dim' | 'border' | PaletteColor;
   fullWidth?: boolean;
+  componentProps?: Record<string, any>;
 }
 
 function ButtonBase({
   size = 'normal',
   color,
   fullWidth,
+  componentProps,
   ...buttonProps
 }: ButtonProps) {
-  return <MuiButtonBase {...buttonProps} data-size={size} />;
+  return (
+    <MuiButtonBase {...buttonProps} {...componentProps} data-size={size} />
+  );
 }
 
 const svgStyle = css`

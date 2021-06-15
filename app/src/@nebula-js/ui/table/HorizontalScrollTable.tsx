@@ -20,7 +20,7 @@ export interface HorizontalScrollTableProps
 
   endPadding?: `${number}rem`;
 
-  fontSize?: 'normal' | 'small';
+  fontSize?: 'normal' | 'small' | `${number}rem`;
 
   headerContents?: ReactNode;
 
@@ -56,7 +56,11 @@ function HorizontalScrollTableBase({
 
 export const HorizontalScrollTable = styled(HorizontalScrollTableBase)`
   font-size: ${({ fontSize = 'normal' }) =>
-    fontSize === 'normal' ? '1.15rem' : '1rem'};
+    fontSize === 'normal'
+      ? '1.15rem'
+      : fontSize === 'small'
+      ? '1rem'
+      : fontSize};
 
   > .scroll-container {
     overflow-x: scroll;

@@ -1,34 +1,10 @@
-import {
-  ArcElement,
-  BarController,
-  BarElement,
-  BubbleController,
-  CategoryScale,
-  Chart,
-  DoughnutController,
-  Filler,
-  Legend,
-  LinearScale,
-  LineController,
-  LineElement,
-  LogarithmicScale,
-  PieController,
-  PointElement,
-  PolarAreaController,
-  RadarController,
-  RadialLinearScale,
-  ScatterController,
-  TimeScale,
-  TimeSeriesScale,
-  Title,
-  Tooltip,
-} from 'chart.js';
 import { Header } from 'components/header';
 import { DisableOverflowXStyle } from 'components/styles/DisableOverflowXStyle';
 import { AppProviders } from 'configurations/app';
 import React, { Suspense } from 'react';
 import { render } from 'react-dom';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import './configurations/chartjs';
 import ClustersDetail from './pages/clusters/detail';
 import ClustersMain from './pages/clusters/main';
 import DashboardMain from './pages/dashboard/main';
@@ -41,31 +17,6 @@ import PollMain from './pages/poll/main';
 import StakingMain from './pages/staking/main';
 import StakingStake from './pages/staking/stake';
 import './polyfills/terra.polyfill';
-
-Chart.register(
-  ArcElement,
-  LineElement,
-  BarElement,
-  PointElement,
-  BarController,
-  BubbleController,
-  DoughnutController,
-  LineController,
-  PieController,
-  PolarAreaController,
-  RadarController,
-  ScatterController,
-  CategoryScale,
-  LinearScale,
-  LogarithmicScale,
-  RadialLinearScale,
-  TimeScale,
-  TimeSeriesScale,
-  Filler,
-  Legend,
-  Title,
-  Tooltip,
-);
 
 function App() {
   return (
@@ -82,9 +33,9 @@ function App() {
           <Route path="/staking/:item" component={StakingStake} />
           <Route path="/gov" component={GovMain} />
           <Route path="/gov/stake" component={GovStake} />
-          <Route exact path="/poll" component={PollMain} />
-          <Route path="/poll/create/:type" component={PollCreate} />
-          <Route path="/poll/detail/:poll" component={PollDetail} />
+          <Route exact path="/polls" component={PollMain} />
+          <Route path="/polls/:type" component={PollCreate} />
+          <Route path="/poll/:poll" component={PollDetail} />
           <Redirect to="/" />
         </Switch>
       </Suspense>

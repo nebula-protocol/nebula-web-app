@@ -5,16 +5,19 @@ export interface PartitionBarGraphProps extends SVGProps<SVGSVGElement> {
   data: Array<{ value: number; color: string }>;
   width: number;
   height: number;
+  gap?: number;
 }
 
 function PartitionBarGraphBase({
   data,
   width,
   height,
+  gap = 1,
   ...svgProps
 }: PartitionBarGraphProps) {
   const rects = useMemo(() => {
-    const total = data.reduce((t, { value }) => t + value, 0) - data.length;
+    const total =
+      data.reduce((t, { value }) => t + value, 0) - gap * data.length;
 
     return data.reduce(
       ({ elements, x }, { value, color }, i) => {
@@ -30,11 +33,11 @@ function PartitionBarGraphBase({
             fill={color}
           />,
         );
-        return { elements, x: x + w + 1 };
+        return { elements, x: x + w + gap };
       },
       { elements: [] as ReactElement[], x: 0 },
     ).elements;
-  }, [data, height, width]);
+  }, [data, gap, height, width]);
 
   return (
     <svg {...svgProps} width={width} height={height}>

@@ -5,7 +5,8 @@ import {
   TableHeader,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 export interface PollsTableProps {
@@ -13,6 +14,8 @@ export interface PollsTableProps {
 }
 
 function PollsTableBase({ className }: PollsTableProps) {
+  const history = useHistory();
+
   const tableMinWidth = useScreenSizeValue({
     mobile: 600,
     tablet: 900,
@@ -26,6 +29,13 @@ function PollsTableBase({ className }: PollsTableProps) {
     pc: '2rem',
     monitor: '2rem',
   });
+
+  const gotoPoll = useCallback(
+    (pollId: string) => {
+      history.push(`/poll/${pollId}`);
+    },
+    [history],
+  );
 
   return (
     <HorizontalScrollTable
@@ -62,7 +72,16 @@ function PollsTableBase({ className }: PollsTableProps) {
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr onClick={() => gotoPoll('poll01')}>
+          <td>Whitelist CV</td>
+          <td>Whitelist $NDOG</td>
+          <td>
+            <p>Quorum 7.24% / 10%</p>
+            <p>YES 5.12% NO 2.12%</p>
+          </td>
+          <td>In Progress</td>
+        </tr>
+        <tr onClick={() => gotoPoll('poll02')}>
           <td>Whitelist CV</td>
           <td>Whitelist $NDOG</td>
           <td>
@@ -113,6 +132,14 @@ export const PollsTable = styled(PollsTableBase)`
   }
 
   tbody {
+    tr {
+      cursor: pointer;
+
+      &:hover {
+        background-color: ${({ theme }) => theme.colors.gray22};
+      }
+    }
+
     tr:not(:last-child) {
       td {
         border-bottom: 1px solid ${({ theme }) => theme.colors.gray11};

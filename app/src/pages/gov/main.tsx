@@ -1,6 +1,7 @@
-import { breakpoints } from '@nebula-js/ui';
+import { breakpoints, Button } from '@nebula-js/ui';
 import { MainLayout } from 'components/layouts/MainLayout';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { NEBSection } from './components/NEBSection';
 import { PollsTable } from './components/PollsTable';
@@ -13,7 +14,16 @@ export interface GovMainProps {
 function GovMainBase({ className }: GovMainProps) {
   return (
     <MainLayout className={className}>
-      <h1>Governance</h1>
+      <h1>
+        <span>Governance</span>
+        <Button
+          size="small"
+          color="border"
+          componentProps={{ component: Link, to: '/polls' }}
+        >
+          Create poll
+        </Button>
+      </h1>
       <section>
         <NEBSection />
         <StakingSection />
@@ -24,6 +34,14 @@ function GovMainBase({ className }: GovMainProps) {
 }
 
 export default styled(GovMainBase)`
+  h1 {
+    margin-bottom: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   > :nth-child(2) {
     display: flex;
     gap: 24px;
@@ -42,6 +60,10 @@ export default styled(GovMainBase)`
   }
 
   @media (max-width: ${breakpoints.tablet.max}px) {
+    h1 {
+      margin-bottom: 20px;
+    }
+
     > :nth-child(2) {
       height: auto;
 
