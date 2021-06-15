@@ -26,9 +26,20 @@ import {
 import { Header } from 'components/header';
 import { DisableOverflowXStyle } from 'components/styles/DisableOverflowXStyle';
 import { AppProviders } from 'configurations/app';
-import React, { lazy, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { render } from 'react-dom';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import ClustersDetail from './pages/clusters/detail';
+import ClustersMain from './pages/clusters/main';
+import DashboardMain from './pages/dashboard/main';
+import GovMain from './pages/gov/main';
+import GovStake from './pages/gov/stake';
+import MyPageMain from './pages/mypage/main';
+import PollCreate from './pages/poll/create';
+import PollDetail from './pages/poll/detail';
+import PollMain from './pages/poll/main';
+import StakingMain from './pages/staking/main';
+import StakingStake from './pages/staking/stake';
 import './polyfills/terra.polyfill';
 
 Chart.register(
@@ -55,18 +66,6 @@ Chart.register(
   Title,
   Tooltip,
 );
-
-const ClustersDetail = lazy(() => import('./pages/clusters/detail'));
-const ClustersMain = lazy(() => import('./pages/clusters/main'));
-const DashboardMain = lazy(() => import('./pages/dashboard/main'));
-const GovMain = lazy(() => import('./pages/gov/main'));
-const GovStake = lazy(() => import('./pages/gov/stake'));
-const MyPageMain = lazy(() => import('./pages/mypage/main'));
-const PollCreate = lazy(() => import('./pages/poll/create'));
-const PollDetail = lazy(() => import('./pages/poll/detail'));
-const PollMain = lazy(() => import('./pages/poll/main'));
-const StakingMain = lazy(() => import('./pages/staking/main'));
-const StakingStake = lazy(() => import('./pages/staking/stake'));
 
 function App() {
   return (
