@@ -23,7 +23,10 @@ const loadingStyle = css`
 export const Section = styled(SectionBase)`
   ${({ isLoading = false }) => (isLoading ? loadingStyle : '')};
 
-  padding: 2.85rem 2.3rem;
+  --section-padding-h: 2.3rem;
+  --section-padding-v: 2.85rem;
+
+  padding: var(--section-padding-v) var(--section-padding-h);
 
   border-radius: 8px;
 
@@ -36,7 +39,8 @@ export const Section = styled(SectionBase)`
 
   // small layout
   @media (max-width: ${breakpoints.tablet.max}px) {
-    padding: 2.3rem 1.7rem;
+    --section-padding-h: 1.7rem;
+    --section-padding-v: 2.3rem;
 
     h1 {
       font-size: 1.6rem;

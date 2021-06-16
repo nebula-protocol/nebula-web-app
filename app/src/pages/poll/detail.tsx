@@ -7,18 +7,29 @@ import {
   PartitionBarGraph,
   Section,
   TwoLine,
+  useScreenSizeValue,
 } from '@nebula-js/ui';
 import { MainLayout } from 'components/layouts/MainLayout';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import useResizeObserver from 'use-resize-observer/polyfilled';
+import { VoteForm } from './components/VoteForm';
 
 export interface PollDetailProps {
   className?: string;
 }
 
 function PollDetailBase({ className }: PollDetailProps) {
+  const [startVote, setStartVote] = useState<boolean>(false);
+
   const { ref, width = 300 } = useResizeObserver();
+
+  const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
+    mobile: 'medium',
+    tablet: 'normal',
+    pc: 'normal',
+    monitor: 'normal',
+  });
 
   return (
     <MainLayout className={className}>
@@ -40,9 +51,18 @@ function PollDetailBase({ className }: PollDetailProps) {
             <p>
               <span>Estimated end time</span>Mon, May 30, 12:34 PM
             </p>
-            <Button size="normal" color="paleblue" fullWidth>
-              Vote
-            </Button>
+            {startVote ? (
+              <VoteForm className="form" />
+            ) : (
+              <Button
+                size={buttonSize}
+                color="paleblue"
+                fullWidth
+                onClick={() => setStartVote(true)}
+              >
+                Vote
+              </Button>
+            )}
           </Section>
 
           <Section className="detail">
@@ -187,7 +207,7 @@ const StyledPollDetail = styled(PollDetailBase)`
       .summary {
         margin-bottom: 12px;
 
-        header {
+        > header {
           display: flex;
           justify-content: space-between;
           align-items: flex-start;
@@ -200,26 +220,32 @@ const StyledPollDetail = styled(PollDetailBase)`
           margin-bottom: 16px;
         }
 
-        h2 {
+        > h2 {
           font-size: 24px;
           color: ${({ theme }) => theme.colors.white100};
 
           margin-bottom: 30px;
         }
 
-        p {
+        > p {
           font-size: 14px;
 
           span {
             color: ${({ theme }) => theme.colors.white44};
             margin-right: 8px;
           }
+
+          margin-bottom: 14px;
         }
 
-        button {
+        > button {
           display: block;
           margin: 40px auto 0 auto;
           max-width: 360px;
+        }
+
+        > .form {
+          margin-top: 40px;
         }
       }
     }
@@ -281,6 +307,18 @@ const StyledPollDetail = styled(PollDetailBase)`
   @media (max-width: ${breakpoints.tablet.max}px) {
     h1 {
       margin-bottom: 20px;
+    }
+
+    .layout {
+      .description-column {
+        .summary {
+          > p {
+            span {
+              display: block;
+            }
+          }
+        }
+      }
     }
   }
 `;
