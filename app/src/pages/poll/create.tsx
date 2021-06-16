@@ -9,6 +9,10 @@ function PollCreateBase({ className }: PollCreateProps) {
   return <div className={className}>PollCreate</div>;
 }
 
-export default styled(PollCreateBase)`
+export const StyledPollCreate = styled(PollCreateBase)`
   // TODO
 `;
+
+export default process.env.NODE_ENV === 'production'
+  ? StyledPollCreate
+  : (props: PollCreateProps) => <StyledPollCreate {...props} />;

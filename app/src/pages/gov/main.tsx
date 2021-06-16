@@ -33,7 +33,7 @@ function GovMainBase({ className }: GovMainProps) {
   );
 }
 
-export default styled(GovMainBase)`
+const StyledGovMain = styled(GovMainBase)`
   h1 {
     margin-bottom: 24px;
 
@@ -75,3 +75,7 @@ export default styled(GovMainBase)`
     }
   }
 `;
+
+export default process.env.NODE_ENV === 'production'
+  ? StyledGovMain
+  : (props: GovMainProps) => <StyledGovMain {...props} />;

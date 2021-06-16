@@ -58,8 +58,12 @@ function StakingStakeBase({ className, match, history }: StakingStakeProps) {
   );
 }
 
-export default styled(StakingStakeBase)`
+const StyledStakingStake = styled(StakingStakeBase)`
   .tab {
     margin-bottom: 1.2em;
   }
 `;
+
+export default process.env.NODE_ENV === 'production'
+  ? StyledStakingStake
+  : (props: StakingStakeProps) => <StyledStakingStake {...props} />;

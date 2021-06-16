@@ -6,7 +6,7 @@ import {
   Search,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { useQueryBoundInput } from '@nebula-js/use-query-bound-input';
+import { useQueryBoundInput } from '@terra-dev/use-query-bound-input';
 import { MainLayout } from 'components/layouts/MainLayout';
 import React, { useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -193,7 +193,7 @@ const Table = styled(HorizontalScrollTable)`
   }
 `;
 
-export default styled(StakingMainBase)`
+const StyledStakingMain = styled(StakingMainBase)`
   h1 {
     margin-bottom: 24px;
   }
@@ -208,3 +208,7 @@ export default styled(StakingMainBase)`
     }
   }
 `;
+
+export default process.env.NODE_ENV === 'production'
+  ? StyledStakingMain
+  : (props: StakingMainProps) => <StyledStakingMain {...props} />;

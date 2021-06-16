@@ -9,6 +9,10 @@ function GovStakeBase({ className }: GovStakeProps) {
   return <div className={className}>GovStake</div>;
 }
 
-export default styled(GovStakeBase)`
+export const StyledGovStake = styled(GovStakeBase)`
   // TODO
 `;
+
+export default process.env.NODE_ENV === 'production'
+  ? StyledGovStake
+  : (props: GovStakeProps) => <StyledGovStake {...props} />;

@@ -171,7 +171,7 @@ const Table = styled(HorizontalScrollTable)`
   }
 `;
 
-export default styled(PollDetailBase)`
+const StyledPollDetail = styled(PollDetailBase)`
   h1 {
     margin-bottom: 24px;
   }
@@ -226,3 +226,7 @@ export default styled(PollDetailBase)`
     }
   }
 `;
+
+export default process.env.NODE_ENV === 'production'
+  ? StyledPollDetail
+  : (props: PollDetailProps) => <StyledPollDetail {...props} />;

@@ -58,7 +58,7 @@ function DashboardMainBase({ className }: DashboardMainProps) {
   );
 }
 
-export default styled(DashboardMainBase)`
+const StyledDashboardMain = styled(DashboardMainBase)`
   h1 {
     margin-bottom: 24px;
   }
@@ -95,3 +95,7 @@ export default styled(DashboardMainBase)`
     --grid-gap: 16px;
   }
 `;
+
+export default process.env.NODE_ENV === 'production'
+  ? StyledDashboardMain
+  : (props: DashboardMainProps) => <StyledDashboardMain {...props} />;

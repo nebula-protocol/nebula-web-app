@@ -9,6 +9,10 @@ function SendMainBase({ className }: SendMainProps) {
   return <div className={className}>SendMain</div>;
 }
 
-export default styled(SendMainBase)`
+const StyledSendMain = styled(SendMainBase)`
   // TODO
 `;
+
+export default process.env.NODE_ENV === 'production'
+  ? StyledSendMain
+  : (props: SendMainProps) => <StyledSendMain {...props} />;

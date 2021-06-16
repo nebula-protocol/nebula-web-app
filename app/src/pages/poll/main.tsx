@@ -35,6 +35,10 @@ function PollMainBase({ className }: PollMainProps) {
   );
 }
 
-export default styled(PollMainBase)`
+const StyledPollMain = styled(PollMainBase)`
   // TODO
 `;
+
+export default process.env.NODE_ENV === 'production'
+  ? StyledPollMain
+  : (props: PollMainProps) => <StyledPollMain {...props} />;

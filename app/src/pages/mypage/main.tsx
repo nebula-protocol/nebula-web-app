@@ -50,7 +50,7 @@ function MyPageMainBase({ className }: MyPageMainProps) {
   );
 }
 
-export default styled(MyPageMainBase)`
+const StyledMyPageMain = styled(MyPageMainBase)`
   h1 {
     margin-bottom: 24px;
   }
@@ -73,3 +73,7 @@ export default styled(MyPageMainBase)`
     }
   }
 `;
+
+export default process.env.NODE_ENV === 'production'
+  ? StyledMyPageMain
+  : (props: MyPageMainProps) => <StyledMyPageMain {...props} />;

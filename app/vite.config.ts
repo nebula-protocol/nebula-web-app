@@ -10,7 +10,7 @@ export default defineConfig({
     alias: {
       '@terra-money/terra.js': path.resolve(__dirname, 'src/polyfills/terra.alias.js'),
       'bowser': 'bowser/bundled.js',
-      'styled-components': 'styled-components/dist/styled-components.cjs.js',
+      'styled-components': 'styled-components/dist/styled-components.browser.esm.js',
     },
   },
   server: {

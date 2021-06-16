@@ -13,7 +13,6 @@ import {
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { MainLayout } from 'components/layouts/MainLayout';
-import { PriceChart } from 'pages/clusters/components/PriceChart';
 import React, { useCallback, useMemo, useState } from 'react';
 import {
   Redirect,
@@ -26,6 +25,7 @@ import styled, { useTheme } from 'styled-components';
 import { ClusterBurn } from './components/Burn';
 import { ClusterBuy } from './components/Buy';
 import { ClusterMint } from './components/Mint';
+import { PriceChart } from './components/PriceChart';
 import { ClusterSell } from './components/Sell';
 
 export interface ClustersDetailProps
@@ -316,7 +316,7 @@ const Table = styled(HorizontalScrollTable)`
   }
 `;
 
-export default styled(ClustersDetailBase)`
+const StyledClustersDetail = styled(ClustersDetailBase)`
   .header {
     display: flex;
     justify-content: space-between;
@@ -413,3 +413,7 @@ export default styled(ClustersDetailBase)`
     }
   }
 `;
+
+export default process.env.NODE_ENV === 'production'
+  ? StyledClustersDetail
+  : (props: ClustersDetailProps) => <StyledClustersDetail {...props} />;
