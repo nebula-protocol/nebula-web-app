@@ -40,7 +40,7 @@ function PollDetailBase({ className }: PollDetailProps) {
             <p>
               <span>Estimated end time</span>Mon, May 30, 12:34 PM
             </p>
-            <Button size="normal" color="paleblue">
+            <Button size="normal" color="paleblue" fullWidth>
               Vote
             </Button>
           </Section>
@@ -186,6 +186,63 @@ const StyledPollDetail = styled(PollDetailBase)`
 
       .summary {
         margin-bottom: 12px;
+
+        header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+
+          font-size: 14px;
+          height: 45px;
+
+          border-bottom: 1px solid ${({ theme }) => theme.colors.gray24};
+
+          margin-bottom: 16px;
+        }
+
+        h2 {
+          font-size: 24px;
+          color: ${({ theme }) => theme.colors.white100};
+
+          margin-bottom: 30px;
+        }
+
+        p {
+          font-size: 14px;
+
+          span {
+            color: ${({ theme }) => theme.colors.white44};
+            margin-right: 8px;
+          }
+        }
+
+        button {
+          display: block;
+          margin: 40px auto 0 auto;
+          max-width: 360px;
+        }
+      }
+    }
+
+    .detail {
+      > div {
+        font-size: 14px;
+
+        h4 {
+          color: ${({ theme }) => theme.colors.white44};
+          font-weight: 500;
+
+          margin-bottom: 4px;
+        }
+
+        p {
+          line-height: 21px;
+          color: ${({ theme }) => theme.colors.white100};
+        }
+
+        &:not(:last-child) {
+          margin-bottom: 28px;
+        }
       }
     }
 
@@ -216,6 +273,7 @@ const StyledPollDetail = styled(PollDetailBase)`
 
       .voters {
         min-width: unset;
+        max-width: unset;
       }
     }
   }
