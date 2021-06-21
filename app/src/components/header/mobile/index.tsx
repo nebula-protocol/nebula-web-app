@@ -1,6 +1,6 @@
 import { CloseIcon, MenuIcon, WalletIcon } from '@nebula-js/icons';
 import { buttonColorStyle, EmptyButton } from '@nebula-js/ui';
-import { isMathWallet } from '@terra-dev/mathwallet';
+import { isMathWallet } from '@terra-dev/browser-check';
 import {
   ConnectType,
   useWallet,

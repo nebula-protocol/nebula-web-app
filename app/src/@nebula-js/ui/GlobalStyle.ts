@@ -65,6 +65,11 @@ export const globalStyle = css`
   }
 `;
 
+export const globalVariables = css`
+  :root {
+  }
+`;
+
 export const GlobalStyle = createGlobalStyle`
   ${globalStyle}
 `;
