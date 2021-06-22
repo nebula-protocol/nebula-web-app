@@ -8,9 +8,9 @@ import styled from 'styled-components';
 import { breakpoints } from '../env';
 
 export interface HorizontalScrollTableProps
-  extends DetailedHTMLProps<
-    TableHTMLAttributes<HTMLTableElement>,
-    HTMLTableElement
+  extends Omit<
+    DetailedHTMLProps<TableHTMLAttributes<HTMLTableElement>, HTMLTableElement>,
+    'ref'
   > {
   className?: string;
 
@@ -54,10 +54,10 @@ function HorizontalScrollTableBase({
   );
 }
 
-export const HorizontalScrollTable = styled(HorizontalScrollTableBase)`
+const StyledHorizontalScrollTable = styled(HorizontalScrollTableBase)`
   font-size: ${({ fontSize = 'normal' }) =>
     fontSize === 'normal'
-      ? '1.15rem'
+      ? '1.14285714rem'
       : fontSize === 'small'
       ? '1rem'
       : fontSize};
@@ -78,7 +78,7 @@ export const HorizontalScrollTable = styled(HorizontalScrollTableBase)`
       thead {
         th,
         td {
-          font-size: 1em;
+          //font-size: 1em;
 
           span {
             font-size: 12px;
@@ -103,7 +103,7 @@ export const HorizontalScrollTable = styled(HorizontalScrollTableBase)`
       tfoot {
         th,
         td {
-          font-size: 1em;
+          //font-size: 1em;
 
           font-weight: 300;
 
@@ -140,7 +140,12 @@ export const HorizontalScrollTable = styled(HorizontalScrollTableBase)`
 
   // mobile
   @media (max-width: ${breakpoints.mobile.max}px) {
-    font-size: 0.85rem;
+    font-size: ${({ fontSize = 'normal' }) =>
+      fontSize === 'normal'
+        ? '1.16666667rem'
+        : fontSize === 'small'
+        ? '1rem'
+        : fontSize};
 
     > .scroll-container {
       > table {
@@ -155,3 +160,10 @@ export const HorizontalScrollTable = styled(HorizontalScrollTableBase)`
     }
   }
 `;
+
+export const HorizontalScrollTable =
+  process.env.NODE_ENV === 'production'
+    ? StyledHorizontalScrollTable
+    : (props: HorizontalScrollTableProps) => (
+        <StyledHorizontalScrollTable {...props} />
+      );

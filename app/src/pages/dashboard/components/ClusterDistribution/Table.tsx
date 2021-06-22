@@ -27,6 +27,8 @@ function TableBase({ className, data }: TableProps) {
 export const Table = styled(TableBase)`
   table-layout: auto;
   width: 100%;
+  
+  font-size: var(--font-size14-12);
 
   tr {
     th,
@@ -51,7 +53,7 @@ export const Table = styled(TableBase)`
     }
 
     > :nth-child(3) {
-      font-size: 0.9em;
+      font-size: font-size: var(--font-size12);
       text-align: right;
       padding-left: 2em;
     }

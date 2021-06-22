@@ -95,7 +95,7 @@ function PollsTableBase({ className }: PollsTableProps) {
   );
 }
 
-export const PollsTable = styled(PollsTableBase)`
+const StyledPollsTable = styled(PollsTableBase)`
   background-color: ${({ theme }) => theme.colors.gray14};
   border-radius: 8px;
 
@@ -110,7 +110,6 @@ export const PollsTable = styled(PollsTableBase)`
 
   td {
     &:nth-child(2) {
-      font-size: 1.2em;
       font-weight: 500 !important;
       color: ${({ theme }) => theme.colors.white92};
     }
@@ -147,3 +146,8 @@ export const PollsTable = styled(PollsTableBase)`
     }
   }
 `;
+
+export const PollsTable =
+  process.env.NODE_ENV === 'production'
+    ? StyledPollsTable
+    : (props: PollsTableProps) => <StyledPollsTable {...props} />;

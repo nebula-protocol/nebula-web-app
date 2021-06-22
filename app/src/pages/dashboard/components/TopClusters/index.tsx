@@ -68,7 +68,7 @@ function TopClustersBase({ className }: TopClustersProps) {
       <Carousel slide={slide}>
         {tabItems.map((_, i) => (
           <Content key={'cluster' + i}>
-            <section>
+            <section className="summary">
               <i />
               <div>
                 <h4>
@@ -83,17 +83,17 @@ function TopClustersBase({ className }: TopClustersProps) {
               </div>
             </section>
 
-            <section>
+            <section className="provided-asset">
               <h4>PROVIDED ASSET</h4>
               <p>1,000 UST</p>
             </section>
 
-            <section>
+            <section className="supply">
               <h4>SUPPLY</h4>
               <p>100,000.123 NIAB</p>
             </section>
 
-            <section>
+            <section className="graph">
               <div>
                 {labels}
                 <div>
@@ -122,7 +122,7 @@ function TopClustersBase({ className }: TopClustersProps) {
 }
 
 const Content = styled.div`
-  > :nth-child(1) {
+  > .summary {
     display: flex;
     align-items: center;
 
@@ -135,7 +135,7 @@ const Content = styled.div`
     }
 
     h4 {
-      font-size: 1.4em;
+      font-size: var(--font-size20);
 
       svg {
         font-size: 0.8em;
@@ -147,18 +147,18 @@ const Content = styled.div`
     }
 
     p:nth-child(3) {
-      font-size: 12px;
+      font-size: var(--font-size12);
     }
 
     margin-bottom: 4em;
   }
 
-  > :nth-child(2),
-  > :nth-child(3) {
-    font-size: 1em;
+  > .provided-asset,
+  > .supply {
+    font-size: var(--font-size14-12);
 
     h4 {
-      font-size: 1em;
+      font-size: var(--font-size12);
       font-weight: 500;
       color: ${({ theme }) => theme.colors.white44};
     }
@@ -166,12 +166,16 @@ const Content = styled.div`
     margin-bottom: 1.5em;
   }
 
-  > :nth-child(4) {
+  > .graph {
     margin-top: 3em;
 
     > :first-child {
       display: flex;
       gap: 1.5em;
+
+      span:first-child {
+        margin-right: 0.4em;
+      }
 
       margin-bottom: 0.5em;
     }

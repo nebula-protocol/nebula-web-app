@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
 export const Sub = styled.sub`
-  font-size: 12px;
+  font-size: var(--font-size12);
   vertical-align: unset;
 `;

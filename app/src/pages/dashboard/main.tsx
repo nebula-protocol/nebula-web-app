@@ -63,7 +63,7 @@ const StyledDashboardMain = styled(DashboardMainBase)`
     margin-bottom: 24px;
   }
 
-  --grid-gap: 1.5em;
+  --grid-gap: 20px;
 
   .masonry-grid {
     display: flex;
@@ -81,10 +81,10 @@ const StyledDashboardMain = styled(DashboardMainBase)`
   }
 
   h3 {
-    font-size: 1.15em;
+    font-size: var(--font-size16-14);
     font-weight: 500;
     color: ${({ theme }) => theme.colors.white92};
-    margin-bottom: 0.6em;
+    margin-bottom: 8px;
   }
 
   @media (max-width: ${breakpoints.tablet.max}px) {

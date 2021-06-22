@@ -4,10 +4,9 @@
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
-    "dev": "multiplerun dev",
     "app:dev": "vite",
     "app:dev:browser": "HTTPS=true PORT=3000 TS_NODE_PROJECT=tsconfig.script.json node -r ts-node/register -r tsconfig-paths/register scripts/start.ts",
-    "start": "yarn run app:dev",
+    "start": "multiplerun dev",
     "build": "tsc --noEmit && vite build",
     "pack": "rocket-punch build",
     "publish": "rocket-punch publish",

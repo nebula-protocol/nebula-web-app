@@ -1,5 +1,5 @@
 import { JSDateTime, uUST } from '@nebula-js/types';
-import { DiffSpan } from '@nebula-js/ui';
+import { DiffSpan, Sub } from '@nebula-js/ui';
 import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import { AreaChart } from './AreaChart';
@@ -25,7 +25,7 @@ function TotalProvidedBase({ className }: TotalProvidedProps) {
   return (
     <div className={className}>
       <p>
-        270.4B <span>UST</span>
+        270.4B <Sub>UST</Sub>
       </p>
       <p>
         <DiffSpan diff={123.12} translateIconY="0.15em">
@@ -40,15 +40,11 @@ function TotalProvidedBase({ className }: TotalProvidedProps) {
 
 export const TotalProvided = styled(TotalProvidedBase)`
   > :nth-child(1) {
-    font-size: 2.2em;
-
-    span {
-      font-size: 12px;
-    }
+    font-size: var(--font-size32);
   }
 
   > :nth-child(2) {
-    font-size: 12px;
+    font-size: var(--font-size12);
 
     margin-bottom: 1rem;
   }

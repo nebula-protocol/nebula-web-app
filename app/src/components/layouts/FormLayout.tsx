@@ -36,7 +36,7 @@ const Container = styled.section`
     margin: 0 auto;
 
     > h1 {
-      font-size: 32px;
+      font-size: var(--font-size32);
       font-weight: 500;
       margin-bottom: 16px;
     }
@@ -59,7 +59,6 @@ const Container = styled.section`
 
     > div {
       > h1 {
-        font-size: 24px;
         border-bottom: 0;
         margin-bottom: 20px;
       }

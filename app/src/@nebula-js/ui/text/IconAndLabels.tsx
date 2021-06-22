@@ -71,7 +71,7 @@ export const IconAndLabels = styled(IconAndLabelsBase)`
 
     > :last-child {
       display: block;
-      font-size: ${({ subtextSize = _subtextSize }) => subtextSize};
+      font-size: max(${({ subtextSize = _subtextSize }) => subtextSize}, 12px);
       font-weight: 500;
       color: ${({ theme }) => theme.colors.white44};
     }

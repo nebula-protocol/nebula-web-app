@@ -32,12 +32,7 @@ const Container = styled.section`
     margin: 0 auto;
 
     h1 {
-      font-size: 32px;
-      font-weight: 500;
-    }
-
-    h2 {
-      font-size: 25px;
+      font-size: var(--font-size32);
       font-weight: 500;
     }
   }
@@ -45,16 +40,6 @@ const Container = styled.section`
   // small layout
   @media (max-width: ${breakpoints.tablet.max}px) {
     padding: 24px 16px 16px 16px;
-
-    > div {
-      h1 {
-        font-size: 24px;
-      }
-
-      h2 {
-        font-size: 24px;
-      }
-    }
   }
 `;
 

@@ -1,3 +1,4 @@
+import { Sub } from '@nebula-js/ui';
 import styled from 'styled-components';
 import React from 'react';
 
@@ -9,7 +10,7 @@ function ClusterTokenMarketCapBase({ className }: ClusterTokenMarketCapProps) {
   return (
     <div className={className}>
       <p>
-        400.7M <span>UST</span>
+        400.7M <Sub>UST</Sub>
       </p>
     </div>
   );
@@ -17,10 +18,6 @@ function ClusterTokenMarketCapBase({ className }: ClusterTokenMarketCapProps) {
 
 export const ClusterTokenMarketCap = styled(ClusterTokenMarketCapBase)`
   p {
-    font-size: 2.2em;
-
-    span {
-      font-size: 12px;
-    }
+    font-size: var(--font-size32);
   }
 `;

@@ -7,6 +7,7 @@ import {
   HorizontalScrollTable,
   IconAndLabels,
   Section,
+  Sub,
   Tab,
   TabItem,
   TabSection,
@@ -183,7 +184,7 @@ function ClustersDetailBase({
           />
         </header>
 
-        <Table minWidth={tableMinWidth} fontSize="small">
+        <Table minWidth={tableMinWidth}>
           <thead>
             <tr>
               <th>
@@ -220,13 +221,13 @@ function ClustersDetailBase({
                   <td>
                     <IconAndLabels text={name} subtext={description} />
                   </td>
-                  <td>
+                  <td className="price">
                     {price} UST
                     <br />
                     <DiffSpan diff={hr24diff}>{hr24}%</DiffSpan>
                   </td>
                   <td>
-                    {current}% <span>({target}%)</span>
+                    {current}% <Sub>({target}%)</Sub>
                   </td>
                   <td className="graph">
                     <BarGraph ratio={Math.random()} width={300} height={8} />
@@ -294,9 +295,19 @@ const Table = styled(HorizontalScrollTable)`
     }
   }
 
+  td.price {
+    span {
+      font-size: var(--font-size12);
+    }
+  }
+
   td.graph {
     text-align: left;
     padding-left: 4em !important;
+
+    > div {
+      font-size: var(--font-size12);
+    }
   }
 
   thead {

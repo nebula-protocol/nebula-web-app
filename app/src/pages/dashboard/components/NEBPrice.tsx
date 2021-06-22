@@ -1,4 +1,4 @@
-import { DiffSpan } from '@nebula-js/ui';
+import { DiffSpan, Sub } from '@nebula-js/ui';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -10,7 +10,7 @@ function NEBPriceBase({ className }: NEBPriceProps) {
   return (
     <div className={className}>
       <p>
-        12.595 <span>UST</span>
+        12.595 <Sub>UST</Sub>
       </p>
       <p>
         <DiffSpan diff={123.12} translateIconY="0.15em">
@@ -28,24 +28,20 @@ function NEBPriceBase({ className }: NEBPriceProps) {
 
 export const NEBPrice = styled(NEBPriceBase)`
   > :nth-child(1) {
-    font-size: 2.2em;
-
-    span {
-      font-size: 12px;
-    }
+    font-size: var(--font-size32);
   }
 
   > :nth-child(2) {
-    font-size: 12px;
+    font-size: var(--font-size12);
   }
 
   > :nth-child(3) {
     margin-top: 3.3em;
 
-    font-size: 12px;
+    font-size: var(--font-size12);
 
     h4 {
-      font-size: 1em;
+      font-size: var(--font-size12);
       font-weight: 500;
       color: ${({ theme }) => theme.colors.white44};
     }
