@@ -1,3 +1,4 @@
+import { fixHMR } from 'fix-hmr';
 import styled from 'styled-components';
 import React from 'react';
 
@@ -13,6 +14,4 @@ const StyledSendMain = styled(SendMainBase)`
   // TODO
 `;
 
-export default process.env.NODE_ENV === 'production'
-  ? StyledSendMain
-  : (props: SendMainProps) => <StyledSendMain {...props} />;
+export default fixHMR(StyledSendMain);

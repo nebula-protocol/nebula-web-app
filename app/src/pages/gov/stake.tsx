@@ -1,3 +1,4 @@
+import { fixHMR } from 'fix-hmr';
 import styled from 'styled-components';
 import React from 'react';
 
@@ -13,6 +14,4 @@ export const StyledGovStake = styled(GovStakeBase)`
   // TODO
 `;
 
-export default process.env.NODE_ENV === 'production'
-  ? StyledGovStake
-  : (props: GovStakeProps) => <StyledGovStake {...props} />;
+export default fixHMR(StyledGovStake);

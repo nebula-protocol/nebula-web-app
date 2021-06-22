@@ -8,6 +8,7 @@ import {
   TokenSpan,
   useScreenSizeValue,
 } from '@nebula-js/ui';
+import { fixHMR } from 'fix-hmr';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -115,7 +116,4 @@ export const StyledVoteForm = styled(VoteFormBase)`
   }
 `;
 
-export const VoteForm =
-  process.env.NODE_ENV === 'production'
-    ? StyledVoteForm
-    : (props: VoteFormProps) => <StyledVoteForm {...props} />;
+export const VoteForm = fixHMR(StyledVoteForm);

@@ -1,5 +1,6 @@
 import { breakpoints, Section } from '@nebula-js/ui';
 import { MainLayout } from 'components/layouts/MainLayout';
+import { fixHMR } from 'fix-hmr';
 import React from 'react';
 import Masonry from 'react-masonry-css';
 import styled from 'styled-components';
@@ -96,6 +97,4 @@ const StyledDashboardMain = styled(DashboardMainBase)`
   }
 `;
 
-export default process.env.NODE_ENV === 'production'
-  ? StyledDashboardMain
-  : (props: DashboardMainProps) => <StyledDashboardMain {...props} />;
+export default fixHMR(StyledDashboardMain);

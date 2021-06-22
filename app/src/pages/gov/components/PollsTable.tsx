@@ -5,6 +5,7 @@ import {
   TableHeader,
   useScreenSizeValue,
 } from '@nebula-js/ui';
+import { fixHMR } from 'fix-hmr';
 import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -147,7 +148,4 @@ const StyledPollsTable = styled(PollsTableBase)`
   }
 `;
 
-export const PollsTable =
-  process.env.NODE_ENV === 'production'
-    ? StyledPollsTable
-    : (props: PollsTableProps) => <StyledPollsTable {...props} />;
+export const PollsTable = fixHMR(StyledPollsTable);

@@ -6,6 +6,7 @@ import {
   Search,
   useScreenSizeValue,
 } from '@nebula-js/ui';
+import { fixHMR } from 'fix-hmr';
 import { useQueryBoundInput } from '@terra-dev/use-query-bound-input';
 import { MainLayout } from 'components/layouts/MainLayout';
 import React, { useCallback, useMemo } from 'react';
@@ -194,6 +195,4 @@ const StyledClustersMain = styled(ClustersMainBase)`
   }
 `;
 
-export default process.env.NODE_ENV === 'production'
-  ? StyledClustersMain
-  : (props: ClustersMainProps) => <StyledClustersMain {...props} />;
+export default fixHMR(StyledClustersMain);

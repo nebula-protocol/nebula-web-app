@@ -1,5 +1,6 @@
 import { Section, Tab, TabItem } from '@nebula-js/ui';
 import { FormLayout } from 'components/layouts/FormLayout';
+import { fixHMR } from 'fix-hmr';
 import React, { useCallback, useMemo } from 'react';
 import {
   Redirect,
@@ -64,6 +65,4 @@ const StyledStakingStake = styled(StakingStakeBase)`
   }
 `;
 
-export default process.env.NODE_ENV === 'production'
-  ? StyledStakingStake
-  : (props: StakingStakeProps) => <StyledStakingStake {...props} />;
+export default fixHMR(StyledStakingStake);

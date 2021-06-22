@@ -1,3 +1,4 @@
+import { fixHMR } from 'fix-hmr';
 import React, {
   CSSProperties,
   DetailedHTMLProps,
@@ -161,9 +162,4 @@ const StyledHorizontalScrollTable = styled(HorizontalScrollTableBase)`
   }
 `;
 
-export const HorizontalScrollTable =
-  process.env.NODE_ENV === 'production'
-    ? StyledHorizontalScrollTable
-    : (props: HorizontalScrollTableProps) => (
-        <StyledHorizontalScrollTable {...props} />
-      );
+export const HorizontalScrollTable = fixHMR(StyledHorizontalScrollTable);

@@ -1,5 +1,6 @@
 import { breakpoints, Button } from '@nebula-js/ui';
 import { MainLayout } from 'components/layouts/MainLayout';
+import { fixHMR } from 'fix-hmr';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -76,6 +77,4 @@ const StyledGovMain = styled(GovMainBase)`
   }
 `;
 
-export default process.env.NODE_ENV === 'production'
-  ? StyledGovMain
-  : (props: GovMainProps) => <StyledGovMain {...props} />;
+export default fixHMR(StyledGovMain);

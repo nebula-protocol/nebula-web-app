@@ -14,6 +14,7 @@ import {
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { MainLayout } from 'components/layouts/MainLayout';
+import { fixHMR } from 'fix-hmr';
 import React, { useCallback, useMemo, useState } from 'react';
 import {
   Redirect,
@@ -425,6 +426,4 @@ const StyledClustersDetail = styled(ClustersDetailBase)`
   }
 `;
 
-export default process.env.NODE_ENV === 'production'
-  ? StyledClustersDetail
-  : (props: ClustersDetailProps) => <StyledClustersDetail {...props} />;
+export default fixHMR(StyledClustersDetail);

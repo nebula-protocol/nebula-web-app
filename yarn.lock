@@ -2651,6 +2651,7 @@ __metadata:
     d3-ease: ^3.0.1
     d3-timer: ^3.0.1
     date-fns: ^2.22.1
+    fix-hmr: ^1.0.1
     graphql: ^15.5.1
     jest: ^26.6.3
     multiplerun: ^2.0.1
@@ -11129,6 +11130,15 @@ __metadata:
     locate-path: ^6.0.0
     path-exists: ^4.0.0
   checksum: 07955e357348f34660bde7920783204ff5a26ac2cafcaa28bace494027158a97b9f56faaf2d89a6106211a8174db650dd9f503f9c0d526b1202d5554a00b9095
+  languageName: node
+  linkType: hard
+
+"fix-hmr@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "fix-hmr@npm:1.0.1"
+  dependencies:
+    react: ^17.0.2
+  checksum: 17c2e9c14755170f2eed7ec38a8fd64eb8964e600a63024c28573cc5c9c2d8e6487f58e398df0b354401c6e3904492d04dacd50606bdf088aa4ed3dd6e7ac5a2
   languageName: node
   linkType: hard
 

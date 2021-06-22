@@ -1,5 +1,6 @@
 import { Section } from '@nebula-js/ui';
 import { FormLayout } from 'components/layouts/FormLayout';
+import { fixHMR } from 'fix-hmr';
 import styled from 'styled-components';
 import React from 'react';
 
@@ -39,6 +40,4 @@ const StyledPollMain = styled(PollMainBase)`
   // TODO
 `;
 
-export default process.env.NODE_ENV === 'production'
-  ? StyledPollMain
-  : (props: PollMainProps) => <StyledPollMain {...props} />;
+export default fixHMR(StyledPollMain);

@@ -10,6 +10,7 @@ import {
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { MainLayout } from 'components/layouts/MainLayout';
+import { fixHMR } from 'fix-hmr';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import useResizeObserver from 'use-resize-observer/polyfilled';
@@ -323,6 +324,4 @@ const StyledPollDetail = styled(PollDetailBase)`
   }
 `;
 
-export default process.env.NODE_ENV === 'production'
-  ? StyledPollDetail
-  : (props: PollDetailProps) => <StyledPollDetail {...props} />;
+export default fixHMR(StyledPollDetail);

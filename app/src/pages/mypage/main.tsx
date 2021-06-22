@@ -1,5 +1,6 @@
 import { breakpoints, Tab, TabItem, useScreenSizeValue } from '@nebula-js/ui';
 import { MainLayout } from 'components/layouts/MainLayout';
+import { fixHMR } from 'fix-hmr';
 import { Governance } from 'pages/mypage/components/Governance';
 import { History } from 'pages/mypage/components/History';
 import { Holdings } from 'pages/mypage/components/Holdings';
@@ -74,6 +75,4 @@ const StyledMyPageMain = styled(MyPageMainBase)`
   }
 `;
 
-export default process.env.NODE_ENV === 'production'
-  ? StyledMyPageMain
-  : (props: MyPageMainProps) => <StyledMyPageMain {...props} />;
+export default fixHMR(StyledMyPageMain);

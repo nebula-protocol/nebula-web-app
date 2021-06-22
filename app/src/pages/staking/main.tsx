@@ -8,6 +8,7 @@ import {
 } from '@nebula-js/ui';
 import { useQueryBoundInput } from '@terra-dev/use-query-bound-input';
 import { MainLayout } from 'components/layouts/MainLayout';
+import { fixHMR } from 'fix-hmr';
 import React, { useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -209,6 +210,4 @@ const StyledStakingMain = styled(StakingMainBase)`
   }
 `;
 
-export default process.env.NODE_ENV === 'production'
-  ? StyledStakingMain
-  : (props: StakingMainProps) => <StyledStakingMain {...props} />;
+export default fixHMR(StyledStakingMain);

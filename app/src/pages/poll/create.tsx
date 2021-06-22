@@ -1,5 +1,6 @@
-import styled from 'styled-components';
+import { fixHMR } from 'fix-hmr';
 import React from 'react';
+import styled from 'styled-components';
 
 export interface PollCreateProps {
   className?: string;
@@ -13,6 +14,4 @@ export const StyledPollCreate = styled(PollCreateBase)`
   // TODO
 `;
 
-export default process.env.NODE_ENV === 'production'
-  ? StyledPollCreate
-  : (props: PollCreateProps) => <StyledPollCreate {...props} />;
+export default fixHMR(StyledPollCreate);
