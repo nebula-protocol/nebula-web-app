@@ -24,9 +24,9 @@ export const globalStyle = css`
   ${({ theme }) => bodyStyleIfThemeExists(theme)};
 
   html {
-    font-family: Gotham, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-      sans-serif;
+    font-family: 'Gotham SSm A', 'Gotham SSm B', BlinkMacSystemFont, 'Segoe UI',
+      'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+      'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     word-spacing: 1px;
@@ -40,9 +40,9 @@ export const globalStyle = css`
   *::after {
     box-sizing: border-box;
     margin: 0;
-    font-family: Gotham, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-      sans-serif;
+    font-family: 'Gotham SSm A', 'Gotham SSm B', BlinkMacSystemFont, 'Segoe UI',
+      'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+      'Helvetica Neue', sans-serif;
   }
 
   ::-webkit-scrollbar {
