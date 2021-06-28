@@ -2624,6 +2624,7 @@ __metadata:
     date-fns: ^2.22.1
     fix-hmr: ^1.0.2
     graphql: ^15.5.1
+    lint-staged: ^11.0.0
     multiplerun: ^2.0.1
     numeral: ^2.0.6
     puppeteer: ^10.0.0
