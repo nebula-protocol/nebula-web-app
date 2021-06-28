@@ -1,7 +1,4 @@
-const {getWebpackAlias} = require('@rocket-scripts/utils');
 const path = require('path');
-
-const alias = getWebpackAlias(path.resolve(__dirname, '..'));
 
 module.exports = {
   stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
