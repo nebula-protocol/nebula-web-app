@@ -1,4 +1,5 @@
-import { JSDateTime, uUST } from '@nebula-js/types';
+import { formatRate } from '@nebula-js/notation';
+import { JSDateTime, Rate, uUST } from '@nebula-js/types';
 import {
   BarGraph,
   breakpoints,
@@ -6,6 +7,9 @@ import {
   DiffSpan,
   HorizontalScrollTable,
   IconAndLabels,
+  PartitionBarGraph,
+  PartitionLabel,
+  PartitionLabels,
   Section,
   Sub,
   Tab,
@@ -24,6 +28,7 @@ import {
   useRouteMatch,
 } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
+import useResizeObserver from 'use-resize-observer/polyfilled';
 import { ClusterBurn } from './components/Burn';
 import { ClusterBuy } from './components/Buy';
 import { ClusterMint } from './components/Mint';
@@ -49,7 +54,26 @@ const chartTabItems: TabItem[] = [
   { id: 'year', label: 'Y' },
 ];
 
-const data = Array.from(
+const colors = [
+  '#23bed9',
+  '#64a0bc',
+  '#918ba8',
+  '#ab7f9d',
+  '#c37493',
+  '#dc6887',
+  '#f15e7e',
+];
+
+const partitionData = Array.from(
+  { length: Math.floor(Math.random() * 4) + 4 },
+  (_, i) => ({
+    label: `ITEM${i}`,
+    value: Math.floor(Math.random() * 1000) + 300,
+    color: colors[i % colors.length],
+  }),
+);
+
+const tableData = Array.from(
   { length: Math.floor(Math.random() * 10) + 5 },
   (_, i) => {
     return {
@@ -98,6 +122,20 @@ function ClustersDetailBase({
     [history, match.url],
   );
 
+  const partitionLabels = useMemo<PartitionLabel[]>(() => {
+    const total =
+      partitionData.reduce((t, { value }) => t + value, 0) -
+      partitionData.length;
+
+    return partitionData.map(({ label, value, color }) => ({
+      label,
+      value: formatRate((value / total) as Rate<number>) + '%',
+      color,
+    }));
+  }, []);
+
+  const { width = 300, ref } = useResizeObserver();
+
   const theme = useTheme();
 
   const descriptionDisplay = useScreenSizeValue<'horizontal' | 'vertical'>({
@@ -144,15 +182,51 @@ function ClustersDetailBase({
         />
       </header>
 
+      <section className="about">
+        <Section>
+          <article>
+            <p>
+              <b>The New is always better</b> index is a digital asset index
+              designed to track the performance of 5 large cap US technology
+              companies. The intent is to provide DeFi users with on-chain
+              exposure to a basket of US large cap technology equities, as well
+              as to showcase the composable nature of Mirror Protocol’s assets
+              as building blocks for novel products.
+            </p>
+            <p>
+              Mirror Protocol is a DeFi protocol powered by smart contracts on
+              the Terra network that enables the creation of synthetic assets
+              called mirrored assets (mAssets). mAssets mimic the price behavior
+              of real-world assets and give traders anywhere in the world open
+              access to price exposure without the burdens of owning or
+              transacting real assets.
+            </p>
+            <p>
+              Mirror democratizes access to the wealth creation of world markets
+              that many financially disenfranchised users worldwide are
+              precluded from -- unlocking the vast potential of dead capital.
+              Mirror is entirely community-governed and relies on a siloed,
+              CDP-style model for minting mAssets that trade on DeFi apps across
+              Terra, Ethereum, Binance Chain, and soon to be more.
+            </p>
+          </article>
+
+          <section className="graph" ref={ref}>
+            <PartitionLabels data={partitionLabels} />
+            <PartitionBarGraph data={partitionData} width={width} height={8} />
+          </section>
+        </Section>
+      </section>
+
       <section className="main">
         <div>
-          <Tab
+          <MainTab
             className="tab"
             items={tabItems}
             selectedItem={tab ?? tabItems[0]}
             onChange={tabChange}
           />
-          <Section style={{ minHeight: 200 }}>
+          <MainSection>
             <Switch>
               <Redirect exact path={`${match.url}/`} to={`${match.url}/buy`} />
               <Route path={`${match.url}/buy`} component={ClusterBuy} />
@@ -161,7 +235,7 @@ function ClustersDetailBase({
               <Route path={`${match.url}/burn`} component={ClusterBurn} />
               <Redirect path={`${match.url}/*`} to={`${match.url}/buy`} />
             </Switch>
-          </Section>
+          </MainSection>
         </div>
 
         <TabSection
@@ -206,7 +280,7 @@ function ClustersDetailBase({
           </thead>
 
           <tbody>
-            {data.map(
+            {tableData.map(
               ({
                 index,
                 name,
@@ -240,41 +314,28 @@ function ClustersDetailBase({
           </tbody>
         </Table>
       </section>
-
-      <section className="about">
-        <header>
-          <h2>About</h2>
-        </header>
-        <Section>
-          <p>
-            <b>The New is always better</b> index is a digital asset index
-            designed to track the performance of 5 large cap US technology
-            companies. The intent is to provide DeFi users with on-chain
-            exposure to a basket of US large cap technology equities, as well as
-            to showcase the composable nature of Mirror Protocol’s assets as
-            building blocks for novel products.
-          </p>
-          <p>
-            Mirror Protocol is a DeFi protocol powered by smart contracts on the
-            Terra network that enables the creation of synthetic assets called
-            mirrored assets (mAssets). mAssets mimic the price behavior of
-            real-world assets and give traders anywhere in the world open access
-            to price exposure without the burdens of owning or transacting real
-            assets.
-          </p>
-          <p>
-            Mirror democratizes access to the wealth creation of world markets
-            that many financially disenfranchised users worldwide are precluded
-            from -- unlocking the vast potential of dead capital. Mirror is
-            entirely community-governed and relies on a siloed, CDP-style model
-            for minting mAssets that trade on DeFi apps across Terra, Ethereum,
-            Binance Chain, and soon to be more.
-          </p>
-        </Section>
-      </section>
     </MainLayout>
   );
 }
+
+const MainTab = styled(Tab)`
+  > li {
+    &:first-child {
+      border-bottom-left-radius: 0;
+    }
+
+    &:last-child {
+      border-bottom-right-radius: 0;
+    }
+  }
+`;
+
+const MainSection = styled(Section)`
+  min-height: 200px;
+
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+`;
 
 const Table = styled(HorizontalScrollTable)`
   background-color: ${({ theme }) => theme.colors.gray14};
@@ -337,6 +398,28 @@ const StyledClustersDetail = styled(ClustersDetailBase)`
     margin-bottom: 24px;
   }
 
+  .about {
+    p {
+      line-height: 1.5em;
+      font-size: 1.1em;
+      font-weight: 400;
+
+      &:not(:last-child) {
+        margin-bottom: 1.2em;
+      }
+    }
+
+    .graph {
+      margin-top: 4.2em;
+
+      > :first-child {
+        margin-bottom: 0.5em;
+      }
+    }
+
+    margin-bottom: 40px;
+  }
+
   .main {
     width: 100%;
 
@@ -347,7 +430,7 @@ const StyledClustersDetail = styled(ClustersDetailBase)`
       flex: 1;
 
       .tab {
-        margin-bottom: 1.3em;
+        margin-bottom: 1px;
       }
     }
 
@@ -357,26 +440,13 @@ const StyledClustersDetail = styled(ClustersDetailBase)`
     }
   }
 
-  .provided-tokens,
-  .about {
+  .provided-tokens {
     header {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
 
       margin: 3.5em 0 1em 0;
-    }
-  }
-
-  .about {
-    p {
-      line-height: 1.5em;
-      font-size: 1.1em;
-      font-weight: 300;
-
-      &:not(:last-child) {
-        margin-bottom: 1.2em;
-      }
     }
   }
 

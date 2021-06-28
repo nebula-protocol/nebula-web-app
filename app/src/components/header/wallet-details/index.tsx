@@ -115,7 +115,7 @@ export const WalletDetails = styled(WalletDetailsBase)`
       padding: 9px 0;
 
       > :last-child {
-        font-weight: 300;
+        font-weight: 400;
         color: ${({ theme }) => theme.colors.white92};
       }
     }

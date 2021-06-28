@@ -9,3 +9,4 @@ export * from './CoupledIconsHolder';
 export * from './Sub';
 export * from './TwoLine';
 export * from './TitledLabel';
+export * from './PartitionLabels';

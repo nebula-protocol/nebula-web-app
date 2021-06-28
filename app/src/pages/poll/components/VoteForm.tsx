@@ -79,7 +79,7 @@ export const StyledVoteForm = styled(VoteFormBase)`
 
       height: 96px;
 
-      font-weight: 300;
+      font-weight: 400;
     }
 
     margin-bottom: 32px;

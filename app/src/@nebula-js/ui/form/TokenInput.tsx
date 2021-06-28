@@ -123,7 +123,7 @@ const Container = styled.div`
     position: absolute;
 
     font-size: 0.9em;
-    font-weight: 300;
+    font-weight: 400;
 
     right: 0.4em;
     bottom: -1.5em;

@@ -1,6 +1,5 @@
+import React, { DetailedHTMLProps, HTMLAttributes, ReactNode } from 'react';
 import styled, { css } from 'styled-components';
-import React, { HTMLAttributes, ReactNode } from 'react';
-import { DetailedHTMLProps } from 'react';
 import { breakpoints } from '../env';
 
 export interface TabItem {

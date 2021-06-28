@@ -8,7 +8,7 @@ export const FeeBox = styled.ul`
   color: ${({ theme }) => theme.colors.white80};
   border-radius: 8px;
 
-  font-weight: 300;
+  font-weight: 400;
 
   padding: 1.4em 1.7em;
 

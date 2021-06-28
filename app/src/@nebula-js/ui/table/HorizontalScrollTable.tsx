@@ -106,7 +106,7 @@ const StyledHorizontalScrollTable = styled(HorizontalScrollTableBase)`
         td {
           //font-size: 1em;
 
-          font-weight: 300;
+          font-weight: 400;
 
           color: ${({ theme }) => theme.colors.white80};
           padding: 1.5em 1em;

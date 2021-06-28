@@ -6,9 +6,11 @@ import {
   DiffSpan,
   MiniTab,
   PartitionBarGraph,
+  PartitionLabel,
+  PartitionLabels,
   Sub,
 } from '@nebula-js/ui';
-import React, { ReactElement, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import useResizeObserver from 'use-resize-observer/polyfilled';
 
@@ -46,21 +48,14 @@ function TopClustersBase({ className }: TopClustersProps) {
 
   const { width = 300, ref } = useResizeObserver();
 
-  const labels = useMemo(() => {
+  const partitionLabels = useMemo<PartitionLabel[]>(() => {
     const total = data.reduce((t, { value }) => t + value, 0) - data.length;
 
-    return data.slice(0, 3).reduce(
-      ({ elements }, { label, value, color }, i) => {
-        elements.push(
-          <div key={'label' + i} style={{ color }}>
-            <span>{label}</span>
-            <Sub>{formatRate((value / total) as Rate<number>)}%</Sub>
-          </div>,
-        );
-        return { elements };
-      },
-      { elements: [] as ReactElement[] },
-    ).elements;
+    return data.slice(0, 3).map(({ label, value, color }) => ({
+      label,
+      value: formatRate((value / total) as Rate<number>) + '%',
+      color,
+    }));
   }, []);
 
   return (
@@ -94,13 +89,12 @@ function TopClustersBase({ className }: TopClustersProps) {
             </section>
 
             <section className="graph">
-              <div>
-                {labels}
-                <div>
+              <PartitionLabels data={partitionLabels}>
+                <li>
                   <span>+12</span>
                   <Sub>more</Sub>
-                </div>
-              </div>
+                </li>
+              </PartitionLabels>
               <PartitionBarGraph data={data} width={width} height={8} />
             </section>
           </Content>
@@ -170,13 +164,6 @@ const Content = styled.div`
     margin-top: 3em;
 
     > :first-child {
-      display: flex;
-      gap: 1.5em;
-
-      span:first-child {
-        margin-right: 0.4em;
-      }
-
       margin-bottom: 0.5em;
     }
   }
