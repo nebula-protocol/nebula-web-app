@@ -1,4 +1,4 @@
-import { matchSizeQuery } from '@terra-dev/size-query';
+import { matchSizeQuery } from '@terra-ux/size-query';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ResizeObserver from 'resize-observer-polyfill';
 

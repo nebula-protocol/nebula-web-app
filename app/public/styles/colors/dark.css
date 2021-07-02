@@ -1,0 +1,22 @@
+:root {
+  --color-gray08: #0c0c0c;
+  --color-gray11: #161616;
+  --color-gray14: #222222;
+  --color-gray18: #2d2d2e;
+  --color-gray22: #373738;
+  --color-gray24: #3d3d3d;
+  --color-gray34: #555557;
+  --color-white44: #707070;
+  --color-white52: #858585;
+  --color-white64: #a4a4a4;
+  --color-white80: #cccccc;
+  --color-white92: #ebebeb;
+  --color-white100: #ffffff;
+  
+  --color-paleblue-h: 189;
+  --color-paleblue-s: 72%;
+  --color-paleblue-l: 49%;
+  --color-paleblue: hsl(var(--color-paleblue-h), var(--color-paleblue-s), var(--color-paleblue-l));
+  
+  --text-color: red;
+}

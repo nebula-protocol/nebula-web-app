@@ -1,7 +1,6 @@
 export const muiThemeBase = {
   typography: {
-    fontFamily:
-      "'Gotham SSm A', 'Gotham SSm B', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+    fontFamily: 'var(--font-family)',
     fontWeightLight: 200,
     fontWeightRegular: 400,
     fontWeightMedium: 600,

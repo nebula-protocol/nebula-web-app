@@ -3,5 +3,13 @@
   "@nebula-js/*": {
     "version": "0.1.0",
     "tag": "latest"
+  },
+  "@terra-dev/*": {
+    "version": "0.1.0",
+    "tag": "latest"
+  },
+  "style-router": {
+    "version": "0.1.0",
+    "tag": "latest"
   }
 }

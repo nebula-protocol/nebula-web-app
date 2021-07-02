@@ -16,6 +16,7 @@ import PollDetail from './pages/poll/detail';
 import PollMain from './pages/poll/main';
 import StakingMain from './pages/staking/main';
 import StakingStake from './pages/staking/stake';
+import { StyleRouterTest } from './pages/test/style-router-test';
 import './polyfills/terra.polyfill';
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
           <Route exact path="/polls" component={PollMain} />
           <Route path="/polls/:type" component={PollCreate} />
           <Route path="/poll/:poll" component={PollDetail} />
+          <Route path="/test/style-router" component={StyleRouterTest} />
           <Redirect to="/" />
         </Switch>
       </Suspense>

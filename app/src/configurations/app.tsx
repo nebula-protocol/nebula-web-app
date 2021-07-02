@@ -15,6 +15,7 @@ import {
   BankProvider,
   TerraWebappProvider,
 } from '@terra-money/webapp-provider';
+import { Breakpoint, StyleRouter } from 'style-router';
 import { useReadonlyWalletDialog } from 'components/dialogs/useReadonlyWalletDialog';
 import { ThemeProvider } from 'contexts/theme';
 import React, { ReactNode, useCallback } from 'react';
@@ -36,11 +37,16 @@ const queryClient = new QueryClient();
 const errorReporter =
   process.env.NODE_ENV === 'production' ? captureException : undefined;
 
+const breakpoints: Breakpoint[] = [
+  ['small', '<=530'],
+  ['medium', '>530 and <=830'],
+  ['large', '>830 and <=1440'],
+  ['xlarge', '>1440'],
+];
+
 export function AppProviders({ children }: { children: ReactNode }) {
-  const [
-    openReadonlyWalletSelector,
-    readonlyWalletSelectorElement,
-  ] = useReadonlyWalletDialog();
+  const [openReadonlyWalletSelector, readonlyWalletSelectorElement] =
+    useReadonlyWalletDialog();
 
   const createReadonlyWalletSession = useCallback(
     (networks: NetworkInfo[]): Promise<ReadonlyWalletSession | null> => {
@@ -77,11 +83,17 @@ export function AppProviders({ children }: { children: ReactNode }) {
                 <NebulaWebappProvider>
                   <GoogleAnalytics trackingId={GA_TRACKING_ID} />
                   <RouterScrollRestoration />
-                  <ThemeProvider>
-                    <GlobalStyle />
-                    {children}
-                    {readonlyWalletSelectorElement}
-                  </ThemeProvider>
+                  <StyleRouter
+                    defaultColor="dark"
+                    breakpoints={breakpoints}
+                    fallbackBreakpoint="large"
+                  >
+                    <ThemeProvider>
+                      <GlobalStyle />
+                      {children}
+                      {readonlyWalletSelectorElement}
+                    </ThemeProvider>
+                  </StyleRouter>
                 </NebulaWebappProvider>
               </BankProvider>
             </TerraWebappProvider>
