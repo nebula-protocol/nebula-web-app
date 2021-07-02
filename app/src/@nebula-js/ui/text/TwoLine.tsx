@@ -19,6 +19,6 @@ function TwoLineBase({ className, text, subText }: TwoLineProps) {
 export const TwoLine = styled(TwoLineBase)`
   > :nth-child(2) {
     font-size: 12px;
-    color: ${({ theme }) => theme.colors.white44};
+    color: var(--color-white44);
   }
 `;

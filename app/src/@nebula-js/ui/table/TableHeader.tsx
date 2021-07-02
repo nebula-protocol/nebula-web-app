@@ -4,14 +4,14 @@ import { breakpoints } from '../env';
 export const TableHeader = styled.div`
   padding: 1.2rem 2rem;
 
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray11};
+  border-bottom: 1px solid var(--color-gray11);
 
   display: flex;
   align-items: center;
 
   > h2 {
     font-size: 16px !important;
-    color: ${({ theme }) => theme.colors.paleblue.main};
+    color: var(--color-paleblue);
   }
 
   > .buttons {
@@ -24,10 +24,14 @@ export const TableHeader = styled.div`
     gap: 1em;
 
     button {
-      color: ${({ theme }) => theme.colors.paleblue.main};
+      color: var(--color-paleblue);
 
       &:hover {
-        color: ${({ theme }) => theme.colors.paleblue.light};
+        color: hsl(
+          var(--color-paleblue-h),
+          var(--color-paleblue-s),
+          calc(var(--color-paleblue-l) + 15%)
+        );
       }
     }
   }

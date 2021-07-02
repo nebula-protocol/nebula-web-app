@@ -144,7 +144,7 @@ const Component = styled(ComponentBase)`
     justify-content: space-between;
     align-items: center;
     font-size: 12px;
-    color: ${({ theme }) => theme.colors.white64};
+    color: var(--color-white64);
 
     > :last-child {
       font-size: 12px;

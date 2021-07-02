@@ -59,7 +59,7 @@ function NEBSectionBase({ className }: NEBSectionProps) {
 export const NEBSection = styled(NEBSectionBase)`
   min-height: 230px;
 
-  background-color: ${({ theme }) => theme.colors.gray14};
+  background-color: var(--color-gray14);
 
   display: grid;
   grid-template-columns: auto auto;
@@ -97,9 +97,9 @@ export const NEBSection = styled(NEBSectionBase)`
 
     > :first-child {
       font-size: 12px;
-      color: ${({ theme }) => theme.colors.paleblue.main};
+      color: var(--color-paleblue);
 
-      border: 1px solid ${({ theme }) => theme.colors.paleblue.main};
+      border: 1px solid var(--color-paleblue);
       border-radius: 16px;
       padding: 4px 10px;
 

@@ -31,10 +31,9 @@ function BarGraphBase({
 }
 
 export const BarGraph = styled(BarGraphBase)`
-  background-color: ${({ trackColor, theme }) =>
-    trackColor ?? theme.colors.gray34};
+  background-color: ${({ trackColor }) => trackColor ?? 'var(--color-gray34)'};
 
   rect {
-    fill: ${({ railColor, theme }) => railColor ?? theme.colors.white80};
+    fill: ${({ railColor }) => railColor ?? 'var(--color-white80)'};
   }
 `;

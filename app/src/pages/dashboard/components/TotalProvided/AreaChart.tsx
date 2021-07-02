@@ -4,7 +4,8 @@ import { Chart } from 'chart.js';
 import c from 'color';
 import { format } from 'date-fns';
 import React, { Component, createRef } from 'react';
-import styled, { DefaultTheme } from 'styled-components';
+import { getCssVariable } from 'style-router';
+import styled from 'styled-components';
 
 interface ChartData {
   y: number;
@@ -14,7 +15,7 @@ interface ChartData {
 
 export interface AreaChartProps {
   data: ChartData[];
-  theme: DefaultTheme;
+  color: string;
 }
 
 export class AreaChart extends Component<AreaChartProps> {
@@ -35,7 +36,7 @@ export class AreaChart extends Component<AreaChartProps> {
 
   shouldComponentUpdate(nextProps: Readonly<AreaChartProps>): boolean {
     return (
-      this.props.data !== nextProps.data || this.props.theme !== nextProps.theme
+      this.props.data !== nextProps.data || this.props.color !== nextProps.color
     );
   }
 
@@ -51,20 +52,13 @@ export class AreaChart extends Component<AreaChartProps> {
       this.chart.data.datasets[0].data = this.props.data.map(({ y }) => y);
     }
 
-    if (prevProps.theme !== this.props.theme) {
+    if (prevProps.color !== this.props.color) {
       if (this.chart.options.scales?.y?.grid) {
         this.chart.options.scales.y.grid.color =
-          this.props.theme.palette.type === 'dark'
+          this.props.color === 'dark'
             ? 'rgba(255, 255, 255, 0.05)'
             : 'rgba(0, 0, 0, 0.05)';
       }
-      this.chart.data.datasets[0].backgroundColor = c(
-        this.props.theme.colors.paleblue.main,
-      )
-        .alpha(0.05)
-        .toString();
-      this.chart.data.datasets[0].borderColor =
-        this.props.theme.colors.paleblue.main;
     }
 
     this.chart.update();
@@ -107,7 +101,7 @@ export class AreaChart extends Component<AreaChartProps> {
             grid: {
               drawBorder: false,
               color:
-                this.props.theme.palette.type === 'dark'
+                this.props.color === 'dark'
                   ? 'rgba(255, 255, 255, 0.05)'
                   : 'rgba(0, 0, 0, 0.05)',
             },
@@ -126,10 +120,10 @@ export class AreaChart extends Component<AreaChartProps> {
             data: this.props.data?.map(({ y }) => y),
             fill: 'start',
 
-            backgroundColor: c(this.props.theme.colors.paleblue.main)
+            backgroundColor: c(getCssVariable('--color-paleblue'))
               .alpha(0.05)
               .toString(),
-            borderColor: this.props.theme.colors.paleblue.main,
+            borderColor: getCssVariable('--color-paleblue'),
             borderWidth: 2,
           },
         ],

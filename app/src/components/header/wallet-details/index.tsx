@@ -84,7 +84,7 @@ export const WalletDetails = styled(WalletDetailsBase)`
     user-select: none;
 
     font-size: 18px;
-    color: ${({ theme }) => theme.colors.white92};
+    color: var(--color-white92);
 
     svg {
       font-size: 1em;
@@ -93,7 +93,7 @@ export const WalletDetails = styled(WalletDetailsBase)`
     }
 
     &:hover {
-      color: ${({ theme }) => theme.colors.paleblue.main};
+      color: var(--color-paleblue);
     }
 
     margin-bottom: 8px;
@@ -103,20 +103,20 @@ export const WalletDetails = styled(WalletDetailsBase)`
     margin: 40px 0 32px 0;
     padding: 0;
 
-    border-top: 1px solid ${({ theme }) => theme.colors.gray24};
+    border-top: 1px solid var(--color-gray24);
 
     li {
       display: flex;
       justify-content: space-between;
-      border-bottom: 1px dotted ${({ theme }) => theme.colors.gray24};
-      color: ${({ theme }) => theme.colors.white92};
+      border-bottom: 1px dotted var(--color-gray24);
+      color: var(--color-white92);
 
       font-size: 12px;
       padding: 9px 0;
 
       > :last-child {
         font-weight: 400;
-        color: ${({ theme }) => theme.colors.white92};
+        color: var(--color-white92);
       }
     }
   }

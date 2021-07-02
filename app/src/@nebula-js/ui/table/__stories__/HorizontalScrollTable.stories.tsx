@@ -6,7 +6,6 @@ import {
 } from '@nebula-js/ui';
 import { Meta } from '@storybook/react';
 import React from 'react';
-import { useTheme } from 'styled-components';
 
 export default {
   title: 'ui/HorizontalScrollTable',
@@ -31,15 +30,13 @@ const data = Array.from(
 );
 
 export const Basic = () => {
-  const theme = useTheme();
-
   return (
     <>
       <StorybookBackgroundColor />
       <HorizontalScrollTable
         minWidth={1000}
         containerStyle={{
-          backgroundColor: theme.colors.gray14,
+          backgroundColor: 'var(--color-gray14)',
           maxWidth: '80vw',
           margin: '50px auto',
           borderRadius: 8,
@@ -97,8 +94,6 @@ export const Basic = () => {
 };
 
 export const Header_Contents = () => {
-  const theme = useTheme();
-
   return (
     <>
       <StorybookBackgroundColor />
@@ -110,7 +105,7 @@ export const Header_Contents = () => {
           </div>
         }
         containerStyle={{
-          backgroundColor: theme.colors.gray14,
+          backgroundColor: 'var(--color-gray14)',
           maxWidth: '80vw',
           margin: '50px auto',
           borderRadius: 8,

@@ -137,7 +137,7 @@ function StakingMainBase({ className }: StakingMainProps) {
 }
 
 const Table = styled(HorizontalScrollTable)`
-  background-color: ${({ theme }) => theme.colors.gray14};
+  background-color: var(--color-gray14);
   border-radius: 8px;
 
   td,
@@ -158,11 +158,11 @@ const Table = styled(HorizontalScrollTable)`
       font-weight: 500 !important;
 
       figure:nth-of-type(1) {
-        border: 1px solid ${({ theme }) => theme.colors.gray34};
+        border: 1px solid var(--color-gray34);
       }
 
       figure:nth-of-type(2) {
-        background-color: ${({ theme }) => theme.colors.gray34};
+        background-color: var(--color-gray34);
       }
     }
 
@@ -180,7 +180,7 @@ const Table = styled(HorizontalScrollTable)`
   thead {
     tr {
       th {
-        border-bottom: 2px solid ${({ theme }) => theme.colors.gray11};
+        border-bottom: 2px solid var(--color-gray11);
       }
     }
   }
@@ -188,7 +188,7 @@ const Table = styled(HorizontalScrollTable)`
   tbody {
     tr:not(:last-child) {
       td {
-        border-bottom: 1px solid ${({ theme }) => theme.colors.gray11};
+        border-bottom: 1px solid var(--color-gray11);
       }
     }
   }

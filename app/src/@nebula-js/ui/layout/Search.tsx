@@ -22,7 +22,7 @@ function SearchBase({ className, ...inputProps }: SearchProps) {
 export const Search = styled(SearchBase)`
   height: 4rem;
 
-  background-color: ${({ theme }) => theme.colors.gray14};
+  background-color: var(--color-gray14);
   border-radius: 8px;
   padding-left: 2.3rem;
 

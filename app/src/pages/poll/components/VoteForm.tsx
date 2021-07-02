@@ -66,7 +66,7 @@ function VoteFormBase({ className }: VoteFormProps) {
 }
 
 export const StyledVoteForm = styled(VoteFormBase)`
-  background-color: ${({ theme }) => theme.colors.gray14};
+  background-color: var(--color-gray14);
   padding: 20px 20px 40px 20px;
   border-radius: 8px;
 

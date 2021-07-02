@@ -123,7 +123,7 @@ const Content = styled.div`
     i {
       width: 4em;
       height: 4em;
-      background-color: ${({ theme }) => theme.colors.gray34};
+      background-color: var(--color-gray34);
       border-radius: 50%;
       margin-right: 1em;
     }
@@ -137,7 +137,7 @@ const Content = styled.div`
     }
 
     p:nth-child(2) {
-      color: ${({ theme }) => theme.colors.white44};
+      color: var(--color-white44);
     }
 
     p:nth-child(3) {
@@ -154,7 +154,7 @@ const Content = styled.div`
     h4 {
       font-size: var(--font-size12);
       font-weight: 500;
-      color: ${({ theme }) => theme.colors.white44};
+      color: var(--color-white44);
     }
 
     margin-bottom: 1.5em;

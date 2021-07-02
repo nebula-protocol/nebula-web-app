@@ -135,7 +135,7 @@ function ClustersMainBase({ className }: ClustersMainProps) {
 }
 
 const Table = styled(HorizontalScrollTable)`
-  background-color: ${({ theme }) => theme.colors.gray14};
+  background-color: var(--color-gray14);
   border-radius: 8px;
 
   td,
@@ -157,7 +157,7 @@ const Table = styled(HorizontalScrollTable)`
   thead {
     tr {
       th {
-        border-bottom: 2px solid ${({ theme }) => theme.colors.gray11};
+        border-bottom: 2px solid var(--color-gray11);
       }
     }
   }
@@ -167,13 +167,13 @@ const Table = styled(HorizontalScrollTable)`
       cursor: pointer;
 
       &:hover {
-        background-color: ${({ theme }) => theme.colors.gray22};
+        background-color: var(--color-gray22);
       }
     }
 
     tr:not(:last-child) {
       td {
-        border-bottom: 1px solid ${({ theme }) => theme.colors.gray11};
+        border-bottom: 1px solid var(--color-gray11);
       }
     }
   }

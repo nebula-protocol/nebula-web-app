@@ -53,18 +53,18 @@ export const tabStyle = css`
 
     font-size: 1em;
 
-    background-color: ${({ theme }) => theme.colors.gray14};
-    color: ${({ theme }) => theme.colors.white44};
+    background-color: var(--color-gray14);
+    color: var(--color-white44);
 
     transition: background-color 0.3s ease-out, color 0.3s ease-out;
 
     &:hover {
-      color: ${({ theme }) => theme.colors.white64};
+      color: var(--color-white64);
     }
 
     &[aria-selected='true'] {
-      background-color: ${({ theme }) => theme.colors.gray18};
-      color: ${({ theme }) => theme.colors.white80};
+      background-color: var(--color-gray18);
+      color: var(--color-white80);
     }
   }
 `;

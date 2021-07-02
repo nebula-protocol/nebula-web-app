@@ -186,7 +186,7 @@ const Table = styled(HorizontalScrollTable)`
   thead {
     tr {
       th {
-        border-bottom: 1px solid ${({ theme }) => theme.colors.gray24};
+        border-bottom: 1px solid var(--color-gray24);
       }
     }
   }
@@ -216,14 +216,14 @@ const StyledPollDetail = styled(PollDetailBase)`
           font-size: 14px;
           height: 45px;
 
-          border-bottom: 1px solid ${({ theme }) => theme.colors.gray24};
+          border-bottom: 1px solid var(--color-gray24);
 
           margin-bottom: 16px;
         }
 
         > h2 {
           font-size: 24px;
-          color: ${({ theme }) => theme.colors.white100};
+          color: var(--color-white100);
 
           margin-bottom: 30px;
         }
@@ -232,7 +232,7 @@ const StyledPollDetail = styled(PollDetailBase)`
           font-size: 14px;
 
           span {
-            color: ${({ theme }) => theme.colors.white44};
+            color: var(--color-white44);
             margin-right: 8px;
           }
 
@@ -256,7 +256,7 @@ const StyledPollDetail = styled(PollDetailBase)`
         font-size: 14px;
 
         h4 {
-          color: ${({ theme }) => theme.colors.white44};
+          color: var(--color-white44);
           font-weight: 500;
 
           margin-bottom: 4px;
@@ -264,7 +264,7 @@ const StyledPollDetail = styled(PollDetailBase)`
 
         p {
           line-height: 21px;
-          color: ${({ theme }) => theme.colors.white100};
+          color: var(--color-white100);
         }
 
         &:not(:last-child) {
@@ -277,7 +277,7 @@ const StyledPollDetail = styled(PollDetailBase)`
       min-width: 420px;
       max-width: 420px;
 
-      background-color: ${({ theme }) => theme.colors.gray14};
+      background-color: var(--color-gray14);
 
       header {
         display: flex;

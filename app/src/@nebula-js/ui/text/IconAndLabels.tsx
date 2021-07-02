@@ -52,8 +52,8 @@ export const IconAndLabels = styled(IconAndLabelsBase)`
   > i {
     display: inline-block;
     ${({ iconSize = _iconSize }) => fixedSizeStyle(iconSize)};
-    background-color: ${({ theme, icon }) =>
-      !icon ? theme.colors.gray34 : 'transparent'};
+    background-color: ${({ icon }) =>
+      !icon ? 'var(--color-gray34)' : 'transparent'};
     border-radius: 50%;
 
     margin-right: ${({ iconMarginRight = _iconMarginRight }) =>
@@ -65,7 +65,7 @@ export const IconAndLabels = styled(IconAndLabelsBase)`
       display: block;
       font-size: ${({ textSize = _textSize }) => textSize};
       font-weight: 500;
-      color: ${({ theme }) => theme.colors.white92};
+      color: var(--color-white92);
       margin-bottom: ${({ textGap = _textGap }) => textGap};
     }
 
@@ -73,7 +73,7 @@ export const IconAndLabels = styled(IconAndLabelsBase)`
       display: block;
       font-size: max(${({ subtextSize = _subtextSize }) => subtextSize}, 12px);
       font-weight: 500;
-      color: ${({ theme }) => theme.colors.white44};
+      color: var(--color-white44);
     }
   }
 `;

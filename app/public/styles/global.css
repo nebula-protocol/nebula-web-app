@@ -1,5 +1,11 @@
 :root {
   --font-family: 'Gotham SSm A', 'Gotham SSm B', BlinkMacSystemFont, 'Segoe UI',
-    'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-    'Helvetica Neue', sans-serif;
+  'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+  'Helvetica Neue', sans-serif;
+  
+  --color-paleblue-h: 189;
+  --color-paleblue-s: 72%;
+  --color-paleblue-l: 49%;
+  --color-paleblue: hsl(var(--color-paleblue-h), var(--color-paleblue-s), var(--color-paleblue-l));
+  --color-paleblue-text: #ffffff;
 }

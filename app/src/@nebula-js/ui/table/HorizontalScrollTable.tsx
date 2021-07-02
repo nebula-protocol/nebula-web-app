@@ -85,7 +85,7 @@ const StyledHorizontalScrollTable = styled(HorizontalScrollTableBase)`
             font-size: 12px;
           }
 
-          color: ${({ theme }) => theme.colors.white44};
+          color: var(--color-white44);
           font-weight: 500;
 
           padding: 1em;
@@ -108,7 +108,7 @@ const StyledHorizontalScrollTable = styled(HorizontalScrollTableBase)`
 
           font-weight: 400;
 
-          color: ${({ theme }) => theme.colors.white80};
+          color: var(--color-white80);
           padding: 1.5em 1em;
 
           &:first-child {

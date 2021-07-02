@@ -27,7 +27,8 @@ import {
   Switch,
   useRouteMatch,
 } from 'react-router-dom';
-import styled, { useTheme } from 'styled-components';
+import { useStyle } from 'style-router';
+import styled from 'styled-components';
 import useResizeObserver from 'use-resize-observer/polyfilled';
 import { ClusterBurn } from './components/Burn';
 import { ClusterBuy } from './components/Buy';
@@ -136,7 +137,7 @@ function ClustersDetailBase({
 
   const { width = 300, ref } = useResizeObserver();
 
-  const theme = useTheme();
+  const { color } = useStyle();
 
   const descriptionDisplay = useScreenSizeValue<'horizontal' | 'vertical'>({
     mobile: 'vertical',
@@ -244,7 +245,7 @@ function ClustersDetailBase({
           selectedItem={chartTab}
           onChange={setChartTab}
         >
-          <PriceChart data={chartData} theme={theme} />
+          <PriceChart data={chartData} color={color} />
         </TabSection>
       </section>
 
@@ -338,7 +339,7 @@ const MainSection = styled(Section)`
 `;
 
 const Table = styled(HorizontalScrollTable)`
-  background-color: ${({ theme }) => theme.colors.gray14};
+  background-color: var(--color-gray14);
   border-radius: 8px;
 
   td,
@@ -375,7 +376,7 @@ const Table = styled(HorizontalScrollTable)`
   thead {
     tr {
       th {
-        border-bottom: 2px solid ${({ theme }) => theme.colors.gray11};
+        border-bottom: 2px solid var(--color-gray11);
       }
     }
   }
@@ -383,7 +384,7 @@ const Table = styled(HorizontalScrollTable)`
   tbody {
     tr:not(:last-child) {
       td {
-        border-bottom: 1px solid ${({ theme }) => theme.colors.gray11};
+        border-bottom: 1px solid var(--color-gray11);
       }
     }
   }

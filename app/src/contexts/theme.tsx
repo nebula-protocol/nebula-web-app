@@ -8,55 +8,35 @@ import React, {
   Consumer,
   Context,
   createContext,
-  useCallback,
   useContext,
   useMemo,
-  useState,
 } from 'react';
+import { useStyle } from 'style-router';
 import type { DefaultTheme } from 'styled-components';
-
-type ThemeColor = 'light' | 'dark';
 
 export interface ThemeProviderProps {
   children: ReactNode;
-  initialTheme?: ThemeColor;
 }
 
 export interface ThemeState {
-  themeColor: ThemeColor;
   theme: DefaultTheme;
-  updateTheme: (themeColor: ThemeColor) => void;
 }
 
 // @ts-ignore
 const ThemeContext: Context<ThemeState> = createContext<ThemeState>();
 
-const storageKey = '__nebula_theme__';
-
-export function ThemeProvider({
-  children,
-  initialTheme = 'dark',
-}: ThemeProviderProps) {
-  const [themeColor, setThemeColor] = useState<ThemeColor>(
-    () => (localStorage.getItem(storageKey) ?? initialTheme) as ThemeColor,
-  );
+export function ThemeProvider({ children }: ThemeProviderProps) {
+  const { color } = useStyle();
 
   const theme = useMemo(() => {
-    return themeColor === 'dark' ? darkTheme : lightTheme;
-  }, [themeColor]);
-
-  const updateTheme = useCallback((nextThemeColor: ThemeColor) => {
-    setThemeColor(nextThemeColor);
-    localStorage.setItem(storageKey, nextThemeColor);
-  }, []);
+    return color === 'dark' ? darkTheme : lightTheme;
+  }, [color]);
 
   const state = useMemo<ThemeState>(
     () => ({
-      themeColor,
       theme,
-      updateTheme,
     }),
-    [theme, themeColor, updateTheme],
+    [theme],
   );
 
   return (

@@ -1,9 +1,9 @@
 import { DocsIcon, ModeIcon } from '@nebula-js/icons';
 import { EmptyButton } from '@nebula-js/ui';
 import logoImage from 'components/assets/nebula-wide.svg';
-import { useTheme } from 'contexts/theme';
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+import { useStyle } from 'style-router';
 import styled from 'styled-components';
 import { Wallet } from './Wallet';
 
@@ -12,7 +12,7 @@ export interface DesktopHeaderProps {
 }
 
 function DesktopHeaderBase({ className }: DesktopHeaderProps) {
-  const { themeColor, updateTheme } = useTheme();
+  const { color, updateColor } = useStyle();
 
   return (
     <header className={className}>
@@ -29,7 +29,7 @@ function DesktopHeaderBase({ className }: DesktopHeaderProps) {
 
         <EmptyButton
           size={18}
-          onClick={() => updateTheme(themeColor === 'dark' ? 'light' : 'dark')}
+          onClick={() => updateColor(color === 'dark' ? 'light' : 'dark')}
         >
           <ModeIcon />
         </EmptyButton>
@@ -50,9 +50,9 @@ function DesktopHeaderBase({ className }: DesktopHeaderProps) {
 }
 
 export const DesktopHeader = styled(DesktopHeaderBase)`
-  background-color: ${({ theme }) => theme.colors.gray08};
-  color: ${({ theme }) => theme.colors.white44};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray14};
+  background-color: var(--color-gray08);
+  color: var(--color-white44);
+  border-bottom: 1px solid var(--color-gray14);
 
   height: 110px;
 
@@ -83,10 +83,10 @@ export const DesktopHeader = styled(DesktopHeaderBase)`
       }
 
       .Nebula-EmptyButton {
-        color: ${({ theme }) => theme.colors.white52};
+        color: var(--color-white52);
 
         &:hover {
-          color: ${({ theme }) => theme.colors.paleblue.main};
+          color: var(--color-paleblue);
         }
       }
     }
@@ -109,10 +109,10 @@ export const DesktopHeader = styled(DesktopHeaderBase)`
 
           transition: color 0.4s ease-out;
 
-          color: ${({ theme }) => theme.colors.white44};
+          color: var(--color-white44);
 
           &.active {
-            color: ${({ theme }) => theme.colors.white92};
+            color: var(--color-white92);
           }
         }
       }

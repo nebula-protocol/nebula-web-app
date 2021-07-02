@@ -37,7 +37,7 @@ export const Descriptions = styled(DescriptionsBase)`
 
   span:first-child {
     margin-right: 1em;
-    color: ${({ theme }) => theme.colors.white44};
+    color: var(--color-white44);
   }
 
   &[data-direction='horizontal'] {

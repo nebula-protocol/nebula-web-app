@@ -104,7 +104,7 @@ export const MobileHeader = styled(MobileHeaderBase)`
   section {
     position: relative;
     z-index: 2;
-    background-color: ${({ theme }) => theme.colors.gray08};
+    background-color: var(--color-gray08);
 
     height: 54px;
     padding: 0 16px;
@@ -136,7 +136,7 @@ export const MobileHeader = styled(MobileHeaderBase)`
 
     animation: ${slide} 0.3s cubic-bezier(0.655, 1.075, 0.8, 0.995);
 
-    background-color: ${({ theme }) => theme.colors.gray08};
+    background-color: var(--color-gray08);
 
     display: flex;
     flex-direction: column;
@@ -146,10 +146,10 @@ export const MobileHeader = styled(MobileHeaderBase)`
       font-size: 32px;
       text-decoration: none;
 
-      color: ${({ theme }) => theme.colors.white44};
+      color: var(--color-white44);
 
       &.active {
-        color: ${({ theme }) => theme.colors.white92};
+        color: var(--color-white92);
       }
     }
   }

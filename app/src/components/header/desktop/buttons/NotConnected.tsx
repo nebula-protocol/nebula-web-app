@@ -142,7 +142,7 @@ const Dropdown = styled.div`
   h2 {
     font-size: 16px;
     text-align: center;
-    color: ${({ theme }) => theme.colors.white92};
+    color: var(--color-white92);
 
     margin-bottom: 20px;
   }
@@ -165,7 +165,7 @@ const Dropdown = styled.div`
 
   hr {
     border: 0;
-    border-top: 1px solid ${({ theme }) => theme.colors.gray08};
+    border-top: 1px solid var(--color-gray08);
     margin: 16px 0;
   }
 `;
@@ -175,13 +175,17 @@ export const NotConnected = styled(NotConnectedBase)`
 
   transition: border-color 0.3s ease-out, color 0.3s ease-out;
 
-  border: 1px solid ${({ theme }) => theme.colors.gray24};
+  border: 1px solid var(--color-gray24);
 
-  color: ${({ theme }) => theme.colors.paleblue.main};
+  color: var(--color-paleblue);
 
   &:hover {
-    color: ${({ theme }) => theme.colors.paleblue.light};
-    border-color: ${({ theme }) => theme.colors.paleblue.main};
+    color: hsl(
+      var(--color-paleblue-h),
+      var(--color-paleblue-s),
+      calc(var(--color-paleblue-l) + 15%)
+    );
+    border-color: var(--color-paleblue);
   }
 
   display: flex;

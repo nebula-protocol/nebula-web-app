@@ -34,11 +34,11 @@ function HistoryBase({ className }: HistoryProps) {
 }
 
 export const History = styled(HistoryBase)`
-  background-color: ${({ theme }) => theme.colors.gray14};
+  background-color: var(--color-gray14);
   border-radius: 8px;
 
   > header {
-    border-bottom: 1px solid ${({ theme }) => theme.colors.gray11};
+    border-bottom: 1px solid var(--color-gray11);
   }
 
   > ul {
@@ -56,21 +56,21 @@ export const History = styled(HistoryBase)`
       font-size: 16px;
 
       > :first-child {
-        color: ${({ theme }) => theme.colors.white92};
+        color: var(--color-white92);
 
         > :first-child {
           font-size: 12px;
-          color: ${({ theme }) => theme.colors.white44};
+          color: var(--color-white44);
         }
       }
 
       > :last-child {
         font-size: 0.75em;
-        color: ${({ theme }) => theme.colors.white44};
+        color: var(--color-white44);
       }
 
       &:not(:last-child) {
-        border-bottom: 1px solid ${({ theme }) => theme.colors.gray11};
+        border-bottom: 1px solid var(--color-gray11);
       }
     }
   }

@@ -5,7 +5,8 @@ import { Chart } from 'chart.js';
 import c from 'color';
 import { format } from 'date-fns';
 import React, { Component, createRef } from 'react';
-import styled, { DefaultTheme } from 'styled-components';
+import { getCssVariable } from 'style-router';
+import styled from 'styled-components';
 
 interface ChartData {
   y: number;
@@ -15,7 +16,7 @@ interface ChartData {
 
 export interface PriceChartProps {
   data: ChartData[];
-  theme: DefaultTheme;
+  color: string;
 }
 
 export class PriceChart extends Component<PriceChartProps> {
@@ -43,7 +44,7 @@ export class PriceChart extends Component<PriceChartProps> {
 
   shouldComponentUpdate(nextProps: Readonly<PriceChartProps>): boolean {
     return (
-      this.props.data !== nextProps.data || this.props.theme !== nextProps.theme
+      this.props.data !== nextProps.data || this.props.color !== nextProps.color
     );
   }
 
@@ -59,15 +60,15 @@ export class PriceChart extends Component<PriceChartProps> {
       this.chart.data.datasets[0].data = this.props.data.map(({ y }) => y);
     }
 
-    if (prevProps.theme !== this.props.theme) {
-      this.chart.data.datasets[0].backgroundColor = c(
-        this.props.theme.colors.paleblue.main,
-      )
-        .alpha(0.05)
-        .toString();
-      this.chart.data.datasets[0].borderColor =
-        this.props.theme.colors.paleblue.main;
-    }
+    //if (prevProps.theme !== this.props.theme) {
+    //  this.chart.data.datasets[0].backgroundColor = c(
+    //    this.props.theme.colors.paleblue.main,
+    //  )
+    //    .alpha(0.05)
+    //    .toString();
+    //  this.chart.data.datasets[0].borderColor =
+    //    this.props.theme.colors.paleblue.main;
+    //}
 
     this.chart.update();
   }
@@ -118,10 +119,10 @@ export class PriceChart extends Component<PriceChartProps> {
             data: this.props.data?.map(({ y }) => y),
             fill: 'start',
 
-            backgroundColor: c(this.props.theme.colors.paleblue.main)
+            backgroundColor: c(getCssVariable('--color-paleblue'))
               .alpha(0.05)
               .toString(),
-            borderColor: this.props.theme.colors.paleblue.main,
+            borderColor: getCssVariable('--color-paleblue'),
             borderWidth: 2,
           },
         ],
@@ -142,7 +143,7 @@ const Container = styled.div`
   position: relative;
 
   canvas {
-    background-color: ${({ theme }) => theme.colors.gray14};
+    background-color: var(--color-gray14);
 
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
@@ -156,11 +157,11 @@ const Container = styled.div`
     > h3 {
       font-size: 12px;
       font-weight: 500;
-      color: ${({ theme }) => theme.colors.white44};
+      color: var(--color-white44);
     }
 
     > p {
-      color: ${({ theme }) => theme.colors.white92};
+      color: var(--color-white92);
 
       font-size: 32px;
       font-weight: 500;

@@ -75,73 +75,81 @@ export const buttonSizeStyle = {
 export const buttonColorStyle = (color: ButtonProps['color']) => {
   if (!color || color === 'paleblue') {
     return css`
-      color: ${({ theme }) => theme.colors.paleblue.contrastText};
-      background-color: ${({ theme }) => theme.colors.paleblue.main};
+      color: var(--color-paleblue-text);
+      background-color: var(--color-paleblue);
 
       &:hover {
-        background-color: ${({ theme }) => theme.colors.paleblue.light};
+        background-color: hsl(
+          var(--color-paleblue-h),
+          var(--color-paleblue-s),
+          calc(var(--color-paleblue-l) + 15%)
+        );
       }
 
       &:disabled {
-        color: ${({ theme }) => theme.colors.white44};
-        background-color: ${({ theme }) => theme.colors.gray22};
+        color: var(--color-white44);
+        background-color: var(--color-gray22);
       }
     `;
   } else if (color === 'gray') {
     return css`
-      color: ${({ theme }) => theme.colors.white80};
-      background-color: ${({ theme }) => theme.colors.gray24};
+      color: var(--color-white80);
+      background-color: var(--color-gray24);
 
       &:hover {
-        background-color: ${({ theme }) => theme.colors.gray34};
+        background-color: var(--color-gray34);
       }
 
       &:disabled {
-        color: ${({ theme }) => theme.colors.white44};
-        background-color: ${({ theme }) => theme.colors.gray22};
+        color: var(--color-white44);
+        background-color: var(--color-gray22);
       }
     `;
   } else if (color === 'dark') {
     return css`
-      color: ${({ theme }) => theme.colors.paleblue.main};
-      background-color: ${({ theme }) => theme.colors.gray11};
+      color: var(--color-paleblue);
+      background-color: var(--color-gray11);
 
       &:hover {
-        color: ${({ theme }) => theme.colors.paleblue.light};
-        background-color: ${({ theme }) => theme.colors.gray08};
+        color: hsl(
+          var(--color-paleblue-h),
+          var(--color-paleblue-s),
+          calc(var(--color-paleblue-l) + 15%)
+        );
+        background-color: var(--color-gray08);
       }
 
       &:disabled {
-        color: ${({ theme }) => theme.colors.gray34};
+        color: var(--color-gray34);
       }
     `;
   } else if (color === 'dim') {
     return css`
-      color: ${({ theme }) => theme.colors.white44};
-      background-color: ${({ theme }) => theme.colors.gray22};
+      color: var(--color-white44);
+      background-color: var(--color-gray22);
 
       &:hover {
-        color: ${({ theme }) => theme.colors.white64};
+        color: var(--color-white64);
       }
 
       &:disabled {
-        color: ${({ theme }) => theme.colors.gray34};
+        color: var(--color-gray34);
       }
     `;
   } else if (color === 'border') {
     return css`
-      color: ${({ theme }) => theme.colors.white44};
+      color: var(--color-white44);
       background-color: transparent;
-      border: 1px solid ${({ theme }) => theme.colors.gray22};
+      border: 1px solid var(--color-gray22);
 
       &:hover {
-        color: ${({ theme }) => theme.colors.paleblue.main};
-        border-color: ${({ theme }) => theme.colors.paleblue.main};
+        color: var(--color-paleblue);
+        border-color: var(--color-paleblue);
       }
 
       &:disabled {
-        color: ${({ theme }) => theme.colors.gray34};
-        border-color: ${({ theme }) => theme.colors.gray34};
+        color: var(--color-gray34);
+        border-color: var(--color-gray34);
       }
     `;
   } else if (color)
@@ -154,8 +162,8 @@ export const buttonColorStyle = (color: ButtonProps['color']) => {
       }
 
       &:disabled {
-        color: ${({ theme }) => theme.colors.white44};
-        background-color: ${({ theme }) => theme.colors.gray22};
+        color: var(--color-white44);
+        background-color: var(--color-gray22);
       }
     `;
 };

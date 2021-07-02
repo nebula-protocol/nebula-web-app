@@ -19,8 +19,8 @@ export const NativeSelect = styled(MuiNativeSelect)`
     right: 1.5rem;
   }
 
-  border: 1px solid ${({ theme }) => theme.colors.gray34};
-  color: ${({ theme }) => theme.colors.white92};
+  border: 1px solid var(--color-gray34);
+  color: var(--color-white92);
 
   .MuiNativeSelect-icon {
     color: currentColor;

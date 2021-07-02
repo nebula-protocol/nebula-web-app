@@ -1,19 +1,5 @@
 import { createGlobalStyle, css } from 'styled-components';
-import { NebulaTheme } from './theme';
 import { breakpoints } from './env';
-
-function bodyStyleIfThemeExists(theme?: NebulaTheme): string {
-  if (!theme) return '';
-
-  const styles = [];
-
-  if (theme?.colors) {
-    styles.push(`background-color: ${theme.colors.gray11};`);
-    styles.push(`color: ${theme.colors.white80};`);
-  }
-
-  return `body { ${styles.join('')} }`;
-}
 
 export const globalStyle = css`
   html,
@@ -21,7 +7,10 @@ export const globalStyle = css`
     margin: 0;
   }
 
-  ${({ theme }) => bodyStyleIfThemeExists(theme)};
+  body {
+    background-color: var(--color-gray11);
+    color: var(--color-white80);
+  }
 
   html {
     font-family: var(--font-family);

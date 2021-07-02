@@ -79,7 +79,7 @@ const Container = styled.div`
 
   font-size: 1em;
 
-  border: 1px solid ${({ theme }) => theme.colors.gray34};
+  border: 1px solid var(--color-gray34);
   border-radius: 8px;
 
   padding: 18px 20px 8px 20px;
@@ -90,7 +90,7 @@ const Container = styled.div`
     align-items: center;
 
     font-size: 0.9em;
-    color: ${({ theme }) => theme.colors.white44};
+    color: var(--color-white44);
     line-height: 12px;
 
     margin-bottom: 10px;
@@ -105,7 +105,7 @@ const Container = styled.div`
 
     height: 2.5em;
 
-    color: ${({ theme }) => theme.colors.white92};
+    color: var(--color-white92);
 
     > input {
       min-width: 0;
@@ -132,6 +132,6 @@ const Container = styled.div`
   }
 
   &:focus-within {
-    border: 1px solid ${({ theme }) => theme.colors.white52};
+    border: 1px solid var(--color-white52);
   }
 `;

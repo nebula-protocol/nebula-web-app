@@ -3,7 +3,8 @@ import { JSDateTime, UST, uUST } from '@nebula-js/types';
 import { Chart } from 'chart.js';
 import { format } from 'date-fns';
 import React, { Component, createRef } from 'react';
-import styled, { DefaultTheme } from 'styled-components';
+import { getCssVariable } from 'style-router';
+import styled from 'styled-components';
 
 interface ChartData {
   y: number;
@@ -13,7 +14,7 @@ interface ChartData {
 
 export interface BarChartProps {
   data: ChartData[];
-  theme: DefaultTheme;
+  color: string;
 }
 
 export class BarChart extends Component<BarChartProps> {
@@ -34,12 +35,17 @@ export class BarChart extends Component<BarChartProps> {
 
   shouldComponentUpdate(nextProps: Readonly<BarChartProps>): boolean {
     return (
-      this.props.data !== nextProps.data || this.props.theme !== nextProps.theme
+      this.props.data !== nextProps.data || this.props.color !== nextProps.color
     );
   }
 
   componentDidMount() {
     this.createChart();
+
+    setTimeout(() => {
+      this.updateColor();
+      this.chart.update();
+    }, 100);
   }
 
   componentDidUpdate(prevProps: Readonly<BarChartProps>) {
@@ -50,19 +56,23 @@ export class BarChart extends Component<BarChartProps> {
       this.chart.data.datasets[0].data = this.props.data.map(({ y }) => y);
     }
 
-    if (prevProps.theme !== this.props.theme) {
-      if (this.chart.options.scales?.y?.grid) {
-        this.chart.options.scales.y.grid.color =
-          this.props.theme.palette.type === 'dark'
-            ? 'rgba(255, 255, 255, 0.05)'
-            : 'rgba(0, 0, 0, 0.05)';
-      }
-      this.chart.data.datasets[0].backgroundColor =
-        this.props.theme.colors.white44;
+    if (prevProps.color !== this.props.color) {
+      this.updateColor();
     }
 
     this.chart.update();
   }
+
+  private updateColor = () => {
+    if (this.chart.options.scales?.y?.grid) {
+      this.chart.options.scales.y.grid.color =
+        this.props.color === 'dark'
+          ? 'rgba(255, 255, 255, 0.05)'
+          : 'rgba(0, 0, 0, 0.05)';
+    }
+    this.chart.data.datasets[0].backgroundColor =
+      getCssVariable('--color-white44');
+  };
 
   private createChart = () => {
     this.chart = new Chart(this.canvasRef.current!, {
@@ -101,7 +111,7 @@ export class BarChart extends Component<BarChartProps> {
             grid: {
               drawBorder: false,
               color:
-                this.props.theme.palette.type === 'dark'
+                this.props.color === 'dark'
                   ? 'rgba(255, 255, 255, 0.05)'
                   : 'rgba(0, 0, 0, 0.05)',
             },
@@ -118,7 +128,7 @@ export class BarChart extends Component<BarChartProps> {
         datasets: [
           {
             data: this.props.data?.map(({ y }) => y),
-            backgroundColor: this.props.theme.colors.white44,
+            backgroundColor: getCssVariable('--color-white44'),
           },
         ],
       },

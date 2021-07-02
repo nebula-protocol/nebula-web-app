@@ -70,12 +70,16 @@ const Dropdown = styled.div`
 export const Connected = styled(ConnectedBase)`
   ${walletButtonMeasure};
 
-  border: 1px solid ${({ theme }) => theme.colors.gray24};
-  color: ${({ theme }) => theme.colors.paleblue.main};
+  border: 1px solid var(--color-gray24);
+  color: var(--color-paleblue);
 
   &:hover {
-    border-color: ${({ theme }) => theme.colors.paleblue.main};
-    color: ${({ theme }) => theme.colors.paleblue.light};
+    border-color: var(--color-paleblue);
+    color: hsl(
+      var(--color-paleblue-h),
+      var(--color-paleblue-s),
+      calc(var(--color-paleblue-l) + 15%)
+    );
   }
 
   transition: border-color 0.3s ease-out, color 0.3s ease-out;

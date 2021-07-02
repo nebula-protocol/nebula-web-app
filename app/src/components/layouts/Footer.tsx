@@ -8,8 +8,8 @@ import {
   ModeIcon,
 } from '@nebula-js/icons';
 import { EmptyButton } from '@nebula-js/ui';
-import { useTheme } from 'contexts/theme';
 import React from 'react';
+import { useStyle } from 'style-router';
 import styled from 'styled-components';
 
 export interface FooterProps {
@@ -17,7 +17,7 @@ export interface FooterProps {
 }
 
 function FooterBase({ className }: FooterProps) {
-  const { themeColor, updateTheme } = useTheme();
+  const { color, updateColor } = useStyle();
 
   return (
     <div className={className}>
@@ -50,7 +50,7 @@ function FooterBase({ className }: FooterProps) {
           <DocsIcon /> Docs
         </EmptyButton>
         <EmptyButton
-          onClick={() => updateTheme(themeColor === 'dark' ? 'light' : 'dark')}
+          onClick={() => updateColor(color === 'dark' ? 'light' : 'dark')}
         >
           <ModeIcon />
         </EmptyButton>
@@ -70,10 +70,10 @@ export const Footer = styled(FooterBase)`
 
     margin-right: 20px;
 
-    color: ${({ theme }) => theme.colors.white44};
+    color: var(--color-white44);
 
     &:hover {
-      color: ${({ theme }) => theme.colors.paleblue.main};
+      color: var(--color-paleblue);
     }
   }
 
@@ -83,8 +83,8 @@ export const Footer = styled(FooterBase)`
       padding: 12px;
       margin-left: 1px;
 
-      background-color: ${({ theme }) => theme.colors.gray14};
-      color: ${({ theme }) => theme.colors.white44};
+      background-color: var(--color-gray14);
+      color: var(--color-white44);
 
       font-size: 12px;
 

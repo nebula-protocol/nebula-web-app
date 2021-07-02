@@ -43,7 +43,7 @@ export const NEBPrice = styled(NEBPriceBase)`
     h4 {
       font-size: var(--font-size12);
       font-weight: 500;
-      color: ${({ theme }) => theme.colors.white44};
+      color: var(--color-white44);
     }
   }
 `;

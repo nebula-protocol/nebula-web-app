@@ -1,7 +1,8 @@
 import { JSDateTime, uUST } from '@nebula-js/types';
 import { DiffSpan, Sub } from '@nebula-js/ui';
 import React from 'react';
-import styled, { useTheme } from 'styled-components';
+import { useStyle } from 'style-router';
+import styled from 'styled-components';
 import { AreaChart } from './AreaChart';
 
 const chartData = Array.from(
@@ -20,7 +21,7 @@ export interface TotalProvidedProps {
 }
 
 function TotalProvidedBase({ className }: TotalProvidedProps) {
-  const theme = useTheme();
+  const { color } = useStyle();
 
   return (
     <div className={className}>
@@ -33,7 +34,7 @@ function TotalProvidedBase({ className }: TotalProvidedProps) {
         </DiffSpan>
       </p>
 
-      <AreaChart data={chartData} theme={theme} />
+      <AreaChart data={chartData} color={color} />
     </div>
   );
 }

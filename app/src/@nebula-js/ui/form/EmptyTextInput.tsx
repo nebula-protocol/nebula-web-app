@@ -6,5 +6,5 @@ export const EmptyTextInput = styled.input`
   outline: none;
   padding: 0;
 
-  color: ${({ theme }) => theme.colors.white92};
+  color: var(--color-white92);
 `;

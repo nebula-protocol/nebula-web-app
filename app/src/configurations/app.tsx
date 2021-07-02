@@ -15,7 +15,7 @@ import {
   BankProvider,
   TerraWebappProvider,
 } from '@terra-money/webapp-provider';
-import { Breakpoint, StyleRouter } from 'style-router';
+import { Breakpoint, StyleRouter, StyleRoute, ImportCss } from 'style-router';
 import { useReadonlyWalletDialog } from 'components/dialogs/useReadonlyWalletDialog';
 import { ThemeProvider } from 'contexts/theme';
 import React, { ReactNode, useCallback } from 'react';
@@ -88,6 +88,12 @@ export function AppProviders({ children }: { children: ReactNode }) {
                     breakpoints={breakpoints}
                     fallbackBreakpoint="large"
                   >
+                    <StyleRoute matchColor="dark">
+                      <ImportCss href="/styles/colors/dark.css" />
+                    </StyleRoute>
+                    <StyleRoute matchColor="light">
+                      <ImportCss href="/styles/colors/light.css" />
+                    </StyleRoute>
                     <ThemeProvider>
                       <GlobalStyle />
                       {children}

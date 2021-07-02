@@ -84,7 +84,7 @@ const StyledDashboardMain = styled(DashboardMainBase)`
   h3 {
     font-size: var(--font-size16-14);
     font-weight: 500;
-    color: ${({ theme }) => theme.colors.white92};
+    color: var(--color-white92);
     margin-bottom: 8px;
   }
 

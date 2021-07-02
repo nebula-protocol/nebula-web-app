@@ -26,7 +26,7 @@ export const TokenSpan = styled(TokenSpanBase)`
   }
 
   > i:empty {
-    background-color: ${({ theme }) => theme.colors.gray34};
+    background-color: var(--color-gray34);
     border-radius: 50%;
     min-width: 1.4em;
     min-height: 1.4em;

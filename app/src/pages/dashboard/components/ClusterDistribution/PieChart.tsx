@@ -43,12 +43,12 @@ export class PieChart extends Component<PieChartProps> {
       );
     }
 
-    if (this.props.theme !== prevProps.theme) {
-      if (this.chart.options.plugins?.datalabels) {
-        this.chart.options.plugins.datalabels.color =
-          this.props.theme.colors.gray14;
-      }
-    }
+    //if (this.props.theme !== prevProps.theme) {
+    //  if (this.chart.options.plugins?.datalabels) {
+    //    this.chart.options.plugins.datalabels.color =
+    //      this.props.theme.colors.gray14;
+    //  }
+    //}
 
     this.chart.update();
   }
@@ -71,7 +71,7 @@ export class PieChart extends Component<PieChartProps> {
             font: {
               size: 11,
             },
-            color: this.props.theme.colors.gray14,
+            color: 'var(--color-gray14)',
             formatter: (value, context) => {
               return context.chart.data.labels?.[context.dataIndex];
             },

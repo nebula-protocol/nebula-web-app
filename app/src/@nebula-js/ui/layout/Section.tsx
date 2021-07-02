@@ -30,8 +30,8 @@ export const Section = styled(SectionBase)`
 
   border-radius: 8px;
 
-  background-color: ${({ theme }) => theme.colors.gray18};
-  color: ${({ theme }) => theme.colors.white92};
+  background-color: var(--color-gray18);
+  color: var(--color-white92);
 
   h1 {
     font-size: 2rem;

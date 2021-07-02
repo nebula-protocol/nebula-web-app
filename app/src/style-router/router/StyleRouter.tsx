@@ -41,13 +41,17 @@ function findBreakpoint(
   return breakpoint?.[0] ?? fallbackBreakpoint;
 }
 
+const COLOR_KEY = '__style-router_color__';
+
 export function StyleRouter({
   children,
   defaultColor,
   fallbackBreakpoint,
   breakpoints,
 }: StyleRouterProps) {
-  const [color, setColor] = useState<string>(defaultColor);
+  const [color, setColor] = useState<string>(
+    () => localStorage.getItem(COLOR_KEY) ?? defaultColor,
+  );
   const [breakpoint, setBreakpoint] = useState<string>(() =>
     findBreakpoint(window.innerWidth, breakpoints, fallbackBreakpoint),
   );

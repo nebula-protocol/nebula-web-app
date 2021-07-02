@@ -43,7 +43,7 @@ const Container = styled.section`
 
     > hr {
       border: 0;
-      border-bottom: 1px solid ${({ theme }) => theme.colors.gray18};
+      border-bottom: 1px solid var(--color-gray18);
       margin: 0 0 48px;
     }
 

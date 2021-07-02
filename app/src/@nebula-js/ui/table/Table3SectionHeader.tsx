@@ -4,7 +4,7 @@ import { breakpoints } from '../env';
 export const Table3SectionHeader = styled.div`
   padding: 1rem 2rem;
 
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray11};
+  border-bottom: 1px solid var(--color-gray11);
 
   display: grid;
   grid-template-columns: auto 1fr;
@@ -17,7 +17,7 @@ export const Table3SectionHeader = styled.div`
     grid-row: 1;
 
     font-size: 16px !important;
-    color: ${({ theme }) => theme.colors.paleblue.main};
+    color: var(--color-paleblue);
   }
 
   > .buttons {
@@ -28,10 +28,14 @@ export const Table3SectionHeader = styled.div`
     gap: 1em;
 
     button {
-      color: ${({ theme }) => theme.colors.paleblue.main};
+      color: var(--color-paleblue);
 
       &:hover {
-        color: ${({ theme }) => theme.colors.paleblue.light};
+        color: hsl(
+          var(--color-paleblue-h),
+          var(--color-paleblue-s),
+          calc(var(--color-paleblue-l) + 15%)
+        );
       }
     }
   }
