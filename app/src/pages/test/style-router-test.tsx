@@ -1,8 +1,8 @@
 import { Button } from '@nebula-js/ui';
-import { ImportCss, StyleRoute, useCssVariable, useStyle } from 'style-router';
 import { MainLayout } from 'components/layouts/MainLayout';
 import { fixHMR } from 'fix-hmr';
 import React from 'react';
+import { StyleRoute, useCssVariable, useStyle } from 'style-router';
 import styled, { createGlobalStyle } from 'styled-components';
 
 export interface StyleRouterTestProps {
@@ -25,13 +25,11 @@ function StyleRouterTestBase({ className }: StyleRouterTestProps) {
         <div>current: {color}</div>
 
         <StyleRoute matchColor="dark">
-          <ImportCss href="/styles/colors/dark.css" />
           <GlobalStyleDark />
           <p>color: dark</p>
         </StyleRoute>
 
         <StyleRoute matchColor="light">
-          <ImportCss href="/styles/colors/light.css" />
           <GlobalStyleLight />
           <p>color: light</p>
         </StyleRoute>
@@ -39,7 +37,11 @@ function StyleRouterTestBase({ className }: StyleRouterTestProps) {
         <footer style={{ marginTop: 20 }}>
           <Button
             size="small"
-            onClick={() => updateColor(color === 'dark' ? 'light' : 'dark')}
+            onClick={() =>
+              updateColor((prevColor) =>
+                prevColor === 'dark' ? 'light' : 'dark',
+              )
+            }
           >
             Change color (current: {color})
           </Button>
@@ -50,22 +52,18 @@ function StyleRouterTestBase({ className }: StyleRouterTestProps) {
         <div>current: {breakpoint}</div>
 
         <StyleRoute matchBreakpoint="small">
-          <ImportCss href="/styles/layouts/small.css" />
           <p>breakpoint: small</p>
         </StyleRoute>
 
         <StyleRoute matchBreakpoint="medium">
-          <ImportCss href="/styles/layouts/medium.css" />
           <p>breakpoint: medium</p>
         </StyleRoute>
 
         <StyleRoute matchBreakpoint="large">
-          <ImportCss href="/styles/layouts/large.css" />
           <p>breakpoint: large</p>
         </StyleRoute>
 
         <StyleRoute matchBreakpoint="xlarge">
-          <ImportCss href="/styles/layouts/xlarge.css" />
           <p>breakpoint: xlarge</p>
         </StyleRoute>
       </section>

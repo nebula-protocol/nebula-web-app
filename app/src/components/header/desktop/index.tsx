@@ -12,7 +12,7 @@ export interface DesktopHeaderProps {
 }
 
 function DesktopHeaderBase({ className }: DesktopHeaderProps) {
-  const { color, updateColor } = useStyle();
+  const { updateColor } = useStyle();
 
   return (
     <header className={className}>
@@ -29,7 +29,11 @@ function DesktopHeaderBase({ className }: DesktopHeaderProps) {
 
         <EmptyButton
           size={18}
-          onClick={() => updateColor(color === 'dark' ? 'light' : 'dark')}
+          onClick={() =>
+            updateColor((prevColor) =>
+              prevColor === 'dark' ? 'light' : 'dark',
+            )
+          }
         >
           <ModeIcon />
         </EmptyButton>

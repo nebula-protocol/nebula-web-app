@@ -4,6 +4,8 @@ import React, {
   Context,
   createContext,
   ReactNode,
+  SetStateAction,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -23,7 +25,7 @@ export interface StyleRouterProps {
 export interface StyleRouterState {
   color: string;
   breakpoint: string;
-  updateColor: (nextColor: string) => void;
+  updateColor: (nextColor: SetStateAction<string>) => void;
 }
 
 export const StyleRouterContext: Context<StyleRouterState> =
@@ -59,9 +61,18 @@ export function StyleRouter({
   const initialBreakpoints = useRef(breakpoints);
   const initialFallbackBreakpoint = useRef(fallbackBreakpoint);
 
+  const updateColor = useCallback((nextColor: SetStateAction<string>) => {
+    setColor((prevColor) => {
+      const c =
+        typeof nextColor === 'function' ? nextColor(prevColor) : nextColor;
+      localStorage.setItem(COLOR_KEY, c);
+      return c;
+    });
+  }, []);
+
   const state = useMemo<StyleRouterState>(
-    () => ({ color, breakpoint, updateColor: setColor }),
-    [breakpoint, color],
+    () => ({ color, breakpoint, updateColor }),
+    [breakpoint, color, updateColor],
   );
 
   useEffect(() => {

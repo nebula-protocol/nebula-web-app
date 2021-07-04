@@ -17,7 +17,7 @@ export interface FooterProps {
 }
 
 function FooterBase({ className }: FooterProps) {
-  const { color, updateColor } = useStyle();
+  const { updateColor } = useStyle();
 
   return (
     <div className={className}>
@@ -50,7 +50,11 @@ function FooterBase({ className }: FooterProps) {
           <DocsIcon /> Docs
         </EmptyButton>
         <EmptyButton
-          onClick={() => updateColor(color === 'dark' ? 'light' : 'dark')}
+          onClick={() =>
+            updateColor((prevColor) =>
+              prevColor === 'dark' ? 'light' : 'dark',
+            )
+          }
         >
           <ModeIcon />
         </EmptyButton>

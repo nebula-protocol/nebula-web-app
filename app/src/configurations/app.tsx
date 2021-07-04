@@ -1,4 +1,3 @@
-import { GlobalStyle } from '@nebula-js/ui';
 import {
   NEBULA_TX_REFETCH_MAP,
   NebulaWebappProvider,
@@ -15,9 +14,9 @@ import {
   BankProvider,
   TerraWebappProvider,
 } from '@terra-money/webapp-provider';
-import { Breakpoint, StyleRouter, StyleRoute, ImportCss } from 'style-router';
 import { useReadonlyWalletDialog } from 'components/dialogs/useReadonlyWalletDialog';
-import { ThemeProvider } from 'contexts/theme';
+import { StyleProviders } from 'configurations/style';
+
 import React, { ReactNode, useCallback } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -36,13 +35,6 @@ const queryClient = new QueryClient();
 
 const errorReporter =
   process.env.NODE_ENV === 'production' ? captureException : undefined;
-
-const breakpoints: Breakpoint[] = [
-  ['small', '<=530'],
-  ['medium', '>530 and <=830'],
-  ['large', '>830 and <=1440'],
-  ['xlarge', '>1440'],
-];
 
 export function AppProviders({ children }: { children: ReactNode }) {
   const [openReadonlyWalletSelector, readonlyWalletSelectorElement] =
@@ -83,23 +75,10 @@ export function AppProviders({ children }: { children: ReactNode }) {
                 <NebulaWebappProvider>
                   <GoogleAnalytics trackingId={GA_TRACKING_ID} />
                   <RouterScrollRestoration />
-                  <StyleRouter
-                    defaultColor="dark"
-                    breakpoints={breakpoints}
-                    fallbackBreakpoint="large"
-                  >
-                    <StyleRoute matchColor="dark">
-                      <ImportCss href="/styles/colors/dark.css" />
-                    </StyleRoute>
-                    <StyleRoute matchColor="light">
-                      <ImportCss href="/styles/colors/light.css" />
-                    </StyleRoute>
-                    <ThemeProvider>
-                      <GlobalStyle />
-                      {children}
-                      {readonlyWalletSelectorElement}
-                    </ThemeProvider>
-                  </StyleRouter>
+                  <StyleProviders>
+                    {children}
+                    {readonlyWalletSelectorElement}
+                  </StyleProviders>
                 </NebulaWebappProvider>
               </BankProvider>
             </TerraWebappProvider>
