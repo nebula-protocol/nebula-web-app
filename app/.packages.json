@@ -8,6 +8,10 @@
     "version": "0.1.0",
     "tag": "latest"
   },
+  "@terra-ux/*": {
+    "version": "0.1.0",
+    "tag": "latest"
+  },
   "style-router": {
     "version": "0.1.0",
     "tag": "latest"
