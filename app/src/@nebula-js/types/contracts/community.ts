@@ -18,7 +18,9 @@ export namespace community {
   // ---------------------------------------------
   // QueryMsg
   // ---------------------------------------------
-  export interface Config {}
+  export interface Config {
+    config: {};
+  }
 
   export interface ConfigResponse {
     owner: HumanAddr;

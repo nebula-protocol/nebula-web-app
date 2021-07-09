@@ -2,43 +2,44 @@ import { rs } from './common';
 
 export namespace penalty {
   // ---------------------------------------------
-  // HandleMsg
-  // ---------------------------------------------
-  export interface Mint {
-    block_height: rs.u64;
-    // TODO is this token type?
-    cluster_token_supply: rs.Uint128;
-    // TODO is this token type?
-    inventory: rs.Uint128[];
-    // TODO set token type to mint_asset_amounts
-    mint_asset_amounts: rs.Uint128[];
-    // TODO ??? is this string?
-    asset_prices: string[];
-    target_weights: rs.u32[];
-  }
-
-  export interface Redeem {
-    block_height: rs.u64;
-    // TODO is this token type?
-    cluster_token_supply: rs.Uint128;
-    // TODO is this token type?
-    inventory: rs.Uint128[];
-    max_tokens: rs.Uint128;
-    // TODO set token type to redeem_asset_amounts
-    redeem_asset_amounts: rs.Uint128[];
-    // TODO ??? is this string?
-    asset_prices: string[];
-    target_weights: rs.u32[];
-  }
-
-  // ---------------------------------------------
   // QueryMsg
   // ---------------------------------------------
+  export interface Mint {
+    mint: {
+      block_height: rs.u64;
+      // TODO is this token type?
+      cluster_token_supply: rs.Uint128;
+      // TODO is this token type?
+      inventory: rs.Uint128[];
+      // TODO set token type to mint_asset_amounts
+      mint_asset_amounts: rs.Uint128[];
+      // TODO ??? is this string?
+      asset_prices: string[];
+      target_weights: rs.u32[];
+    };
+  }
+
   export interface MintResponse {
     mint_tokens: rs.Uint128;
     // TODO is this token type?
     penalty: rs.Uint128;
     log: unknown[]; //LogAttribute[],
+  }
+
+  export interface Redeem {
+    redeem: {
+      block_height: rs.u64;
+      // TODO is this token type?
+      cluster_token_supply: rs.Uint128;
+      // TODO is this token type?
+      inventory: rs.Uint128[];
+      max_tokens: rs.Uint128;
+      // TODO set token type to redeem_asset_amounts
+      redeem_asset_amounts: rs.Uint128[];
+      // TODO ??? is this string?
+      asset_prices: string[];
+      target_weights: rs.u32[];
+    };
   }
 
   export interface RedeemResponse {
@@ -50,7 +51,9 @@ export namespace penalty {
     log: unknown[]; //LogAttribute[],
   }
 
-  export interface Params {}
+  export interface Params {
+    params: {};
+  }
 
   export interface ParamsResponse {
     //penalty_params: PenaltyParams;

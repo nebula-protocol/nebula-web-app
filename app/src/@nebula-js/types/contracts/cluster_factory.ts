@@ -74,7 +74,9 @@ export namespace cluster_factory {
   // ---------------------------------------------
   // QueryMsg
   // ---------------------------------------------
-  export interface Config {}
+  export interface Config {
+    config: {};
+  }
 
   export interface ConfigResponse {
     owner: HumanAddr;
@@ -100,21 +102,27 @@ export namespace cluster_factory {
   }
 
   export interface ClusterExists {
-    contract_addr: HumanAddr;
+    cluster_exists: {
+      contract_addr: HumanAddr;
+    };
   }
 
   export interface ClusterExistsResponse {
     exists: boolean;
   }
 
-  export interface ClusterList {}
+  export interface ClusterList {
+    cluster_list: {};
+  }
 
   export interface ClusterListResponse {
     contract_addrs: HumanAddr[];
   }
 
   // TODO there is no this type
-  export interface DistributionInfo {}
+  export interface DistributionInfo {
+    distribution_info: {};
+  }
 
   export interface DistributionInfoResponse {
     weights: Array<[HumanAddr, rs.u32]>;

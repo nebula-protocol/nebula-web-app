@@ -5,11 +5,11 @@
     "build": "node webpack.js"
   },
   "dependencies": {
-    "@terra-money/terra.js": "^1.8.4",
+    "@terra-money/terra.js": "^1.8.5",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
     "process": "^0.11.10",
     "stream-browserify": "^3.0.0",
-    "webpack": "^5.40.0"
+    "webpack": "^5.44.0"
   }
 }

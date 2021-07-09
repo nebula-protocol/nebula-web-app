@@ -29,3 +29,24 @@ export enum OrderBy {
   Asc = 'Asc',
   Desc = 'Desc',
 }
+
+export interface ContractAddress {
+  airdrop: HumanAddr;
+  cluster: HumanAddr;
+  clusterFactory: HumanAddr;
+  collector: HumanAddr;
+  community: HumanAddr;
+  gov: HumanAddr;
+  incentives: HumanAddr;
+  incentivesCustody: HumanAddr;
+  penalty: HumanAddr;
+  staking: HumanAddr;
+
+  terraswap: {
+    nebUstPair: HumanAddr;
+  };
+
+  cw20: {
+    NEB: CW20Addr;
+  };
+}

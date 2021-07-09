@@ -29,7 +29,9 @@ export namespace airdrop {
   // ---------------------------------------------
   // QueryMsg
   // ---------------------------------------------
-  export interface Config {}
+  export interface Config {
+    config: {};
+  }
 
   export interface ConfigResponse {
     owner: HumanAddr;
@@ -38,7 +40,9 @@ export namespace airdrop {
   }
 
   export interface MerkleRoot {
-    stage: rs.u8;
+    merkle_root: {
+      stage: rs.u8;
+    };
   }
 
   export interface MerkleRootResponse {
@@ -46,15 +50,19 @@ export namespace airdrop {
     merkle_root: string;
   }
 
-  export interface LatestStage {}
+  export interface LatestStage {
+    latest_stage: {};
+  }
 
   export interface LatestStageResponse {
     latest_stage: rs.u8;
   }
 
   export interface IsClaimed {
-    stage: rs.u8;
-    address: HumanAddr;
+    is_claimed: {
+      stage: rs.u8;
+      address: HumanAddr;
+    };
   }
 
   export interface IsClaimedResponse {

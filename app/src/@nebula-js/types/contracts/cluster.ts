@@ -43,13 +43,17 @@ export namespace cluster {
     penalty: HumanAddr;
   }
 
-  export interface Config {}
+  export interface Config {
+    config: {};
+  }
 
   export interface ConfigResponse {
     config: ClusterConfig;
   }
 
-  export interface Target {}
+  export interface Target {
+    target: {};
+  }
 
   export interface TargetResponse {
     assets: terraswap.AssetInfo[];
@@ -57,7 +61,9 @@ export namespace cluster {
   }
 
   export interface ClusterState {
-    cluster_contract_address: HumanAddr;
+    cluster_state: {
+      cluster_contract_address: HumanAddr;
+    };
   }
 
   export interface ClusterStateResponse {

@@ -17,7 +17,9 @@ export namespace staking {
   // ---------------------------------------------
   // QueryMsg
   // ---------------------------------------------
-  export interface Config {}
+  export interface Config {
+    config: {};
+  }
 
   export interface ConfigResponse {
     owner: HumanAddr;
@@ -25,7 +27,10 @@ export namespace staking {
   }
 
   export interface PoolInfo {
-    asset_token: HumanAddr;
+    pool_info: {
+      // TODO is this CW20Addr or HumanAddr?
+      asset_token: HumanAddr;
+    };
   }
 
   export interface PoolInfoResponse {
@@ -39,8 +44,10 @@ export namespace staking {
   }
 
   export interface RewardInfo {
-    staker_addr: HumanAddr;
-    asset_token?: HumanAddr;
+    reward_info: {
+      staker_addr: HumanAddr;
+      asset_token?: HumanAddr;
+    };
   }
 
   export interface RewardInfoResponse {

@@ -2,9 +2,10 @@ import { rs } from './common';
 
 export namespace incentives_custody {
   // ---------------------------------------------
-  // QueryMsg
+  // HandleMsg
   // ---------------------------------------------
   export interface RequestNeb {
+    // TODO set token type
     amount: rs.Uint128;
   }
 }

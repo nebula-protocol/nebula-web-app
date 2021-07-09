@@ -1,3 +1,4 @@
+import { uNEB } from '@nebula-js/types/tokens';
 import { HumanAddr, OrderBy, rs } from './common';
 
 export namespace gov {
@@ -82,7 +83,9 @@ export namespace gov {
   // ---------------------------------------------
   // QueryMsg
   // ---------------------------------------------
-  export interface Config {}
+  export interface Config {
+    config: {};
+  }
 
   export interface ConfigResponse {
     owner: HumanAddr;
@@ -97,12 +100,13 @@ export namespace gov {
     snapshot_period: rs.u64;
   }
 
-  export interface State {}
+  export interface State {
+    state: {};
+  }
 
   export interface StateResponse {
     poll_count: rs.u64;
-    // TODO set token type to total_share
-    total_share: rs.Uint128;
+    total_share: uNEB<rs.Uint128>;
     // TODO set token type to total_deposit
     total_deposit: rs.Uint128;
     // TODO set token type to pending_voting_rewards
@@ -110,7 +114,9 @@ export namespace gov {
   }
 
   export interface Staker {
-    address: HumanAddr;
+    staker: {
+      address: HumanAddr;
+    };
   }
 
   export interface StakerResponse {
@@ -125,7 +131,9 @@ export namespace gov {
   }
 
   export interface Poll {
-    poll_id: rs.u64;
+    poll: {
+      poll_id: rs.u64;
+    };
   }
 
   export interface PollResponse {
@@ -139,12 +147,9 @@ export namespace gov {
     // TODO set token type to deposit_amount
     deposit_amount: rs.Uint128;
     execute_data?: ExecuteMsg;
-    // TODO set token type to yes_votes
-    yes_votes: rs.Uint128; // balance
-    // TODO set token type to no_votes
-    no_votes: rs.Uint128; // balance
-    // TODO set token type to abstain_votes
-    abstain_votes: rs.Uint128; // balance
+    yes_votes: uNEB<rs.Uint128>; // balance
+    no_votes: uNEB<rs.Uint128>; // balance
+    abstain_votes: uNEB<rs.Uint128>; // balance
     // TODO set token type to total_balance_at_end_poll
     total_balance_at_end_poll?: rs.Uint128;
     // TODO set token type to voters_reward
@@ -154,10 +159,12 @@ export namespace gov {
   }
 
   export interface Polls {
-    filter?: PollStatus;
-    start_after?: rs.u64;
-    limit?: rs.u32;
-    order_by?: OrderBy;
+    polls: {
+      filter?: PollStatus;
+      start_after?: rs.u64;
+      limit?: rs.u32;
+      order_by?: OrderBy;
+    };
   }
 
   export interface PollsResponse {
@@ -165,10 +172,12 @@ export namespace gov {
   }
 
   export interface Voters {
-    poll_id: rs.u64;
-    start_after?: HumanAddr;
-    limit?: rs.u32;
-    order_by?: OrderBy;
+    voters: {
+      poll_id: rs.u64;
+      start_after?: HumanAddr;
+      limit?: rs.u32;
+      order_by?: OrderBy;
+    };
   }
 
   export interface VotersResponse {

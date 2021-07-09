@@ -10,3 +10,4 @@ export * from './incentives_custody';
 export * from './penalty';
 export * from './staking';
 export * from './terraswap';
+export * from './cw20';

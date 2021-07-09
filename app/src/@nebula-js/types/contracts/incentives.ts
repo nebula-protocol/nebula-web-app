@@ -58,7 +58,9 @@ export namespace incentives {
   // ---------------------------------------------
   // QueryMsg
   // ---------------------------------------------
-  export interface Config {}
+  export interface Config {
+    config: {};
+  }
 
   export interface ConfigResponse {
     factory: HumanAddr;

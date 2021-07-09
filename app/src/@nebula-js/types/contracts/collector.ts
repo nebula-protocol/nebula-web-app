@@ -13,7 +13,9 @@ export namespace collector {
   // ---------------------------------------------
   // QueryMsg
   // ---------------------------------------------
-  export interface Config {}
+  export interface Config {
+    config: {};
+  }
 
   export interface ConfigResponse {
     distribution_contract: HumanAddr; // collected rewards receiver
