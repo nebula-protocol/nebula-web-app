@@ -14,3 +14,18 @@ export type Base64EncodedJson = string & NominalType<'Base64EncodedJson'>;
 export type WASMContractResult = {
   Result: string;
 };
+
+export namespace rs {
+  export type u8 = number;
+  export type u32 = number;
+  export type u64 = number;
+  // TODO is this number or string?
+  export type Uint128 = number;
+  // TODO is this number or string?
+  export type Decimal = number;
+}
+
+export enum OrderBy {
+  Asc = 'Asc',
+  Desc = 'Desc',
+}
