@@ -1,4 +1,4 @@
-import { uNEB } from '../tokens';
+import { u, NEB } from '../tokens';
 import { CW20Addr, HumanAddr, rs } from './common';
 
 export namespace airdrop {
@@ -22,7 +22,7 @@ export namespace airdrop {
   export interface Claim {
     stage: rs.u8;
     // TODO is this NEB or not?
-    amount: uNEB;
+    amount: u<NEB>;
     proof: string[];
   }
 

@@ -1,5 +1,5 @@
 import { formatToken } from '@nebula-js/notation';
-import { JSDateTime, UST, uUST } from '@nebula-js/types';
+import { JSDateTime, UST, u } from '@nebula-js/types';
 import { DiffSpan, Sub } from '@nebula-js/ui';
 import { Chart } from 'chart.js';
 import c from 'color';
@@ -10,7 +10,7 @@ import styled from 'styled-components';
 
 interface ChartData {
   y: number;
-  amount: uUST;
+  amount: u<UST>;
   date: JSDateTime;
 }
 

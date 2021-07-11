@@ -1,4 +1,4 @@
-import { cw20, uNEB } from '@nebula-js/types';
+import { cw20, u, NEB } from '@nebula-js/types';
 import {
   mantle,
   MantleParams,
@@ -7,7 +7,7 @@ import {
 } from '@terra-dev/mantle';
 
 export interface NEBTokenWasmQuery {
-  nebTokenInfo: WasmQuery<cw20.TokenInfo, cw20.TokenInfoResponse<uNEB>>;
+  nebTokenInfo: WasmQuery<cw20.TokenInfo, cw20.TokenInfoResponse<u<NEB>>>;
 }
 
 export type NEBToken = WasmQueryData<NEBTokenWasmQuery>;

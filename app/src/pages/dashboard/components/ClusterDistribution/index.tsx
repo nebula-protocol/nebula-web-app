@@ -1,4 +1,4 @@
-import { Rate, uUST } from '@nebula-js/types';
+import { Rate, u, UST } from '@nebula-js/types';
 import React, { useCallback, useEffect, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { PieChart } from './PieChart';
@@ -23,7 +23,7 @@ function ClusterDistributionBase({ className }: ClusterDistributionProps) {
         amount: (
           (Math.floor(Math.random() * 500) + 300) *
           100000
-        ).toString() as uUST,
+        ).toString() as u<UST>,
         ratio: '0.301' as Rate,
         color: colors[i % colors.length],
       }),

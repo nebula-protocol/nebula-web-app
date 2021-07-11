@@ -1,9 +1,9 @@
-import { Rate, uUST } from '@nebula-js/types';
+import { Rate, u, UST } from '@nebula-js/types';
 
 export interface Item {
   label: string;
   labelShort: string;
-  amount: uUST;
+  amount: u<UST>;
   ratio: Rate;
   color: string;
 }

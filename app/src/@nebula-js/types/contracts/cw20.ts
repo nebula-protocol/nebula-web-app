@@ -1,4 +1,4 @@
-import { uToken } from '../tokens';
+import { u, Token } from '../tokens';
 import { HumanAddr } from './common';
 
 export namespace cw20 {
@@ -8,7 +8,7 @@ export namespace cw20 {
     };
   }
 
-  export interface BalanceResponse<T extends uToken> {
+  export interface BalanceResponse<T extends u<Token>> {
     balance: T;
   }
 
@@ -16,7 +16,7 @@ export namespace cw20 {
     token_info: {};
   }
 
-  export interface TokenInfoResponse<T extends uToken> {
+  export interface TokenInfoResponse<T extends u<Token>> {
     decimals: number;
     name: string;
     symbol: symbol;

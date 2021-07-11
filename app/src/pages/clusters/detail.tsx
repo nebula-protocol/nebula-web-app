@@ -1,5 +1,5 @@
 import { formatRate } from '@nebula-js/notation';
-import { JSDateTime, Rate, uUST } from '@nebula-js/types';
+import { JSDateTime, Rate, u, UST } from '@nebula-js/types';
 import {
   BarGraph,
   breakpoints,
@@ -97,7 +97,7 @@ const chartData = Array.from(
   (_, i) => {
     return {
       y: 10 * i + 10 - Math.random() * 20,
-      amount: i.toString() as uUST,
+      amount: i.toString() as u<UST>,
       date: Date.now() as JSDateTime,
     };
   },

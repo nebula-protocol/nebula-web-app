@@ -1,8 +1,8 @@
-import { Rate, uLuna, uNEB, uUST } from '@nebula-js/types';
+import { Rate, u, Luna, NEB, UST } from '@nebula-js/types';
 
 export interface NebulaContants {
-  gasFee: uUST<number>;
-  fixedGas: uUST<number>;
+  gasFee: u<UST<number>>;
+  fixedGas: u<UST<number>>;
   blocksPerYear: number;
   gasAdjustment: Rate<number>;
 }
@@ -18,10 +18,10 @@ export interface NebulaContants {
  */
 export interface NebulaTokenBalances {
   // native tokens
-  uUST: uUST;
-  uLuna: uLuna;
+  uUST: u<UST>;
+  uLuna: u<Luna>;
   // cw20 tokens
-  uNEB: uNEB;
+  uNEB: u<NEB>;
 }
 
 /**
@@ -35,5 +35,5 @@ export interface NebulaTokenBalances {
  */
 export interface NebulaTax {
   taxRate: Rate;
-  maxTaxUUSD: uUST;
+  maxTaxUUSD: u<UST>;
 }

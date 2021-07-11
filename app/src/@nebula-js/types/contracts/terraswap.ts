@@ -1,4 +1,4 @@
-import { uToken } from '../tokens';
+import { Token, u } from '../tokens';
 import { CW20Addr, Denom, HumanAddr } from './common';
 
 export namespace terraswap {
@@ -14,7 +14,7 @@ export namespace terraswap {
     pool: {};
   }
 
-  export interface PoolResponse<T extends uToken> {
+  export interface PoolResponse<T extends u<Token>> {
     total_share: string;
     assets: [
       {
@@ -48,7 +48,7 @@ export namespace terraswap {
         };
       };
 
-  export interface Simulation<T extends uToken> {
+  export interface Simulation<T extends u<Token>> {
     simulation: {
       offer_asset: {
         info: SimulationInfo;
@@ -57,7 +57,10 @@ export namespace terraswap {
     };
   }
 
-  export interface SimulationResponse<T extends uToken, RT extends uToken = T> {
+  export interface SimulationResponse<
+    T extends u<Token>,
+    RT extends u<Token> = T,
+  > {
     commission_amount: T;
     return_amount: RT;
     spread_amount: T;
@@ -75,7 +78,7 @@ export namespace terraswap {
         };
       };
 
-  export interface ReverseSimulation<T extends uToken> {
+  export interface ReverseSimulation<T extends u<Token>> {
     reverse_simulation: {
       ask_asset: {
         info: ReverseSimulationInfo;
@@ -85,8 +88,8 @@ export namespace terraswap {
   }
 
   export interface ReverseSimulationResponse<
-    T extends uToken,
-    RT extends uToken = T,
+    T extends u<Token>,
+    RT extends u<Token> = T,
   > {
     commission_amount: T;
     offer_amount: RT;

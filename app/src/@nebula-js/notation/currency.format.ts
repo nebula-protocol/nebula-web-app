@@ -1,4 +1,4 @@
-import { Token, uToken } from '@nebula-js/types';
+import { Token, u } from '@nebula-js/types';
 import big, { BigSource } from 'big.js';
 import { demicrofy, MICRO } from './currency';
 import { formatDemimal, formatInteger } from './unit.format';
@@ -33,18 +33,6 @@ export const iFormatter = formatInteger({ delimiter: true });
 // ---------------------------------------------
 // constants
 // ---------------------------------------------
-//export const UST_INPUT_MAXIMUM_INTEGER_POINTS = 14;
-//export const UST_INPUT_MAXIMUM_DECIMAL_POINTS = 3;
-//
-//export const AUST_INPUT_MAXIMUM_INTEGER_POINTS = 14;
-//export const AUST_INPUT_MAXIMUM_DECIMAL_POINTS = 6;
-//
-//export const LUNA_INPUT_MAXIMUM_INTEGER_POINTS = 14;
-//export const LUNA_INPUT_MAXIMUM_DECIMAL_POINTS = 6;
-//
-//export const ANC_INPUT_MAXIMUM_INTEGER_POINTS = 14;
-//export const ANC_INPUT_MAXIMUM_DECIMAL_POINTS = 6;
-
 const M = 1000000;
 
 // ---------------------------------------------
@@ -58,7 +46,7 @@ export function formatToken(n: Token<BigSource>): string {
   return d6Formatter(n);
 }
 
-export function formatUToken(n: uToken<BigSource>): string {
+export function formatUToken(n: u<Token<BigSource>>): string {
   return d6Formatter(demicrofy(n));
 }
 
@@ -70,7 +58,7 @@ export function formatTokenWithPostfixUnits(n: Token<BigSource>): string {
 // ---------------------------------------------
 // unspecific format functions
 // ---------------------------------------------
-export function formatUTokenDecimal2(n: uToken<BigSource>): string {
+export function formatUTokenDecimal2(n: u<Token<BigSource>>): string {
   const bn = big(n).div(MICRO);
   return bn.gte(M) ? d2Formatter(bn.div(M)) + 'M' : d2Formatter(bn);
 }
@@ -82,17 +70,17 @@ export function formatTokenIntegerWithPostfixUnits(
 }
 
 export function formatUTokenIntegerWithPostfixUnits(
-  n: uToken<BigSource>,
+  n: u<Token<BigSource>>,
 ): string {
   const bn = big(n).div(MICRO);
   return bn.gte(M) ? iFormatter(bn.div(M)) + 'M' : iFormatter(bn);
 }
 
-export function formatUTokenInteger(n: uToken<BigSource>): string {
+export function formatUTokenInteger(n: u<Token<BigSource>>): string {
   const bn = big(n).div(MICRO);
   return iFormatter(bn);
 }
 
-export function formatTokenInteger(n: uToken<BigSource>): string {
+export function formatTokenInteger(n: u<Token<BigSource>>): string {
   return iFormatter(n);
 }

@@ -1,5 +1,5 @@
 import { WalletIcon } from '@nebula-js/icons';
-import { uUST } from '@nebula-js/types';
+import { u, UST } from '@nebula-js/types';
 import { EmptyButton, TokenInput, TokenSpan } from '@nebula-js/ui';
 import { Meta } from '@storybook/react';
 import big from 'big.js';
@@ -10,7 +10,7 @@ export default {
 } as Meta;
 
 export const Basic = () => {
-  const [value, setValue] = useState<uUST>('' as uUST);
+  const [value, setValue] = useState<u<UST>>('' as u<UST>);
 
   const invalidValue = useMemo(() => {
     return value.length > 0 && big(value).gt(1000)
@@ -24,7 +24,7 @@ export const Basic = () => {
       onChange={setValue}
       label="INPUT"
       suggest={
-        <EmptyButton onClick={() => setValue('100000' as uUST)}>
+        <EmptyButton onClick={() => setValue('100000' as u<UST>)}>
           <WalletIcon
             style={{
               transform: 'translate(-0.3em, -0.1em)',
@@ -41,7 +41,7 @@ export const Basic = () => {
 };
 
 export const Size = () => {
-  const [value, setValue] = useState<uUST>('' as uUST);
+  const [value, setValue] = useState<u<UST>>('' as u<UST>);
 
   const invalidValue = useMemo(() => {
     return value.length > 0 && big(value).gt(1000)
@@ -58,7 +58,7 @@ export const Size = () => {
           onChange={setValue}
           label={fontSize.toUpperCase()}
           suggest={
-            <EmptyButton onClick={() => setValue('100000' as uUST)}>
+            <EmptyButton onClick={() => setValue('100000' as u<UST>)}>
               <WalletIcon
                 style={{
                   transform: 'translate(-0.3em, -0.1em)',

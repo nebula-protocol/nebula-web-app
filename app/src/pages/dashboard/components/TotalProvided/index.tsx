@@ -1,4 +1,4 @@
-import { JSDateTime, uUST } from '@nebula-js/types';
+import { JSDateTime, u, UST } from '@nebula-js/types';
 import { DiffSpan, Sub } from '@nebula-js/ui';
 import React from 'react';
 import { useStyle } from 'style-router';
@@ -10,7 +10,7 @@ const chartData = Array.from(
   (_, i) => {
     return {
       y: 10 * i + 10 - Math.random() * 20,
-      amount: i.toString() as uUST,
+      amount: i.toString() as u<UST>,
       date: Date.now() as JSDateTime,
     };
   },

@@ -1,4 +1,4 @@
-import { uNEB } from '@nebula-js/types/tokens';
+import { u, NEB } from '@nebula-js/types/tokens';
 import { HumanAddr, OrderBy, rs } from './common';
 
 export namespace gov {
@@ -106,7 +106,7 @@ export namespace gov {
 
   export interface StateResponse {
     poll_count: rs.u64;
-    total_share: uNEB<rs.Uint128>;
+    total_share: u<NEB<rs.Uint128>>;
     // TODO set token type to total_deposit
     total_deposit: rs.Uint128;
     // TODO set token type to pending_voting_rewards
@@ -147,9 +147,9 @@ export namespace gov {
     // TODO set token type to deposit_amount
     deposit_amount: rs.Uint128;
     execute_data?: ExecuteMsg;
-    yes_votes: uNEB<rs.Uint128>; // balance
-    no_votes: uNEB<rs.Uint128>; // balance
-    abstain_votes: uNEB<rs.Uint128>; // balance
+    yes_votes: u<NEB<rs.Uint128>>; // balance
+    no_votes: u<NEB<rs.Uint128>>; // balance
+    abstain_votes: u<NEB<rs.Uint128>>; // balance
     // TODO set token type to total_balance_at_end_poll
     total_balance_at_end_poll?: rs.Uint128;
     // TODO set token type to voters_reward
