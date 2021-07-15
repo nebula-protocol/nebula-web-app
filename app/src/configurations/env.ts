@@ -51,23 +51,23 @@ export const MAX_CAP_TOKEN_DENOMS: Record<string, string> = {
   maxTaxUUSD: 'uusd',
 };
 
-export const DEFAULT_NETWORK: NetworkInfo = {
+export const TESTNET = {
+  name: 'testnet',
+  chainID: 'tequila-0004',
+  lcd: 'https://tequila-lcd.terra.dev',
+};
+
+export const MAINNET = {
   name: 'mainnet',
   chainID: 'columbus-4',
   lcd: 'https://lcd.terra.dev',
 };
 
+export const DEFAULT_NETWORK: NetworkInfo = TESTNET;
+
 export const WALLETCONNECT_CHANNEL_IDS: Record<number, NetworkInfo> = {
-  0: {
-    name: 'testnet',
-    chainID: 'tequila-0004',
-    lcd: 'https://tequila-lcd.terra.dev',
-  },
-  1: {
-    name: 'mainnet',
-    chainID: 'columbus-4',
-    lcd: 'https://lcd.terra.dev',
-  },
+  0: TESTNET,
+  1: MAINNET,
 };
 
 export const ON_PRODUCTION =

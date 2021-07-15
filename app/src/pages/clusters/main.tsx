@@ -1,3 +1,5 @@
+import { formatRate, formatUTokenDecimal2 } from '@nebula-js/notation';
+import { Rate, u, UST } from '@nebula-js/types';
 import {
   breakpoints,
   DiffSpan,
@@ -6,9 +8,13 @@ import {
   Search,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { fixHMR } from 'fix-hmr';
+import { getAssetAmounts } from '@nebula-js/webapp-fns';
+import { useClustersInfoListQuery } from '@nebula-js/webapp-provider';
+import { sum, vectorMultiply } from '@terra-dev/big-math';
 import { useQueryBoundInput } from '@terra-dev/use-query-bound-input';
+import big, { Big } from 'big.js';
 import { MainLayout } from 'components/layouts/MainLayout';
+import { fixHMR } from 'fix-hmr';
 import React, { useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -17,25 +23,78 @@ export interface ClustersMainProps {
   className?: string;
 }
 
-const data = Array.from(
-  { length: Math.floor(Math.random() * 15) + 10 },
-  (_, i) => {
-    return {
-      index: i,
-      id: `cluster-${i}`.toUpperCase(),
-      name: `New is always better ${i}`,
-      nameLowerCase: `New is always better ${i}`.toLowerCase(),
-      description: `NIAL ${i}`,
-      price: '102.01',
-      hr24diff: (i % 3) - 1,
-      hr24: '60.78',
-      marketCap: '254,100.062',
-      volume: '254,100.62',
-    };
-  },
-);
+interface TableItem {
+  index: number;
+  id: string;
+  name: string;
+  nameLowerCase: string;
+  price: u<UST<Big>>;
+  hr24: Rate<Big>;
+  hr24diff: Rate<Big>;
+  totalProvided: u<UST<Big>>;
+  premium: Rate<Big>;
+  marketCap: u<UST<Big>>;
+  volume: u<UST<Big>>;
+}
 
 function ClustersMainBase({ className }: ClustersMainProps) {
+  const { data: infoList = [] } = useClustersInfoListQuery();
+
+  console.log('main.tsx..ClustersMainBase()', infoList);
+
+  //const { assetTokens } = useNebulaWebapp();
+
+  const tableItems = useMemo<TableItem[]>(() => {
+    return infoList.map(
+      ({ clusterState, clusterConfig, terraswapPair, terraswapPool }, i) => {
+        const { token, nativeToken } = getAssetAmounts(terraswapPool.assets);
+
+        if (big(token).eq(0) || big(nativeToken).eq(0)) {
+          return {
+            index: i,
+            id: clusterState.cluster_contract_address,
+            name: clusterConfig.config.name,
+            nameLowerCase: clusterConfig.config.name.toLowerCase(),
+            price: big(0) as u<UST<Big>>,
+            hr24: big(0.5) as Rate<Big>,
+            hr24diff: big(0.5) as Rate<Big>,
+            marketCap: big(0) as u<UST<Big>>,
+            totalProvided: big(0) as u<UST<Big>>,
+            premium: big(0) as Rate<Big>,
+            volume: big(111) as u<UST<Big>>,
+          };
+        }
+
+        const price = big(nativeToken).div(token) as u<UST<Big>>;
+        const marketCap = big(clusterState.outstanding_balance_token).mul(
+          price,
+        ) as u<UST<Big>>;
+        const totalProvided = sum(
+          ...vectorMultiply(clusterState.prices, clusterState.inv),
+        ) as u<UST<Big>>;
+        const premium = (
+          totalProvided.eq(0)
+            ? big(0)
+            : big(big(marketCap).minus(totalProvided)).div(totalProvided)
+        ) as Rate<Big>;
+
+        return {
+          index: i,
+          id: clusterState.cluster_contract_address,
+          name: clusterConfig.config.name,
+          nameLowerCase: clusterConfig.config.name.toLowerCase(),
+          price,
+          hr24: big(0.5) as Rate<Big>,
+          hr24diff: big(0.5) as Rate<Big>,
+          marketCap,
+          totalProvided,
+          premium,
+          volume: big(111) as u<UST<Big>>,
+        };
+      },
+    );
+  }, [infoList]);
+
   const history = useHistory();
 
   const tableMinWidth = useScreenSizeValue({
@@ -47,19 +106,19 @@ function ClustersMainBase({ className }: ClustersMainProps) {
 
   const { value, updateValue } = useQueryBoundInput({ queryParam: 'search' });
 
-  const filteredData = useMemo(() => {
-    if (!value || value.length === 0) {
-      return data;
+  const filteredTableItems = useMemo(() => {
+    if (!value || value.trim().length === 0) {
+      return tableItems;
     }
 
     const tokens = value.split(' ');
 
-    return data.filter(({ nameLowerCase }) => {
+    return tableItems.filter(({ nameLowerCase }) => {
       return tokens.some((token) => {
         return nameLowerCase.indexOf(token) > -1;
       });
     });
-  }, [value]);
+  }, [tableItems, value]);
 
   const gotoCluster = useCallback(
     (clusterId: string) => {
@@ -103,28 +162,30 @@ function ClustersMainBase({ className }: ClustersMainProps) {
         </thead>
 
         <tbody>
-          {filteredData.map(
+          {filteredTableItems.map(
             ({
               index,
               id,
               name,
-              description,
+              nameLowerCase,
               price,
               hr24,
               hr24diff,
               marketCap,
               volume,
+              premium,
+              totalProvided,
             }) => (
               <tr key={'row' + index} onClick={() => gotoCluster(id)}>
                 <td>
-                  <IconAndLabels text={name} subtext={description} />
+                  <IconAndLabels text={name} subtext={'TODO'} />
                 </td>
-                <td>{price} UST</td>
+                <td>{formatUTokenDecimal2(price)} UST</td>
                 <td>
-                  <DiffSpan diff={hr24diff}>{hr24}%</DiffSpan>
+                  <DiffSpan diff={hr24diff}>{formatRate(hr24)}%</DiffSpan>
                 </td>
-                <td>{marketCap} UST</td>
-                <td>{volume} UST</td>
+                <td>{formatUTokenDecimal2(marketCap)} UST</td>
+                <td>{formatUTokenDecimal2(volume)} UST</td>
               </tr>
             ),
           )}

@@ -1,10 +1,11 @@
 import { TrendingDown, TrendingFlat, TrendingUp } from '@material-ui/icons';
-import React, { DetailedHTMLProps, HTMLAttributes } from 'react';
+import big, { BigSource } from 'big.js';
+import React, { DetailedHTMLProps, HTMLAttributes, useMemo } from 'react';
 import styled from 'styled-components';
 
 export interface DiffSpanProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLSpanElement>, HTMLSpanElement> {
-  diff: number;
+  diff: BigSource;
   translateIconY?: string | number;
   riseColor?: string;
   sameColor?: string;
@@ -19,16 +20,20 @@ function DiffSpanBase({
   children,
   ...spanProps
 }: DiffSpanProps) {
+  const diffIcon = useMemo(() => {
+    const _diff = big(diff);
+    return _diff.gt(0) ? (
+      <TrendingUp />
+    ) : _diff.lt(0) ? (
+      <TrendingDown />
+    ) : (
+      <TrendingFlat />
+    );
+  }, [diff]);
+
   return (
     <span {...spanProps}>
-      {diff > 0 ? (
-        <TrendingUp />
-      ) : diff < 0 ? (
-        <TrendingDown />
-      ) : (
-        <TrendingFlat />
-      )}{' '}
-      {children}
+      {diffIcon} {children}
     </span>
   );
 }

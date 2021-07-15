@@ -1,8 +1,8 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import type { DefaultTheme } from 'styled-components';
 import { muiThemeBase } from './muiThemeBase';
 
-const muiTheme = createMuiTheme({
+const muiTheme = createTheme({
   ...muiThemeBase,
 
   palette: {

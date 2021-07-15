@@ -1,4 +1,5 @@
-import { CT, CW20Token } from '@nebula-js/types/tokens';
+import { CT, u, UST } from '../tokens';
+import { Rate } from '../units';
 import { CW20Addr, HumanAddr, rs } from './common';
 import { terraswap } from './terraswap';
 
@@ -20,13 +21,15 @@ export namespace cluster {
   }
 
   export interface Mint {
-    asset_amounts: terraswap.Asset[];
+    // TODO is this type correct?
+    asset_amounts: terraswap.Asset<u<CT>, u<UST>>[];
     min_tokens?: rs.Uint128[];
   }
 
   export interface Burn {
     max_tokens: rs.Uint128;
-    asset_amounts?: terraswap.Asset[];
+    // TODO is this type correct?
+    asset_amounts?: terraswap.Asset<u<CT>, u<UST>>[];
   }
 
   // ---------------------------------------------
@@ -67,14 +70,14 @@ export namespace cluster {
   }
 
   export interface ClusterStateResponse {
-    outstanding_balance_token: rs.Uint128;
-    // TODO is this CT (cluster token)?
-    prices: CT[];
-    inv: rs.Uint128[];
-    assets: terraswap.AssetInfo[];
+    outstanding_balance_token: u<CT<rs.Uint128>>;
+    // TODO is this UST? (not u<UST>)
+    prices: UST[];
+    inv: Rate<rs.Uint128>[];
+    assets: terraswap.CW20AssetInfo[];
     penalty: HumanAddr;
     // TODO is this CW20Addr or HumanAddr?
-    cluster_token: CW20Token;
+    cluster_token: CW20Addr;
     target: rs.u32[];
     cluster_contract_address: HumanAddr;
   }

@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import glob from 'glob';
 import path from 'path';
 
-const packageRoot = path.resolve(__dirname, '../src/@nebula-js/webapp-fns');
+const packageRoot = path.resolve(__dirname, '../src/@nebula-js/webapp-provider');
 
 const files = glob.sync(`*/**/*.{ts,tsx}`, {
   cwd: packageRoot,
@@ -10,8 +10,7 @@ const files = glob.sync(`*/**/*.{ts,tsx}`, {
 });
 
 const index = `// THIS FILE IS AUTO CREATED
-// @see ~/scripts/create-index.webapp-fns.ts
-export * from './types';
+// @see ~/scripts/create-index.webapp-provider.ts
 export * from './env';
 
 ${files

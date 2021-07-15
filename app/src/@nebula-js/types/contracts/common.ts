@@ -4,10 +4,10 @@ export type HumanAddr = string & NominalType<'HumanAddr'>;
 export type CanonicalAddr = string & NominalType<'CanonicalAddr'>;
 export type CW20Addr = string & NominalType<'CW20Addr'>;
 
-export type StableDenom = string & NominalType<'StableDenom'>;
+export type NativeDenom = string & NominalType<'NativeDenom'>;
 export type bAssetDenom = string & NominalType<'bAssetDenom'>;
 export type AssetDenom = string & NominalType<'AssetDenom'>;
-export type Denom = StableDenom | bAssetDenom | AssetDenom;
+export type Denom = NativeDenom | bAssetDenom | AssetDenom;
 
 export type Base64EncodedJson = string & NominalType<'Base64EncodedJson'>;
 
@@ -19,10 +19,8 @@ export namespace rs {
   export type u8 = number;
   export type u32 = number;
   export type u64 = number;
-  // TODO is this number or string?
-  export type Uint128 = number;
-  // TODO is this number or string?
-  export type Decimal = number;
+  export type Uint128 = string;
+  export type Decimal = string;
 }
 
 export enum OrderBy {
@@ -32,17 +30,16 @@ export enum OrderBy {
 
 export interface ContractAddress {
   airdrop: HumanAddr;
-  cluster: HumanAddr;
   clusterFactory: HumanAddr;
   collector: HumanAddr;
   community: HumanAddr;
   gov: HumanAddr;
   incentives: HumanAddr;
   incentivesCustody: HumanAddr;
-  penalty: HumanAddr;
   staking: HumanAddr;
 
   terraswap: {
+    factory: HumanAddr;
     nebUstPair: HumanAddr;
   };
 
