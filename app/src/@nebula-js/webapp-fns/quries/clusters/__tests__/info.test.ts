@@ -61,4 +61,6 @@ describe('clusters/info', () => {
     expect(terraswapPair).not.toBeUndefined();
     expect(terraswapPool).not.toBeUndefined();
   });
+
+  test('should get terraswap pool result', () => {});
 });

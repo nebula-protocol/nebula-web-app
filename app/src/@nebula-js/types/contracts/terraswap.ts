@@ -1,30 +1,22 @@
 import { Token, u } from '../tokens';
-import { CW20Addr, Denom, HumanAddr, NativeDenom } from './common';
+import { CW20Addr, HumanAddr, NativeDenom } from './common';
 
 export namespace terraswap {
   export type CW20AssetInfo = { token: { contract_addr: CW20Addr } };
+  export type NativeAssetInfo = { native_token: { denom: NativeDenom } };
 
-  export type AssetInfo =
-    | CW20AssetInfo
-    | { native_token: { denom: NativeDenom } };
+  export type AssetInfo = CW20AssetInfo | NativeAssetInfo;
 
-  export type Asset<T extends u<Token>, NT extends u<Token>> =
-    | {
-        amount: T;
-        info: {
-          token: {
-            contract_addr: HumanAddr;
-          };
-        };
-      }
-    | {
-        amount: NT;
-        info: {
-          native_token: {
-            denom: NativeDenom;
-          };
-        };
-      };
+  export type CW20Asset<T extends u<Token>> = {
+    amount: T;
+    info: CW20AssetInfo;
+  };
+  export type NativeAsset<T extends u<Token>> = {
+    amount: T;
+    info: NativeAssetInfo;
+  };
+
+  export type Asset<T extends u<Token>> = CW20Asset<T> | NativeAsset<T>;
 
   export namespace factory {
     export interface Pair {
@@ -45,27 +37,15 @@ export namespace terraswap {
       pool: {};
     }
 
-    export interface PoolResponse<T extends u<Token>, NT extends u<Token>> {
+    export interface PoolResponse<A extends u<Token>, B extends u<Token>> {
       total_share: string;
-      assets: [Asset<T, NT>, Asset<T, NT>];
+      assets: [Asset<A | B>, Asset<A | B>];
     }
-
-    export type SimulationInfo =
-      | {
-          token: {
-            contract_addr: CW20Addr;
-          };
-        }
-      | {
-          native_token: {
-            denom: Denom;
-          };
-        };
 
     export interface Simulation<T extends u<Token>> {
       simulation: {
         offer_asset: {
-          info: SimulationInfo;
+          info: AssetInfo;
           amount: T;
         };
       };
@@ -80,22 +60,10 @@ export namespace terraswap {
       spread_amount: T;
     }
 
-    export type ReverseSimulationInfo =
-      | {
-          token: {
-            contract_addr: CW20Addr;
-          };
-        }
-      | {
-          native_token: {
-            denom: Denom;
-          };
-        };
-
     export interface ReverseSimulation<T extends u<Token>> {
       reverse_simulation: {
         ask_asset: {
-          info: ReverseSimulationInfo;
+          info: AssetInfo;
           amount: T;
         };
       };

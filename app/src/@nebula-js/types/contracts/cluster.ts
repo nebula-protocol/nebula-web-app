@@ -22,14 +22,14 @@ export namespace cluster {
 
   export interface Mint {
     // TODO is this type correct?
-    asset_amounts: terraswap.Asset<u<CT>, u<UST>>[];
+    asset_amounts: terraswap.Asset<u<CT>>[];
     min_tokens?: rs.Uint128[];
   }
 
   export interface Burn {
     max_tokens: rs.Uint128;
     // TODO is this type correct?
-    asset_amounts?: terraswap.Asset<u<CT>, u<UST>>[];
+    asset_amounts?: terraswap.Asset<u<CT>>[];
   }
 
   // ---------------------------------------------
@@ -70,11 +70,11 @@ export namespace cluster {
   }
 
   export interface ClusterStateResponse {
-    outstanding_balance_token: u<CT<rs.Uint128>>;
+    outstanding_balance_tokens: u<CT<rs.Uint128>>;
     // TODO is this UST? (not u<UST>)
     prices: UST[];
     inv: Rate<rs.Uint128>[];
-    assets: terraswap.CW20AssetInfo[];
+    assets: terraswap.AssetInfo[];
     penalty: HumanAddr;
     // TODO is this CW20Addr or HumanAddr?
     cluster_token: CW20Addr;

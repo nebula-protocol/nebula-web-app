@@ -19,7 +19,7 @@ const _iconSize = '2em';
 const _textSize = '1em';
 const _subtextSize = '0.8em';
 const _iconMarginRight = '0.9em';
-const _textGap = '0.1em';
+const _textGap = '0.28571429em';
 
 function IconAndLabelsBase({
   icon,

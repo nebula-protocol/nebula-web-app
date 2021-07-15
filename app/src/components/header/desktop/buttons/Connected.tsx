@@ -1,4 +1,4 @@
-import { ClickAwayListener, Popper } from '@material-ui/core';
+import { ClickAwayListener, Grow, Popper } from '@material-ui/core';
 import { ChevronRightIcon, WalletIcon } from '@nebula-js/icons';
 import { demicrofy, formatTokenWithPostfixUnits } from '@nebula-js/notation';
 import { EmptyButton, EmptyButtonProps, EmptyIconHolder } from '@nebula-js/ui';
@@ -53,10 +53,19 @@ function ConnectedBase({ ...buttonProps }: ConnectedProps) {
           open={openDropdown}
           anchorEl={anchorElement}
           placement="bottom-end"
+          transition
         >
-          <Dropdown>
-            <WalletDetails buttonSize="small" />
-          </Dropdown>
+          {({ TransitionProps }) => (
+            <Grow
+              {...TransitionProps}
+              style={{ transformOrigin: 'top right' }}
+              timeout={200}
+            >
+              <Dropdown>
+                <WalletDetails buttonSize="small" />
+              </Dropdown>
+            </Grow>
+          )}
         </Popper>
       </div>
     </ClickAwayListener>

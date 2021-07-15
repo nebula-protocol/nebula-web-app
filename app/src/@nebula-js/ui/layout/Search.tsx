@@ -1,4 +1,5 @@
 import { SearchIcon } from '@nebula-js/icons';
+import { fixHMR } from 'fix-hmr';
 import React, { DetailedHTMLProps, InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
 import { breakpoints } from '../env';
@@ -10,27 +11,28 @@ export interface SearchProps
     'ref'
   > {}
 
-function SearchBase({ className, ...inputProps }: SearchProps) {
+function SearchBase({ className, children, ...inputProps }: SearchProps) {
   return (
     <div className={className}>
       <SearchIcon />
       <EmptyTextInput {...inputProps} />
+      {children && <div className="end">{children}</div>}
     </div>
   );
 }
 
-export const Search = styled(SearchBase)`
+const StyledSearch = styled(SearchBase)`
   height: 4rem;
 
   background-color: var(--color-gray14);
   border-radius: 8px;
-  padding-left: 2.3rem;
+  padding-left: 2rem;
 
   display: flex;
   gap: 0.8rem;
   align-items: center;
 
-  svg {
+  > svg {
     width: 1.1rem;
     height: 1.1rem;
   }
@@ -40,9 +42,18 @@ export const Search = styled(SearchBase)`
     align-self: stretch;
   }
 
+  .end {
+    padding-right: 2rem;
+  }
+
+  &:focus-within {
+    background-color: var(--color-gray18);
+  }
+
   // mobile
   @media (max-width: ${breakpoints.mobile.max}px) {
     height: 3rem;
-    padding-left: 1.7rem;
   }
 `;
+
+export const Search = fixHMR(StyledSearch);

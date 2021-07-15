@@ -1,4 +1,4 @@
-import { CW20Addr } from '@nebula-js/types';
+import { CW20Addr, terraswap } from '@nebula-js/types';
 
 export class AssetTokenIndex {
   private readonly _symbol: Map<string, CW20Addr>;
@@ -20,7 +20,20 @@ export class AssetTokenIndex {
     return this._symbol.get(symbol);
   };
 
-  getSymbol = (address: CW20Addr) => {
-    return this._address.get(address);
+  getSymbol = (asset: CW20Addr | terraswap.AssetInfo) => {
+    if (typeof asset === 'string') {
+      return this._address.get(asset);
+    } else if ('native_token' in asset) {
+      switch (asset.native_token.denom) {
+        case 'uluna':
+          return 'LUNA';
+        case 'uusd':
+          return 'UST';
+        default:
+          return asset.native_token.denom.slice(1).toUpperCase();
+      }
+    } else if ('token' in asset) {
+      return this._address.get(asset.token.contract_addr);
+    }
   };
 }

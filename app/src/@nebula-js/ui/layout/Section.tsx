@@ -20,9 +20,7 @@ const loadingStyle = css`
   pointer-events: none;
 `;
 
-export const Section = styled(SectionBase)`
-  ${({ isLoading = false }) => (isLoading ? loadingStyle : '')};
-
+export const sectionStyle = css`
   --section-padding-h: 2.3rem;
   --section-padding-v: 2.85rem;
 
@@ -32,6 +30,8 @@ export const Section = styled(SectionBase)`
 
   background-color: var(--color-gray18);
   color: var(--color-white92);
+
+  transition: background-color 0.3s ease-in-out;
 
   h1 {
     font-size: 2rem;
@@ -46,4 +46,10 @@ export const Section = styled(SectionBase)`
       font-size: 1.6rem;
     }
   }
+`;
+
+export const Section = styled(SectionBase)`
+  ${({ isLoading = false }) => (isLoading ? loadingStyle : '')};
+
+  ${sectionStyle};
 `;

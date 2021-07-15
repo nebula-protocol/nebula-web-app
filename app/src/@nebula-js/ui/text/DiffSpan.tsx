@@ -43,6 +43,12 @@ export const DiffSpan = styled(DiffSpanBase)`
     font-size: 1em;
 
     ${({ translateIconY }) =>
-      translateIconY ? `transform: translateY(${translateIconY})` : ''};
+      translateIconY
+        ? `transform: translateY(${
+            typeof translateIconY === 'number'
+              ? translateIconY + 'px'
+              : translateIconY
+          })`
+        : ''};
   }
 `;
