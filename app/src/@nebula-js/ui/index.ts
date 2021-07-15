@@ -11,3 +11,4 @@ export * from './text';
 export * from './tooltip';
 export * from './datavis';
 export * from './develop';
+export * from './colors';

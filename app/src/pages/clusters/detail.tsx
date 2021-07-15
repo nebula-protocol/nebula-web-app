@@ -8,6 +8,7 @@ import {
   HorizontalScrollTable,
   IconAndLabels,
   PartitionBarGraph,
+  partitionColor,
   PartitionLabel,
   PartitionLabels,
   Section,
@@ -55,22 +56,12 @@ const chartTabItems: TabItem[] = [
   { id: 'year', label: 'Y' },
 ];
 
-const colors = [
-  '#23bed9',
-  '#64a0bc',
-  '#918ba8',
-  '#ab7f9d',
-  '#c37493',
-  '#dc6887',
-  '#f15e7e',
-];
-
 const partitionData = Array.from(
   { length: Math.floor(Math.random() * 4) + 4 },
   (_, i) => ({
     label: `ITEM${i}`,
     value: Math.floor(Math.random() * 1000) + 300,
-    color: colors[i % colors.length],
+    color: partitionColor[i % partitionColor.length],
   }),
 );
 

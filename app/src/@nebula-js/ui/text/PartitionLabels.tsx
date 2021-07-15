@@ -1,11 +1,11 @@
-import { Sub } from './Sub';
 import { fixHMR } from 'fix-hmr';
-import styled from 'styled-components';
 import React, { DetailedHTMLProps, HTMLAttributes, ReactNode } from 'react';
+import styled from 'styled-components';
+import { Sub } from './Sub';
 
 export interface PartitionLabel {
   label: ReactNode;
-  value: ReactNode;
+  value?: ReactNode;
   color: string;
 }
 
@@ -14,22 +14,28 @@ export interface PartitionLabelsProps
     DetailedHTMLProps<HTMLAttributes<HTMLUListElement>, HTMLUListElement>,
     'ref'
   > {
-  className?: string;
   data: PartitionLabel[];
   children?: ReactNode;
+  columnGap?: `${number}em`;
+  rowGap?: `${number}em`;
 }
 
+const defaultColumnGap = '1.5em';
+const defaultRowGap = '0.5em';
+
 function PartitionLabelsBase({
-  className,
   data,
   children,
+  columnGap = defaultColumnGap,
+  rowGap = defaultRowGap,
+  ...ulProps
 }: PartitionLabelsProps) {
   return (
-    <ul className={className}>
+    <ul {...ulProps}>
       {data.map(({ label, value, color }, i) => (
         <li key={'label' + i} style={{ color }}>
           <span>{label}</span>
-          <Sub>{value}</Sub>
+          {value && <Sub>{value}</Sub>}
         </li>
       ))}
       {children}
@@ -42,8 +48,8 @@ export const StyledPartitionLabels = styled(PartitionLabelsBase)`
   list-style: none;
 
   display: flex;
-  column-gap: 1.5em;
-  row-gap: 0.5em;
+  column-gap: ${({ columnGap = defaultColumnGap }) => columnGap};
+  row-gap: ${({ rowGap = defaultRowGap }) => rowGap};
   max-width: 100%;
   flex-wrap: wrap;
 

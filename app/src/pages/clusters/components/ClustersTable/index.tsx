@@ -4,6 +4,9 @@ import {
   HorizontalScrollTable,
   HorizontalScrollTableProps,
   IconAndLabels,
+  PartitionBarGraph,
+  PartitionLabels,
+  TwoLine,
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { fixHMR } from 'fix-hmr';
@@ -61,25 +64,49 @@ function ClustersTableBase({
             id,
             name,
             price,
-            hr24,
             hr24diff,
             marketCap,
             volume,
             premium,
             totalProvided,
+            assets,
           }) => (
             <tr key={'row' + index} onClick={() => onClusterClick(id)}>
               <td>
-                <IconAndLabels text={name} subtext={'TODO'} />
+                <IconAndLabels
+                  text={name}
+                  subtext={
+                    <Partition>
+                      <PartitionBarGraph height={8} data={assets} width={150} />
+                      <PartitionLabels
+                        columnGap="0.5em"
+                        data={assets
+                          .slice(0, 2)
+                          .map(({ label, color }) => ({ label, color }))}
+                      >
+                        {assets.length - 2 > 0 && (
+                          <li>+{assets.length - 2} more</li>
+                        )}
+                      </PartitionLabels>
+                    </Partition>
+                  }
+                  textGap="0.4em"
+                />
               </td>
               <td>
-                {formatUTokenDecimal2(price)} UST
-                <br />
-                <DiffSpan diff={hr24diff}>{formatRate(hr24diff)}%</DiffSpan>
+                <TwoLine
+                  text={formatUTokenDecimal2(price) + ' UST'}
+                  subText={
+                    <DiffSpan diff={hr24diff}>{formatRate(hr24diff)}%</DiffSpan>
+                  }
+                />
               </td>
               <td>{formatUTokenDecimal2(marketCap)} UST</td>
               <td>{formatUTokenDecimal2(totalProvided)} UST</td>
-              <td>{formatRate(premium)}%</td>
+              <td>
+                {premium.gt(0) && '+'}
+                {formatRate(premium)}%
+              </td>
               <td>{formatUTokenDecimal2(volume)} UST</td>
             </tr>
           ),
@@ -88,6 +115,13 @@ function ClustersTableBase({
     </HorizontalScrollTable>
   );
 }
+
+const Partition = styled.div`
+  ul {
+    margin-top: 5px;
+    font-size: 12px;
+  }
+`;
 
 export const StyledClustersTable = styled(ClustersTableBase)`
   background-color: var(--color-gray14);

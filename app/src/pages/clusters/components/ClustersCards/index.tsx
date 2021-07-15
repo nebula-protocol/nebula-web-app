@@ -1,8 +1,16 @@
 import { formatRate, formatUTokenDecimal2 } from '@nebula-js/notation';
-import { DiffSpan, IconAndLabels, sectionStyle } from '@nebula-js/ui';
+import {
+  breakpoints,
+  DiffSpan,
+  IconAndLabels,
+  PartitionBarGraph,
+  PartitionLabels,
+  sectionStyle,
+} from '@nebula-js/ui';
 import { fixHMR } from 'fix-hmr';
 import React, { DetailedHTMLProps } from 'react';
 import styled from 'styled-components';
+import useResizeObserver from 'use-resize-observer/polyfilled';
 import { ClustersListItem } from '../../models/clusters';
 
 export interface ClustersCardsProps
@@ -19,22 +27,35 @@ function ClustersCardsBase({
   onClusterClick,
   ...sectionProps
 }: ClustersCardsProps) {
+  const { width = 400, ref } = useResizeObserver();
+
+  console.log('index.tsx..ClustersCardsBase()', width);
+
   return (
     <ul {...sectionProps}>
       {listItems.map(
-        ({
-          index,
-          id,
-          name,
-          price,
-          hr24,
-          hr24diff,
-          marketCap,
-          volume,
-          premium,
-          totalProvided,
-        }) => (
-          <li key={'row' + index} onClick={() => onClusterClick(id)}>
+        (
+          {
+            index,
+            id,
+            name,
+            price,
+            hr24,
+            hr24diff,
+            marketCap,
+            volume,
+            premium,
+            totalProvided,
+            assets,
+          },
+          i,
+        ) => (
+          <li
+            key={'row' + index}
+            ref={i === 0 ? ref : undefined}
+            role="button"
+            onClick={() => onClusterClick(id)}
+          >
             <IconAndLabels
               text={name}
               subtext={
@@ -76,12 +97,33 @@ function ClustersCardsBase({
                 <p>{formatUTokenDecimal2(volume)} UST</p>
               </div>
             </div>
+
+            <Partition>
+              <PartitionLabels
+                columnGap="0.5em"
+                data={assets
+                  .slice(0, 3)
+                  .map(({ label, color }) => ({ label, color }))}
+              >
+                {assets.length - 2 > 0 && <li>+{assets.length - 3} more</li>}
+              </PartitionLabels>
+              <PartitionBarGraph height={8} data={assets} width={width} />
+            </Partition>
           </li>
         ),
       )}
     </ul>
   );
 }
+
+const Partition = styled.div`
+  margin-top: 2.85714286rem;
+
+  ul {
+    margin-bottom: 0.6em;
+    font-size: 1rem;
+  }
+`;
 
 export const StyledClustersCards = styled(ClustersCardsBase)`
   list-style: none;
@@ -91,10 +133,10 @@ export const StyledClustersCards = styled(ClustersCardsBase)`
   grid-template-columns: repeat(2, 1fr);
   gap: 1.42857143em;
 
-  li {
+  > li {
     cursor: pointer;
 
-    height: 358px;
+    min-width: 0;
 
     ${sectionStyle};
 
@@ -102,6 +144,12 @@ export const StyledClustersCards = styled(ClustersCardsBase)`
 
     &:hover {
       background-color: var(--color-gray22);
+    }
+
+    > button {
+      display: block;
+      width: 100%;
+      text-align: unset;
     }
   }
 
@@ -120,9 +168,13 @@ export const StyledClustersCards = styled(ClustersCardsBase)`
     }
 
     p {
-      font-size: 14px;
+      font-size: 1rem;
       color: var(--color-white92);
     }
+  }
+
+  @media (max-width: ${breakpoints.tablet.max}px) {
+    grid-template-columns: 1fr;
   }
 `;
 

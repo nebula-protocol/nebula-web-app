@@ -1,5 +1,5 @@
 import { CT, Rate, u, UST } from '@nebula-js/types';
-import { PartitionLabel } from '@nebula-js/ui';
+import { partitionColor } from '@nebula-js/ui';
 import {
   AssetTokenIndex,
   ClustersInfoList,
@@ -20,7 +20,7 @@ export interface ClustersListItem {
   premium: Rate<Big>;
   marketCap: u<UST<Big>>;
   volume: u<UST<Big>>;
-  assets: PartitionLabel[];
+  assets: { label: string; value: number; color: string }[];
 }
 
 export function toClustersListItems(
@@ -48,26 +48,33 @@ export function toClustersListItems(
           totalProvided: big(0) as u<UST<Big>>,
           premium: big(0) as Rate<Big>,
           volume: big(0) as u<UST<Big>>,
-          assets: clusterState.assets.map((asset) => ({
-            label: assetTokens.getSymbol(asset),
-            value: '0',
-            color: '',
+          assets: clusterState.assets.map((asset, j) => ({
+            label: assetTokens.getSymbol(asset) ?? '-',
+            value: 10,
+            color: partitionColor[j % partitionColor.length],
           })),
         };
       }
 
       const price = big(ustAmount).div(ctAmount) as u<UST<Big>>;
+
       const marketCap = big(clusterState.outstanding_balance_tokens).mul(
         price,
       ) as u<UST<Big>>;
+
       const totalProvided = sum(
         ...vectorMultiply(clusterState.prices, clusterState.inv),
       ) as u<UST<Big>>;
+
       const premium = (
         totalProvided.eq(0)
           ? big(0)
           : big(big(marketCap).minus(totalProvided)).div(totalProvided)
       ) as Rate<Big>;
+
+      const invPricesSum = sum(
+        ...vectorMultiply(clusterState.inv, clusterState.prices),
+      );
 
       return {
         index: i,
@@ -81,10 +88,12 @@ export function toClustersListItems(
         totalProvided,
         premium,
         volume: big(111) as u<UST<Big>>,
-        assets: clusterState.assets.map((asset) => ({
-          label: assetTokens.getSymbol(asset),
-          value: '0',
-          color: '',
+        assets: clusterState.assets.map((asset, j) => ({
+          label: assetTokens.getSymbol(asset) ?? '-',
+          value: big(big(clusterState.inv[j]).mul(clusterState.prices[j]))
+            .div(invPricesSum)
+            .toNumber(),
+          color: partitionColor[j % partitionColor.length],
         })),
       };
     },

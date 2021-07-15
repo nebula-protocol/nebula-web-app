@@ -16,12 +16,11 @@ function PartitionBarGraphBase({
   ...svgProps
 }: PartitionBarGraphProps) {
   const rects = useMemo(() => {
-    const total =
-      data.reduce((t, { value }) => t + value, 0) - gap * data.length;
+    const total = data.reduce((t, { value }) => t + value, 0);
 
     return data.reduce(
       ({ elements, x }, { value, color }, i) => {
-        const w = Math.floor((value / total) * width);
+        const w = (value / total) * (width - gap * data.length);
 
         elements.push(
           <rect
@@ -46,6 +45,4 @@ function PartitionBarGraphBase({
   );
 }
 
-export const PartitionBarGraph = styled(PartitionBarGraphBase)`
-  // TODO
-`;
+export const PartitionBarGraph = styled(PartitionBarGraphBase)``;
