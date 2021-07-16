@@ -1,9 +1,6 @@
 import { List, ViewModule } from '@material-ui/icons';
 import { breakpoints, EmptyButton, Search } from '@nebula-js/ui';
-import {
-  useClustersInfoListQuery,
-  useNebulaWebapp,
-} from '@nebula-js/webapp-provider';
+import { useClustersInfoListQuery } from '@nebula-js/webapp-provider';
 import { useLocalStorage } from '@terra-dev/use-local-storage';
 import { useQueryBoundInput } from '@terra-dev/use-query-bound-input';
 import { MainLayout } from 'components/layouts/MainLayout';
@@ -13,7 +10,7 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { ClustersCards } from './components/ClustersCards';
 import { ClustersTable } from './components/ClustersTable';
-import { ClustersListItem, toClustersListItems } from './models/clusters';
+import { ClusterView, toClusterView } from './models/clusters';
 
 export interface ClustersMainProps {
   className?: string;
@@ -22,16 +19,14 @@ export interface ClustersMainProps {
 function ClustersMainBase({ className }: ClustersMainProps) {
   const { data: infoList = [] } = useClustersInfoListQuery();
 
-  const { assetTokens } = useNebulaWebapp();
-
   const [view, setView] = useLocalStorage<'table' | 'card'>(
     '__nebula_clusters_view__',
     () => 'table',
   );
 
-  const tableItems = useMemo<ClustersListItem[]>(() => {
-    return toClustersListItems(infoList, assetTokens);
-  }, [infoList, assetTokens]);
+  const tableItems = useMemo<ClusterView[]>(() => {
+    return infoList.map((info) => toClusterView(info));
+  }, [infoList]);
 
   const history = useHistory();
 
@@ -91,12 +86,12 @@ function ClustersMainBase({ className }: ClustersMainProps) {
 
       {view === 'card' ? (
         <ClustersCards
-          listItems={filteredTableItems}
+          clusters={filteredTableItems}
           onClusterClick={gotoCluster}
         />
       ) : (
         <ClustersTable
-          listItems={filteredTableItems}
+          clusters={filteredTableItems}
           onClusterClick={gotoCluster}
         />
       )}

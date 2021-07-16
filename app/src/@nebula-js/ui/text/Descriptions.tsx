@@ -44,6 +44,11 @@ export const Descriptions = styled(DescriptionsBase)`
     gap: 1.6em;
   }
 
+  > * {
+    word-break: keep-all;
+    white-space: nowrap;
+  }
+
   &[data-direction='vertical'] {
     flex-direction: column;
     gap: 1em;

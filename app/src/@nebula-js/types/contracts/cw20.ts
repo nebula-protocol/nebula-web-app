@@ -19,7 +19,7 @@ export namespace cw20 {
   export interface TokenInfoResponse<T extends u<Token>> {
     decimals: number;
     name: string;
-    symbol: symbol;
+    symbol: string;
     total_supply: T;
   }
 }

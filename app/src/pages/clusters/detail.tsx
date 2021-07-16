@@ -1,5 +1,5 @@
-import { formatRate } from '@nebula-js/notation';
-import { JSDateTime, Rate, u, UST } from '@nebula-js/types';
+import { formatRate, formatUTokenDecimal2 } from '@nebula-js/notation';
+import { HumanAddr, JSDateTime, Rate, u, UST } from '@nebula-js/types';
 import {
   BarGraph,
   breakpoints,
@@ -8,8 +8,6 @@ import {
   HorizontalScrollTable,
   IconAndLabels,
   PartitionBarGraph,
-  partitionColor,
-  PartitionLabel,
   PartitionLabels,
   Section,
   Sub,
@@ -18,8 +16,10 @@ import {
   TabSection,
   useScreenSizeValue,
 } from '@nebula-js/ui';
+import { useClusterInfoQuery } from '@nebula-js/webapp-provider';
 import { MainLayout } from 'components/layouts/MainLayout';
 import { fixHMR } from 'fix-hmr';
+import { toClusterView } from 'pages/clusters/models/clusters';
 import React, { useCallback, useMemo, useState } from 'react';
 import {
   Redirect,
@@ -56,32 +56,23 @@ const chartTabItems: TabItem[] = [
   { id: 'year', label: 'Y' },
 ];
 
-const partitionData = Array.from(
-  { length: Math.floor(Math.random() * 4) + 4 },
-  (_, i) => ({
-    label: `ITEM${i}`,
-    value: Math.floor(Math.random() * 1000) + 300,
-    color: partitionColor[i % partitionColor.length],
-  }),
-);
-
-const tableData = Array.from(
-  { length: Math.floor(Math.random() * 10) + 5 },
-  (_, i) => {
-    return {
-      index: i,
-      id: `tokens-${i}`.toUpperCase(),
-      name: `Mirror Protocol ${i}`,
-      description: `MIR ${i}`,
-      price: '102.01',
-      hr24diff: (i % 3) - 1,
-      hr24: '60.78',
-      current: '50',
-      target: '45',
-      amount: '100,000.202293 MIR',
-    };
-  },
-);
+//const tableData = Array.from(
+//  { length: Math.floor(Math.random() * 10) + 5 },
+//  (_, i) => {
+//    return {
+//      index: i,
+//      id: `tokens-${i}`.toUpperCase(),
+//      name: `Mirror Protocol ${i}`,
+//      description: `MIR ${i}`,
+//      price: '102.01',
+//      hr24diff: (i % 3) - 1,
+//      hr24: '60.78',
+//      current: '50',
+//      target: '45',
+//      amount: '100,000.202293 MIR',
+//    };
+//  },
+//);
 
 const chartData = Array.from(
   { length: Math.floor(Math.random() * 30) + 30 },
@@ -99,6 +90,14 @@ function ClustersDetailBase({
   match,
   history,
 }: ClustersDetailProps) {
+  const clusterAddr = match.params.cluster as HumanAddr;
+
+  const { data: clusterInfo } = useClusterInfoQuery(clusterAddr);
+
+  const clusterView = useMemo(() => {
+    return clusterInfo ? toClusterView(clusterInfo) : undefined;
+  }, [clusterInfo]);
+
   const pageMatch = useRouteMatch<{ page: string }>(`${match.url}/:page`);
 
   const tab = useMemo<TabItem | undefined>(() => {
@@ -113,18 +112,6 @@ function ClustersDetailBase({
     },
     [history, match.url],
   );
-
-  const partitionLabels = useMemo<PartitionLabel[]>(() => {
-    const total =
-      partitionData.reduce((t, { value }) => t + value, 0) -
-      partitionData.length;
-
-    return partitionData.map(({ label, value, color }) => ({
-      label,
-      value: formatRate((value / total) as Rate<number>) + '%',
-      color,
-    }));
-  }, []);
 
   const { width = 300, ref } = useResizeObserver();
 
@@ -157,8 +144,8 @@ function ClustersDetailBase({
     <MainLayout className={className}>
       <header className="header">
         <IconAndLabels
-          text="New is always better"
-          subtext={match.params.cluster}
+          text={clusterView?.name ?? '-'}
+          subtext={clusterView?.token.symbol ?? '-'}
           iconSize="1.5em"
           iconMarginRight="0.3em"
           subtextSize="0.4em"
@@ -168,8 +155,18 @@ function ClustersDetailBase({
         <Descriptions
           direction={descriptionDisplay}
           descriptions={[
-            { label: 'VOLUME (24H)', text: '123,456 UST' },
-            { label: 'TOTAL SUPPLY', text: `123,456 ${match.params.cluster}` },
+            {
+              label: 'VOLUME (24H)',
+              text: `${
+                clusterView?.volume
+                  ? formatUTokenDecimal2(clusterView.volume)
+                  : 0
+              } UST`,
+            },
+            {
+              label: 'TOTAL SUPPLY',
+              text: <s>123,456 {clusterView?.token.symbol ?? '-'}</s>,
+            },
           ]}
         />
       </header>
@@ -178,35 +175,40 @@ function ClustersDetailBase({
         <Section>
           <article>
             <p>
-              <b>The New is always better</b> index is a digital asset index
-              designed to track the performance of 5 large cap US technology
-              companies. The intent is to provide DeFi users with on-chain
-              exposure to a basket of US large cap technology equities, as well
-              as to showcase the composable nature of Mirror Protocol’s assets
-              as building blocks for novel products.
-            </p>
-            <p>
-              Mirror Protocol is a DeFi protocol powered by smart contracts on
-              the Terra network that enables the creation of synthetic assets
-              called mirrored assets (mAssets). mAssets mimic the price behavior
-              of real-world assets and give traders anywhere in the world open
-              access to price exposure without the burdens of owning or
-              transacting real assets.
-            </p>
-            <p>
-              Mirror democratizes access to the wealth creation of world markets
-              that many financially disenfranchised users worldwide are
-              precluded from -- unlocking the vast potential of dead capital.
-              Mirror is entirely community-governed and relies on a siloed,
-              CDP-style model for minting mAssets that trade on DeFi apps across
-              Terra, Ethereum, Binance Chain, and soon to be more.
+              <s>
+                <b>The New is always better</b> index is a digital asset index
+                designed to track the performance of 5 large cap US technology
+                companies. The intent is to provide DeFi users with on-chain
+                exposure to a basket of US large cap technology equities, as
+                well as to showcase the composable nature of Mirror Protocol’s
+                assets as building blocks for novel products.
+              </s>
             </p>
           </article>
 
-          <section className="graph" ref={ref}>
-            <PartitionLabels data={partitionLabels} />
-            <PartitionBarGraph data={partitionData} width={width} height={8} />
-          </section>
+          {clusterView?.assets && (
+            <section className="graph" ref={ref}>
+              <PartitionLabels
+                data={clusterView.assets.map(
+                  ({ token, color: assetColor, portfolioRatio }) => ({
+                    label: token.symbol,
+                    color: assetColor,
+                    value: formatRate(portfolioRatio as Rate<number>) + '%',
+                  }),
+                )}
+              />
+              <PartitionBarGraph
+                data={clusterView.assets.map(
+                  ({ color: assetColor, portfolioRatio }) => ({
+                    color: assetColor,
+                    value: portfolioRatio,
+                  }),
+                )}
+                width={width}
+                height={8}
+              />
+            </section>
+          )}
         </Section>
       </section>
 
@@ -246,7 +248,13 @@ function ClustersDetailBase({
           <Descriptions
             direction={descriptionDisplay}
             descriptions={[
-              { label: 'TOTAL TOKEN PROVIDED', text: '123,456 UST' },
+              {
+                label: 'TOTAL TOKEN PROVIDED',
+                text:
+                  (clusterView?.totalProvided
+                    ? formatUTokenDecimal2(clusterView.totalProvided)
+                    : '0') + ' UST',
+              },
             ]}
           />
         </header>
@@ -272,37 +280,32 @@ function ClustersDetailBase({
           </thead>
 
           <tbody>
-            {tableData.map(
-              ({
-                index,
-                name,
-                description,
-                price,
-                hr24,
-                hr24diff,
-                amount,
-                current,
-                target,
-              }) => (
-                <tr key={'row' + index}>
-                  <td>
-                    <IconAndLabels text={name} subtext={description} />
-                  </td>
-                  <td className="price">
-                    {price} UST
+            {clusterView?.assets.map(({ token, portfolioRatio }) => (
+              <tr key={'row' + token.symbol}>
+                <td>
+                  <IconAndLabels text={token.name} subtext={token.symbol} />
+                </td>
+                <td className="price">
+                  <s>
+                    0 UST
                     <br />
-                    <DiffSpan diff={hr24diff}>{hr24}%</DiffSpan>
-                  </td>
-                  <td>
-                    {current}% <Sub>({target}%)</Sub>
-                  </td>
-                  <td className="graph">
-                    <BarGraph ratio={Math.random()} width={300} height={8} />
-                    <div>{amount}</div>
-                  </td>
-                </tr>
-              ),
-            )}
+                    <DiffSpan diff={0.5}>0%</DiffSpan>
+                  </s>
+                </td>
+                <td>
+                  {formatRate(portfolioRatio as Rate<number>)}%{' '}
+                  <Sub>
+                    <s>({0}%)</s>
+                  </Sub>
+                </td>
+                <td className="graph">
+                  <BarGraph ratio={Math.random()} width={300} height={8} />
+                  <div>
+                    <s>100,000</s> {token.symbol}
+                  </div>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </Table>
       </section>

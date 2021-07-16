@@ -1,7 +1,5 @@
 import { ContractAddress } from '@nebula-js/types';
 import {
-  AssetTokenIndex,
-  DEFAULT_ASSET_TOKENS,
   DEFAULT_CONSTANTS,
   DEFAULT_CONTRACT_ADDRESS,
   NebulaContants,
@@ -20,13 +18,11 @@ export interface NebulaWebappProviderProps {
   children: ReactNode;
   contractAddress?: Record<string, ContractAddress>;
   constants?: Record<string, NebulaContants>;
-  assetTokens?: Record<string, AssetTokenIndex>;
 }
 
 export interface NebulaWebapp {
   contractAddress: ContractAddress;
   constants: NebulaContants;
-  assetTokens: AssetTokenIndex;
 }
 
 const NebulaWebappContext: Context<NebulaWebapp> =
@@ -37,7 +33,6 @@ export function NebulaWebappProvider({
   children,
   contractAddress = DEFAULT_CONTRACT_ADDRESS,
   constants = DEFAULT_CONSTANTS,
-  assetTokens = DEFAULT_ASSET_TOKENS,
 }: NebulaWebappProviderProps) {
   const { network } = useWallet();
 
@@ -46,9 +41,8 @@ export function NebulaWebappProvider({
       contractAddress:
         contractAddress[network.name] ?? contractAddress['mainnet'],
       constants: constants[network.name] ?? constants['mainnet'],
-      assetTokens: assetTokens[network.name] ?? assetTokens['mainnet'],
     }),
-    [contractAddress, network.name, constants, assetTokens],
+    [contractAddress, network.name, constants],
   );
 
   return (

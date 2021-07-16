@@ -12,16 +12,16 @@ import {
 import { fixHMR } from 'fix-hmr';
 import React from 'react';
 import styled from 'styled-components';
-import { ClustersListItem } from '../../models/clusters';
+import { ClusterView } from '../../models/clusters';
 
 export interface ClustersTableProps
   extends Omit<HorizontalScrollTableProps, 'minWidth'> {
-  listItems: ClustersListItem[];
+  clusters: ClusterView[];
   onClusterClick: (id: string) => void;
 }
 
 function ClustersTableBase({
-  listItems,
+  clusters,
   onClusterClick,
   ...tableProps
 }: ClustersTableProps) {
@@ -58,10 +58,9 @@ function ClustersTableBase({
       </thead>
 
       <tbody>
-        {listItems.map(
+        {clusters.map(
           ({
-            index,
-            id,
+            addr,
             name,
             price,
             hr24diff,
@@ -71,18 +70,26 @@ function ClustersTableBase({
             totalProvided,
             assets,
           }) => (
-            <tr key={'row' + index} onClick={() => onClusterClick(id)}>
+            <tr key={'row' + addr} onClick={() => onClusterClick(addr)}>
               <td>
                 <IconAndLabels
                   text={name}
                   subtext={
                     <Partition>
-                      <PartitionBarGraph height={8} data={assets} width={150} />
+                      <PartitionBarGraph
+                        height={8}
+                        data={assets.map(({ color, portfolioRatio }) => ({
+                          color,
+                          value: portfolioRatio,
+                        }))}
+                        width={150}
+                      />
                       <PartitionLabels
                         columnGap="0.5em"
-                        data={assets
-                          .slice(0, 2)
-                          .map(({ label, color }) => ({ label, color }))}
+                        data={assets.slice(0, 2).map(({ token, color }) => ({
+                          label: token.symbol,
+                          color,
+                        }))}
                       >
                         {assets.length - 2 > 0 && (
                           <li>+{assets.length - 2} more</li>

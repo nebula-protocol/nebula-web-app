@@ -12,7 +12,7 @@ const queryFn = createQueryFn(
   (
     mantleEndpoint: string,
     mantleFetch: MantleFetch,
-    clusterFactoryAddr: HumanAddr,
+    terraswapFactoryAddr: HumanAddr,
     clusterAddr: HumanAddr,
   ) => {
     return clusterInfoQuery({
@@ -34,7 +34,7 @@ const queryFn = createQueryFn(
           },
         },
         terraswapPair: {
-          contractAddress: clusterFactoryAddr,
+          contractAddress: terraswapFactoryAddr,
           query: {
             pair: {
               asset_infos: [
@@ -69,7 +69,7 @@ export function useClusterInfoQuery(
   const { mantleFetch, mantleEndpoint, queryErrorReporter } = useTerraWebapp();
 
   const {
-    contractAddress: { clusterFactory },
+    contractAddress: { terraswap },
   } = useNebulaWebapp();
 
   const { browserInactive } = useBrowserInactive();
@@ -79,7 +79,7 @@ export function useClusterInfoQuery(
       NEBULA_QUERY_KEYS.CLUSTER_INFO,
       mantleEndpoint,
       mantleFetch,
-      clusterFactory,
+      terraswap.factory,
       clusterAddr,
     ],
     queryFn,

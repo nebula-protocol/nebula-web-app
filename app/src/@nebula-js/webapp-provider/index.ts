@@ -6,4 +6,3 @@ export * from './contexts/webapp';
 export * from './queries/clusters/info';
 export * from './queries/clusters/infoList';
 export * from './queries/clusters/list';
-export * from './queries/terra/cw20';

@@ -1,4 +1,5 @@
 import { formatRate, formatUTokenDecimal2 } from '@nebula-js/notation';
+import { Rate } from '@nebula-js/types';
 import {
   breakpoints,
   DiffSpan,
@@ -11,33 +12,30 @@ import { fixHMR } from 'fix-hmr';
 import React, { DetailedHTMLProps } from 'react';
 import styled from 'styled-components';
 import useResizeObserver from 'use-resize-observer/polyfilled';
-import { ClustersListItem } from '../../models/clusters';
+import { ClusterView } from '../../models/clusters';
 
 export interface ClustersCardsProps
   extends DetailedHTMLProps<
     React.HTMLAttributes<HTMLUListElement>,
     HTMLUListElement
   > {
-  listItems: ClustersListItem[];
+  clusters: ClusterView[];
   onClusterClick: (id: string) => void;
 }
 
 function ClustersCardsBase({
-  listItems,
+  clusters,
   onClusterClick,
   ...sectionProps
 }: ClustersCardsProps) {
   const { width = 400, ref } = useResizeObserver();
 
-  console.log('index.tsx..ClustersCardsBase()', width);
-
   return (
     <ul {...sectionProps}>
-      {listItems.map(
+      {clusters.map(
         (
           {
-            index,
-            id,
+            addr,
             name,
             price,
             hr24,
@@ -51,10 +49,10 @@ function ClustersCardsBase({
           i,
         ) => (
           <li
-            key={'row' + index}
+            key={'row' + addr}
             ref={i === 0 ? ref : undefined}
             role="button"
-            onClick={() => onClusterClick(id)}
+            onClick={() => onClusterClick(addr)}
           >
             <IconAndLabels
               text={name}
@@ -100,14 +98,25 @@ function ClustersCardsBase({
 
             <Partition>
               <PartitionLabels
-                columnGap="0.5em"
+                columnGap="1em"
                 data={assets
-                  .slice(0, 3)
-                  .map(({ label, color }) => ({ label, color }))}
+                  .slice(0, 2)
+                  .map(({ token, color, portfolioRatio }) => ({
+                    label: token.symbol,
+                    color,
+                    value: formatRate(portfolioRatio as Rate<number>) + '%',
+                  }))}
               >
-                {assets.length - 2 > 0 && <li>+{assets.length - 3} more</li>}
+                {assets.length - 2 > 0 && <li>+{assets.length - 2} more</li>}
               </PartitionLabels>
-              <PartitionBarGraph height={8} data={assets} width={width} />
+              <PartitionBarGraph
+                height={8}
+                data={assets.map(({ color, portfolioRatio }) => ({
+                  color,
+                  value: portfolioRatio,
+                }))}
+                width={width}
+              />
             </Partition>
           </li>
         ),
