@@ -1,10 +1,16 @@
 import React from 'react';
 import { createGlobalStyle } from 'styled-components';
 import { GlobalStyle } from '../src/@nebula-js/ui/GlobalStyle';
-import { darkTheme } from '../src/@nebula-js/ui/theme/darkTheme';
-import { lightTheme } from '../src/@nebula-js/ui/theme/lightTheme';
-import { ThemeProvider } from '../src/@nebula-js/ui/theme/ThemeProvider';
+import { ThemeProvider } from '../src/contexts/theme';
+import { Breakpoint, CssRoute, StaticStyleRouter } from '../src/style-router';
 import { theme } from './theme';
+
+const breakpoints: Breakpoint[] = [
+  ['small', '<=530'],
+  ['medium', '>530 and <=830'],
+  ['large', '>830 and <=1440'],
+  ['xlarge', '>1440'],
+];
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -22,11 +28,11 @@ export const parameters = {
     values: [
       {
         name: 'dark',
-        value: darkTheme.colors.gray18,
+        value: 'dark',
       },
       {
         name: 'light',
-        value: lightTheme.colors.gray18,
+        value: 'light',
       },
     ],
   },
@@ -34,17 +40,27 @@ export const parameters = {
 
 export const decorators = [
   (Story, { globals }) => (
-    <ThemeProvider
-      theme={
-        globals?.backgrounds?.value === lightTheme.colors.gray18
-          ? lightTheme
-          : darkTheme
-      }
+    <StaticStyleRouter
+      breakpoint="large"
+      color={globals?.backgrounds?.value === 'light' ? 'light' : 'dark'}
     >
-      <GlobalStyle />
-      <DocGlobalStyle />
-      <Story />
-    </ThemeProvider>
+      <CssRoute
+        href={({ color }) =>
+          `https://terra-ux.vercel.app/styles/colors/${color}.css`
+        }
+      />
+      <CssRoute
+        href={({ breakpoint }) =>
+          `https://terra-ux.vercel.app/styles/layouts/${breakpoint}.css`
+        }
+      />
+
+      <ThemeProvider>
+        <GlobalStyle />
+        <DocGlobalStyle />
+        <Story />
+      </ThemeProvider>
+    </StaticStyleRouter>
   ),
 ];
 

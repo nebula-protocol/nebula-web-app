@@ -1,21 +1,23 @@
-import React, { ReactNode, useMemo, useState } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import { StyleRouterContext, StyleRouterState } from './StyleRouter';
 
 export interface StaticStyleRouterProps {
   children: ReactNode;
-  defaultColor: string;
+  color: string;
   breakpoint: string;
 }
 
 export function StaticStyleRouter({
   children,
-  defaultColor,
+  color,
   breakpoint,
 }: StaticStyleRouterProps) {
-  const [color, setColor] = useState<string>(defaultColor);
-
   const state = useMemo<StyleRouterState>(
-    () => ({ color, breakpoint, updateColor: setColor }),
+    () => ({
+      color,
+      breakpoint,
+      updateColor: () => {},
+    }),
     [breakpoint, color],
   );
 

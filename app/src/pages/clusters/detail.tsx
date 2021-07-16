@@ -56,24 +56,6 @@ const chartTabItems: TabItem[] = [
   { id: 'year', label: 'Y' },
 ];
 
-//const tableData = Array.from(
-//  { length: Math.floor(Math.random() * 10) + 5 },
-//  (_, i) => {
-//    return {
-//      index: i,
-//      id: `tokens-${i}`.toUpperCase(),
-//      name: `Mirror Protocol ${i}`,
-//      description: `MIR ${i}`,
-//      price: '102.01',
-//      hr24diff: (i % 3) - 1,
-//      hr24: '60.78',
-//      current: '50',
-//      target: '45',
-//      amount: '100,000.202293 MIR',
-//    };
-//  },
-//);
-
 const chartData = Array.from(
   { length: Math.floor(Math.random() * 30) + 30 },
   (_, i) => {

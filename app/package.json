@@ -60,6 +60,7 @@
     "@terra-dev/use-google-analytics": "^0.20.1",
     "@terra-dev/use-interval": "^0.20.1",
     "@terra-dev/use-local-storage": "^0.20.1",
+    "@terra-dev/use-resolve-last": "^0.20.1",
     "@terra-dev/use-restricted-input": "^0.20.1",
     "@terra-dev/use-router-scroll-restoration": "^0.20.1",
     "@terra-money/terra.js": "^1.8.8",

@@ -2629,6 +2629,7 @@ __metadata:
     "@terra-dev/use-google-analytics": ^0.20.1
     "@terra-dev/use-interval": ^0.20.1
     "@terra-dev/use-local-storage": ^0.20.1
+    "@terra-dev/use-resolve-last": ^0.20.1
     "@terra-dev/use-restricted-input": ^0.20.1
     "@terra-dev/use-router-scroll-restoration": ^0.20.1
     "@terra-money/terra.js": ^1.8.8
@@ -4609,6 +4610,15 @@ __metadata:
   peerDependencies:
     react: ^17.0.0
   checksum: 08a267093b1b2c871348055afbf4bc92755be277124aa101eb63b99330698f49caaea54edc66e3804136c8edc98cdd9cb6c5ed88d11095c7a9d4b5b99248569f
+  languageName: node
+  linkType: hard
+
+"@terra-dev/use-resolve-last@npm:^0.20.1":
+  version: 0.20.1
+  resolution: "@terra-dev/use-resolve-last@npm:0.20.1"
+  peerDependencies:
+    react: ^17.0.0
+  checksum: 990f0e2bf713f96bde12b8eb314a268ca4c5c79539b72f56bd1d2e5e57e0fa1a73ddbf34620b9b48c2535dec5102a365a9c44629d840c62c4520a4447b52cb1d
   languageName: node
   linkType: hard
 
