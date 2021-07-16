@@ -42,6 +42,10 @@ export function formatInput(n: Token<BigSource>): Token {
   return d6InputFormatter(n) as any;
 }
 
+export function formatUInput(n: u<Token<BigSource>>): Token {
+  return d6InputFormatter(demicrofy(n)) as any;
+}
+
 export function formatToken(n: Token<BigSource>): string {
   return d6Formatter(n);
 }

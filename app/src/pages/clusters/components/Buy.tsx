@@ -1,5 +1,6 @@
 import { ArrowSouthIcon, WalletIcon } from '@nebula-js/icons';
-import { NEB, UST } from '@nebula-js/types';
+import { formatUInput, formatUToken } from '@nebula-js/notation';
+import { CT, UST } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
@@ -9,17 +10,50 @@ import {
   TokenSpan,
   useScreenSizeValue,
 } from '@nebula-js/ui';
+import {
+  ClusterInfo,
+  cw20BuyTokenForm,
+  CW20BuyTokenFormInput,
+  NebulaTax,
+  NebulaTokenBalances,
+} from '@nebula-js/webapp-fns';
+import { useNebulaWebapp } from '@nebula-js/webapp-provider';
+import { useForm } from '@terra-dev/use-form';
+import { useBank, useTerraWebapp } from '@terra-money/webapp-provider';
 import { FeeBox } from 'components/boxes/FeeBox';
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 export interface ClusterBuyProps {
   className?: string;
+  clusterInfo: ClusterInfo;
 }
 
-function ClusterBuyBase({ className }: ClusterBuyProps) {
-  const [fromAmount, setFromAmount] = useState<UST>('' as UST);
-  const [toAmount, setToAmount] = useState<NEB>('' as NEB);
+function ClusterBuyBase({
+  className,
+  clusterInfo: { clusterState, terraswapPair, clusterTokenInfo },
+}: ClusterBuyProps) {
+  const { mantleFetch, mantleEndpoint } = useTerraWebapp();
+
+  const {
+    constants: { fixedGas },
+  } = useNebulaWebapp();
+
+  const { tax, tokenBalances } = useBank<NebulaTokenBalances, NebulaTax>();
+
+  const [updateInput, states] = useForm(
+    cw20BuyTokenForm,
+    {
+      ustCtPairAddr: terraswapPair.contract_addr,
+      ctAddr: clusterState.cluster_token,
+      mantleEndpoint,
+      mantleFetch,
+      ustBalance: tokenBalances.uUST,
+      tax,
+      fixedGas,
+    },
+    () => ({ ustAmount: '' as UST } as CW20BuyTokenFormInput<CT>),
+  );
 
   const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
     mobile: 'medium',
@@ -31,18 +65,28 @@ function ClusterBuyBase({ className }: ClusterBuyProps) {
   return (
     <div className={className}>
       <TokenInput
-        value={fromAmount}
-        onChange={setFromAmount}
+        maxDecimalPoints={6}
+        value={states.ustAmount ?? ('' as UST)}
+        onChange={(nextUstAmount) =>
+          updateInput({ ustAmount: nextUstAmount, tokenAmount: undefined })
+        }
         placeholder="0.00"
         label="FROM"
         suggest={
-          <EmptyButton onClick={() => setFromAmount('1490' as UST)}>
+          <EmptyButton
+            onClick={() =>
+              updateInput({
+                ustAmount: formatUInput(states.maxUstAmount) as UST,
+                tokenAmount: undefined,
+              })
+            }
+          >
             <WalletIcon
               style={{
                 transform: 'translateX(-0.3em)',
               }}
             />{' '}
-            1,490.000000
+            {formatUToken(states.maxUstAmount)}
           </EmptyButton>
         }
         token={<TokenSpan>UST</TokenSpan>}
@@ -53,27 +97,20 @@ function ClusterBuyBase({ className }: ClusterBuyProps) {
       </IconSeparator>
 
       <TokenInput
-        value={toAmount}
-        onChange={setToAmount}
+        maxDecimalPoints={6}
+        value={states.tokenAmount ?? ('' as CT)}
+        onChange={(nextCtAmount) =>
+          updateInput({ ustAmount: undefined, tokenAmount: nextCtAmount })
+        }
         placeholder="0.00"
         label="TO"
-        suggest={
-          <EmptyButton onClick={() => setToAmount('1490' as NEB)}>
-            <WalletIcon
-              style={{
-                transform: 'translateX(-0.3em)',
-              }}
-            />{' '}
-            1,490.000000
-          </EmptyButton>
-        }
-        token={<TokenSpan>NEB</TokenSpan>}
+        token={<TokenSpan>{clusterTokenInfo.symbol}</TokenSpan>}
       />
 
       <FeeBox className="feebox">
         <li>
           <span>Tx Fee</span>
-          <span>0.014072 UST</span>
+          <span>{'txFee' in states ? formatUToken(states.txFee) : 0} UST</span>
         </li>
       </FeeBox>
 

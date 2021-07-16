@@ -27,8 +27,12 @@ export namespace terraswap {
 
     export interface PairResponse {
       asset_infos: [AssetInfo, AssetInfo];
+
+      /** Pair contract address */
       contract_addr: HumanAddr;
-      liquidity_token: HumanAddr;
+
+      /** LP contract address */
+      liquidity_token: CW20Addr;
     }
   }
 

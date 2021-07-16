@@ -205,7 +205,9 @@ function ClustersDetailBase({
           <MainSection>
             <Switch>
               <Redirect exact path={`${match.url}/`} to={`${match.url}/buy`} />
-              <Route path={`${match.url}/buy`} component={ClusterBuy} />
+              <Route path={`${match.url}/buy`}>
+                {clusterInfo && <ClusterBuy clusterInfo={clusterInfo} />}
+              </Route>
               <Route path={`${match.url}/sell`} component={ClusterSell} />
               <Route path={`${match.url}/mint`} component={ClusterMint} />
               <Route path={`${match.url}/burn`} component={ClusterBurn} />
