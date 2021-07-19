@@ -6,7 +6,7 @@ const packageRoot = path.resolve(__dirname, '../src/@nebula-js/webapp-fns');
 
 const files = glob.sync(`*/**/*.{ts,tsx}`, {
   cwd: packageRoot,
-  ignore: [`**/__*__/**`],
+  ignore: [`**/__*__/**`, `**/internal/**`],
 });
 
 const index = `// THIS FILE IS AUTO CREATED
@@ -24,4 +24,3 @@ fs.writeFile(path.resolve(packageRoot, 'index.ts'), index, {
 }).then(() => {
   console.log(`👍 ${path.resolve(packageRoot, 'index.ts')}`);
 });
-

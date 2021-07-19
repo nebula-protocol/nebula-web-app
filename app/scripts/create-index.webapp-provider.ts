@@ -6,7 +6,7 @@ const packageRoot = path.resolve(__dirname, '../src/@nebula-js/webapp-provider')
 
 const files = glob.sync(`*/**/*.{ts,tsx}`, {
   cwd: packageRoot,
-  ignore: [`**/__*__/**`],
+  ignore: [`**/__*__/**`, `**/internal/**`],
 });
 
 const index = `// THIS FILE IS AUTO CREATED

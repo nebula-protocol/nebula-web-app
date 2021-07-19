@@ -1,4 +1,4 @@
-import { CW20Addr, HumanAddr, NativeDenom } from '@nebula-js/types';
+import { HumanAddr } from '@nebula-js/types';
 import { clusterInfoQuery } from '@nebula-js/webapp-fns';
 import {
   TEST_CONTRACT_ADDRESS,
@@ -12,6 +12,7 @@ describe('clusters/info', () => {
       await clusterInfoQuery({
         mantleEndpoint: TEST_MANTLE_ENDPOINT,
         mantleFetch: defaultMantleFetch,
+        terraswapFactoryAddr: TEST_CONTRACT_ADDRESS.terraswap.factory,
         wasmQuery: {
           clusterConfig: {
             contractAddress: 'terra1qascdg0c2gsewg6c2u8e5fdgc35mhlcufvmzna',
@@ -26,31 +27,6 @@ describe('clusters/info', () => {
                 cluster_contract_address:
                   'terra1qascdg0c2gsewg6c2u8e5fdgc35mhlcufvmzna' as HumanAddr,
               },
-            },
-          },
-          terraswapPair: {
-            contractAddress: TEST_CONTRACT_ADDRESS.terraswap.factory,
-            query: {
-              pair: {
-                asset_infos: [
-                  {
-                    token: {
-                      contract_addr: '' as CW20Addr,
-                    },
-                  },
-                  {
-                    native_token: {
-                      denom: 'uusd' as NativeDenom,
-                    },
-                  },
-                ],
-              },
-            },
-          },
-          terraswapPool: {
-            contractAddress: '',
-            query: {
-              pool: {},
             },
           },
         },

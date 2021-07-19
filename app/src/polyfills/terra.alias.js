@@ -1,7 +1,10 @@
 const {
   LCDClient,
   Int,
+  Dec,
   Msg,
+  MsgSend,
+  MsgExecuteContract,
   MnemonicKey,
   StdFee,
   Wallet,
@@ -21,5 +24,20 @@ const {
  */
 
 export {
-  LCDClient, Int, Msg, MnemonicKey, StdFee, Wallet, AccAddress, Extension, RawKey, Key, MsgAuthAPI, Coin, Coins,
+  LCDClient,
+  Int,
+  Dec,
+  Msg,
+  MsgSend,
+  MsgExecuteContract,
+  MnemonicKey,
+  StdFee,
+  Wallet,
+  AccAddress,
+  Extension,
+  RawKey,
+  Key,
+  MsgAuthAPI,
+  Coin,
+  Coins,
 };

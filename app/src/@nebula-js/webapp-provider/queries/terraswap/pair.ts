@@ -1,5 +1,6 @@
 import { HumanAddr } from '@anchor-protocol/types';
-import { ClusterInfo, clusterInfoQuery } from '@nebula-js/webapp-fns';
+import { terraswap } from '@nebula-js/types';
+import { TerraswapPair, terraswapPairQuery } from '@nebula-js/webapp-fns';
 import { createQueryFn } from '@terra-dev/react-query-utils';
 import { useBrowserInactive } from '@terra-dev/use-browser-inactive';
 import { MantleFetch, useTerraWebapp } from '@terra-money/webapp-provider';
@@ -12,25 +13,18 @@ const queryFn = createQueryFn(
     mantleEndpoint: string,
     mantleFetch: MantleFetch,
     terraswapFactoryAddr: HumanAddr,
-    clusterAddr: HumanAddr,
+    assetInfos: [terraswap.AssetInfo, terraswap.AssetInfo],
   ) => {
-    return clusterInfoQuery({
+    return terraswapPairQuery({
       mantleEndpoint,
       mantleFetch,
-      terraswapFactoryAddr,
       wasmQuery: {
-        clusterState: {
-          contractAddress: clusterAddr,
+        terraswapPair: {
+          contractAddress: terraswapFactoryAddr,
           query: {
-            cluster_state: {
-              cluster_contract_address: clusterAddr,
+            pair: {
+              asset_infos: assetInfos,
             },
-          },
-        },
-        clusterConfig: {
-          contractAddress: clusterAddr,
-          query: {
-            config: {},
           },
         },
       },
@@ -38,24 +32,22 @@ const queryFn = createQueryFn(
   },
 );
 
-export function useClusterInfoQuery(
-  clusterAddr: HumanAddr,
-): UseQueryResult<ClusterInfo | undefined> {
+export function useTerraswapPairQuery(
+  assetInfos: [terraswap.AssetInfo, terraswap.AssetInfo],
+): UseQueryResult<TerraswapPair | undefined> {
   const { mantleFetch, mantleEndpoint, queryErrorReporter } = useTerraWebapp();
 
-  const {
-    contractAddress: { terraswap },
-  } = useNebulaWebapp();
+  const { contractAddress } = useNebulaWebapp();
 
   const { browserInactive } = useBrowserInactive();
 
   const result = useQuery(
     [
-      NEBULA_QUERY_KEYS.CLUSTER_INFO,
+      NEBULA_QUERY_KEYS.TERRASWAP_PAIR,
       mantleEndpoint,
       mantleFetch,
-      terraswap.factory,
-      clusterAddr,
+      contractAddress.terraswap.factory,
+      assetInfos,
     ],
     queryFn,
     {

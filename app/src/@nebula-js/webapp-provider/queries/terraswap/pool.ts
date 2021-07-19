@@ -1,61 +1,47 @@
 import { HumanAddr } from '@anchor-protocol/types';
-import { ClusterInfo, clusterInfoQuery } from '@nebula-js/webapp-fns';
+import { TerraswapPool, terraswapPoolQuery } from '@nebula-js/webapp-fns';
 import { createQueryFn } from '@terra-dev/react-query-utils';
 import { useBrowserInactive } from '@terra-dev/use-browser-inactive';
 import { MantleFetch, useTerraWebapp } from '@terra-money/webapp-provider';
 import { useQuery, UseQueryResult } from 'react-query';
-import { useNebulaWebapp } from '../../contexts/webapp';
 import { NEBULA_QUERY_KEYS } from '../../env';
 
 const queryFn = createQueryFn(
   (
     mantleEndpoint: string,
     mantleFetch: MantleFetch,
-    terraswapFactoryAddr: HumanAddr,
-    clusterAddr: HumanAddr,
+    terraswapPairAddr: HumanAddr | undefined,
   ) => {
-    return clusterInfoQuery({
-      mantleEndpoint,
-      mantleFetch,
-      terraswapFactoryAddr,
-      wasmQuery: {
-        clusterState: {
-          contractAddress: clusterAddr,
-          query: {
-            cluster_state: {
-              cluster_contract_address: clusterAddr,
+    return terraswapPairAddr
+      ? terraswapPoolQuery({
+          mantleEndpoint,
+          mantleFetch,
+          wasmQuery: {
+            terraswapPool: {
+              contractAddress: terraswapPairAddr,
+              query: {
+                pool: {},
+              },
             },
           },
-        },
-        clusterConfig: {
-          contractAddress: clusterAddr,
-          query: {
-            config: {},
-          },
-        },
-      },
-    });
+        })
+      : Promise.resolve(undefined);
   },
 );
 
-export function useClusterInfoQuery(
-  clusterAddr: HumanAddr,
-): UseQueryResult<ClusterInfo | undefined> {
+export function useTerraswapPoolQuery(
+  terraswapPairAddr: HumanAddr | undefined,
+): UseQueryResult<TerraswapPool | undefined> {
   const { mantleFetch, mantleEndpoint, queryErrorReporter } = useTerraWebapp();
-
-  const {
-    contractAddress: { terraswap },
-  } = useNebulaWebapp();
 
   const { browserInactive } = useBrowserInactive();
 
   const result = useQuery(
     [
-      NEBULA_QUERY_KEYS.CLUSTER_INFO,
+      NEBULA_QUERY_KEYS.TERRASWAP_POOL,
       mantleEndpoint,
       mantleFetch,
-      terraswap.factory,
-      clusterAddr,
+      terraswapPairAddr,
     ],
     queryFn,
     {
