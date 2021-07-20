@@ -18,12 +18,12 @@ import {
   NebulaTokenBalances,
 } from '@nebula-js/webapp-fns';
 import { useCW20BuyTokenTx, useNebulaWebapp } from '@nebula-js/webapp-provider';
-import { StreamStatus } from '@rx-stream/react';
 import { useForm } from '@terra-dev/use-form';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useBank, useTerraWebapp } from '@terra-money/webapp-provider';
 import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
+import { useTxBroadcast } from 'contexts/tx-broadcast';
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
@@ -44,7 +44,9 @@ function ClusterBuyBase({
     constants: { fixedGas },
   } = useNebulaWebapp();
 
-  const [postTx, txResult] = useCW20BuyTokenTx(
+  const { broadcast } = useTxBroadcast();
+
+  const postTx = useCW20BuyTokenTx(
     terraswapPair.contract_addr,
     clusterTokenInfo.symbol,
   );
@@ -72,26 +74,28 @@ function ClusterBuyBase({
     monitor: 'normal',
   });
 
+  const initForm = useCallback(() => {
+    updateInput({
+      ustAmount: '' as UST,
+      tokenAmount: '' as CT,
+    });
+  }, [updateInput]);
+
   const proceed = useCallback(
     (ustAmount: UST, txFee: u<UST<BigSource>>) => {
-      postTx?.({
+      const stream = postTx?.({
         buyAmount: microfy(ustAmount).toFixed() as u<UST>,
         txFee: big(txFee).toFixed() as u<UST>,
+        onTxSucceed: initForm,
       });
-    },
-    [postTx],
-  );
 
-  if (
-    txResult?.status === StreamStatus.IN_PROGRESS ||
-    txResult?.status === StreamStatus.DONE
-  ) {
-    return (
-      <div className={className}>
-        <pre>{JSON.stringify(txResult.value, null, 2)}</pre>
-      </div>
-    );
-  }
+      if (stream) {
+        console.log('Buy.tsx..()', stream);
+        broadcast(stream);
+      }
+    },
+    [broadcast, initForm, postTx],
+  );
 
   return (
     <div className={className}>

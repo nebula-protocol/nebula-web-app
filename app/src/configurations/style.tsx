@@ -17,15 +17,9 @@ export function StyleProviders({ children }: { children: ReactNode }) {
       breakpoints={breakpoints}
       fallbackBreakpoint="large"
     >
+      <CssRoute href={({ color }) => `/styles/colors/${color}.css`} />
       <CssRoute
-        href={({ color }) =>
-          `https://terra-ux.vercel.app/styles/colors/${color}.css`
-        }
-      />
-      <CssRoute
-        href={({ breakpoint }) =>
-          `https://terra-ux.vercel.app/styles/layouts/${breakpoint}.css`
-        }
+        href={({ breakpoint }) => `/styles/layouts/${breakpoint}.css`}
       />
 
       <ThemeProvider>

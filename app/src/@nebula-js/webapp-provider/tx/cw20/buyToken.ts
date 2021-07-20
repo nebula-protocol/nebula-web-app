@@ -5,7 +5,6 @@ import {
   NebulaTax,
   NebulaTokenBalances,
 } from '@nebula-js/webapp-fns';
-import { useStream } from '@rx-stream/react';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import {
   useBank,
@@ -98,7 +97,5 @@ export function useCW20BuyTokenTx(
     ],
   );
 
-  const streamReturn = useStream(stream);
-
-  return connectedWallet ? streamReturn : [null, null];
+  return connectedWallet ? stream : null;
 }

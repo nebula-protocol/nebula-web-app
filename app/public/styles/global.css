@@ -8,4 +8,10 @@
   --color-paleblue-l: 49%;
   --color-paleblue: hsl(var(--color-paleblue-h), var(--color-paleblue-s), var(--color-paleblue-l));
   --color-paleblue-text: #ffffff;
+  
+  --color-red-h: 347;
+  --color-red-s: 84%;
+  --color-red-l: 66%;
+  --color-red: hsl(var(--color-red-h), var(--color-red-s), var(--color-red-l));
+  --color-red-text: #ffffff;
 }

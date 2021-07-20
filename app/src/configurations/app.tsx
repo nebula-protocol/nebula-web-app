@@ -16,6 +16,7 @@ import {
 } from '@terra-money/webapp-provider';
 import { useReadonlyWalletDialog } from 'components/dialogs/useReadonlyWalletDialog';
 import { StyleProviders } from 'configurations/style';
+import { TxBroadcastProvider } from 'contexts/tx-broadcast';
 
 import React, { ReactNode, useCallback } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -76,7 +77,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
                   <GoogleAnalytics trackingId={GA_TRACKING_ID} />
                   <RouterScrollRestoration />
                   <StyleProviders>
-                    {children}
+                    <TxBroadcastProvider>{children}</TxBroadcastProvider>
                     {readonlyWalletSelectorElement}
                   </StyleProviders>
                 </NebulaWebappProvider>
