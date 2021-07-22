@@ -11,7 +11,7 @@ import { min } from '@terra-dev/big-math';
 import { MantleFetch } from '@terra-dev/mantle';
 import big, { Big, BigSource } from 'big.js';
 import { computeMaxUstBalanceForUstTransfer } from '../../logics/computeMaxUstBalanceForUstTransfer';
-import { terraswapSimulationQuery } from '../../quries/terraswap/simulation';
+import { terraswapSimulationQuery } from '../../queries/terraswap/simulation';
 import { NebulaTax } from '../../types';
 
 export interface CW20BuyTokenFormInput<T extends Token> {

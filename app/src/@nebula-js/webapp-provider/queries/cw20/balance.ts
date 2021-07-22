@@ -35,7 +35,7 @@ const queryFn = createQueryFn(
 export function useCW20BalanceQuery<T extends Token>(
   tokenAddr: CW20Addr,
   walletAddr: HumanAddr | undefined,
-): UseQueryResult<CW20Balance<T>> {
+): UseQueryResult<CW20Balance<T> | undefined> {
   const { mantleFetch, mantleEndpoint, queryErrorReporter } = useTerraWebapp();
 
   const { browserInactive } = useBrowserInactive();

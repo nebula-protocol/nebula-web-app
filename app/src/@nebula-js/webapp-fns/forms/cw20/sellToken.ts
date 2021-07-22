@@ -10,7 +10,7 @@ import {
 import { min } from '@terra-dev/big-math';
 import { MantleFetch } from '@terra-dev/mantle';
 import big, { Big, BigSource } from 'big.js';
-import { terraswapSimulationQuery } from '../../quries/terraswap/simulation';
+import { terraswapSimulationQuery } from '../../queries/terraswap/simulation';
 import { NebulaTax } from '../../types';
 
 export interface CW20SellTokenFormInput<T extends Token> {

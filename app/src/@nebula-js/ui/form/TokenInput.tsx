@@ -23,6 +23,7 @@ export interface TokenInputProps<T extends string>
   suggest?: ReactNode;
   token?: ReactNode;
   error?: ReactNode;
+  children?: ReactNode;
 }
 
 export function TokenInput<T extends string>({
@@ -38,6 +39,7 @@ export function TokenInput<T extends string>({
   suggest,
   label,
   error,
+  children,
   ...inputProps
 }: TokenInputProps<T>) {
   const inputOnChange = useCallback(
@@ -69,7 +71,8 @@ export function TokenInput<T extends string>({
           value={value}
         />
       </div>
-      {error && <footer>{error}</footer>}
+      {children && <footer>{children}</footer>}
+      {error && <aside>{error}</aside>}
     </Container>
   );
 }
@@ -82,9 +85,11 @@ const Container = styled.div`
   border: 1px solid var(--color-gray34);
   border-radius: 8px;
 
-  padding: 18px 20px 8px 20px;
+  --token-input-padding: 20px;
 
-  > :nth-child(1) {
+  padding: 18px var(--token-input-padding) 8px var(--token-input-padding);
+
+  > header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -119,7 +124,17 @@ const Container = styled.div`
     }
   }
 
-  > :nth-child(3) {
+  > footer {
+    border-top: 1px solid var(--color-gray22);
+    padding-top: 8px;
+    padding-left: var(--token-input-padding);
+    padding-right: var(--token-input-padding);
+    margin-top: 8px;
+    margin-left: calc(var(--token-input-padding) * -1);
+    margin-right: calc(var(--token-input-padding) * -1);
+  }
+
+  > aside {
     position: absolute;
 
     font-size: 0.9em;

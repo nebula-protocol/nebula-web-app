@@ -31,6 +31,10 @@ export type ClusterInfo = WasmQueryData<ClusterInfoWasmQuery> & {
   terraswapPool: terraswap.pair.PoolResponse<u<CT>, u<UST>>;
   clusterTokenInfo: cw20.TokenInfoResponse<u<Token>>;
   assetTokenInfos: cw20.TokenInfoResponse<u<Token>>[];
+  assetTokenInfoIndex: Map<
+    terraswap.AssetInfo,
+    cw20.TokenInfoResponse<u<Token>>
+  >;
 };
 
 export type ClusterInfoQueryParams = Omit<
@@ -147,6 +151,14 @@ export async function clusterInfoQuery({
     ...params,
   });
 
+  const assetTokenInfoIndex: Map<
+    terraswap.AssetInfo,
+    cw20.TokenInfoResponse<u<Token>>
+  > = clusterState.assets.reduce((index, asset, i) => {
+    index.set(asset, tokenInfos[i]);
+    return index;
+  }, new Map());
+
   return {
     clusterState,
     clusterConfig,
@@ -154,5 +166,6 @@ export async function clusterInfoQuery({
     terraswapPool,
     clusterTokenInfo: tokenInfo,
     assetTokenInfos: tokenInfos,
+    assetTokenInfoIndex,
   };
 }

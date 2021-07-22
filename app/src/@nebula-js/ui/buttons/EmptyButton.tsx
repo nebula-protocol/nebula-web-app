@@ -14,7 +14,7 @@ export interface EmptyButtonProps
   className?: string;
   children: ReactNode;
   size?: number | { width: number; height: number };
-  fontSize?: number;
+  fontSize?: number | `${number}em`;
 }
 
 function EmptyButtonBase({
@@ -38,7 +38,7 @@ export const EmptyButton = styled(EmptyButtonBase)`
   color: inherit;
 
   font-size: ${({ fontSize }) =>
-    typeof fontSize === 'number' ? `${fontSize}px` : 'inherit'};
+    typeof fontSize === 'number' ? `${fontSize}px` : fontSize};
 
   line-height: 1em;
   max-height: 1em;
