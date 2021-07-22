@@ -20,19 +20,31 @@ function DiffSpanBase({
   children,
   ...spanProps
 }: DiffSpanProps) {
-  const diffIcon = useMemo(() => {
+  const updown = useMemo(() => {
     const _diff = big(diff);
-    return _diff.gt(0) ? (
+    return _diff.gt(0) ? 'up' : _diff.lt(0) ? 'down' : 'flat';
+  }, [diff]);
+
+  const diffIcon = useMemo(() => {
+    return updown === 'up' ? (
       <TrendingUp />
-    ) : _diff.lt(0) ? (
+    ) : updown === 'down' ? (
       <TrendingDown />
     ) : (
       <TrendingFlat />
     );
-  }, [diff]);
+  }, [updown]);
+
+  const style = useMemo(() => {
+    return updown === 'up'
+      ? { color: 'var(--color-red)' }
+      : updown === 'down'
+      ? { color: 'var(--color-paleblue)' }
+      : undefined;
+  }, [updown]);
 
   return (
-    <span {...spanProps}>
+    <span {...spanProps} style={{ ...spanProps.style, ...style }}>
       {diffIcon} {children}
     </span>
   );

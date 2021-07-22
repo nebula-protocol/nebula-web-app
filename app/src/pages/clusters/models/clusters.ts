@@ -96,11 +96,14 @@ export function toClusterView({
     name: clusterConfig.config.name,
     nameLowerCase: clusterConfig.config.name.toLowerCase(),
     price,
+    // TODO indexer data
     hr24: big(999) as Rate<Big>,
+    // TODO indexer data
     hr24diff: big(0.00999) as Rate<Big>,
     marketCap,
     totalProvided,
     premium,
+    // TODO indexer data
     volume: big(111) as u<UST<Big>>,
     assets: clusterState.assets.map((asset, j) => ({
       asset,

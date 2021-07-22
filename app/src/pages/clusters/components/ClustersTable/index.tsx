@@ -104,7 +104,11 @@ function ClustersTableBase({
                 <TwoLine
                   text={formatUTokenDecimal2(price) + ' UST'}
                   subText={
-                    <DiffSpan diff={hr24diff}>{formatRate(hr24diff)}%</DiffSpan>
+                    <s>
+                      <DiffSpan diff={hr24diff}>
+                        {formatRate(hr24diff)}%
+                      </DiffSpan>
+                    </s>
                   }
                 />
               </td>
@@ -114,7 +118,9 @@ function ClustersTableBase({
                 {premium.gt(0) && '+'}
                 {formatRate(premium)}%
               </td>
-              <td>{formatUTokenDecimal2(volume)} UST</td>
+              <td>
+                <s>{formatUTokenDecimal2(volume)} UST</s>
+              </td>
             </tr>
           ),
         )}

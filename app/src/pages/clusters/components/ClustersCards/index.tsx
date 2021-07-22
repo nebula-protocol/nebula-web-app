@@ -57,7 +57,7 @@ function ClustersCardsBase({
             <IconAndLabels
               text={name}
               subtext={
-                <>
+                <s>
                   {formatUTokenDecimal2(price)} UST{' '}
                   <DiffSpan
                     diff={hr24diff}
@@ -66,7 +66,7 @@ function ClustersCardsBase({
                   >
                     {formatRate(hr24diff)}%
                   </DiffSpan>
-                </>
+                </s>
               }
               iconSize="4.28571429em"
               textSize="1.42857143em"
@@ -92,7 +92,9 @@ function ClustersCardsBase({
 
               <div>
                 <h5>VOLUME</h5>
-                <p>{formatUTokenDecimal2(volume)} UST</p>
+                <p>
+                  <s>{formatUTokenDecimal2(volume)} UST</s>
+                </p>
               </div>
             </div>
 

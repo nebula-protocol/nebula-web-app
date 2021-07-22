@@ -104,12 +104,14 @@ export function cw20BuyTokenForm<T extends Token>(
 
         return {
           tokenAmount: demicrofy(return_amount).toFixed() as T,
-          beliefPrice: big(ustAmount!).div(return_amount).toFixed() as UST,
+          beliefPrice: (big(return_amount).gt(0)
+            ? big(ustAmount!).div(return_amount).toFixed()
+            : '0') as UST,
           txFee: _tax.plus(fixedGas) as u<UST<Big>>,
         };
       }),
     ];
-  } else {
+  } else if (ctAmountExists) {
     return [
       { tokenAmount: tokenAmount, maxUstAmount },
       terraswapSimulationQuery({
@@ -147,4 +149,6 @@ export function cw20BuyTokenForm<T extends Token>(
       }),
     ];
   }
+
+  return [{ ustAmount, tokenAmount: tokenAmount, maxUstAmount }, undefined];
 }
