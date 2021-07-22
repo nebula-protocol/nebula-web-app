@@ -1,10 +1,12 @@
+import { createHookMsg } from '@anchor-protocol/anchor.js/dist/utils/cw20/create-hook-msg';
 import {
-  formatTokenWithPostfixUnits,
+  formatTokenIntegerWithPostfixUnits,
   formatUTokenIntegerWithPostfixUnits,
+  stripUUSD,
 } from '@nebula-js/notation';
-import { HumanAddr, NativeDenom, Rate, Token, u, UST } from '@nebula-js/types';
+import { CW20Addr, HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
-import { floor, min } from '@terra-dev/big-math';
+import { floor } from '@terra-dev/big-math';
 import { MsgExecuteContract, StdFee } from '@terra-money/terra.js';
 import {
   pickAttributeValueByKey,
@@ -23,13 +25,14 @@ import { _postTx } from '../internal/_postTx';
 import { TxHelper } from '../internal/TxHelper';
 import { TxCommonParams } from '../TxCommonParams';
 
-export function cw20BuyTokenTx(
+export function cw20SellTokenTx<T extends Token>(
   $: {
-    buyerAddr: HumanAddr;
-    buyAmount: u<UST>;
+    sellerAddr: HumanAddr;
+    sellAmount: u<T>;
+    tokenAddr: CW20Addr;
     tokenUstPairAddr: HumanAddr;
     tokenSymbol: string;
-    beliefPrice: UST;
+    beliefPrice: T;
     maxSpread: Rate;
     tax: NebulaTax;
     onTxSucceed?: () => void;
@@ -40,26 +43,18 @@ export function cw20BuyTokenTx(
   return pipe(
     _createTxOptions({
       msgs: [
-        new MsgExecuteContract(
-          $.buyerAddr,
-          $.tokenUstPairAddr,
-          {
-            swap: {
-              offer_asset: {
-                amount: $.buyAmount,
-                info: {
-                  native_token: {
-                    denom: 'uusd' as NativeDenom,
-                  },
-                },
+        new MsgExecuteContract($.sellerAddr, $.tokenAddr, {
+          send: {
+            contract: $.tokenUstPairAddr,
+            amount: $.sellAmount,
+            msg: createHookMsg({
+              swap: {
+                belief_price: $.beliefPrice,
+                max_spread: $.maxSpread,
               },
-              belief_price: $.beliefPrice,
-              // TODO restore max_spread
-              //max_spread: $.maxSpread,
-            },
+            }),
           },
-          $.buyAmount + 'uusd',
-        ),
+        }),
       ],
       fee: new StdFee($.gasFee, floor($.txFee) + 'uusd'),
       gasAdjustment: $.gasAdjustment,
@@ -74,27 +69,37 @@ export function cw20BuyTokenTx(
       }
 
       const fromContract = pickEvent(rawLog, 'from_contract');
+      const transfer = pickEvent(rawLog, 'transfer');
 
-      if (!fromContract) {
-        return helper.failedToFindEvents('from_contract');
+      if (!fromContract || !transfer) {
+        return helper.failedToFindEvents('from_contract', 'transfer');
       }
 
       try {
-        const return_amount = pickAttributeValueByKey<u<Token>>(
-          fromContract,
-          'return_amount',
-        );
+        // sold
         const offer_amount = pickAttributeValueByKey<u<UST>>(
           fromContract,
           'offer_amount',
         );
-        const spread_amount = pickAttributeValueByKey<u<Token>>(
+        // earned
+        const return_amount = pickAttributeValueByKey<u<Token>>(
+          fromContract,
+          'return_amount',
+        );
+        const spread_amount = pickAttributeValueByKey<u<UST>>(
           fromContract,
           'spread_amount',
         );
-        const commission_amount = pickAttributeValueByKey<u<Token>>(
+        const commission_amount = pickAttributeValueByKey<u<UST>>(
           fromContract,
           'commission_amount',
+        );
+        const transfer_amount = stripUUSD(
+          pickAttributeValueByKey<u<UST>>(
+            transfer,
+            'amount',
+            (attrs) => attrs[0],
+          ) ?? '0uusd',
         );
 
         const pricePerToken =
@@ -103,38 +108,34 @@ export function cw20BuyTokenTx(
             : undefined;
         const tradingFee =
           spread_amount && commission_amount
-            ? (big(spread_amount).plus(commission_amount) as u<Token<Big>>)
+            ? (big(spread_amount).plus(commission_amount) as u<UST<Big>>)
             : undefined;
-        const txFee = offer_amount
-          ? (big($.fixedGas).plus(
-              min(big(offer_amount).mul($.tax.taxRate), $.tax.maxTaxUUSD),
-            ) as u<UST<Big>>)
-          : undefined;
+        const txFee = big($.fixedGas).plus(transfer_amount) as u<UST<Big>>;
 
         return {
           value: null,
 
           phase: TxStreamPhase.SUCCEED,
           receipts: [
-            return_amount && {
-              name: 'Bought',
-              value: `${formatUTokenIntegerWithPostfixUnits(return_amount)} ${
+            offer_amount && {
+              name: 'Sold',
+              value: `${formatUTokenIntegerWithPostfixUnits(offer_amount)} ${
                 $.tokenSymbol
               }`,
             },
-            offer_amount && {
-              name: 'Paid',
-              value: `${formatUTokenIntegerWithPostfixUnits(offer_amount)} UST`,
+            return_amount && {
+              name: 'Earned',
+              value: `${formatUTokenIntegerWithPostfixUnits(
+                return_amount,
+              )} UST`,
             },
             pricePerToken && {
-              name: 'Paid/Bought',
-              value: `${formatTokenWithPostfixUnits(pricePerToken)} UST`,
+              name: `Price per ${$.tokenSymbol}`,
+              value: `${formatTokenIntegerWithPostfixUnits(pricePerToken)} UST`,
             },
             tradingFee && {
               name: 'Trading Fee',
-              value: `${formatUTokenIntegerWithPostfixUnits(tradingFee)} ${
-                $.tokenSymbol
-              }`,
+              value: `${formatUTokenIntegerWithPostfixUnits(tradingFee)} UST`,
             },
             helper.txHashReceipt(),
             helper.txFeeReceipt(txFee),

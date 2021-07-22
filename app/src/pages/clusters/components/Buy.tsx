@@ -10,17 +10,12 @@ import {
   TokenSpan,
   useScreenSizeValue,
 } from '@nebula-js/ui';
+import { ClusterInfo } from '@nebula-js/webapp-fns';
 import {
-  ClusterInfo,
-  cw20BuyTokenForm,
-  CW20BuyTokenFormInput,
-  NebulaTax,
-  NebulaTokenBalances,
-} from '@nebula-js/webapp-fns';
-import { useCW20BuyTokenTx, useNebulaWebapp } from '@nebula-js/webapp-provider';
-import { useForm } from '@terra-dev/use-form';
+  useCW20BuyTokenForm,
+  useCW20BuyTokenTx,
+} from '@nebula-js/webapp-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useBank, useTerraWebapp } from '@terra-money/webapp-provider';
 import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
@@ -36,13 +31,7 @@ function ClusterBuyBase({
   className,
   clusterInfo: { clusterState, terraswapPair, clusterTokenInfo },
 }: ClusterBuyProps) {
-  const { mantleFetch, mantleEndpoint } = useTerraWebapp();
-
   const connectedWallet = useConnectedWallet();
-
-  const {
-    constants: { fixedGas },
-  } = useNebulaWebapp();
 
   const { broadcast } = useTxBroadcast();
 
@@ -51,21 +40,10 @@ function ClusterBuyBase({
     clusterTokenInfo.symbol,
   );
 
-  const { tax, tokenBalances } = useBank<NebulaTokenBalances, NebulaTax>();
-
-  const [updateInput, states] = useForm(
-    cw20BuyTokenForm,
-    {
-      ustCtPairAddr: terraswapPair.contract_addr,
-      ctAddr: clusterState.cluster_token,
-      mantleEndpoint,
-      mantleFetch,
-      ustBalance: tokenBalances.uUST,
-      tax,
-      fixedGas,
-    },
-    () => ({ ustAmount: '' as UST } as CW20BuyTokenFormInput<CT>),
-  );
+  const [updateInput, states] = useCW20BuyTokenForm({
+    ustCtPairAddr: terraswapPair.contract_addr,
+    ctAddr: clusterState.cluster_token,
+  });
 
   const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
     mobile: 'medium',

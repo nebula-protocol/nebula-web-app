@@ -12,7 +12,7 @@ import {
 import { fixHMR } from 'fix-hmr';
 import React from 'react';
 import styled from 'styled-components';
-import { ClusterView } from '../../models/clusters';
+import { ClusterView } from '../models/clusters';
 
 export interface ClustersTableProps
   extends Omit<HorizontalScrollTableProps, 'minWidth'> {

@@ -12,7 +12,7 @@ import { fixHMR } from 'fix-hmr';
 import React, { DetailedHTMLProps } from 'react';
 import styled from 'styled-components';
 import useResizeObserver from 'use-resize-observer/polyfilled';
-import { ClusterView } from '../../models/clusters';
+import { ClusterView } from '../models/clusters';
 
 export interface ClustersCardsProps
   extends DetailedHTMLProps<
