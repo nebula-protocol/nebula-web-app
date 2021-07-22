@@ -1,3 +1,4 @@
+import { Token, u } from '../tokens';
 import { rs } from './common';
 
 export namespace penalty {
@@ -12,7 +13,7 @@ export namespace penalty {
       // TODO is this token type?
       inventory: rs.Uint128[];
       // TODO set token type to mint_asset_amounts
-      mint_asset_amounts: rs.Uint128[];
+      mint_asset_amounts: u<Token<rs.Uint128>>[];
       // TODO ??? is this string?
       asset_prices: string[];
       target_weights: rs.u32[];

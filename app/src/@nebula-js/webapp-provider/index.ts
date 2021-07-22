@@ -13,5 +13,6 @@ export * from './queries/cw20/balance';
 export * from './queries/terra/balances';
 export * from './queries/terraswap/pair';
 export * from './queries/terraswap/pool';
+export * from './tx/clusters/mint';
 export * from './tx/cw20/buyToken';
 export * from './tx/cw20/sellToken';

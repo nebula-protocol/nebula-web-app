@@ -1,14 +1,30 @@
 import { Add } from '@material-ui/icons';
 import { WalletIcon } from '@nebula-js/icons';
-import { demicrofy, formatUTokenInteger } from '@nebula-js/notation';
-import { terraswap, Token, u } from '@nebula-js/types';
-import { EmptyButton, TokenInput, TokenSpan } from '@nebula-js/ui';
+import {
+  demicrofy,
+  formatToken,
+  formatUTokenInteger,
+  microfy,
+} from '@nebula-js/notation';
+import { CT, terraswap, Token, u } from '@nebula-js/types';
+import {
+  breakpoints,
+  Button,
+  EmptyButton,
+  TokenInput,
+  TokenSpan,
+  useScreenSizeValue,
+} from '@nebula-js/ui';
 import { ClusterInfo } from '@nebula-js/webapp-fns';
 import { useClusterMintAdvancedForm } from '@nebula-js/webapp-provider';
+import { useClusterMintTx } from '@nebula-js/webapp-provider';
+import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big from 'big.js';
+import { FeeBox } from 'components/boxes/FeeBox';
 import { useAssetSelectDialog } from 'components/dialogs/useAssetSelectDialog';
 import { AddAssetTextButton } from 'components/form/AddAssetTextButton';
 import { TokenInputRemoveTool } from 'components/form/TokenInputRemoveTool';
+import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
@@ -20,17 +36,27 @@ export interface MintAdvancedProps {
 
 function MintAdvancedBase({
   className,
-  clusterInfo: { clusterState, assetTokenInfoIndex },
+  clusterInfo: { clusterState, assetTokenInfoIndex, clusterTokenInfo },
 }: MintAdvancedProps) {
-  // ---------------------------------------------
-  // dependencies
-  // ---------------------------------------------
+  const connectedWallet = useConnectedWallet();
+
   const [openAssetSelect, assetSelectElement] = useAssetSelectDialog();
 
-  // ---------------------------------------------
-  // states
-  // ---------------------------------------------
   const [updateInput, states] = useClusterMintAdvancedForm({ clusterState });
+
+  const { broadcast } = useTxBroadcast();
+
+  const postTx = useClusterMintTx(
+    clusterState.cluster_contract_address,
+    clusterState.assets,
+  );
+
+  const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
+    mobile: 'medium',
+    tablet: 'normal',
+    pc: 'normal',
+    monitor: 'normal',
+  });
 
   // ---------------------------------------------
   // callbacks
@@ -88,7 +114,6 @@ function MintAdvancedBase({
   );
 
   const openAddAsset = useCallback(async () => {
-    console.log('Advanced.tsx..() !!!');
     const selectedAsset = await openAssetSelect({
       title: 'Select Asset',
       assets: states.remainAssets,
@@ -100,7 +125,30 @@ function MintAdvancedBase({
     }
   }, [addAsset, assetTokenInfoIndex, openAssetSelect, states.remainAssets]);
 
-  //const proceed = useCallback(() => {}, []);
+  const initForm = useCallback(() => {
+    updateInput({
+      amounts: clusterState.assets.map(() => '' as CT),
+      addedAssets: new Set<terraswap.AssetInfo>(),
+    });
+  }, [clusterState.assets, updateInput]);
+
+  const proceed = useCallback(
+    (amounts: Token[]) => {
+      const stream = postTx?.({
+        amounts: amounts.map(
+          (amount) =>
+            (amount.length > 0 ? microfy(amount).toFixed() : '0') as u<Token>,
+        ),
+        onTxSucceed: initForm,
+      });
+
+      if (stream) {
+        console.log('Advanced.tsx..()', stream);
+        broadcast(stream);
+      }
+    },
+    [broadcast, initForm, postTx],
+  );
 
   // ---------------------------------------------
   // presentation
@@ -168,6 +216,38 @@ function MintAdvancedBase({
         </AddAssetTextButton>
       )}
 
+      <FeeBox className="feebox">
+        {clusterTokenInfo && 'mintedAmount' in states && states.mintedAmount && (
+          <li>
+            <span>Minted {clusterTokenInfo.symbol}</span>
+            <span>
+              {formatToken(states.mintedAmount)} {clusterTokenInfo.symbol}
+            </span>
+          </li>
+        )}
+
+        {/*<li>*/}
+        {/*  <span>Tx Fee</span>*/}
+        {/*  <span>{'txFee' in states ? formatUToken(states.txFee) : 0} UST</span>*/}
+        {/*</li>*/}
+      </FeeBox>
+
+      <Button
+        className="submit"
+        color="paleblue"
+        size={buttonSize}
+        disabled={
+          !connectedWallet ||
+          !connectedWallet.availablePost ||
+          !postTx ||
+          !states ||
+          states.amounts.every((amount) => amount.length === 0)
+        }
+        onClick={() => proceed(states.amounts)}
+      >
+        Mint
+      </Button>
+
       {assetSelectElement}
     </div>
   );
@@ -185,6 +265,28 @@ export const StyledMintAdvanced = styled(MintAdvancedBase)`
 
   .add-token {
     margin-top: 2.57142857em;
+  }
+
+  .feebox {
+    margin-top: 2.8em;
+  }
+
+  .submit {
+    display: block;
+    width: 100%;
+    max-width: 360px;
+    margin: 2.8em auto 0 auto;
+  }
+
+  @media (max-width: ${breakpoints.mobile.max}px) {
+    .feebox {
+      font-size: 0.9em;
+      margin-top: 2.2em;
+    }
+
+    .submit {
+      margin-top: 2.2em;
+    }
   }
 `;
 
