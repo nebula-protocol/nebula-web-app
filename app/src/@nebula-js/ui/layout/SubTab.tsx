@@ -53,6 +53,8 @@ export const subTabStyle = css`
 
     font-size: 1em;
 
+    text-align: center;
+
     background-color: var(--color-gray24);
     color: var(--color-white80);
 
