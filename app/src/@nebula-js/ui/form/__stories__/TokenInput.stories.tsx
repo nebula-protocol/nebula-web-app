@@ -28,7 +28,7 @@ export const Basic = () => {
         <EmptyButton onClick={() => setValue('100000' as u<UST>)}>
           <WalletIcon
             style={{
-              transform: 'translate(-0.3em, -0.1em)',
+              transform: 'translate(-0.3em, 0)',
             }}
           />{' '}
           100,000 UST
@@ -62,7 +62,7 @@ export const Size = () => {
             <EmptyButton onClick={() => setValue('100000' as u<UST>)}>
               <WalletIcon
                 style={{
-                  transform: 'translate(-0.3em, -0.1em)',
+                  transform: 'translate(-0.3em, 0)',
                 }}
               />{' '}
               100,000 UST
@@ -98,7 +98,7 @@ export const Footer = () => {
             <EmptyButton onClick={() => setValue('100000' as u<UST>)}>
               <WalletIcon
                 style={{
-                  transform: 'translate(-0.3em, -0.1em)',
+                  transform: 'translate(-0.3em, 0)',
                 }}
               />{' '}
               100,000 UST

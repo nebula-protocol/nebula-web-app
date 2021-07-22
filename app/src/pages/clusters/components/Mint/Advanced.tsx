@@ -1,9 +1,12 @@
+import { Add } from '@material-ui/icons';
 import { WalletIcon } from '@nebula-js/icons';
-import { demicrofy, formatUTokenDecimal2, microfy } from '@nebula-js/notation';
+import { demicrofy, formatUTokenInteger, microfy } from '@nebula-js/notation';
 import { terraswap, Token } from '@nebula-js/types';
 import { EmptyButton, TokenInput, TokenSpan } from '@nebula-js/ui';
 import { ClusterInfo } from '@nebula-js/webapp-fns';
 import { useTerraBalancesQuery } from '@nebula-js/webapp-provider';
+import { useAssetSelectDialog } from 'components/dialogs/useAssetSelectDialog';
+import { AddAssetTextButton } from 'components/form/AddAssetTextButton';
 import { TokenInputRemoveTool } from 'components/form/TokenInputRemoveTool';
 import { fixHMR } from 'fix-hmr';
 import React, { useCallback, useMemo, useState } from 'react';
@@ -24,6 +27,11 @@ function MintAdvancedBase({
   const { data: { balancesIndex } = {} } = useTerraBalancesQuery(
     clusterState.assets,
   );
+
+  // ---------------------------------------------
+  // dependencies
+  // ---------------------------------------------
+  const [openAssetSelect, assetSelectElement] = useAssetSelectDialog();
 
   // ---------------------------------------------
   // states
@@ -98,6 +106,19 @@ function MintAdvancedBase({
     [],
   );
 
+  const openAddAsset = useCallback(async () => {
+    console.log('Advanced.tsx..() !!!');
+    const selectedAsset = await openAssetSelect({
+      title: 'Select Asset',
+      assets: remainAssets,
+      assetTokenInfoIndex,
+    });
+
+    if (selectedAsset) {
+      addAsset(selectedAsset);
+    }
+  }, [addAsset, assetTokenInfoIndex, openAssetSelect, remainAssets]);
+
   // ---------------------------------------------
   // presentation
   // ---------------------------------------------
@@ -132,10 +153,10 @@ function MintAdvancedBase({
                     >
                       <WalletIcon
                         style={{
-                          transform: 'translate(-0.3em, -0.1em)',
+                          transform: 'translate(-0.3em, 0)',
                         }}
                       />{' '}
-                      {formatUTokenDecimal2(balancesIndex.get(asset)!)}{' '}
+                      {formatUTokenInteger(balancesIndex.get(asset)!)}{' '}
                       {assetTokenInfoIndex.get(asset)!.symbol}
                     </EmptyButton>
                   )
@@ -151,16 +172,13 @@ function MintAdvancedBase({
           ))}
       </ul>
 
-      <h3>Remain</h3>
+      {remainAssets.length > 0 && (
+        <AddAssetTextButton className="add-token" onClick={openAddAsset}>
+          <Add /> Add another asset
+        </AddAssetTextButton>
+      )}
 
-      <ul>
-        {remainAssets.length > 0 &&
-          remainAssets.map((asset, i) => (
-            <li key={'remain-asset' + i} onClick={() => addAsset(asset)}>
-              {assetTokenInfoIndex.get(asset)!.symbol}
-            </li>
-          ))}
-      </ul>
+      {assetSelectElement}
     </div>
   );
 }
@@ -173,6 +191,10 @@ export const StyledMintAdvanced = styled(MintAdvancedBase)`
     display: flex;
     flex-direction: column;
     gap: 2.28571429em;
+  }
+
+  .add-token {
+    margin-top: 2.57142857em;
   }
 `;
 

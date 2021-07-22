@@ -133,9 +133,9 @@ const Component = styled(ComponentBase)`
   width: 580px;
 
   h1 {
-    font-size: 20px;
+    font-size: 1.42857143em;
     text-align: center;
-    margin-bottom: 32px;
+    margin-bottom: 2.28571429em;
   }
 
   .address-description,
