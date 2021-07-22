@@ -111,7 +111,7 @@ function ClusterBuyBase({
 
       <TokenInput
         maxDecimalPoints={6}
-        value={states.tokenAmount ?? ('' as CT)}
+        value={(states.tokenAmount ?? '') as CT}
         onChange={(nextCtAmount) =>
           updateInput({ ustAmount: undefined, tokenAmount: nextCtAmount })
         }

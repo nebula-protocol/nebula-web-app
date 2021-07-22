@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 function shallowEqual(a: any, b: any): boolean {
+  if (a === b) {
+    return true;
+  }
+
   const aKeys = Object.keys(a);
   const bKeys = Object.keys(b);
 
@@ -24,12 +28,18 @@ export function useForm<
   AsyncStates extends {},
 >(
   form: (
-    input: Input,
     dependency: Dependency,
+    prevDependency: Dependency | undefined,
+  ) => (
+    input: Input,
+    prevInput: Input | undefined,
   ) => [States, Promise<AsyncStates> | undefined],
   dependency: Dependency,
   initialInput: () => Input,
-): [(input: Partial<Input>) => void, States & (AsyncStates | {})] {
+): [
+  (input: Partial<Input> | ((prev: Input) => Input)) => void,
+  States & (AsyncStates | {}),
+] {
   const initialForm = useRef(form);
 
   const [initialInputValue] = useState(() => {
@@ -39,6 +49,12 @@ export function useForm<
   const lastInput = useRef(initialInputValue);
   const lastDependency = useRef<Dependency>(dependency);
 
+  const [initialDepResolved] = useState(() => {
+    return initialForm.current(lastDependency.current, undefined);
+  });
+
+  const depResolved = useRef(initialDepResolved);
+
   const resolver = useMemo<Resolver<AsyncStates>>(() => {
     return new Resolver<AsyncStates>();
   }, []);
@@ -46,7 +62,7 @@ export function useForm<
   const [initialStates, initialAsyncStates] = useMemo<
     [States, Promise<AsyncStates> | undefined]
   >(() => {
-    return initialForm.current(lastInput.current, lastDependency.current);
+    return depResolved.current(lastInput.current, undefined);
   }, []);
 
   const [states, setStates] = useState<States>(() => initialStates);
@@ -74,9 +90,14 @@ export function useForm<
     ) {
       return;
     } else {
-      const [nextStates, nextAsyncStates] = initialForm.current(
-        lastInput.current,
+      depResolved.current = initialForm.current(
         dependency,
+        lastDependency.current,
+      );
+
+      const [nextStates, nextAsyncStates] = depResolved.current(
+        lastInput.current,
+        lastInput.current,
       );
 
       setStates(nextStates);
@@ -93,13 +114,16 @@ export function useForm<
   }, [dependency, resolver]);
 
   const updateInput = useCallback(
-    (input: Partial<Input>) => {
-      const nextInput = { ...lastInput.current, ...input };
+    (input: Partial<Input> | ((prev: Input) => Input)) => {
+      const nextInput =
+        typeof input === 'function'
+          ? input(lastInput.current)
+          : { ...lastInput.current, ...input };
 
       if (!shallowEqual(nextInput, lastInput.current)) {
-        const [nextStates, nextAsyncStates] = initialForm.current(
+        const [nextStates, nextAsyncStates] = depResolved.current(
           nextInput,
-          lastDependency.current,
+          lastInput.current,
         );
 
         setStates(nextStates);

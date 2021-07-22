@@ -171,14 +171,18 @@ function ClustersDetailBase({
           {clusterView?.assets && (
             <section className="graph" ref={ref}>
               <PartitionLabels
-                data={clusterView.assets.map(
-                  ({ token, color: assetColor, portfolioRatio }) => ({
+                data={clusterView.assets
+                  .slice(0, 5)
+                  .map(({ token, color: assetColor, portfolioRatio }) => ({
                     label: token.symbol,
                     color: assetColor,
                     value: formatRate(portfolioRatio as Rate<number>) + '%',
-                  }),
+                  }))}
+              >
+                {clusterView.assets.length - 5 > 0 && (
+                  <li>+{clusterView.assets.length - 5} more</li>
                 )}
-              />
+              </PartitionLabels>
               <PartitionBarGraph
                 data={clusterView.assets.map(
                   ({ color: assetColor, portfolioRatio }) => ({

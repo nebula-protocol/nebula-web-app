@@ -4,6 +4,7 @@ export * from './types';
 export * from './env';
 
 export * from './caches/cw20TokenInfoCache';
+export * from './forms/clusters/mintAdvanced';
 export * from './forms/cw20/buyToken';
 export * from './forms/cw20/sellToken';
 export * from './logics/clusters/getAssetAmounts';
@@ -16,6 +17,7 @@ export * from './models/assetTokens';
 export * from './queries/clusters/info';
 export * from './queries/clusters/infoList';
 export * from './queries/clusters/list';
+export * from './queries/clusters/mint';
 export * from './queries/cw20/balance';
 export * from './queries/cw20/tokenInfo';
 export * from './queries/gov/polls';
