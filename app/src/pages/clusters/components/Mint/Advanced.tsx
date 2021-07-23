@@ -16,8 +16,10 @@ import {
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { ClusterInfo } from '@nebula-js/webapp-fns';
-import { useClusterMintAdvancedForm } from '@nebula-js/webapp-provider';
-import { useClusterMintTx } from '@nebula-js/webapp-provider';
+import {
+  useClusterMintAdvancedForm,
+  useClusterMintTx,
+} from '@nebula-js/webapp-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
@@ -78,16 +80,25 @@ function MintAdvancedBase({
   const removeAsset = useCallback(
     (asset: terraswap.AssetInfo) => {
       updateInput((prev) => {
+        const index = clusterState.assets.findIndex(
+          (targetAsset) => targetAsset === asset,
+        );
+
+        const nextAmounts = [...prev.amounts];
+        nextAmounts[index] = '' as Token;
+
         const nextAddedAssets = new Set(prev.addedAssets);
+
         return nextAddedAssets.delete(asset)
           ? {
               ...prev,
               addedAssets: nextAddedAssets,
+              amounts: nextAmounts,
             }
           : prev;
       });
     },
-    [updateInput],
+    [clusterState.assets, updateInput],
   );
 
   const updateAmount = useCallback(
