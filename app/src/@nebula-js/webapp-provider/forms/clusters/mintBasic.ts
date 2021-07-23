@@ -31,6 +31,7 @@ export function useClusterMintBasicForm({
       ustBalance: tokenBalances.uUST,
       tax,
       fixedGas,
+      clusterState,
     },
     () => {
       return {

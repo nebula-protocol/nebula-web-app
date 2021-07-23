@@ -2667,6 +2667,7 @@ __metadata:
     d3-ease: ^3.0.1
     d3-timer: ^3.0.1
     date-fns: ^2.22.1
+    decimal.js: ^10.3.1
     fix-hmr: ^1.0.2
     glob: ^7.1.7
     graphql: ^15.5.1
@@ -9490,6 +9491,13 @@ __metadata:
   version: 10.2.1
   resolution: "decimal.js@npm:10.2.1"
   checksum: d2421adf209422d520c8f1a4d1fceffc2ccd0c041aa179f8d18a315ebda6a7be918f2634ac850df299dccccae6a3567c5761301a1c3693461fdef3d1de23b000
+  languageName: node
+  linkType: hard
+
+"decimal.js@npm:^10.3.1":
+  version: 10.3.1
+  resolution: "decimal.js@npm:10.3.1"
+  checksum: 0351ac9f05fe050f23227aa6a4573bee2d58fa7378fcf28d969a8c789525032effb488a90320fd3fe86a66e17b4bc507d811b15eada5b7f0e7ec5d2af4c24a59
   languageName: node
   linkType: hard
 

@@ -17,6 +17,7 @@ import {
 } from '@terra-money/webapp-fns';
 import big from 'big.js';
 import { Observable } from 'rxjs';
+import { terraswapPoolQuery } from '../../queries/terraswap/pool';
 import { _catchTxError } from '../internal/_catchTxError';
 import { _createTxOptions } from '../internal/_createTxOptions';
 import { _pollTxInfo } from '../internal/_pollTxInfo';
@@ -24,11 +25,12 @@ import { _postTx } from '../internal/_postTx';
 import { TxHelper } from '../internal/TxHelper';
 import { TxCommonParams } from '../TxCommonParams';
 
-export function clusterMintTx(
+export function clusterArbMintTx(
   $: {
     walletAddr: HumanAddr;
     incentivesAddr: HumanAddr;
     clusterAddr: HumanAddr;
+    terraswapPairAddr: HumanAddr;
     assets: terraswap.AssetInfo[];
     amounts: u<Token>[];
     onTxSucceed?: () => void;
@@ -62,27 +64,69 @@ export function clusterMintTx(
     .filter((coin): coin is Coin => !!coin);
 
   return pipe(
-    _createTxOptions({
-      msgs: [
-        ...increaseAllownance,
-        new MsgExecuteContract(
-          $.walletAddr,
-          $.incentivesAddr,
-          {
-            mint: {
-              cluster_contract: $.clusterAddr,
-              asset_amounts: $.assets.map((asset, i) => ({
-                info: asset,
-                amount: $.amounts[i],
-              })),
+    (_: void) => {
+      return terraswapPoolQuery({
+        mantleEndpoint: $.mantleEndpoint,
+        mantleFetch: $.mantleFetch,
+        wasmQuery: {
+          terraswapPool: {
+            contractAddress: $.terraswapPairAddr,
+            query: {
+              pool: {},
             },
-          } as incentives.Mint,
-          nativeCoins.length > 0 ? new Coins(nativeCoins) : undefined,
-        ),
-      ],
-      fee: new StdFee($.gasFee, floor($.txFee) + 'uusd'),
-      gasAdjustment: $.gasAdjustment,
-    }),
+          },
+        },
+      }).then(({ terraswapPool }) => {
+        return {
+          value: terraswapPool,
+          phase: TxStreamPhase.POST,
+          receipts: [],
+        } as TxResultRendering<terraswap.pair.PoolResponse<u<Token>, u<Token>>>;
+      });
+    },
+    ({ value }) =>
+      _createTxOptions({
+        msgs: [
+          ...increaseAllownance,
+          new MsgExecuteContract(
+            $.walletAddr,
+            $.incentivesAddr,
+            {
+              arb_cluster_mint: {
+                cluster_contract: $.clusterAddr,
+                assets: $.assets.map((asset, i) => ({
+                  amount: $.amounts[i],
+                  info: asset,
+                })),
+              },
+            } as incentives.ArbClusterMint,
+            nativeCoins.length > 0 ? new Coins(nativeCoins) : undefined,
+          ),
+          new MsgExecuteContract($.walletAddr, $.incentivesAddr, {
+            swap_all: {
+              terraswap_pair: $.terraswapPairAddr,
+              cluster_token: $.clusterAddr,
+              to_ust: true,
+            },
+          } as incentives.SwapAll),
+          new MsgExecuteContract($.walletAddr, $.incentivesAddr, {
+            record_terraswap_impact: {
+              arbitrager: $.walletAddr,
+              terraswap_pair: $.terraswapPairAddr,
+              cluster_contract: $.clusterAddr,
+              pool_before: value,
+            },
+          } as incentives.RecordTerraswapImpact),
+          new MsgExecuteContract($.walletAddr, $.incentivesAddr, {
+            send_all: {
+              asset_infos: $.assets,
+              send_to: $.walletAddr,
+            },
+          } as incentives.SendAll),
+        ],
+        fee: new StdFee($.gasFee, floor($.txFee) + 'uusd'),
+        gasAdjustment: $.gasAdjustment,
+      })(),
     _postTx({ helper, ...$ }),
     _pollTxInfo({ helper, ...$ }),
     ({ value: txInfo }) => {

@@ -2,6 +2,19 @@ import { u, Token } from '../tokens';
 import { HumanAddr } from './common';
 
 export namespace cw20 {
+  // ---------------------------------------------
+  // HandleMsg
+  // ---------------------------------------------
+  export interface IncreaseAllowance {
+    increase_allowance: {
+      spender: HumanAddr;
+      amount: u<Token>;
+    };
+  }
+
+  // ---------------------------------------------
+  // QueryMsg
+  // ---------------------------------------------
   export interface Balance {
     balance: {
       address: HumanAddr;

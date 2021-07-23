@@ -35,7 +35,7 @@ export const clusterMintAdvancedForm = (
 ) => {
   let invalidAmounts: (string | null)[];
   let remainAssets: terraswap.AssetInfo[];
-  let mintPromise: Promise<ClusterMintAdvancedFormAsyncStates>;
+  let asyncStates: Promise<ClusterMintAdvancedFormAsyncStates>;
 
   return (
     input: ClusterMintAdvancedFormInput,
@@ -71,7 +71,7 @@ export const clusterMintAdvancedForm = (
     }
 
     if (
-      !mintPromise ||
+      !asyncStates ||
       dependency.mantleEndpoint !== prevDependency?.mantleEndpoint ||
       dependency.lastSyncedHeight !== prevDependency?.lastSyncedHeight ||
       dependency.clusterState !== prevDependency?.clusterState ||
@@ -79,7 +79,7 @@ export const clusterMintAdvancedForm = (
     ) {
       const hasAmounts = input.amounts.some((amount) => amount.length > 0);
 
-      mintPromise = hasAmounts
+      asyncStates = hasAmounts
         ? clusterMintQuery({
             mantleEndpoint: dependency.mantleEndpoint,
             mantleFetch: dependency.mantleFetch,
@@ -114,7 +114,7 @@ export const clusterMintAdvancedForm = (
 
     return [
       { ...input, invalidAmounts, remainAssets, balances: dependency.balances },
-      mintPromise,
+      asyncStates,
     ];
   };
 };

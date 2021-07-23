@@ -1,15 +1,8 @@
-import { CT, u } from '../tokens';
+import { CT, Token, u } from '../tokens';
 import { HumanAddr, rs } from './common';
 import { terraswap } from './terraswap';
 
 export namespace incentives {
-  export interface PoolResponse {
-    // TODO is this type correct?
-    assets: terraswap.Asset<u<CT>>;
-    // TODO set token type to total_share
-    total_share: rs.Uint128;
-  }
-
   // ---------------------------------------------
   // HandleMsg
   // ---------------------------------------------
@@ -18,47 +11,60 @@ export namespace incentives {
   export interface NewPenaltyPeriod {}
 
   export interface SendAll {
-    asset_infos: Array<terraswap.AssetInfo>;
-    send_to: HumanAddr;
+    send_all: {
+      asset_infos: Array<terraswap.AssetInfo>;
+      send_to: HumanAddr;
+    };
   }
 
   export interface SwapAll {
-    terraswap_pair: HumanAddr;
-    cluster_token: HumanAddr;
-    to_ust: boolean;
+    swap_all: {
+      terraswap_pair: HumanAddr;
+      cluster_token: HumanAddr;
+      to_ust: boolean;
+    };
   }
 
   export interface RecordTerraswapImpact {
-    arbitrager: HumanAddr;
-    terraswap_pair: HumanAddr;
-    cluster_contract: HumanAddr;
-    pool_before: PoolResponse;
+    record_terraswap_impact: {
+      arbitrager: HumanAddr;
+      terraswap_pair: HumanAddr;
+      cluster_contract: HumanAddr;
+      pool_before: terraswap.pair.PoolResponse<u<Token>, u<Token>>;
+    };
   }
 
   export interface ArbClusterMint {
-    cluster_contract: HumanAddr;
-    // TODO is this type correct?
-    assets: Array<terraswap.Asset<u<CT>>>;
+    arb_cluster_mint: {
+      cluster_contract: HumanAddr;
+      assets: Array<terraswap.Asset<u<Token>>>;
+    };
   }
 
   export interface ArbClusterRedeem {
-    cluster_contract: HumanAddr;
-    // TODO is this type correct?
-    asset: terraswap.Asset<u<CT>>;
+    arb_cluster_redeem: {
+      cluster_contract: HumanAddr;
+      // TODO is this type correct?
+      asset: terraswap.Asset<u<CT>>;
+    };
   }
 
   export interface Mint {
-    cluster_contract: HumanAddr;
-    // TODO is this type correct?
-    asset_amounts: Array<terraswap.Asset<u<CT>>>;
-    min_tokens?: rs.Uint128;
+    mint: {
+      cluster_contract: HumanAddr;
+      // TODO is this type correct?
+      asset_amounts: Array<terraswap.Asset<u<CT>>>;
+      min_tokens?: rs.Uint128;
+    };
   }
 
   export interface Redeem {
-    cluster_contract: HumanAddr;
-    max_tokens: rs.Uint128;
-    // TODO is this type correct?
-    asset_amounts?: Array<terraswap.Asset<u<CT>>>;
+    redeem: {
+      cluster_contract: HumanAddr;
+      max_tokens: rs.Uint128;
+      // TODO is this type correct?
+      asset_amounts?: Array<terraswap.Asset<u<CT>>>;
+    };
   }
 
   // ---------------------------------------------

@@ -1,5 +1,5 @@
 import { Token, u } from '../tokens';
-import { CW20Addr, HumanAddr, NativeDenom } from './common';
+import { CW20Addr, HumanAddr, NativeDenom, rs } from './common';
 
 export namespace terraswap {
   export type CW20AssetInfo = { token: { contract_addr: CW20Addr } };
@@ -42,7 +42,8 @@ export namespace terraswap {
     }
 
     export interface PoolResponse<A extends u<Token>, B extends u<Token>> {
-      total_share: string;
+      // TODO set token type to total_share
+      total_share: rs.Uint128;
       assets: [Asset<A | B>, Asset<A | B>];
     }
 

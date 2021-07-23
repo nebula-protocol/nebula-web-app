@@ -21,6 +21,12 @@ function shallowEqual(a: any, b: any): boolean {
   return true;
 }
 
+export type FormInput<Input> = (
+  input: Partial<Input> | ((prev: Input) => Input),
+) => void;
+
+export type FormStates<States, AsyncStates> = States & (AsyncStates | {});
+
 export function useForm<
   Input extends {},
   Dependency extends {},
@@ -36,10 +42,7 @@ export function useForm<
   ) => [States, Promise<AsyncStates> | undefined],
   dependency: Dependency,
   initialInput: () => Input,
-): [
-  (input: Partial<Input> | ((prev: Input) => Input)) => void,
-  States & (AsyncStates | {}),
-] {
+): [FormInput<Input>, FormStates<States, AsyncStates>] {
   const initialForm = useRef(form);
 
   const [initialInputValue] = useState(() => {
