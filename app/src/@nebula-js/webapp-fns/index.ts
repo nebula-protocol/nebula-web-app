@@ -5,6 +5,7 @@ export * from './env';
 
 export * from './caches/cw20TokenInfoCache';
 export * from './forms/clusters/mintAdvanced';
+export * from './forms/clusters/mintBasic';
 export * from './forms/cw20/buyToken';
 export * from './forms/cw20/sellToken';
 export * from './logics/clusters/getAssetAmounts';
