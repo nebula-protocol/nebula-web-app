@@ -49,7 +49,7 @@ export const clusterRedeemBasicForm = (
     ClusterRedeemBasicFormStates,
     Promise<ClusterRedeemBasicFormAsyncStates>,
   ] => {
-    if (input.tokenAmount.trim().length === 0) {
+    if (input.tokenAmount.trim().length === 0 || big(input.tokenAmount).eq(0)) {
       return [
         {
           ...input,

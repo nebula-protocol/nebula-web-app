@@ -1,6 +1,6 @@
 import { cluster, u, UST } from '@nebula-js/types';
 import { MantleFetch } from '@terra-dev/mantle';
-import { Big, BigSource } from 'big.js';
+import { BigSource } from 'big.js';
 import { computeMaxUstBalanceForUstTransfer } from '../../logics/computeMaxUstBalanceForUstTransfer';
 import { NebulaTax } from '../../types';
 
@@ -21,7 +21,7 @@ export interface ClusterMintBaicFormDependency {
 }
 
 export interface ClusterMintBasicFormStates extends ClusterMintBasicFormInput {
-  maxUstAmount: u<UST<Big>>;
+  maxUstAmount: u<UST<BigSource>>;
 }
 
 export interface ClusterMintBasicFormAsyncStates {}

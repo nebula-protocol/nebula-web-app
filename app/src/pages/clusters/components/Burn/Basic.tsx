@@ -14,6 +14,7 @@ import { useClusterRedeemBasicForm } from '@nebula-js/webapp-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { fixHMR } from 'fix-hmr';
+import { WithdrawnTokenTable } from 'pages/clusters/components/Burn/WithdrawnTokenTable';
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
@@ -72,14 +73,10 @@ function BurnBasicBase({
 
       {'redeemTokenAmounts' in states &&
         Array.isArray(states.redeemTokenAmounts) && (
-          <ul>
-            {states.redeemTokenAmounts.map((assetAmount, i) => (
-              <li key={assetTokenInfos[i].symbol}>
-                {assetTokenInfos[i].name}: {assetAmount}{' '}
-                {assetTokenInfos[i].symbol}
-              </li>
-            ))}
-          </ul>
+          <WithdrawnTokenTable
+            redeemTokenAmounts={states.redeemTokenAmounts}
+            assetTokenInfos={assetTokenInfos}
+          />
         )}
 
       <FeeBox className="feebox">
