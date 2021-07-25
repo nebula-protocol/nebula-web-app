@@ -31,6 +31,7 @@ function ClusterBurnBase({ className, clusterInfo }: ClusterBurnProps) {
   return (
     <div className={className}>
       <SubTab
+        className="mode-tab"
         items={tabItems}
         selectedItem={tab}
         onChange={(nextTab) => setTabId(nextTab.id)}
@@ -48,5 +49,7 @@ function ClusterBurnBase({ className, clusterInfo }: ClusterBurnProps) {
 }
 
 export const ClusterBurn = styled(ClusterBurnBase)`
-  // TODO
+  .mode-tab {
+    margin-bottom: 2.28571429em;
+  }
 `;

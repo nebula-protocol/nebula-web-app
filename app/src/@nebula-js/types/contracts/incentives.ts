@@ -1,4 +1,4 @@
-import { CT, Token, u } from '../tokens';
+import { Token, u } from '../tokens';
 import { HumanAddr, rs } from './common';
 import { terraswap } from './terraswap';
 
@@ -45,7 +45,7 @@ export namespace incentives {
     arb_cluster_redeem: {
       cluster_contract: HumanAddr;
       // TODO is this type correct?
-      asset: terraswap.Asset<u<CT>>;
+      asset: terraswap.Asset<u<Token>>;
     };
   }
 
@@ -53,7 +53,7 @@ export namespace incentives {
     mint: {
       cluster_contract: HumanAddr;
       // TODO is this type correct?
-      asset_amounts: Array<terraswap.Asset<u<CT>>>;
+      asset_amounts: Array<terraswap.Asset<u<Token>>>;
       min_tokens?: rs.Uint128;
     };
   }
@@ -63,7 +63,7 @@ export namespace incentives {
       cluster_contract: HumanAddr;
       max_tokens: rs.Uint128;
       // TODO is this type correct?
-      asset_amounts?: Array<terraswap.Asset<u<CT>>>;
+      asset_amounts?: Array<terraswap.Asset<u<Token>>>;
     };
   }
 

@@ -1,4 +1,4 @@
-import { Token, u } from '../tokens';
+import { CT, Token, u } from '../tokens';
 import { rs } from './common';
 
 export namespace penalty {
@@ -44,11 +44,11 @@ export namespace penalty {
   }
 
   export interface RedeemResponse {
-    redeem_assets: rs.Uint128[];
+    redeem_assets: u<Token<rs.Uint128>>[];
     // TODO is this token type?
     penalty: rs.Uint128;
     // TODO is this token type?
-    token_cost: rs.Uint128;
+    token_cost: u<CT<rs.Uint128>>;
     log: unknown[]; //LogAttribute[],
   }
 

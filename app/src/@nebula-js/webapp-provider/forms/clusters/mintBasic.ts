@@ -4,7 +4,7 @@ import {
   NebulaTax,
   NebulaTokenBalances,
 } from '@nebula-js/webapp-fns';
-import { useNebulaWebapp } from '@nebula-js/webapp-provider/contexts/webapp';
+import { useNebulaWebapp } from '../../contexts/webapp';
 import { useForm } from '@terra-dev/use-form';
 import { useBank, useTerraWebapp } from '@terra-money/webapp-provider';
 

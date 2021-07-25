@@ -6,6 +6,7 @@ export * from './contexts/webapp';
 export * from './forms/clusters/mintAdvanced';
 export * from './forms/clusters/mintBasic';
 export * from './forms/clusters/mintTerraswapArbitrage';
+export * from './forms/clusters/redeemBasic';
 export * from './forms/cw20/buyToken';
 export * from './forms/cw20/sellToken';
 export * from './queries/clusters/info';
