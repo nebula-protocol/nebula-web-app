@@ -12,13 +12,13 @@ import { useBank, useTerraWebapp } from '@terra-money/webapp-provider';
 import { useNebulaWebapp } from '../../contexts/webapp';
 
 export interface CW20BuyTokenFormParams {
-  ustCtPairAddr: HumanAddr;
-  ctAddr: CW20Addr;
+  ustTokenPairAddr: HumanAddr;
+  tokenAddr: CW20Addr;
 }
 
 export function useCW20BuyTokenForm<T extends Token>({
-  ustCtPairAddr,
-  ctAddr,
+  ustTokenPairAddr,
+  tokenAddr,
 }: CW20BuyTokenFormParams) {
   const connectedWallet = useConnectedWallet();
 
@@ -35,8 +35,8 @@ export function useCW20BuyTokenForm<T extends Token>({
   return useForm(
     form,
     {
-      ustCtPairAddr,
-      ctAddr,
+      ustTokenPairAddr,
+      tokenAddr,
       mantleEndpoint,
       mantleFetch,
       ustBalance: tokenBalances.uUST,

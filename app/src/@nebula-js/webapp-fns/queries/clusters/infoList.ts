@@ -31,12 +31,6 @@ export async function clustersInfoListQuery({
     ...params,
   });
 
-  // TODO remove filter
-  clusterList.contract_addrs = clusterList.contract_addrs.filter(
-    (clusterAddr) =>
-      clusterAddr !== 'terra1wyuvudl8eeley2npg4q4wsehzpw3uh3kk2a8am',
-  );
-
   return Promise.all(
     clusterList.contract_addrs.map((clusterAddr) =>
       clusterInfoQuery({

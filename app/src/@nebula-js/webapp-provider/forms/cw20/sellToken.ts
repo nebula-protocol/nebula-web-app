@@ -1,5 +1,6 @@
-import { CT, CW20Addr, HumanAddr, u } from '@nebula-js/types';
+import { CW20Addr, HumanAddr, Token, u } from '@nebula-js/types';
 import {
+  CW20SellTokenForm,
   cw20SellTokenForm,
   CW20SellTokenFormInput,
   NebulaTax,
@@ -12,13 +13,13 @@ import { useNebulaWebapp } from '../../contexts/webapp';
 import { useCW20BalanceQuery } from '../../queries/cw20/balance';
 
 export interface CW20SellTokenFormParams {
-  ustCtPairAddr: HumanAddr;
-  ctAddr: CW20Addr;
+  ustTokenPairAddr: HumanAddr;
+  tokenAddr: CW20Addr;
 }
 
-export function useCW20SellTokenForm({
-  ustCtPairAddr,
-  ctAddr,
+export function useCW20SellTokenForm<T extends Token>({
+  ustTokenPairAddr,
+  tokenAddr,
 }: CW20SellTokenFormParams) {
   const connectedWallet = useConnectedWallet();
 
@@ -28,24 +29,29 @@ export function useCW20SellTokenForm({
     constants: { fixedGas },
   } = useNebulaWebapp();
 
-  const { tax } = useBank<NebulaTokenBalances, NebulaTax>();
+  const { tax, tokenBalances } = useBank<NebulaTokenBalances, NebulaTax>();
 
-  const { data: { tokenBalance } = {} } = useCW20BalanceQuery<CT>(
-    ctAddr,
+  const { data: { tokenBalance } = {} } = useCW20BalanceQuery<T>(
+    tokenAddr,
     connectedWallet?.terraAddress,
   );
 
+  const form: CW20SellTokenForm<T> = cw20SellTokenForm;
+
   return useForm(
-    cw20SellTokenForm,
+    form,
     {
-      ustCtPairAddr,
-      ctAddr,
+      ustTokenPairAddr,
+      tokenAddr,
       mantleEndpoint,
       mantleFetch,
-      tokenBalance: tokenBalance?.balance ?? ('0' as u<CT>),
+      ustBalance: tokenBalances.uUST,
+      tokenBalance: tokenBalance?.balance ?? ('0' as u<T>),
       tax,
       fixedGas,
+      maxSpread: 0.1,
+      connected: !!connectedWallet,
     },
-    () => ({ tokenAmount: '' as CT } as CW20SellTokenFormInput<CT>),
+    () => ({ tokenAmount: '' as T } as CW20SellTokenFormInput<T>),
   );
 }

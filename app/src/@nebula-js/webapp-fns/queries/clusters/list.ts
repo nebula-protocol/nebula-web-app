@@ -24,9 +24,22 @@ export async function clustersListQuery({
   mantleEndpoint,
   ...params
 }: ClustersListQueryParams): Promise<ClustersList> {
-  return await mantle<ClustersListWasmQuery>({
+  const { clusterList } = await mantle<ClustersListWasmQuery>({
     mantleEndpoint: `${mantleEndpoint}?clusters--list`,
     variables: {},
     ...params,
   });
+
+  const filter = new Set([
+    'terra1rkgpmrqmddwtq48e5mr4vsps53vudmd4mgvfkz',
+    'terra1hqve5ezyaeccc9r5v30t8gt9qaducs62jeaye4',
+  ]);
+
+  return {
+    clusterList: {
+      contract_addrs: clusterList.contract_addrs.filter(
+        (addr) => !filter.has(addr),
+      ),
+    },
+  };
 }

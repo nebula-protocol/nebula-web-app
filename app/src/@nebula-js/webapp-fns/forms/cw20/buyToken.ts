@@ -26,8 +26,8 @@ export interface CW20BuyTokenFormDependency {
   mantleEndpoint: string;
   mantleFetch: MantleFetch;
   requestInit?: Omit<RequestInit, 'method' | 'body'>;
-  ustCtPairAddr: HumanAddr;
-  ctAddr: CW20Addr;
+  ustTokenPairAddr: HumanAddr;
+  tokenAddr: CW20Addr;
   //
   ustBalance: u<UST>;
   tax: NebulaTax;
@@ -47,10 +47,8 @@ export interface CW20BuyTokenFormStates<T extends Token>
 }
 
 export type CW20BuyTokenFormAsyncStates<T extends Token> = (
-  | {
-      ustAmount: UST;
-    }
-  | { tokenAmount?: T }
+  | { ustAmount: UST }
+  | { tokenAmount: T }
 ) & {
   beliefPrice: UST;
   txFee: u<UST>;
@@ -66,8 +64,8 @@ export type CW20BuyTokenForm<T extends Token> = FormFunction<
 >;
 
 export const cw20BuyTokenForm = <T extends Token>({
-  ustCtPairAddr,
-  ctAddr,
+  ustTokenPairAddr,
+  tokenAddr,
   mantleEndpoint,
   mantleFetch,
   requestInit,
@@ -82,9 +80,6 @@ export const cw20BuyTokenForm = <T extends Token>({
     tax,
     fixedGas,
   );
-
-  console.log('buyToken.ts..cw20BuyTokenForm()', maxUstAmount.toFixed());
-  console.log('buyToken.ts..cw20BuyTokenForm()', ustBalance);
 
   return ({
     ustAmount,
@@ -129,7 +124,7 @@ export const cw20BuyTokenForm = <T extends Token>({
           requestInit,
           wasmQuery: {
             simulation: {
-              contractAddress: ustCtPairAddr,
+              contractAddress: ustTokenPairAddr,
               query: {
                 simulation: {
                   offer_asset: {
@@ -227,14 +222,14 @@ export const cw20BuyTokenForm = <T extends Token>({
           requestInit,
           wasmQuery: {
             simulation: {
-              contractAddress: ustCtPairAddr,
+              contractAddress: ustTokenPairAddr,
               query: {
                 simulation: {
                   offer_asset: {
                     amount: microfy(tokenAmount!).toFixed() as u<Token>,
                     info: {
                       token: {
-                        contract_addr: ctAddr,
+                        contract_addr: tokenAddr,
                       },
                     },
                   },

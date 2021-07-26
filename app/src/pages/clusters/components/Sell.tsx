@@ -1,5 +1,10 @@
 import { ArrowSouthIcon, WalletIcon } from '@nebula-js/icons';
-import { formatUInput, formatUToken, microfy } from '@nebula-js/notation';
+import {
+  formatFluidDecimalPoints,
+  formatUInput,
+  formatUToken,
+  microfy,
+} from '@nebula-js/notation';
 import { CT, u, UST } from '@nebula-js/types';
 import {
   breakpoints,
@@ -18,6 +23,8 @@ import {
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
+import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
+import { ExchangeRateAB } from 'components/text/ExchangeRateAB';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
@@ -41,9 +48,9 @@ function ClusterSellBase({
     clusterTokenInfo.symbol,
   );
 
-  const [updateInput, states] = useCW20SellTokenForm({
-    ustCtPairAddr: terraswapPair.contract_addr,
-    ctAddr: clusterState.cluster_token,
+  const [updateInput, states] = useCW20SellTokenForm<CT>({
+    ustTokenPairAddr: terraswapPair.contract_addr,
+    tokenAddr: clusterState.cluster_token,
   });
 
   const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
@@ -69,7 +76,6 @@ function ClusterSellBase({
       });
 
       if (stream) {
-        console.log('Sell.tsx..()', stream);
         broadcast(stream);
       }
     },
@@ -104,6 +110,7 @@ function ClusterSellBase({
           </EmptyButton>
         }
         token={<TokenSpan>{clusterTokenInfo.symbol}</TokenSpan>}
+        error={states.invalidTokenAmount}
       />
 
       <IconSeparator>
@@ -122,14 +129,43 @@ function ClusterSellBase({
       />
 
       <FeeBox className="feebox">
-        {/* TODO Price */}
-        {/* TODO Minimum Received */}
-        {/* TODO Trading Fee */}
-        <li>
-          <span>Tx Fee</span>
-          <span>{'txFee' in states ? formatUToken(states.txFee) : 0} UST</span>
-        </li>
+        {'beliefPrice' in states && (
+          <li>
+            <span>Price</span>
+            <ExchangeRateAB
+              symbolA={clusterTokenInfo.symbol}
+              symbolB="UST"
+              exchangeRateAB={states.beliefPrice}
+              initialDirection="b/a"
+              formatExchangeRate={(price) => formatFluidDecimalPoints(price, 6)}
+            />
+          </li>
+        )}
+        {'minimumReceived' in states && (
+          <li>
+            <span>Minimum Received</span>
+            <span>{formatUToken(states.minimumReceived)} UST</span>
+          </li>
+        )}
+        {'tradingFee' in states && (
+          <li>
+            <span>Trading Fee</span>
+            <span>{formatUToken(states.tradingFee)} UST</span>
+          </li>
+        )}
+        {'txFee' in states && (
+          <li>
+            <span>Tx Fee</span>
+            <span>{formatUToken(states.txFee)} UST</span>
+          </li>
+        )}
       </FeeBox>
+
+      {states.invalidTxFee ? (
+        <WarningMessageBox level="critical" className="warning">
+          {states.invalidTxFee}
+        </WarningMessageBox>
+      ) : null}
 
       <Button
         className="submit"
@@ -138,10 +174,9 @@ function ClusterSellBase({
         disabled={
           !connectedWallet ||
           !connectedWallet.availablePost ||
+          !postTx ||
           !states ||
-          !states.tokenAmount ||
-          states.tokenAmount.length === 0 ||
-          !('txFee' in states)
+          !states.availableTx
         }
         onClick={() =>
           states.tokenAmount &&

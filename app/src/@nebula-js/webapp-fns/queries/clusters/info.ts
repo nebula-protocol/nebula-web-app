@@ -60,6 +60,12 @@ export async function clusterInfoQuery({
     ...params,
   });
 
+  console.log(
+    'info.ts..clusterInfoQuery()',
+    clusterState.cluster_contract_address,
+    clusterState,
+  );
+
   const tokenInfos = await Promise.all(
     clusterState.assets.map((asset) => {
       if ('token' in asset) {

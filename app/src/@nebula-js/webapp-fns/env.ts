@@ -8,6 +8,7 @@ import {
 } from '@nebula-js/types';
 import { NebulaContants } from './types';
 
+// TODO legacy contracts
 export const DEFAULT_CONTRACT_ADDRESS: Record<string, ContractAddress> = {
   testnet: {
     airdrop: 'terra13ltrqg45wn2tzcesu6exvlyuhvv7tsfx50p22g' as HumanAddr,

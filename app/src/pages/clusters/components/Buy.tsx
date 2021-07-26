@@ -50,8 +50,8 @@ function ClusterBuyBase({
   );
 
   const [updateInput, states] = useCW20BuyTokenForm<CT>({
-    ustCtPairAddr: terraswapPair.contract_addr,
-    ctAddr: clusterState.cluster_token,
+    ustTokenPairAddr: terraswapPair.contract_addr,
+    tokenAddr: clusterState.cluster_token,
   });
 
   const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
@@ -201,10 +201,7 @@ function ClusterBuyBase({
           !connectedWallet.availablePost ||
           !postTx ||
           !states ||
-          !states.ustAmount ||
-          !states.availableTx ||
-          states.ustAmount.length === 0 ||
-          !('txFee' in states)
+          !states.availableTx
         }
         onClick={() =>
           states.ustAmount &&
