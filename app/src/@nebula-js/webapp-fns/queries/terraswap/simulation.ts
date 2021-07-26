@@ -1,4 +1,4 @@
-import { terraswap, Token, u } from '@nebula-js/types';
+import { terraswap, Token } from '@nebula-js/types';
 import {
   mantle,
   MantleParams,
@@ -8,8 +8,8 @@ import {
 
 export interface TerraswapSimulationWasmQuery {
   simulation: WasmQuery<
-    terraswap.pair.Simulation<u<Token>>,
-    terraswap.pair.SimulationResponse<u<Token>>
+    terraswap.pair.Simulation<Token>,
+    terraswap.pair.SimulationResponse<Token>
   >;
 }
 

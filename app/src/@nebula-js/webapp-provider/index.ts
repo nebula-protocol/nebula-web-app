@@ -14,6 +14,8 @@ export * from './queries/clusters/info';
 export * from './queries/clusters/infoList';
 export * from './queries/clusters/list';
 export * from './queries/cw20/balance';
+export * from './queries/neb/nebPool';
+export * from './queries/staking/clusterPoolInfoList';
 export * from './queries/terra/balances';
 export * from './queries/terraswap/pair';
 export * from './queries/terraswap/pool';

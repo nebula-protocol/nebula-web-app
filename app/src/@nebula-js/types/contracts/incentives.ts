@@ -1,4 +1,4 @@
-import { Token, u } from '../tokens';
+import { Token } from '../tokens';
 import { HumanAddr, rs } from './common';
 import { terraswap } from './terraswap';
 
@@ -30,14 +30,14 @@ export namespace incentives {
       arbitrager: HumanAddr;
       terraswap_pair: HumanAddr;
       cluster_contract: HumanAddr;
-      pool_before: terraswap.pair.PoolResponse<u<Token>, u<Token>>;
+      pool_before: terraswap.pair.PoolResponse<Token, Token>;
     };
   }
 
   export interface ArbClusterMint {
     arb_cluster_mint: {
       cluster_contract: HumanAddr;
-      assets: Array<terraswap.Asset<u<Token>>>;
+      assets: Array<terraswap.Asset<Token>>;
     };
   }
 
@@ -45,7 +45,7 @@ export namespace incentives {
     arb_cluster_redeem: {
       cluster_contract: HumanAddr;
       // TODO is this type correct?
-      asset: terraswap.Asset<u<Token>>;
+      asset: terraswap.Asset<Token>;
     };
   }
 
@@ -53,7 +53,7 @@ export namespace incentives {
     mint: {
       cluster_contract: HumanAddr;
       // TODO is this type correct?
-      asset_amounts: Array<terraswap.Asset<u<Token>>>;
+      asset_amounts: Array<terraswap.Asset<Token>>;
       min_tokens?: rs.Uint128;
     };
   }
@@ -63,7 +63,7 @@ export namespace incentives {
       cluster_contract: HumanAddr;
       max_tokens: rs.Uint128;
       // TODO is this type correct?
-      asset_amounts?: Array<terraswap.Asset<u<Token>>>;
+      asset_amounts?: Array<terraswap.Asset<Token>>;
     };
   }
 

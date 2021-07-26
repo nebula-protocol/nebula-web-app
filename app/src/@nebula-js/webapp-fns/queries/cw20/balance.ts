@@ -1,4 +1,4 @@
-import { cw20, Token, u } from '@nebula-js/types';
+import { cw20, Token } from '@nebula-js/types';
 import {
   mantle,
   MantleParams,
@@ -7,7 +7,7 @@ import {
 } from '@terra-dev/mantle';
 
 export interface CW20BalanceWasmQuery<T extends Token> {
-  tokenBalance: WasmQuery<cw20.Balance, cw20.BalanceResponse<u<T>>>;
+  tokenBalance: WasmQuery<cw20.Balance, cw20.BalanceResponse<T>>;
 }
 
 export type CW20Balance<T extends Token> = WasmQueryData<

@@ -21,18 +21,18 @@ export namespace cw20 {
     };
   }
 
-  export interface BalanceResponse<T extends u<Token>> {
-    balance: T;
+  export interface BalanceResponse<T extends Token> {
+    balance: u<T>;
   }
 
   export interface TokenInfo {
     token_info: {};
   }
 
-  export interface TokenInfoResponse<T extends u<Token>> {
+  export interface TokenInfoResponse<T extends Token> {
     decimals: number;
     name: string;
     symbol: string;
-    total_supply: T;
+    total_supply: u<T>;
   }
 }

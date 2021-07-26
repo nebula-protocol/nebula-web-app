@@ -81,7 +81,7 @@ export function clusterArbRedeemTx(
           value: terraswapPool,
           phase: TxStreamPhase.POST,
           receipts: [],
-        } as TxResultRendering<terraswap.pair.PoolResponse<u<Token>, u<Token>>>;
+        } as TxResultRendering<terraswap.pair.PoolResponse<Token, Token>>;
       });
     },
     ({ value }) =>

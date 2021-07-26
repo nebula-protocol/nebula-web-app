@@ -1,4 +1,4 @@
-import { Token, u } from '../tokens';
+import { LP, Token, u } from '../tokens';
 import { CW20Addr, HumanAddr, NativeDenom, rs } from './common';
 
 export namespace terraswap {
@@ -7,16 +7,16 @@ export namespace terraswap {
 
   export type AssetInfo = CW20AssetInfo | NativeAssetInfo;
 
-  export type CW20Asset<T extends u<Token>> = {
-    amount: T;
+  export type CW20Asset<T extends Token> = {
+    amount: u<T>;
     info: CW20AssetInfo;
   };
-  export type NativeAsset<T extends u<Token>> = {
-    amount: T;
+  export type NativeAsset<T extends Token> = {
+    amount: u<T>;
     info: NativeAssetInfo;
   };
 
-  export type Asset<T extends u<Token>> = CW20Asset<T> | NativeAsset<T>;
+  export type Asset<T extends Token> = CW20Asset<T> | NativeAsset<T>;
 
   export namespace factory {
     export interface Pair {
@@ -41,46 +41,43 @@ export namespace terraswap {
       pool: {};
     }
 
-    export interface PoolResponse<A extends u<Token>, B extends u<Token>> {
-      // TODO set token type to total_share
-      total_share: rs.Uint128;
+    export interface PoolResponse<A extends Token, B extends Token> {
+      // FIXME set token type to total_share
+      total_share: u<LP<rs.Uint128>>;
       assets: [Asset<A | B>, Asset<A | B>];
     }
 
-    export interface Simulation<T extends u<Token>> {
+    export interface Simulation<T extends Token> {
       simulation: {
         offer_asset: {
           info: AssetInfo;
-          amount: T;
+          amount: u<T>;
         };
       };
     }
 
-    export interface SimulationResponse<
-      T extends u<Token>,
-      RT extends u<Token> = T,
-    > {
-      commission_amount: T;
-      return_amount: RT;
-      spread_amount: T;
+    export interface SimulationResponse<T extends Token, RT extends Token = T> {
+      commission_amount: u<T>;
+      return_amount: u<RT>;
+      spread_amount: u<T>;
     }
 
-    export interface ReverseSimulation<T extends u<Token>> {
+    export interface ReverseSimulation<T extends Token> {
       reverse_simulation: {
         ask_asset: {
           info: AssetInfo;
-          amount: T;
+          amount: u<T>;
         };
       };
     }
 
     export interface ReverseSimulationResponse<
-      T extends u<Token>,
-      RT extends u<Token> = T,
+      T extends Token,
+      RT extends Token = T,
     > {
-      commission_amount: T;
-      offer_amount: RT;
-      spread_amount: T;
+      commission_amount: u<T>;
+      offer_amount: u<RT>;
+      spread_amount: u<T>;
     }
   }
 }

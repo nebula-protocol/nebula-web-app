@@ -1,4 +1,4 @@
-import { CT, penalty, terraswap, u, UST } from '@nebula-js/types';
+import { CT, penalty, terraswap, UST } from '@nebula-js/types';
 import {
   mantle,
   MantleParams,
@@ -8,8 +8,8 @@ import {
 
 export interface ClusterArbRedeemWasmQuery {
   simulation: WasmQuery<
-    terraswap.pair.Simulation<u<UST>>,
-    terraswap.pair.SimulationResponse<u<UST>, u<CT>>
+    terraswap.pair.Simulation<UST>,
+    terraswap.pair.SimulationResponse<UST, CT>
   >;
   redeem: WasmQuery<penalty.Redeem, penalty.RedeemResponse>;
 }

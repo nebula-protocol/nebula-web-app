@@ -8,7 +8,7 @@ import { formatUToken } from '@nebula-js/notation';
 export interface WithdrawnTokenTableProps {
   className?: string;
   redeemTokenAmounts: u<Token>[];
-  assetTokenInfos: cw20.TokenInfoResponse<u<Token>>[];
+  assetTokenInfos: cw20.TokenInfoResponse<Token>[];
 }
 
 function WithdrawnTokenTableBase({

@@ -15,14 +15,14 @@ import big, { Big } from 'big.js';
 
 export interface AssetView {
   asset: terraswap.AssetInfo;
-  token: cw20.TokenInfoResponse<u<Token>>;
+  token: cw20.TokenInfoResponse<Token>;
   portfolioRatio: number;
   color: string;
 }
 
 export interface ClusterView {
   addr: HumanAddr;
-  token: cw20.TokenInfoResponse<u<Token>>;
+  token: cw20.TokenInfoResponse<Token>;
   name: string;
   nameLowerCase: string;
   price: u<UST<Big>>;
@@ -42,11 +42,11 @@ export function toClusterView({
   assetTokenInfos,
   clusterTokenInfo,
 }: ClusterInfo): ClusterView {
-  const ctAmount = getAssetAmount<u<CT>>(terraswapPool.assets, {
+  const ctAmount = getAssetAmount<CT>(terraswapPool.assets, {
     token: { contract_addr: clusterState.cluster_token },
   });
 
-  const ustAmount = getAssetAmount<u<UST>>(terraswapPool.assets, 'uusd');
+  const ustAmount = getAssetAmount<UST>(terraswapPool.assets, 'uusd');
 
   if (big(ctAmount).eq(0) || big(ustAmount).eq(0)) {
     return {

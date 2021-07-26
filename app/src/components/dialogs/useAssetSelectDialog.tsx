@@ -1,6 +1,6 @@
 import { Modal } from '@material-ui/core';
 import { Clear } from '@material-ui/icons';
-import { cw20, terraswap, Token, u } from '@nebula-js/types';
+import { cw20, terraswap, Token } from '@nebula-js/types';
 import { Dialog, EmptyButton, IconAndLabels, Search } from '@nebula-js/ui';
 import { DialogProps, OpenDialog, useDialog } from '@terra-dev/use-dialog';
 import React, { ReactNode, useMemo, useState } from 'react';
@@ -10,10 +10,7 @@ interface FormParams {
   className?: string;
   title: ReactNode;
   assets: terraswap.AssetInfo[];
-  assetTokenInfoIndex: Map<
-    terraswap.AssetInfo,
-    cw20.TokenInfoResponse<u<Token>>
-  >;
+  assetTokenInfoIndex: Map<terraswap.AssetInfo, cw20.TokenInfoResponse<Token>>;
 }
 
 type FormReturn = terraswap.AssetInfo | null;

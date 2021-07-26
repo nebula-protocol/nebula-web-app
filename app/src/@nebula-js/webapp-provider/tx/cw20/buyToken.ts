@@ -1,5 +1,5 @@
 import { formatExecuteMsgNumber } from '@nebula-js/notation';
-import { HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
+import { CT, HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
 import {
   cw20BuyTokenTx,
   NebulaTax,
@@ -41,7 +41,7 @@ export function useCW20BuyTokenTx(
   } = useNebulaWebapp();
 
   const { data: { terraswapPool } = {} } =
-    useTerraswapPoolQuery(tokenUstPairAddr);
+    useTerraswapPoolQuery<CT>(tokenUstPairAddr);
 
   const stream = useCallback(
     ({ buyAmount, txFee, onTxSucceed }: CW20BuyTokenTxParams) => {

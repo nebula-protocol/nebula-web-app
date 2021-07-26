@@ -28,13 +28,10 @@ export type ClusterInfoWasmQuery = ClusterStateWasmQuery;
 
 export type ClusterInfo = WasmQueryData<ClusterInfoWasmQuery> & {
   terraswapPair: terraswap.factory.PairResponse;
-  terraswapPool: terraswap.pair.PoolResponse<u<CT>, u<UST>>;
-  clusterTokenInfo: cw20.TokenInfoResponse<u<Token>>;
-  assetTokenInfos: cw20.TokenInfoResponse<u<Token>>[];
-  assetTokenInfoIndex: Map<
-    terraswap.AssetInfo,
-    cw20.TokenInfoResponse<u<Token>>
-  >;
+  terraswapPool: terraswap.pair.PoolResponse<CT, UST>;
+  clusterTokenInfo: cw20.TokenInfoResponse<Token>;
+  assetTokenInfos: cw20.TokenInfoResponse<Token>[];
+  assetTokenInfoIndex: Map<terraswap.AssetInfo, cw20.TokenInfoResponse<Token>>;
 };
 
 export type ClusterInfoQueryParams = Omit<
@@ -85,14 +82,14 @@ export async function clusterInfoQuery({
         switch (asset.native_token.denom) {
           case 'uust':
           case 'uusd':
-            return Promise.resolve<cw20.TokenInfoResponse<u<Token>>>({
+            return Promise.resolve<cw20.TokenInfoResponse<Token>>({
               decimals: 6,
               name: 'UST',
               symbol: 'UST',
               total_supply: '0' as u<Token>,
             });
           case 'uluna':
-            return Promise.resolve<cw20.TokenInfoResponse<u<Token>>>({
+            return Promise.resolve<cw20.TokenInfoResponse<Token>>({
               decimals: 6,
               name: 'LUNA',
               symbol: 'LUNA',
@@ -144,7 +141,7 @@ export async function clusterInfoQuery({
     ...params,
   });
 
-  const { terraswapPool } = await terraswapPoolQuery({
+  const { terraswapPool } = await terraswapPoolQuery<CT>({
     mantleEndpoint,
     wasmQuery: {
       terraswapPool: {
@@ -160,7 +157,7 @@ export async function clusterInfoQuery({
 
   const assetTokenInfoIndex: Map<
     terraswap.AssetInfo,
-    cw20.TokenInfoResponse<u<Token>>
+    cw20.TokenInfoResponse<Token>
   > = clusterState.assets.reduce((index, asset, i) => {
     index.set(asset, tokenInfos[i]);
     return index;

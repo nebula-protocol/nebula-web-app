@@ -1,4 +1,4 @@
-import { HumanAddr, rs } from './common';
+import { CW20Addr, HumanAddr, rs } from './common';
 
 export namespace staking {
   // ---------------------------------------------
@@ -29,7 +29,7 @@ export namespace staking {
   export interface PoolInfo {
     pool_info: {
       // TODO is this CW20Addr or HumanAddr?
-      asset_token: HumanAddr;
+      asset_token: CW20Addr;
     };
   }
 

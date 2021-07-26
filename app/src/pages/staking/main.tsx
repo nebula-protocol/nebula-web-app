@@ -1,3 +1,5 @@
+import { formatTokenWithPostfixUnits } from '@nebula-js/notation';
+import { u, UST } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
@@ -6,7 +8,12 @@ import {
   Search,
   useScreenSizeValue,
 } from '@nebula-js/ui';
+import {
+  useNEBPoolQuery,
+  useStakingClusterPoolInfoListQuery,
+} from '@nebula-js/webapp-provider';
 import { useQueryBoundInput } from '@terra-dev/use-query-bound-input';
+import big, { Big } from 'big.js';
 import { MainLayout } from 'components/layouts/MainLayout';
 import { fixHMR } from 'fix-hmr';
 import React, { useCallback, useMemo } from 'react';
@@ -17,22 +24,56 @@ export interface StakingMainProps {
   className?: string;
 }
 
-const data = Array.from(
-  { length: Math.floor(Math.random() * 10) + 5 },
-  (_, i) => {
-    return {
-      index: i,
-      id: `staking-${i}`.toUpperCase(),
-      name: `NEB-UST LP-${i}`,
-      nameLowerCase: `NEB-UST LP-${i}`.toLowerCase(),
-      apr: '123.12',
-      totalStaked: '123.123',
-    };
-  },
-);
-
 function StakingMainBase({ className }: StakingMainProps) {
   const history = useHistory();
+
+  const { data: nebPool } = useNEBPoolQuery();
+
+  const { data: clusterPoolInfoList = [] } =
+    useStakingClusterPoolInfoListQuery();
+
+  const data = useMemo(() => {
+    return nebPool
+      ? clusterPoolInfoList.map(
+          (
+            {
+              poolInfo,
+              terraswapPool,
+              terraswapPoolInfo,
+              tokenInfo,
+              clusterState,
+              terraswapPair,
+            },
+            i,
+          ) => {
+            const liquidityValue = big(
+              big(nebPool.terraswapPoolInfo.tokenPrice).mul(
+                terraswapPoolInfo.tokenPoolSize,
+              ),
+            ).plus(terraswapPoolInfo.ustPoolSize) as u<UST<Big>>;
+
+            const totalStaked = liquidityValue.mul(
+              big(poolInfo.total_bond_amount).div(
+                +terraswapPool.total_share === 0
+                  ? 1
+                  : terraswapPool.total_share,
+              ),
+            ) as u<UST<Big>>;
+
+            return {
+              index: i,
+              id: clusterState.cluster_contract_address,
+              name: `${tokenInfo.symbol}-UST LP`,
+              nameLowerCase: `${tokenInfo.symbol}-UST LP`.toLowerCase(),
+              apr: '123.12',
+              totalStaked,
+            };
+          },
+        )
+      : [];
+  }, [clusterPoolInfoList, nebPool]);
+
+  console.log('main.tsx..StakingMainBase()', nebPool, clusterPoolInfoList);
 
   const tableButtonSize = useScreenSizeValue<'small' | 'tiny'>({
     mobile: 'tiny',
@@ -62,7 +103,7 @@ function StakingMainBase({ className }: StakingMainProps) {
         return nameLowerCase.indexOf(token) > -1;
       });
     });
-  }, [value]);
+  }, [value, data]);
 
   const gotoCluster = useCallback(
     (stakeId: string, page: 'stake' | 'unstake') => {
@@ -110,8 +151,10 @@ function StakingMainBase({ className }: StakingMainProps) {
                 </CoupledIconsHolder>
                 {name}
               </td>
-              <td>{apr}%</td>
-              <td>${totalStaked}M</td>
+              <td>
+                <s>{apr}%</s>
+              </td>
+              <td>${formatTokenWithPostfixUnits(totalStaked)}</td>
               <td>
                 <Button
                   size={tableButtonSize}

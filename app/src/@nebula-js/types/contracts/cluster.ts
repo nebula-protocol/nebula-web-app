@@ -22,14 +22,14 @@ export namespace cluster {
 
   export interface Mint {
     // TODO is this type correct?
-    asset_amounts: terraswap.Asset<u<CT>>[];
+    asset_amounts: terraswap.Asset<CT>[];
     min_tokens?: rs.Uint128[];
   }
 
   export interface Burn {
     max_tokens: rs.Uint128;
     // TODO is this type correct?
-    asset_amounts?: terraswap.Asset<u<CT>>[];
+    asset_amounts?: terraswap.Asset<CT>[];
   }
 
   // ---------------------------------------------

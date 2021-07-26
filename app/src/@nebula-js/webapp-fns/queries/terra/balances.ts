@@ -86,7 +86,7 @@ export async function terraBalancesQuery({
 
   const balances = assets.map((asset, i) => {
     if ('token' in asset) {
-      const cw20Balance: cw20.BalanceResponse<u<Token>> = result[
+      const cw20Balance: cw20.BalanceResponse<Token> = result[
         'asset' + i
       ] as any;
       return { asset, balance: cw20Balance.balance };

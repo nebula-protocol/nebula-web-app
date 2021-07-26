@@ -1,4 +1,5 @@
 import { HumanAddr } from '@anchor-protocol/types';
+import { Token } from '@nebula-js/types';
 import { TerraswapPool, terraswapPoolQuery } from '@nebula-js/webapp-fns';
 import { createQueryFn } from '@terra-dev/react-query-utils';
 import { useBrowserInactive } from '@terra-dev/use-browser-inactive';
@@ -29,9 +30,9 @@ const queryFn = createQueryFn(
   },
 );
 
-export function useTerraswapPoolQuery(
+export function useTerraswapPoolQuery<T extends Token>(
   terraswapPairAddr: HumanAddr | undefined,
-): UseQueryResult<TerraswapPool | undefined> {
+): UseQueryResult<TerraswapPool<T> | undefined> {
   const { mantleFetch, mantleEndpoint, queryErrorReporter } = useTerraWebapp();
 
   const { browserInactive } = useBrowserInactive();
@@ -52,5 +53,5 @@ export function useTerraswapPoolQuery(
     },
   );
 
-  return result;
+  return result as UseQueryResult<TerraswapPool<T> | undefined>;
 }
