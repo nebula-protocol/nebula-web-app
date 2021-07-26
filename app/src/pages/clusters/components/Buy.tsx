@@ -1,13 +1,18 @@
 import { ArrowSouthIcon, WalletIcon } from '@nebula-js/icons';
-import { formatUInput, formatUToken, microfy } from '@nebula-js/notation';
+import {
+  formatFluidDecimalPoints,
+  formatUInput,
+  formatUToken,
+  microfy,
+} from '@nebula-js/notation';
 import { CT, u, UST } from '@nebula-js/types';
 import {
-  breakpoints,
   Button,
   EmptyButton,
   IconSeparator,
   TokenInput,
   TokenSpan,
+  useConfirm,
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { ClusterInfo } from '@nebula-js/webapp-fns';
@@ -18,6 +23,8 @@ import {
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
+import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
+import { ExchangeRateAB } from 'components/text/ExchangeRateAB';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
@@ -35,12 +42,14 @@ function ClusterBuyBase({
 
   const { broadcast } = useTxBroadcast();
 
+  const [openConfirm, confirmElement] = useConfirm();
+
   const postTx = useCW20BuyTokenTx(
     terraswapPair.contract_addr,
     clusterTokenInfo.symbol,
   );
 
-  const [updateInput, states] = useCW20BuyTokenForm({
+  const [updateInput, states] = useCW20BuyTokenForm<CT>({
     ustCtPairAddr: terraswapPair.contract_addr,
     ctAddr: clusterState.cluster_token,
   });
@@ -60,7 +69,23 @@ function ClusterBuyBase({
   }, [updateInput]);
 
   const proceed = useCallback(
-    (ustAmount: UST, txFee: u<UST<BigSource>>) => {
+    async (
+      ustAmount: UST,
+      txFee: u<UST<BigSource>>,
+      warning: string | null,
+    ) => {
+      if (warning) {
+        const confirm = await openConfirm({
+          description: warning,
+          agree: 'Buy',
+          disagree: 'Cancel',
+        });
+
+        if (!confirm) {
+          return;
+        }
+      }
+
       const stream = postTx?.({
         buyAmount: microfy(ustAmount).toFixed() as u<UST>,
         txFee: big(txFee).toFixed() as u<UST>,
@@ -68,11 +93,10 @@ function ClusterBuyBase({
       });
 
       if (stream) {
-        console.log('Buy.tsx..()', stream);
         broadcast(stream);
       }
     },
-    [broadcast, initForm, postTx],
+    [broadcast, initForm, openConfirm, postTx],
   );
 
   return (
@@ -103,6 +127,7 @@ function ClusterBuyBase({
           </EmptyButton>
         }
         token={<TokenSpan>UST</TokenSpan>}
+        error={states.invalidUstAmount}
       />
 
       <IconSeparator>
@@ -111,7 +136,7 @@ function ClusterBuyBase({
 
       <TokenInput
         maxDecimalPoints={6}
-        value={(states.tokenAmount ?? '') as CT}
+        value={states.tokenAmount ?? ('' as CT)}
         onChange={(nextCtAmount) =>
           updateInput({ ustAmount: undefined, tokenAmount: nextCtAmount })
         }
@@ -121,11 +146,51 @@ function ClusterBuyBase({
       />
 
       <FeeBox className="feebox">
-        <li>
-          <span>Tx Fee</span>
-          <span>{'txFee' in states ? formatUToken(states.txFee) : 0} UST</span>
-        </li>
+        {'beliefPrice' in states && (
+          <li>
+            <span>Price</span>
+            <ExchangeRateAB
+              symbolA="UST"
+              symbolB={clusterTokenInfo.symbol}
+              exchangeRateAB={states.beliefPrice}
+              initialDirection="a/b"
+              formatExchangeRate={(price) => formatFluidDecimalPoints(price, 6)}
+            />
+          </li>
+        )}
+        {'minimumReceived' in states && (
+          <li>
+            <span>Minimum Received</span>
+            <span>
+              {formatUToken(states.minimumReceived)} {clusterTokenInfo.symbol}
+            </span>
+          </li>
+        )}
+        {'tradingFee' in states && (
+          <li>
+            <span>Trading Fee</span>
+            <span>
+              {formatUToken(states.tradingFee)} {clusterTokenInfo.symbol}
+            </span>
+          </li>
+        )}
+        {'txFee' in states && (
+          <li>
+            <span>Tx Fee</span>
+            <span>{formatUToken(states.txFee)} UST</span>
+          </li>
+        )}
       </FeeBox>
+
+      {states.invalidTxFee ? (
+        <WarningMessageBox level="critical" className="warning">
+          {states.invalidTxFee}
+        </WarningMessageBox>
+      ) : states.warningNextTxFee ? (
+        <WarningMessageBox level="warning" className="warning">
+          {states.warningNextTxFee}
+        </WarningMessageBox>
+      ) : null}
 
       <Button
         className="submit"
@@ -137,17 +202,20 @@ function ClusterBuyBase({
           !postTx ||
           !states ||
           !states.ustAmount ||
+          !states.availableTx ||
           states.ustAmount.length === 0 ||
           !('txFee' in states)
         }
         onClick={() =>
           states.ustAmount &&
           'txFee' in states &&
-          proceed(states.ustAmount, states.txFee)
+          proceed(states.ustAmount, states.txFee, states.warningNextTxFee)
         }
       >
         Buy
       </Button>
+
+      {confirmElement}
     </div>
   );
 }
@@ -156,24 +224,17 @@ export const ClusterBuy = styled(ClusterBuyBase)`
   font-size: 1rem;
 
   .feebox {
-    margin-top: 2.8em;
+    margin-top: 2.14285714em;
+  }
+
+  .warning {
+    margin-top: 2.14285714em;
   }
 
   .submit {
     display: block;
     width: 100%;
     max-width: 360px;
-    margin: 2.8em auto 0 auto;
-  }
-
-  @media (max-width: ${breakpoints.mobile.max}px) {
-    .feebox {
-      font-size: 0.9em;
-      margin-top: 2.2em;
-    }
-
-    .submit {
-      margin-top: 2.2em;
-    }
+    margin: 2.14285714em auto 0 auto;
   }
 `;

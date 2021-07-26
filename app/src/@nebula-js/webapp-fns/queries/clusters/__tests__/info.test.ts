@@ -6,8 +6,11 @@ import {
 } from '@nebula-js/webapp-fns/test-env';
 import { defaultMantleFetch } from '@terra-dev/mantle';
 
-describe('clusters/info', () => {
+describe.skip('clusters/info', () => {
   test('should get result data', async () => {
+    //@ts-ignore
+    process.env.MANTLE_GRAPHQL_PRINT = true;
+
     const { clusterState, clusterConfig, terraswapPair, terraswapPool } =
       await clusterInfoQuery({
         mantleEndpoint: TEST_MANTLE_ENDPOINT,
@@ -15,17 +18,17 @@ describe('clusters/info', () => {
         terraswapFactoryAddr: TEST_CONTRACT_ADDRESS.terraswap.factory,
         wasmQuery: {
           clusterConfig: {
-            contractAddress: 'terra1qascdg0c2gsewg6c2u8e5fdgc35mhlcufvmzna',
+            contractAddress: 'terra1rkgpmrqmddwtq48e5mr4vsps53vudmd4mgvfkz',
             query: {
               config: {},
             },
           },
           clusterState: {
-            contractAddress: 'terra1qascdg0c2gsewg6c2u8e5fdgc35mhlcufvmzna',
+            contractAddress: 'terra1rkgpmrqmddwtq48e5mr4vsps53vudmd4mgvfkz',
             query: {
               cluster_state: {
                 cluster_contract_address:
-                  'terra1qascdg0c2gsewg6c2u8e5fdgc35mhlcufvmzna' as HumanAddr,
+                  'terra1rkgpmrqmddwtq48e5mr4vsps53vudmd4mgvfkz' as HumanAddr,
               },
             },
           },

@@ -27,19 +27,31 @@ export type FormInput<Input> = (
 
 export type FormStates<States, AsyncStates> = States & (AsyncStates | {});
 
+export type FormReturn<States, AsyncStates> = [
+  States,
+  Promise<AsyncStates & Partial<States>> | undefined,
+];
+
+export type FormFunction<
+  Input extends {},
+  Dependency extends {},
+  States extends {},
+  AsyncStates extends {},
+> = (
+  dependency: Dependency,
+  prevDependency: Dependency | undefined,
+) => (
+  input: Input,
+  prevInput: Input | undefined,
+) => FormReturn<States, AsyncStates>;
+
 export function useForm<
   Input extends {},
   Dependency extends {},
   States extends {},
   AsyncStates extends {},
 >(
-  form: (
-    dependency: Dependency,
-    prevDependency: Dependency | undefined,
-  ) => (
-    input: Input,
-    prevInput: Input | undefined,
-  ) => [States, Promise<AsyncStates> | undefined],
+  form: FormFunction<Input, Dependency, States, AsyncStates>,
   dependency: Dependency,
   initialInput: () => Input,
 ): [FormInput<Input>, FormStates<States, AsyncStates>] {
@@ -58,21 +70,21 @@ export function useForm<
 
   const depResolved = useRef(initialDepResolved);
 
-  const resolver = useMemo<Resolver<AsyncStates>>(() => {
-    return new Resolver<AsyncStates>();
+  const resolver = useMemo<Resolver<AsyncStates & Partial<States>>>(() => {
+    return new Resolver<AsyncStates & Partial<States>>();
   }, []);
 
   const [initialStates, initialAsyncStates] = useMemo<
-    [States, Promise<AsyncStates> | undefined]
+    [States, Promise<AsyncStates & Partial<States>> | undefined]
   >(() => {
     return depResolved.current(lastInput.current, undefined);
   }, []);
 
   const [states, setStates] = useState<States>(() => initialStates);
 
-  const [asyncStates, setAsyncStates] = useState<AsyncStates | undefined>(
-    undefined,
-  );
+  const [asyncStates, setAsyncStates] = useState<
+    (AsyncStates & Partial<States>) | undefined
+  >(undefined);
 
   useEffect(() => {
     if (form !== initialForm.current) {

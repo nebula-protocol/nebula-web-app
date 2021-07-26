@@ -122,6 +122,9 @@ function ClusterSellBase({
       />
 
       <FeeBox className="feebox">
+        {/* TODO Price */}
+        {/* TODO Minimum Received */}
+        {/* TODO Trading Fee */}
         <li>
           <span>Tx Fee</span>
           <span>{'txFee' in states ? formatUToken(states.txFee) : 0} UST</span>

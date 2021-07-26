@@ -1,5 +1,5 @@
 import { u, UST } from '@nebula-js/types';
-import { max, min } from '@terra-dev/big-math';
+import { min } from '@terra-dev/big-math';
 import big, { Big, BigSource } from 'big.js';
 import { NebulaTax } from '../types';
 
@@ -8,21 +8,17 @@ export function computeMaxUstBalanceForUstTransfer(
   tax: NebulaTax,
   fixedGas: u<UST<BigSource>>,
 ) {
-  if (big(ustBalance).eq(0)) {
+  if (big(ustBalance).lte(0)) {
     return big('0') as u<UST<Big>>;
   }
 
-  const txFee = min(
-    max(
-      big(big(ustBalance).minus(fixedGas)).div(
-        big(big(1).plus(tax.taxRate)).mul(tax.taxRate),
-      ),
-      0,
-    ),
-    tax.maxTaxUUSD,
-  );
+  const withoutFixedGas = big(ustBalance).minus(fixedGas);
 
-  return max(big(ustBalance).minus(txFee).minus(big(fixedGas).mul(2)), 0) as u<
-    UST<Big>
-  >;
+  const txFee = withoutFixedGas.mul(tax.taxRate);
+
+  const result = withoutFixedGas.minus(min(txFee, tax.maxTaxUUSD));
+
+  return result.minus(fixedGas).lte(0)
+    ? (big(0) as u<UST<Big>>)
+    : (result.minus(fixedGas) as u<UST<Big>>);
 }

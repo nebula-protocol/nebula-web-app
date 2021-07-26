@@ -78,6 +78,7 @@ export async function clusterInfoQuery({
       } else if ('native_token' in asset) {
         switch (asset.native_token.denom) {
           case 'uust':
+          case 'uusd':
             return Promise.resolve<cw20.TokenInfoResponse<u<Token>>>({
               decimals: 6,
               name: 'UST',

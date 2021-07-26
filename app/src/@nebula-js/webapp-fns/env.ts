@@ -28,6 +28,26 @@ export const DEFAULT_CONTRACT_ADDRESS: Record<string, ContractAddress> = {
     },
   },
 };
+//export const DEFAULT_CONTRACT_ADDRESS: Record<string, ContractAddress> = {
+//  testnet: {
+//    airdrop: 'terra1f6mg20qnt638qq69f2tvw4nk7mlu470y56s2zn' as HumanAddr,
+//    collector: 'terra1zpjmxrk5lyz43ae5ltpahmmp8grtzm74ljfyxv' as HumanAddr,
+//    community: 'terra1qd5rlq6653vzetgr6xhm0uc4v6jad6wmqzwq6n' as HumanAddr,
+//    clusterFactory: 'terra18n5ayre7mwwewaltct5ntux7vg0yacer7elx44' as HumanAddr,
+//    gov: 'terra1ykg9llugs7drrt3qkelz0q8vjj2d4ph93xsysg' as HumanAddr,
+//    incentives: 'terra13kd0tkue7dlcz0wf7fmkzw6wwwh84jmuzxyjvh' as HumanAddr,
+//    incentivesCustody:
+//      'terra18k8jtzphryx3ghh95mxq904n63c78404wfhsfw' as HumanAddr,
+//    staking: 'terra1p89np5346pwjxfxrd0euzgnuzvw3lltw8xmwmh' as HumanAddr,
+//    terraswap: {
+//      factory: 'terra18qpjm4zkvqnpjpw0zn0tdr8gdzvt8au35v45xf' as HumanAddr,
+//      nebUstPair: 'terra13eccqfr3stmnlhdj6azxh9ur8nq3qcaj47fpje' as HumanAddr,
+//    },
+//    cw20: {
+//      NEB: 'terra1nrsdypzxrlpz98kumlhecwwama3g72lcszz0fw' as CW20Addr,
+//    },
+//  },
+//};
 
 export const DEFAULT_CONSTANTS: Record<string, NebulaContants> = {
   mainnet: {

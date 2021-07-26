@@ -25,4 +25,8 @@ export const FeeBox = styled.ul`
       margin-top: 0.5em;
     }
   }
+
+  &:empty {
+    display: none;
+  }
 `;
