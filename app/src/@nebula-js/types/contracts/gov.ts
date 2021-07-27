@@ -32,52 +32,72 @@ export namespace gov {
   // HandleMsg
   // ---------------------------------------------
   export interface UpdateConfig {
-    owner?: HumanAddr;
-    quorum?: rs.Decimal;
-    threshold?: rs.Decimal;
-    voting_period?: rs.u64;
-    effective_delay?: rs.u64;
-    expiration_period?: rs.u64;
-    // TODO set token type to proposal_deposit
-    proposal_deposit?: rs.Uint128;
-    // TODO is this token?
-    voter_weight?: rs.Decimal;
-    snapshot_period?: rs.u64;
+    update_config: {
+      owner?: HumanAddr;
+      quorum?: rs.Decimal;
+      threshold?: rs.Decimal;
+      voting_period?: rs.u64;
+      effective_delay?: rs.u64;
+      expiration_period?: rs.u64;
+      // TODO set token type to proposal_deposit
+      proposal_deposit?: rs.Uint128;
+      // TODO is this token?
+      voter_weight?: rs.Decimal;
+      snapshot_period?: rs.u64;
+    };
   }
 
   export interface CastVote {
-    poll_id: rs.u64;
-    vote: VoteOption;
-    // TODO set token type to amount
-    amount: rs.Uint128;
+    cast_vote: {
+      poll_id: rs.u64;
+      vote: VoteOption;
+      // TODO set token type to amount
+      amount: rs.Uint128;
+    };
   }
 
   export interface WithdrawVotingTokens {
-    amount?: rs.Uint128;
+    withdraw_voting_tokens: {
+      amount?: rs.Uint128;
+    };
   }
 
-  export interface WithdrawVotingRewards {}
+  export interface WithdrawVotingRewards {
+    withdraw_voting_rewards: {};
+  }
 
-  export interface StakeVotingRewards {}
+  export interface StakeVotingRewards {
+    stake_voting_rewards: {};
+  }
 
   export interface EndPoll {
-    poll_id: rs.u64;
+    end_poll: {
+      poll_id: rs.u64;
+    };
   }
 
   export interface ExecutePoll {
-    poll_id: rs.u64;
+    execute_poll: {
+      poll_id: rs.u64;
+    };
   }
 
   export interface ExpirePoll {
-    poll_id: rs.u64;
+    expire_poll: {
+      poll_id: rs.u64;
+    };
   }
 
   export interface SnapshotPoll {
-    poll_id: rs.u64;
+    snapshot_poll: {
+      poll_id: rs.u64;
+    };
   }
 
   export interface IncreaseLockTime {
-    increase_weeks: rs.u64;
+    increase_lock_time: {
+      increase_weeks: rs.u64;
+    };
   }
 
   // ---------------------------------------------

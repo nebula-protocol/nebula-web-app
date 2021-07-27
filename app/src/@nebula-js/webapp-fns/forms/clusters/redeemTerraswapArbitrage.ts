@@ -135,7 +135,9 @@ export const clusterRedeemTerraswapArbitrageForm = (
                     inventory: dependency.clusterState.inv,
                     max_tokens: simulation.return_amount,
                     asset_prices: dependency.clusterState.prices,
-                    target_weights: dependency.clusterState.target,
+                    target_weights: dependency.clusterState.target.map(
+                      ({ amount }) => amount,
+                    ),
                     // TODO this field not optional
                     redeem_asset_amounts: [],
                   },

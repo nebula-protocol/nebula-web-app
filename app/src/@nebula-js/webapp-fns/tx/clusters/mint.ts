@@ -29,7 +29,7 @@ export function clusterMintTx(
     walletAddr: HumanAddr;
     incentivesAddr: HumanAddr;
     clusterAddr: HumanAddr;
-    assets: terraswap.AssetInfo[];
+    assets: terraswap.Asset<Token>[];
     amounts: u<Token>[];
     onTxSucceed?: () => void;
   } & TxCommonParams,
@@ -37,9 +37,9 @@ export function clusterMintTx(
   const helper = new TxHelper($);
 
   const increaseAllownance = $.assets
-    .map((asset, i) => {
-      if ('token' in asset) {
-        return new MsgExecuteContract($.walletAddr, asset.token.contract_addr, {
+    .map(({ info }, i) => {
+      if ('token' in info) {
+        return new MsgExecuteContract($.walletAddr, info.token.contract_addr, {
           increase_allowance: {
             spender: $.incentivesAddr,
             amount: $.amounts[i],
@@ -52,9 +52,9 @@ export function clusterMintTx(
     .filter((contract): contract is MsgExecuteContract => !!contract);
 
   const nativeCoins = $.assets
-    .map((asset, i) => {
-      if ('native_token' in asset && big($.amounts[i]).gt(0)) {
-        return new Coin(asset.native_token.denom, $.amounts[i]);
+    .map(({ info }, i) => {
+      if ('native_token' in info && big($.amounts[i]).gt(0)) {
+        return new Coin(info.native_token.denom, $.amounts[i]);
       } else {
         return undefined;
       }
@@ -71,8 +71,8 @@ export function clusterMintTx(
           {
             mint: {
               cluster_contract: $.clusterAddr,
-              asset_amounts: $.assets.map((asset, i) => ({
-                info: asset,
+              asset_amounts: $.assets.map(({ info }, i) => ({
+                info,
                 amount: $.amounts[i],
               })),
             },

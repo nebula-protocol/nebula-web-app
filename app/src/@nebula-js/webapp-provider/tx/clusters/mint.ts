@@ -17,7 +17,7 @@ export interface ClusterMintTxParams {
 
 export function useClusterMintTx(
   clusterAddr: HumanAddr,
-  assets: terraswap.AssetInfo[],
+  assets: terraswap.Asset<Token>[],
 ) {
   const connectedWallet = useConnectedWallet();
 

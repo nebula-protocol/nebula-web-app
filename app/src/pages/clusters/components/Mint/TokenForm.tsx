@@ -61,7 +61,7 @@ function TokenFormBase({
   // callbacks
   // ---------------------------------------------
   const addAsset = useCallback(
-    (asset: terraswap.AssetInfo) => {
+    (asset: terraswap.Asset<Token>) => {
       updateInput((prev) => {
         const nextAddedAssets = new Set(prev.addedAssets);
         nextAddedAssets.add(asset);
@@ -75,10 +75,10 @@ function TokenFormBase({
   );
 
   const removeAsset = useCallback(
-    (asset: terraswap.AssetInfo) => {
+    (asset: terraswap.Asset<Token>) => {
       updateInput((prev) => {
-        const index = clusterState.assets.findIndex(
-          (targetAsset) => targetAsset === asset,
+        const index = clusterState.target.findIndex(
+          ({ info }) => info === asset.info,
         );
 
         const nextAmounts = [...prev.amounts];
@@ -95,13 +95,13 @@ function TokenFormBase({
           : prev;
       });
     },
-    [clusterState.assets, updateInput],
+    [clusterState.target, updateInput],
   );
 
   const updateAmount = useCallback(
-    (asset: terraswap.AssetInfo, amount: Token) => {
+    (asset: terraswap.Asset<Token>, amount: Token) => {
       updateInput((prev) => {
-        const index = clusterState.assets.findIndex(
+        const index = clusterState.target.findIndex(
           (targetAsset) => targetAsset === asset,
         );
 
@@ -118,7 +118,7 @@ function TokenFormBase({
         };
       });
     },
-    [clusterState.assets, updateInput],
+    [clusterState.target, updateInput],
   );
 
   const openAddAsset = useCallback(async () => {
@@ -136,8 +136,8 @@ function TokenFormBase({
   return (
     <div className={className}>
       <ul className="added-tokens">
-        {clusterState.assets.length > 0 &&
-          clusterState.assets.map(
+        {clusterState.target.length > 0 &&
+          clusterState.target.map(
             (asset, i) =>
               states.addedAssets.has(asset) && (
                 <li key={'added-asset' + i}>

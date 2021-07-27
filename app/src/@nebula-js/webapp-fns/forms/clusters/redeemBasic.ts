@@ -95,7 +95,9 @@ export const clusterRedeemBasicForm = (
                 inventory: dependency.clusterState.inv,
                 max_tokens: input.tokenAmount,
                 asset_prices: dependency.clusterState.prices,
-                target_weights: dependency.clusterState.target,
+                target_weights: dependency.clusterState.target.map(
+                  ({ amount }) => amount,
+                ),
                 // TODO this field not optional
                 redeem_asset_amounts: [],
               },

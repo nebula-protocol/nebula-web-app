@@ -5,14 +5,18 @@ export namespace community {
   // HandleMsg
   // ---------------------------------------------
   export interface UpdateConfig {
-    owner?: HumanAddr;
-    spend_limit?: rs.Uint128;
+    update_config: {
+      owner?: HumanAddr;
+      spend_limit?: rs.Uint128;
+    };
   }
 
   export interface Spend {
-    recipient: HumanAddr;
-    // TODO set token type to amount
-    amount: rs.Uint128;
+    send: {
+      recipient: HumanAddr;
+      // TODO set token type to amount
+      amount: rs.Uint128;
+    };
   }
 
   // ---------------------------------------------

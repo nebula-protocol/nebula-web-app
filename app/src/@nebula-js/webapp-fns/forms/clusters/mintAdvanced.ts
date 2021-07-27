@@ -5,7 +5,7 @@ import { MantleFetch } from '@terra-dev/mantle';
 import { TerraBalances } from '../../queries/terra/balances';
 
 export interface ClusterMintAdvancedFormInput {
-  addedAssets: Set<terraswap.AssetInfo>;
+  addedAssets: Set<terraswap.Asset<Token>>;
   amounts: Token[];
 }
 
@@ -21,7 +21,7 @@ export interface ClusterMintAdvancedFormDependency {
 export interface ClusterMintAdvancedFormStates
   extends ClusterMintAdvancedFormInput {
   invalidAmounts: (string | null)[];
-  remainAssets: terraswap.AssetInfo[];
+  remainAssets: terraswap.Asset<Token>[];
   balances: TerraBalances | undefined;
 }
 
@@ -34,7 +34,7 @@ export const clusterMintAdvancedForm = (
   prevDependency: ClusterMintAdvancedFormDependency | undefined,
 ) => {
   let invalidAmounts: (string | null)[];
-  let remainAssets: terraswap.AssetInfo[];
+  let remainAssets: terraswap.Asset<Token>[];
   let asyncStates: Promise<ClusterMintAdvancedFormAsyncStates>;
 
   return (
@@ -50,7 +50,7 @@ export const clusterMintAdvancedForm = (
       dependency.balances !== prevDependency?.balances ||
       input.amounts !== prevInput?.amounts
     ) {
-      invalidAmounts = dependency.clusterState.assets.map((asset, i) => {
+      invalidAmounts = dependency.clusterState.target.map(({ info }, i) => {
         const amount = input.amounts[i];
         const balance = dependency.balances?.balances[i].balance ?? 0;
 
@@ -65,7 +65,7 @@ export const clusterMintAdvancedForm = (
       dependency.clusterState !== prevDependency?.clusterState ||
       input.addedAssets !== prevInput?.addedAssets
     ) {
-      remainAssets = dependency.clusterState.assets.filter((asset) => {
+      remainAssets = dependency.clusterState.target.filter((asset) => {
         return !input.addedAssets.has(asset);
       });
     }
@@ -101,7 +101,9 @@ export const clusterMintAdvancedForm = (
                           : '0') as u<Token>,
                     ),
                     asset_prices: dependency.clusterState.prices,
-                    target_weights: dependency.clusterState.target,
+                    target_weights: dependency.clusterState.target.map(
+                      ({ amount }) => amount,
+                    ),
                   },
                 },
               },

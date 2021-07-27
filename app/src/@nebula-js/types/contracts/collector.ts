@@ -5,10 +5,14 @@ export namespace collector {
   // HandleMsg
   // ---------------------------------------------
   export interface Convert {
-    asset_token: HumanAddr;
+    convert: {
+      asset_token: HumanAddr;
+    };
   }
 
-  export interface Distribute {}
+  export interface Distribute {
+    distribute: {};
+  }
 
   // ---------------------------------------------
   // QueryMsg

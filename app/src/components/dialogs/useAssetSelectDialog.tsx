@@ -9,11 +9,14 @@ import styled from 'styled-components';
 interface FormParams {
   className?: string;
   title: ReactNode;
-  assets: terraswap.AssetInfo[];
-  assetTokenInfoIndex: Map<terraswap.AssetInfo, cw20.TokenInfoResponse<Token>>;
+  assets: terraswap.Asset<Token>[];
+  assetTokenInfoIndex: Map<
+    terraswap.Asset<Token>,
+    cw20.TokenInfoResponse<Token>
+  >;
 }
 
-type FormReturn = terraswap.AssetInfo | null;
+type FormReturn = terraswap.Asset<Token> | null;
 
 export function useAssetSelectDialog(): [
   OpenDialog<FormParams, FormReturn>,

@@ -6,24 +6,24 @@ export namespace airdrop {
   // HandleMsg
   // ---------------------------------------------
   export interface UpdateConfig {
-    owner?: HumanAddr;
-  }
-
-  export interface UpdateMerkleRoot {
-    stage: rs.u8;
-    // TODO is this can be a nominal type?
-    merkle_root: string;
+    update_config: {
+      owner?: HumanAddr;
+    };
   }
 
   export interface RegisterMerkleRoot {
-    merkle_root: string;
+    register_merkle_root: {
+      merkle_root: string;
+    };
   }
 
   export interface Claim {
-    stage: rs.u8;
-    // TODO is this NEB or not?
-    amount: u<NEB>;
-    proof: string[];
+    claim: {
+      stage: rs.u8;
+      // TODO is this NEB or not?
+      amount: u<NEB>;
+      proof: string[];
+    };
   }
 
   // ---------------------------------------------

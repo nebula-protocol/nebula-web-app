@@ -2,6 +2,7 @@ import { cluster, terraswap, Token } from '@nebula-js/types';
 import { clusterMintAdvancedForm } from '@nebula-js/webapp-fns';
 import { useForm } from '@terra-dev/use-form';
 import { useTerraWebapp } from '@terra-money/webapp-provider';
+import { useMemo } from 'react';
 import { useTerraBalancesQuery } from '../../queries/terra/balances';
 
 export interface ClusterMintAdvancedFormParams {
@@ -13,7 +14,11 @@ export function useClusterMintAdvancedForm({
 }: ClusterMintAdvancedFormParams) {
   const { mantleFetch, mantleEndpoint, lastSyncedHeight } = useTerraWebapp();
 
-  const { data: balances } = useTerraBalancesQuery(clusterState.assets);
+  const assetInfos = useMemo(() => {
+    return clusterState.target.map(({ info }) => info);
+  }, [clusterState.target]);
+
+  const { data: balances } = useTerraBalancesQuery(assetInfos);
 
   return useForm(
     clusterMintAdvancedForm,
@@ -26,8 +31,8 @@ export function useClusterMintAdvancedForm({
     },
     () => {
       return {
-        addedAssets: new Set<terraswap.AssetInfo>(),
-        amounts: clusterState.assets.map(() => '' as Token),
+        addedAssets: new Set<terraswap.Asset<Token>>(),
+        amounts: assetInfos.map(() => '' as Token),
       };
     },
   );

@@ -31,7 +31,7 @@ export function clusterArbMintTx(
     incentivesAddr: HumanAddr;
     clusterAddr: HumanAddr;
     terraswapPairAddr: HumanAddr;
-    assets: terraswap.AssetInfo[];
+    assets: terraswap.Asset<Token>[];
     amounts: u<Token>[];
     onTxSucceed?: () => void;
   } & TxCommonParams,
@@ -39,9 +39,9 @@ export function clusterArbMintTx(
   const helper = new TxHelper($);
 
   const increaseAllownance = $.assets
-    .map((asset, i) => {
-      if ('token' in asset) {
-        return new MsgExecuteContract($.walletAddr, asset.token.contract_addr, {
+    .map(({ info }, i) => {
+      if ('token' in info) {
+        return new MsgExecuteContract($.walletAddr, info.token.contract_addr, {
           increase_allowance: {
             spender: $.incentivesAddr,
             amount: $.amounts[i],
@@ -54,9 +54,9 @@ export function clusterArbMintTx(
     .filter((contract): contract is MsgExecuteContract => !!contract);
 
   const nativeCoins = $.assets
-    .map((asset, i) => {
-      if ('native_token' in asset && big($.amounts[i]).gt(0)) {
-        return new Coin(asset.native_token.denom, $.amounts[i]);
+    .map(({ info }, i) => {
+      if ('native_token' in info && big($.amounts[i]).gt(0)) {
+        return new Coin(info.native_token.denom, $.amounts[i]);
       } else {
         return undefined;
       }
@@ -94,35 +94,35 @@ export function clusterArbMintTx(
             {
               arb_cluster_mint: {
                 cluster_contract: $.clusterAddr,
-                assets: $.assets.map((asset, i) => ({
+                assets: $.assets.map(({ info }, i) => ({
+                  info,
                   amount: $.amounts[i],
-                  info: asset,
                 })),
               },
             } as incentives.ArbClusterMint,
             nativeCoins.length > 0 ? new Coins(nativeCoins) : undefined,
           ),
-          new MsgExecuteContract($.walletAddr, $.incentivesAddr, {
-            swap_all: {
-              terraswap_pair: $.terraswapPairAddr,
-              cluster_token: $.clusterAddr,
-              to_ust: true,
-            },
-          } as incentives.SwapAll),
-          new MsgExecuteContract($.walletAddr, $.incentivesAddr, {
-            record_terraswap_impact: {
-              arbitrager: $.walletAddr,
-              terraswap_pair: $.terraswapPairAddr,
-              cluster_contract: $.clusterAddr,
-              pool_before: value,
-            },
-          } as incentives.RecordTerraswapImpact),
-          new MsgExecuteContract($.walletAddr, $.incentivesAddr, {
-            send_all: {
-              asset_infos: $.assets,
-              send_to: $.walletAddr,
-            },
-          } as incentives.SendAll),
+          //new MsgExecuteContract($.walletAddr, $.incentivesAddr, {
+          //  swap_all: {
+          //    terraswap_pair: $.terraswapPairAddr,
+          //    cluster_token: $.clusterAddr,
+          //    to_ust: true,
+          //  },
+          //} as incentives.SwapAll),
+          //new MsgExecuteContract($.walletAddr, $.incentivesAddr, {
+          //  record_terraswap_impact: {
+          //    arbitrager: $.walletAddr,
+          //    terraswap_pair: $.terraswapPairAddr,
+          //    cluster_contract: $.clusterAddr,
+          //    pool_before: value,
+          //  },
+          //} as incentives.RecordTerraswapImpact),
+          //new MsgExecuteContract($.walletAddr, $.incentivesAddr, {
+          //  send_all: {
+          //    asset_infos: $.assets,
+          //    send_to: $.walletAddr,
+          //  },
+          //} as incentives.SendAll),
         ],
         fee: new StdFee($.gasFee, floor($.txFee) + 'uusd'),
         gasAdjustment: $.gasAdjustment,

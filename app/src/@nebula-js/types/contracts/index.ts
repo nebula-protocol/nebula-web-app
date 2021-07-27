@@ -11,3 +11,4 @@ export * from './penalty';
 export * from './staking';
 export * from './terraswap';
 export * from './cw20';
+export * from './oracle';

@@ -88,21 +88,21 @@ export function clusterArbRedeemTx(
       _createTxOptions({
         msgs: [
           //...increaseAllownance,
-          new MsgExecuteContract($.walletAddr, $.incentivesAddr, {
-            swap_all: {
-              terraswap_pair: $.terraswapPairAddr,
-              cluster_token: $.clusterAddr,
-              to_ust: false,
-            },
-          } as incentives.SwapAll),
-          new MsgExecuteContract($.walletAddr, $.incentivesAddr, {
-            record_terraswap_impact: {
-              arbitrager: $.walletAddr,
-              terraswap_pair: $.terraswapPairAddr,
-              cluster_contract: $.clusterAddr,
-              pool_before: value,
-            },
-          } as incentives.RecordTerraswapImpact),
+          //new MsgExecuteContract($.walletAddr, $.incentivesAddr, {
+          //  swap_all: {
+          //    terraswap_pair: $.terraswapPairAddr,
+          //    cluster_token: $.clusterAddr,
+          //    to_ust: false,
+          //  },
+          //} as incentives.SwapAll),
+          //new MsgExecuteContract($.walletAddr, $.incentivesAddr, {
+          //  record_terraswap_impact: {
+          //    arbitrager: $.walletAddr,
+          //    terraswap_pair: $.terraswapPairAddr,
+          //    cluster_contract: $.clusterAddr,
+          //    pool_before: value,
+          //  },
+          //} as incentives.RecordTerraswapImpact),
           new MsgExecuteContract(
             $.walletAddr,
             $.incentivesAddr,
@@ -119,12 +119,12 @@ export function clusterArbRedeemTx(
             } as incentives.ArbClusterRedeem,
             //nativeCoins.length > 0 ? new Coins(nativeCoins) : undefined,
           ),
-          new MsgExecuteContract($.walletAddr, $.incentivesAddr, {
-            send_all: {
-              asset_infos: $.assets,
-              send_to: $.walletAddr,
-            },
-          } as incentives.SendAll),
+          //new MsgExecuteContract($.walletAddr, $.incentivesAddr, {
+          //  send_all: {
+          //    asset_infos: $.assets,
+          //    send_to: $.walletAddr,
+          //  },
+          //} as incentives.SendAll),
         ],
         fee: new StdFee($.gasFee, floor($.txFee) + 'uusd'),
         gasAdjustment: $.gasAdjustment,

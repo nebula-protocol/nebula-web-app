@@ -31,7 +31,10 @@ export type ClusterInfo = WasmQueryData<ClusterInfoWasmQuery> & {
   terraswapPool: terraswap.pair.PoolResponse<CT, UST>;
   clusterTokenInfo: cw20.TokenInfoResponse<Token>;
   assetTokenInfos: cw20.TokenInfoResponse<Token>[];
-  assetTokenInfoIndex: Map<terraswap.AssetInfo, cw20.TokenInfoResponse<Token>>;
+  assetTokenInfoIndex: Map<
+    terraswap.Asset<Token>,
+    cw20.TokenInfoResponse<Token>
+  >;
 };
 
 export type ClusterInfoQueryParams = Omit<
@@ -64,13 +67,13 @@ export async function clusterInfoQuery({
   );
 
   const tokenInfos = await Promise.all(
-    clusterState.assets.map((asset) => {
-      if ('token' in asset) {
+    clusterState.target.map(({ info }) => {
+      if ('token' in info) {
         return cw20TokenInfoQuery({
           mantleEndpoint,
           wasmQuery: {
             tokenInfo: {
-              contractAddress: asset.token.contract_addr,
+              contractAddress: info.token.contract_addr,
               query: {
                 token_info: {},
               },
@@ -78,8 +81,8 @@ export async function clusterInfoQuery({
           },
           ...params,
         }).then(({ tokenInfo }) => tokenInfo);
-      } else if ('native_token' in asset) {
-        switch (asset.native_token.denom) {
+      } else if ('native_token' in info) {
+        switch (info.native_token.denom) {
           case 'uust':
           case 'uusd':
             return Promise.resolve<cw20.TokenInfoResponse<Token>>({
@@ -156,10 +159,10 @@ export async function clusterInfoQuery({
   });
 
   const assetTokenInfoIndex: Map<
-    terraswap.AssetInfo,
+    terraswap.Asset<Token>,
     cw20.TokenInfoResponse<Token>
-  > = clusterState.assets.reduce((index, asset, i) => {
-    index.set(asset, tokenInfos[i]);
+  > = clusterState.target.reduce((index, { info }, i) => {
+    index.set(info, tokenInfos[i]);
     return index;
   }, new Map());
 

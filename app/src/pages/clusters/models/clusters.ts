@@ -14,7 +14,7 @@ import { sum, vectorMultiply } from '@terra-dev/big-math';
 import big, { Big } from 'big.js';
 
 export interface AssetView {
-  asset: terraswap.AssetInfo;
+  asset: terraswap.Asset<Token>;
   token: cw20.TokenInfoResponse<Token>;
   portfolioRatio: number;
   color: string;
@@ -61,10 +61,10 @@ export function toClusterView({
       totalProvided: big(0) as u<UST<Big>>,
       premium: big(0) as Rate<Big>,
       volume: big(0) as u<UST<Big>>,
-      assets: clusterState.assets.map((asset, j) => ({
+      assets: clusterState.target.map((asset, j) => ({
         asset,
         token: assetTokenInfos[j],
-        portfolioRatio: 1 / clusterState.assets.length,
+        portfolioRatio: 1 / clusterState.target.length,
         color: partitionColor[j % partitionColor.length],
       })),
     };
@@ -105,7 +105,7 @@ export function toClusterView({
     premium,
     // TODO indexer data
     volume: big(111) as u<UST<Big>>,
-    assets: clusterState.assets.map((asset, j) => ({
+    assets: clusterState.target.map((asset, j) => ({
       asset,
       token: assetTokenInfos[j],
       portfolioRatio: big(big(clusterState.inv[j]).mul(clusterState.prices[j]))

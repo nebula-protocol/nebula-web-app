@@ -6,34 +6,6 @@ export namespace incentives {
   // ---------------------------------------------
   // HandleMsg
   // ---------------------------------------------
-  export interface Withdraw {}
-
-  export interface NewPenaltyPeriod {}
-
-  export interface SendAll {
-    send_all: {
-      asset_infos: Array<terraswap.AssetInfo>;
-      send_to: HumanAddr;
-    };
-  }
-
-  export interface SwapAll {
-    swap_all: {
-      terraswap_pair: HumanAddr;
-      cluster_token: HumanAddr;
-      to_ust: boolean;
-    };
-  }
-
-  export interface RecordTerraswapImpact {
-    record_terraswap_impact: {
-      arbitrager: HumanAddr;
-      terraswap_pair: HumanAddr;
-      cluster_contract: HumanAddr;
-      pool_before: terraswap.pair.PoolResponse<Token, Token>;
-    };
-  }
-
   export interface ArbClusterMint {
     arb_cluster_mint: {
       cluster_contract: HumanAddr;

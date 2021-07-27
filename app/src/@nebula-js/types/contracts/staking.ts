@@ -1,3 +1,5 @@
+import { terraswap } from './terraswap';
+import { Token } from '../tokens';
 import { CW20Addr, HumanAddr, rs } from './common';
 
 export namespace staking {
@@ -5,13 +7,24 @@ export namespace staking {
   // HandleMsg
   // ---------------------------------------------
   export interface Unbond {
-    asset_token: HumanAddr;
-    // TODO set token type to amount
-    amount: rs.Uint128;
+    unbond: {
+      asset_token: HumanAddr;
+      // TODO set token type to amount
+      amount: rs.Uint128;
+    };
   }
 
   export interface Withdraw {
-    asset_token?: HumanAddr;
+    withdraw: {
+      asset_token?: HumanAddr;
+    };
+  }
+
+  export interface AutoStake<A extends Token, B extends Token> {
+    auto_stake: {
+      assets: [terraswap.Asset<A>, terraswap.Asset<B>];
+      slippage_tolerance?: rs.Decimal;
+    };
   }
 
   // ---------------------------------------------

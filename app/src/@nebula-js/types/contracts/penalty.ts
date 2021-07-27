@@ -5,6 +5,7 @@ export namespace penalty {
   // ---------------------------------------------
   // QueryMsg
   // ---------------------------------------------
+  // FIXME this type is HandleMsg and QueryMsg both
   export interface Mint {
     mint: {
       block_height: rs.u64;
@@ -16,7 +17,8 @@ export namespace penalty {
       mint_asset_amounts: u<Token<rs.Uint128>>[];
       // TODO ??? is this string?
       asset_prices: string[];
-      target_weights: rs.u32[];
+      // TODO is this type correct?
+      target_weights: u<Token<rs.Uint128>>[];
     };
   }
 
@@ -27,6 +29,7 @@ export namespace penalty {
     log: unknown[]; //LogAttribute[],
   }
 
+  // FIXME this type is HandleMsg and QueryMsg both
   export interface Redeem {
     redeem: {
       block_height: rs.u64;
@@ -39,7 +42,8 @@ export namespace penalty {
       redeem_asset_amounts: rs.Uint128[];
       // TODO ??? is this string?
       asset_prices: string[];
-      target_weights: rs.u32[];
+      // TODO is this type correct?
+      target_weights: u<Token<rs.Uint128>>[];
     };
   }
 

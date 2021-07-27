@@ -31,45 +31,57 @@ export namespace cluster_factory {
   // HandleMsg
   // ---------------------------------------------
   export interface PostInitialize {
-    owner: HumanAddr;
-    terraswap_factory: HumanAddr;
-    nebula_token: HumanAddr;
-    staking_contract: HumanAddr;
-    oracle_contract: HumanAddr;
-    commission_collector: HumanAddr;
+    post_initialize: {
+      owner: HumanAddr;
+      terraswap_factory: HumanAddr;
+      nebula_token: HumanAddr;
+      staking_contract: HumanAddr;
+      oracle_contract: HumanAddr;
+      commission_collector: HumanAddr;
+    };
   }
 
   export interface UpdateConfig {
-    owner?: HumanAddr;
-    token_code_id?: rs.u64;
-    cluster_code_id?: rs.u64;
-    // TODO set token type to distribution_amount
-    distribution_schedule?: Array<
-      [
-        start_time: DateTime,
-        end_time: DateTime,
-        distribution_amount: rs.Uint128,
-      ]
-    >;
+    update_config: {
+      owner?: HumanAddr;
+      token_code_id?: rs.u64;
+      cluster_code_id?: rs.u64;
+      // TODO set token type to distribution_amount
+      distribution_schedule?: Array<
+        [
+          start_time: DateTime,
+          end_time: DateTime,
+          distribution_amount: rs.Uint128,
+        ]
+      >;
+    };
   }
 
   export interface UpdateWeight {
-    asset_token: HumanAddr;
-    weight: rs.u32;
+    update_weight: {
+      asset_token: HumanAddr;
+      weight: rs.u32;
+    };
   }
 
   export interface CreateCluster {
-    /** used to create all necessary contract or register asset */
-    params: Params;
+    create_cluster: {
+      /** used to create all necessary contract or register asset */
+      params: Params;
+    };
   }
 
   export interface PassCommand {
-    contract_addr: HumanAddr;
-    // TODO what is Binary type? Base64 encoded string?
-    msg: unknown; // Binary,
+    pass_command: {
+      contract_addr: HumanAddr;
+      // TODO what is Binary type? Base64 encoded string?
+      msg: unknown; // Binary,
+    };
   }
 
-  export interface Distribute {}
+  export interface Distribute {
+    distribute: {};
+  }
 
   // ---------------------------------------------
   // QueryMsg

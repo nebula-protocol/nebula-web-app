@@ -27,15 +27,15 @@ export function MintTerraswapArbitrage({
   const postTx = useClusterArbMintTx(
     clusterInfo.clusterState.cluster_contract_address,
     clusterInfo.terraswapPair.contract_addr,
-    clusterInfo.clusterState.assets,
+    clusterInfo.clusterState.target,
   );
 
   const initForm = useCallback(() => {
     updateInput({
-      amounts: clusterInfo.clusterState.assets.map(() => '' as CT),
-      addedAssets: new Set<terraswap.AssetInfo>(),
+      amounts: clusterInfo.clusterState.target.map(() => '' as CT),
+      addedAssets: new Set<terraswap.Asset<Token>>(),
     });
-  }, [clusterInfo.clusterState.assets, updateInput]);
+  }, [clusterInfo.clusterState.target, updateInput]);
 
   const proceed = useCallback(
     (amounts: Token[]) => {
