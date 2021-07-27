@@ -161,8 +161,8 @@ export async function clusterInfoQuery({
   const assetTokenInfoIndex: Map<
     terraswap.Asset<Token>,
     cw20.TokenInfoResponse<Token>
-  > = clusterState.target.reduce((index, { info }, i) => {
-    index.set(info, tokenInfos[i]);
+  > = clusterState.target.reduce((index, asset, i) => {
+    index.set(asset, tokenInfos[i]);
     return index;
   }, new Map());
 

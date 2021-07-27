@@ -38,6 +38,13 @@ function ComponentBase({
     return _assets.map((asset) => {
       const info = assetTokenInfoIndex.get(asset)!;
 
+      console.log(
+        'useAssetSelectDialog.tsx..()',
+        assetTokenInfoIndex,
+        info,
+        asset,
+      );
+
       return {
         asset,
         ...info,
