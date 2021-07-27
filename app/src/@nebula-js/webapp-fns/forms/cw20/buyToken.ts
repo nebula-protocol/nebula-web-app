@@ -144,19 +144,19 @@ export const cw20BuyTokenForm = <T extends Token>({
             simulation: { return_amount, commission_amount, spread_amount },
           }) => {
             const _tax = min(
-              big(microfy(ustAmount!)).mul(tax.taxRate),
+              microfy(ustAmount!).mul(tax.taxRate),
               tax.maxTaxUUSD,
             ) as u<UST<Big>>;
 
             const beliefPrice = (
               big(return_amount).gt(0)
-                ? big(ustAmount!).div(return_amount).toFixed()
+                ? microfy(ustAmount!).div(return_amount).toFixed()
                 : '0'
             ) as UST;
 
             const rate = big(1).minus(maxSpread).toFixed() as Rate;
 
-            const expectedAmount = big(ustAmount!)
+            const expectedAmount = microfy(ustAmount!)
               .div(beliefPrice)
               .minus(_tax) as u<UST<Big>>;
 
@@ -172,7 +172,7 @@ export const cw20BuyTokenForm = <T extends Token>({
                 : null;
 
             const invalidUstAmount =
-              connected && big(microfy(ustAmount!)).plus(txFee).gt(ustBalance)
+              connected && microfy(ustAmount!).plus(txFee).gt(ustBalance)
                 ? 'Not enough UST'
                 : null;
 
@@ -247,7 +247,7 @@ export const cw20BuyTokenForm = <T extends Token>({
             ) as u<UST<Big>>;
 
             const beliefPrice = big(return_amount)
-              .div(tokenAmount!)
+              .div(microfy(tokenAmount!))
               .toFixed() as UST;
 
             const expectedAmount = big(return_amount)

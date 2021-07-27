@@ -142,7 +142,7 @@ export const cw20SellTokenForm = <T extends Token>({
               tax.maxTaxUUSD,
             ) as u<UST<Big>>;
 
-            const beliefPrice = big(microfy(tokenAmount!))
+            const beliefPrice = microfy(tokenAmount!)
               .div(return_amount)
               .toFixed() as T;
 
@@ -226,15 +226,15 @@ export const cw20SellTokenForm = <T extends Token>({
             simulation: { return_amount, spread_amount, commission_amount },
           }) => {
             const _tax = min(
-              big(ustAmount!).minus(
-                big(ustAmount!).div(big(1).plus(tax.taxRate)),
+              microfy(ustAmount!).minus(
+                microfy(ustAmount!).div(big(1).plus(tax.taxRate)),
               ),
               tax.maxTaxUUSD,
             ) as u<UST<Big>>;
 
             const beliefPrice = (
               big(return_amount).gt(0)
-                ? big(1).div(big(ustAmount!).div(return_amount).toFixed())
+                ? big(1).div(microfy(ustAmount!).div(return_amount).toFixed())
                 : '0'
             ) as T;
 
