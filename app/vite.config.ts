@@ -10,8 +10,12 @@ export default defineConfig({
     alias: {
       '@terra-money/terra.js': path.resolve(__dirname, 'src/polyfills/terra.alias.js'),
       'styled-components': 'styled-components/dist/styled-components.browser.esm.js',
+      'process': path.resolve(__dirname, 'src/polyfills/process-es6.js'),
     },
   },
+  //define: {
+  //  'process.env': {},
+  //},
   server: {
     https: {
       cert: process.env.LOCALHOST_HTTPS_CERT,
