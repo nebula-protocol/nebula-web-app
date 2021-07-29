@@ -30,16 +30,5 @@ export async function clustersListQuery({
     ...params,
   });
 
-  const filter = new Set([
-    'terra1rkgpmrqmddwtq48e5mr4vsps53vudmd4mgvfkz',
-    'terra1hqve5ezyaeccc9r5v30t8gt9qaducs62jeaye4',
-  ]);
-
-  return {
-    clusterList: {
-      contract_addrs: clusterList.contract_addrs.filter(
-        (addr) => !filter.has(addr),
-      ),
-    },
-  };
+  return { clusterList };
 }

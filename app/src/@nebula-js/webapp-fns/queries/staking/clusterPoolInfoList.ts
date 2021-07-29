@@ -37,7 +37,7 @@ export async function stakingClusterPoolInfoListQuery({
   });
 
   return Promise.all(
-    clusterList.contract_addrs.map((clusterAddr) =>
+    clusterList.contract_infos.map(([clusterAddr]) =>
       stakingClusterPoolInfoQuery({
         mantleEndpoint,
         terraswapFactoryAddr,

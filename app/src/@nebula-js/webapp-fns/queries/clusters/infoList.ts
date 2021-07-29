@@ -32,7 +32,7 @@ export async function clustersInfoListQuery({
   });
 
   return Promise.all(
-    clusterList.contract_addrs.map((clusterAddr) =>
+    clusterList.contract_infos.map(([clusterAddr]) =>
       clusterInfoQuery({
         mantleEndpoint,
         terraswapFactoryAddr,

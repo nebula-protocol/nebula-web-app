@@ -128,7 +128,7 @@ export namespace cluster_factory {
   }
 
   export interface ClusterListResponse {
-    contract_addrs: HumanAddr[];
+    contract_infos: Array<[HumanAddr, boolean]>;
   }
 
   // TODO there is no this type
