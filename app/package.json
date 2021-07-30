@@ -68,6 +68,7 @@
     "@terra-money/wallet-provider": "^1.2.1",
     "@terra-money/webapp-provider": "^0.20.1",
     "big.js": "^6.1.1",
+    "buffer": "^6.0.3",
     "chart.js": "^3.4.1",
     "chartjs-plugin-datalabels": "^2.0.0",
     "color": "^3.2.1",
