@@ -8,6 +8,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 export default defineConfig({
   resolve: {
     alias: {
+      '@terra-money/terra.js': '@terra-money/terra.js/dist/bundle.js',
       'styled-components': 'styled-components/dist/styled-components.browser.esm.js',
       'process': path.resolve(__dirname, 'src/polyfills/process-es6.js'),
     },
@@ -25,12 +26,13 @@ export default defineConfig({
     },
   },
   plugins: [reactRefresh(), tsconfigPaths(), svgr()],
-  //build: {
+  build: {
+    sourcemap: true,
   //  rollupOptions: {
   //    input: {
   //      main: path.resolve(__dirname, 'index.html'),
   //      subpage: path.resolve(__dirname, 'subpage.html'),
   //    },
   //  },
-  //},
+  },
 });
