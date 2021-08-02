@@ -10,21 +10,21 @@ import { NebulaContants } from './types';
 
 export const DEFAULT_CONTRACT_ADDRESS: Record<string, ContractAddress> = {
   testnet: {
-    airdrop: 'terra1g5eszxwklzzzv3ufrue76srg2tmzwen82c2nh6' as HumanAddr,
-    collector: 'terra1agyrm7ze5fcmdukup9fxcphuvd953r83w0tag3' as HumanAddr,
-    community: 'terra1wctesqppju3skwmka3wccjc3zmwyjqymv6swex' as HumanAddr,
-    clusterFactory: 'terra1whnjz0mpjxryx78l4uvfj8k39qagt590vkyart' as HumanAddr,
-    gov: 'terra1zedwd4g9852vczdlygg7jcmwwym6wjkrv6fah0' as HumanAddr,
-    incentives: 'terra18xc566yxz8gpsu3l2m86357as7xznzhx4smp6a' as HumanAddr,
+    airdrop: 'terra1z4zrm0fpuh6dq3fea3xhgf93lr30z98pzksftt' as HumanAddr,
+    collector: 'terra14xwh27azy0dkp3yceh4chcaeay5ax260puxfl7' as HumanAddr,
+    community: 'terra1fxnzfjgfvr8g6v0nxnwfjmt5vcmt64k5l5cn9y' as HumanAddr,
+    clusterFactory: 'terra1zdga7ntu73qzevtk44amefqze05k5gkwu82k05' as HumanAddr,
+    gov: 'terra17ry0egj85545rd3lllda4g48z7qrgkt4nu3ym2' as HumanAddr,
+    incentives: 'terra180sav47jd7npzc9pepqzmed2m6g3g50v44ndd5' as HumanAddr,
     incentivesCustody:
-      'terra1d20xy0mrxdxstmrmr2fxh4ff0s02d78ycucqek' as HumanAddr,
-    staking: 'terra146wk9rrcj9ntmk9sclwcnys5u6yqzm5m8398gd' as HumanAddr,
+      'terra16ju95fyez67xxqqlelf3wjz74kankq30z780tx' as HumanAddr,
+    staking: 'terra1gt2h9zu6c753h5ufv9a0n8hwlnpwfr2a4wyrc3' as HumanAddr,
     terraswap: {
       factory: 'terra18qpjm4zkvqnpjpw0zn0tdr8gdzvt8au35v45xf' as HumanAddr,
-      nebUstPair: 'terra12srjhpfn4guesgeft4th2vp3zj9e7uagym0w27' as HumanAddr,
+      nebUstPair: 'terra1wlzgd4qa3w7ua9nhw454u7gfaxjkmlkuf3fk7f' as HumanAddr,
     },
     cw20: {
-      NEB: 'terra1z2qnu7hdxzfr0yx9nepxyhdyjvsw508yfukzrj' as CW20Addr,
+      NEB: 'terra1c56uwrm8pukfh3q8ul460er7t32mth47gy8kmx' as CW20Addr,
     },
   },
 };
