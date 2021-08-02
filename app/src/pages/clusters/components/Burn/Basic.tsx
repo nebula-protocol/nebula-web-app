@@ -1,6 +1,6 @@
 import { WalletIcon } from '@nebula-js/icons';
-import { formatUInput, formatUToken } from '@nebula-js/notation';
-import { CT } from '@nebula-js/types';
+import { formatUInput, formatUToken, microfy } from '@nebula-js/notation';
+import { CT, u } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
@@ -10,13 +10,18 @@ import {
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { ClusterInfo } from '@nebula-js/webapp-fns';
-import { useClusterRedeemBasicForm } from '@nebula-js/webapp-provider';
+import {
+  useClusterRedeemBasicForm,
+  useClusterRedeemTx,
+  useNebulaWebapp,
+} from '@nebula-js/webapp-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { FeeBox } from 'components/boxes/FeeBox';
+import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
-import { WithdrawnTokenTable } from 'pages/clusters/components/Burn/WithdrawnTokenTable';
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
+import { WithdrawnTokenTable } from './WithdrawnTokenTable';
 
 export interface BurnBasicProps {
   className?: string;
@@ -29,7 +34,37 @@ function BurnBasicBase({
 }: BurnBasicProps) {
   const connectedWallet = useConnectedWallet();
 
+  const { constants } = useNebulaWebapp();
+
   const [updateInput, states] = useClusterRedeemBasicForm({ clusterState });
+
+  const { broadcast } = useTxBroadcast();
+
+  const postTx = useClusterRedeemTx(
+    clusterState.cluster_contract_address,
+    clusterState.cluster_token,
+  );
+
+  const initForm = useCallback(() => {
+    updateInput({
+      tokenAmount: '' as CT,
+    });
+  }, [updateInput]);
+
+  const proceed = useCallback(
+    (tokenAmount: CT) => {
+      const stream = postTx?.({
+        amount: microfy(tokenAmount).toFixed() as u<CT>,
+        onTxSucceed: initForm,
+      });
+
+      if (stream) {
+        console.log('Basic.tsx..()', stream);
+        broadcast(stream);
+      }
+    },
+    [broadcast, initForm, postTx],
+  );
 
   const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
     mobile: 'medium',
@@ -37,8 +72,6 @@ function BurnBasicBase({
     pc: 'normal',
     monitor: 'normal',
   });
-
-  const proceed = useCallback((tokenAmount: CT) => {}, []);
 
   return (
     <div className={className}>
@@ -96,10 +129,12 @@ function BurnBasicBase({
           </li>
         )}
 
-        {/*<li>*/}
-        {/*  <span>Tx Fee</span>*/}
-        {/*  <span>{'txFee' in states ? formatUToken(states.txFee) : 0} UST</span>*/}
-        {/*</li>*/}
+        {states.tokenAmount.length > 0 && (
+          <li>
+            <span>Tx Fee</span>
+            <span>{formatUToken(constants.fixedGas)} UST</span>
+          </li>
+        )}
       </FeeBox>
 
       <Button
@@ -109,8 +144,9 @@ function BurnBasicBase({
         disabled={
           !connectedWallet ||
           !connectedWallet.availablePost ||
+          !states ||
           !!states.invalidTokenAmount ||
-          states.tokenAmount.length > 0
+          states.tokenAmount.length === 0
         }
         onClick={() => proceed(states.tokenAmount)}
       >

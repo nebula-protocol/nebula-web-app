@@ -5,12 +5,10 @@ import {
   NebulaTokenBalances,
 } from '@nebula-js/webapp-fns';
 import { useForm } from '@terra-dev/use-form';
-import {
-  useBank,
-  useCW20TokenBalance,
-  useTerraWebapp,
-} from '@terra-money/webapp-provider';
+import { useConnectedWallet } from '@terra-money/wallet-provider';
+import { useBank, useTerraWebapp } from '@terra-money/webapp-provider';
 import { useNebulaWebapp } from '../../contexts/webapp';
+import { useCW20BalanceQuery } from '../../queries/cw20/balance';
 
 export interface ClusterRedeemBasicFormParams {
   clusterState: cluster.ClusterStateResponse;
@@ -19,6 +17,8 @@ export interface ClusterRedeemBasicFormParams {
 export function useClusterRedeemBasicForm({
   clusterState,
 }: ClusterRedeemBasicFormParams) {
+  const connectedWallet = useConnectedWallet();
+
   const { mantleFetch, mantleEndpoint, lastSyncedHeight } = useTerraWebapp();
 
   const {
@@ -27,7 +27,10 @@ export function useClusterRedeemBasicForm({
 
   const { tax } = useBank<NebulaTokenBalances, NebulaTax>();
 
-  const tokenBalance = useCW20TokenBalance<u<CT>>(clusterState.cluster_token);
+  const { data: { tokenBalance } = {} } = useCW20BalanceQuery<CT>(
+    clusterState.cluster_token,
+    connectedWallet?.terraAddress,
+  );
 
   return useForm(
     clusterRedeemBasicForm,
@@ -35,7 +38,7 @@ export function useClusterRedeemBasicForm({
       mantleEndpoint,
       mantleFetch,
       lastSyncedHeight,
-      tokenBalance,
+      tokenBalance: tokenBalance?.balance ?? ('0' as u<CT>),
       tax,
       fixedGas,
       clusterState,

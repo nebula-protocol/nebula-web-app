@@ -37,7 +37,7 @@ export namespace penalty {
       cluster_token_supply: rs.Uint128;
       // TODO is this token type?
       inventory: rs.Uint128[];
-      max_tokens: rs.Uint128;
+      max_tokens: u<CT<rs.Uint128>>;
       // TODO set token type to redeem_asset_amounts
       redeem_asset_amounts: rs.Uint128[];
       // TODO ??? is this string?

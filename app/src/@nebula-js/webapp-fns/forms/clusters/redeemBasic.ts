@@ -7,7 +7,7 @@ import big, { BigSource } from 'big.js';
 import { clusterRedeemQuery } from '../../queries/clusters/redeem';
 
 export interface ClusterRedeemBasicFormInput {
-  tokenAmount: CT;
+  tokenAmount: CT & { __micro?: undefined };
 }
 
 export interface ClusterRedeemBasicFormDependency {
@@ -93,7 +93,7 @@ export const clusterRedeemBasicForm = (
                 cluster_token_supply:
                   dependency.clusterState.outstanding_balance_tokens,
                 inventory: dependency.clusterState.inv,
-                max_tokens: input.tokenAmount,
+                max_tokens: microfy(input.tokenAmount).toFixed() as u<CT>,
                 asset_prices: dependency.clusterState.prices,
                 target_weights: dependency.clusterState.target.map(
                   ({ amount }) => amount,

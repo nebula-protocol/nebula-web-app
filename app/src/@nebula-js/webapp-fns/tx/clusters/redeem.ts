@@ -1,4 +1,4 @@
-import { CT, HumanAddr, incentives, u } from '@nebula-js/types';
+import { CT, cw20, CW20Addr, HumanAddr, incentives, u } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
 import { floor } from '@terra-dev/big-math';
 import { MsgExecuteContract, StdFee } from '@terra-money/terra.js';
@@ -21,6 +21,7 @@ export function clusterRedeemTx(
     walletAddr: HumanAddr;
     incentivesAddr: HumanAddr;
     clusterAddr: HumanAddr;
+    clusterTokenAddr: CW20Addr;
     amount: u<CT>;
     onTxSucceed?: () => void;
   } & TxCommonParams,
@@ -30,6 +31,12 @@ export function clusterRedeemTx(
   return pipe(
     _createTxOptions({
       msgs: [
+        new MsgExecuteContract($.walletAddr, $.clusterTokenAddr, {
+          increase_allowance: {
+            spender: $.incentivesAddr,
+            amount: $.amount,
+          },
+        } as cw20.IncreaseAllowance),
         new MsgExecuteContract($.walletAddr, $.incentivesAddr, {
           redeem: {
             cluster_contract: $.clusterAddr,

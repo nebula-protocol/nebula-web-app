@@ -21,5 +21,6 @@ export * from './queries/terraswap/pair';
 export * from './queries/terraswap/pool';
 export * from './tx/clusters/arbMint';
 export * from './tx/clusters/mint';
+export * from './tx/clusters/redeem';
 export * from './tx/cw20/buyToken';
 export * from './tx/cw20/sellToken';

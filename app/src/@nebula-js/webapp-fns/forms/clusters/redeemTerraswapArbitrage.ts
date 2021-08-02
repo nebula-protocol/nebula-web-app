@@ -133,7 +133,9 @@ export const clusterRedeemTerraswapArbitrageForm = (
                     cluster_token_supply:
                       dependency.clusterState.outstanding_balance_tokens,
                     inventory: dependency.clusterState.inv,
-                    max_tokens: simulation.return_amount,
+                    max_tokens: microfy(
+                      simulation.return_amount,
+                    ).toFixed() as u<CT>,
                     asset_prices: dependency.clusterState.prices,
                     target_weights: dependency.clusterState.target.map(
                       ({ amount }) => amount,
