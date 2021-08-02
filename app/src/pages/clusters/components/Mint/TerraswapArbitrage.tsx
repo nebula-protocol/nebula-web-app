@@ -1,5 +1,5 @@
 import { formatUToken, microfy } from '@nebula-js/notation';
-import { CT, terraswap, Token, u } from '@nebula-js/types';
+import { CT, terraswap, Token, u, UST } from '@nebula-js/types';
 import { ClusterInfo } from '@nebula-js/webapp-fns';
 import {
   useClusterArbMintTx,
@@ -38,12 +38,13 @@ export function MintTerraswapArbitrage({
   }, [clusterInfo.clusterState.target, updateInput]);
 
   const proceed = useCallback(
-    (amounts: Token[]) => {
+    (amounts: Token[], txFee: u<UST>) => {
       const stream = postTx?.({
         amounts: amounts.map(
           (amount) =>
             (amount.length > 0 ? microfy(amount).toFixed() : '0') as u<Token>,
         ),
+        txFee,
         onTxSucceed: initForm,
       });
 
@@ -72,10 +73,12 @@ export function MintTerraswapArbitrage({
             </li>
           )}
 
-        {/*<li>*/}
-        {/*  <span>Tx Fee</span>*/}
-        {/*  <span>{'txFee' in states ? formatUToken(states.txFee) : 0} UST</span>*/}
-        {/*</li>*/}
+        {states.txFee !== null && (
+          <li>
+            <span>Tx Fee</span>
+            <span>{states.txFee ? formatUToken(states.txFee) : 0} UST</span>
+          </li>
+        )}
       </FeeBox>
     </TokenForm>
   );

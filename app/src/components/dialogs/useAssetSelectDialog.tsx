@@ -1,7 +1,8 @@
 import { Modal } from '@material-ui/core';
 import { Clear } from '@material-ui/icons';
-import { cw20, terraswap, Token } from '@nebula-js/types';
+import { terraswap, Token } from '@nebula-js/types';
 import { Dialog, EmptyButton, IconAndLabels, Search } from '@nebula-js/ui';
+import { findAssetTokenInfo, AssetTokenInfo } from '@nebula-js/webapp-fns';
 import { DialogProps, OpenDialog, useDialog } from '@terra-dev/use-dialog';
 import React, { ReactNode, useMemo, useState } from 'react';
 import styled from 'styled-components';
@@ -10,10 +11,7 @@ interface FormParams {
   className?: string;
   title: ReactNode;
   assets: terraswap.Asset<Token>[];
-  assetTokenInfoIndex: Map<
-    terraswap.Asset<Token>,
-    cw20.TokenInfoResponse<Token>
-  >;
+  assetTokenInfos: AssetTokenInfo[];
 }
 
 type FormReturn = terraswap.Asset<Token> | null;
@@ -29,21 +27,18 @@ function ComponentBase({
   className,
   title,
   assets: _assets,
-  assetTokenInfoIndex,
+  assetTokenInfos,
   closeDialog,
 }: DialogProps<FormParams, FormReturn>) {
   const [search, setSearch] = useState<string>('');
 
   const assets = useMemo(() => {
     return _assets.map((asset) => {
-      const info = assetTokenInfoIndex.get(asset)!;
+      const info = findAssetTokenInfo(asset.info, assetTokenInfos);
 
-      console.log(
-        'useAssetSelectDialog.tsx..()',
-        assetTokenInfoIndex,
-        info,
-        asset,
-      );
+      if (!info) {
+        throw new Error(`Undefined asset token info!`);
+      }
 
       return {
         asset,
@@ -51,7 +46,7 @@ function ComponentBase({
         searchText: info.symbol.toLowerCase() + info.name.toLowerCase(),
       };
     });
-  }, [_assets, assetTokenInfoIndex]);
+  }, [_assets, assetTokenInfos]);
 
   const filteredAssets = useMemo(() => {
     if (search.trim().length === 0) {

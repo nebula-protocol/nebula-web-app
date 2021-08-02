@@ -13,6 +13,7 @@ export * from './forms/cw20/buyToken';
 export * from './forms/cw20/sellToken';
 export * from './logics/clusters/getAssetAmounts';
 export * from './logics/computeMaxUstBalanceForUstTransfer';
+export * from './logics/findAssetTokenInfo';
 export * from './logics/gov/computeGovPollQuorum';
 export * from './logics/gov/computeGovStakingAPR';
 export * from './logics/gov/computeGovStakingRatio';

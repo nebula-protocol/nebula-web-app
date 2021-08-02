@@ -1,7 +1,7 @@
 import { Add } from '@material-ui/icons';
 import { WalletIcon } from '@nebula-js/icons';
 import { demicrofy, formatUTokenInteger } from '@nebula-js/notation';
-import { terraswap, Token, u } from '@nebula-js/types';
+import { terraswap, Token, u, UST } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
@@ -33,13 +33,13 @@ export interface TokenFormProps {
     ClusterMintAdvancedFormStates,
     ClusterMintAdvancedFormAsyncStates
   >;
-  onProceed: (amounts: Token[]) => void;
+  onProceed: (amounts: Token[], txFee: u<UST>) => void;
   children: ReactNode;
   className?: string;
 }
 
 function TokenFormBase({
-  clusterInfo: { clusterState, assetTokenInfoIndex, clusterTokenInfo },
+  clusterInfo: { clusterState, assetTokenInfos },
   updateInput,
   states,
   children,
@@ -125,13 +125,13 @@ function TokenFormBase({
     const selectedAsset = await openAssetSelect({
       title: 'Select Asset',
       assets: states.remainAssets,
-      assetTokenInfoIndex,
+      assetTokenInfos,
     });
 
     if (selectedAsset) {
       addAsset(selectedAsset);
     }
-  }, [addAsset, assetTokenInfoIndex, openAssetSelect, states.remainAssets]);
+  }, [addAsset, assetTokenInfos, openAssetSelect, states.remainAssets]);
 
   return (
     <div className={className}>
@@ -146,10 +146,10 @@ function TokenFormBase({
                     value={states.amounts[i]}
                     onChange={(nextAmount) => updateAmount(asset, nextAmount)}
                     placeholder="0.00"
-                    label={assetTokenInfoIndex.get(asset)?.symbol ?? ''}
+                    label={assetTokenInfos[i].tokenInfo.symbol}
                     token={
                       <TokenSpan>
-                        {assetTokenInfoIndex.get(asset)?.symbol ?? ''}
+                        {assetTokenInfos[i].tokenInfo.symbol ?? ''}
                       </TokenSpan>
                     }
                     suggest={
@@ -174,7 +174,7 @@ function TokenFormBase({
                             (states.balances?.balances[i].balance ??
                               '0') as u<Token>,
                           )}{' '}
-                          {assetTokenInfoIndex.get(asset)?.symbol ?? ''}
+                          {assetTokenInfos[i].tokenInfo.symbol ?? ''}
                         </EmptyButton>
                       )
                     }
@@ -182,7 +182,7 @@ function TokenFormBase({
                   >
                     <TokenInputRemoveTool onDelete={() => removeAsset(asset)}>
                       Target:{' '}
-                      <s>1,000,000 {assetTokenInfoIndex.get(asset)?.symbol}</s>
+                      <s>1,000,000 {assetTokenInfos[i].tokenInfo.symbol}</s>
                     </TokenInputRemoveTool>
                   </TokenInput>
                 </li>
@@ -206,9 +206,10 @@ function TokenFormBase({
           !connectedWallet ||
           !connectedWallet.availablePost ||
           !states ||
+          !states.txFee ||
           states.amounts.every((amount) => amount.length === 0)
         }
-        onClick={() => onProceed(states.amounts)}
+        onClick={() => states.txFee && onProceed(states.amounts, states.txFee)}
       >
         Mint
       </Button>

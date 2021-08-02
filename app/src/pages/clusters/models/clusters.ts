@@ -22,7 +22,7 @@ export interface AssetView {
 
 export interface ClusterView {
   addr: HumanAddr;
-  token: cw20.TokenInfoResponse<Token>;
+  tokenInfo: cw20.TokenInfoResponse<Token>;
   name: string;
   nameLowerCase: string;
   description: string;
@@ -52,7 +52,7 @@ export function toClusterView({
   if (big(ctAmount).eq(0) || big(ustAmount).eq(0)) {
     return {
       addr: clusterState.cluster_contract_address,
-      token: clusterTokenInfo,
+      tokenInfo: clusterTokenInfo,
       name: clusterConfig.config.name,
       nameLowerCase: clusterConfig.config.name.toLowerCase(),
       description: clusterConfig.config.description,
@@ -65,7 +65,7 @@ export function toClusterView({
       volume: big(0) as u<UST<Big>>,
       assets: clusterState.target.map((asset, j) => ({
         asset,
-        token: assetTokenInfos[j],
+        token: assetTokenInfos[j].tokenInfo,
         portfolioRatio: 1 / clusterState.target.length,
         color: partitionColor[j % partitionColor.length],
       })),
@@ -94,7 +94,7 @@ export function toClusterView({
 
   return {
     addr: clusterState.cluster_contract_address,
-    token: clusterTokenInfo,
+    tokenInfo: clusterTokenInfo,
     name: clusterConfig.config.name,
     nameLowerCase: clusterConfig.config.name.toLowerCase(),
     description: clusterConfig.config.description,
@@ -110,7 +110,7 @@ export function toClusterView({
     volume: big(111) as u<UST<Big>>,
     assets: clusterState.target.map((asset, j) => ({
       asset,
-      token: assetTokenInfos[j],
+      token: assetTokenInfos[j].tokenInfo,
       portfolioRatio: big(big(clusterState.inv[j]).mul(clusterState.prices[j]))
         .div(invPricesSum)
         .toNumber(),

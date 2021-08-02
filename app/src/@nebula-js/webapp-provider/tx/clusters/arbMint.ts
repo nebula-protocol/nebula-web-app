@@ -11,6 +11,7 @@ import { NEBULA_TX_KEYS } from '../../env';
 
 export interface ClusterArbMintTxParams {
   amounts: u<Token>[];
+  txFee: u<UST>;
 
   onTxSucceed?: () => void;
 }
@@ -32,13 +33,13 @@ export function useClusterArbMintTx(
   } = useNebulaWebapp();
 
   const stream = useCallback(
-    ({ amounts, onTxSucceed }: ClusterArbMintTxParams) => {
+    ({ amounts, txFee, onTxSucceed }: ClusterArbMintTxParams) => {
       if (!connectedWallet || !connectedWallet.availablePost) {
         throw new Error(`Can't post!`);
       }
 
       return clusterArbMintTx({
-        txFee: fixedGas.toFixed() as u<UST>,
+        txFee,
         walletAddr: connectedWallet.walletAddress,
         incentivesAddr: contractAddress.incentives,
         clusterAddr,

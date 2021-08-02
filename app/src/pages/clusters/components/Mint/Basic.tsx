@@ -15,7 +15,7 @@ export interface MintBasicProps {
 
 function MintBasicBase({
   className,
-  clusterInfo: { clusterState, assetTokenInfoIndex, clusterTokenInfo },
+  clusterInfo: { clusterState },
 }: MintBasicProps) {
   //const connectedWallet = useConnectedWallet();
 

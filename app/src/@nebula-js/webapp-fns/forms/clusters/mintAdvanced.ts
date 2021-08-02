@@ -1,7 +1,10 @@
 import { microfy } from '@nebula-js/notation';
-import { cluster, CT, terraswap, Token, u } from '@nebula-js/types';
-import { clusterMintQuery } from '@nebula-js/webapp-fns/queries/clusters/mint';
+import { cluster, CT, terraswap, Token, u, UST } from '@nebula-js/types';
+import { NebulaTax } from '@nebula-js/webapp-fns/types';
+import { max, min } from '@terra-dev/big-math';
 import { MantleFetch } from '@terra-dev/mantle';
+import big, { Big, BigSource } from 'big.js';
+import { clusterMintQuery } from '../../queries/clusters/mint';
 import { TerraBalances } from '../../queries/terra/balances';
 
 export interface ClusterMintAdvancedFormInput {
@@ -16,10 +19,13 @@ export interface ClusterMintAdvancedFormDependency {
   balances: TerraBalances | undefined;
   lastSyncedHeight: () => Promise<number>;
   clusterState: cluster.ClusterStateResponse;
+  fixedGas: u<UST<BigSource>>;
+  tax: NebulaTax;
 }
 
 export interface ClusterMintAdvancedFormStates
   extends ClusterMintAdvancedFormInput {
+  txFee: u<UST> | null;
   invalidAmounts: (string | null)[];
   remainAssets: terraswap.Asset<Token>[];
   balances: TerraBalances | undefined;
@@ -36,6 +42,7 @@ export const clusterMintAdvancedForm = (
   let invalidAmounts: (string | null)[];
   let remainAssets: terraswap.Asset<Token>[];
   let asyncStates: Promise<ClusterMintAdvancedFormAsyncStates>;
+  let txFee: u<UST> | null;
 
   return (
     input: ClusterMintAdvancedFormInput,
@@ -68,6 +75,42 @@ export const clusterMintAdvancedForm = (
       remainAssets = dependency.clusterState.target.filter((asset) => {
         return !input.addedAssets.has(asset);
       });
+    }
+
+    if (
+      !txFee ||
+      dependency.clusterState !== prevDependency?.clusterState ||
+      dependency.fixedGas !== prevDependency?.fixedGas ||
+      dependency.tax !== prevDependency?.tax ||
+      input.addedAssets !== prevInput?.addedAssets ||
+      input.amounts !== prevInput?.amounts
+    ) {
+      if (input.addedAssets.size > 0) {
+        const ustIndex = dependency.clusterState.target.findIndex(
+          ({ info }) => {
+            return (
+              'native_token' in info &&
+              (info.native_token.denom === 'uusd' ||
+                info.native_token.denom === 'uust')
+            );
+          },
+        );
+
+        if (ustIndex === -1 || input.amounts[ustIndex].length === 0) {
+          txFee = big(dependency.fixedGas).toFixed() as u<UST>;
+        } else {
+          const uust = microfy(input.amounts[ustIndex]) as u<UST<Big>>;
+          const ratioTxFee = big(uust.minus(dependency.fixedGas))
+            .div(big(1).plus(dependency.tax.taxRate))
+            .mul(dependency.tax.taxRate);
+
+          txFee = max(min(ratioTxFee, dependency.tax.maxTaxUUSD), 0)
+            .plus(dependency.fixedGas)
+            .toFixed() as u<UST>;
+        }
+      } else {
+        txFee = null;
+      }
     }
 
     if (
@@ -115,7 +158,13 @@ export const clusterMintAdvancedForm = (
     }
 
     return [
-      { ...input, invalidAmounts, remainAssets, balances: dependency.balances },
+      {
+        ...input,
+        invalidAmounts,
+        remainAssets,
+        balances: dependency.balances,
+        txFee,
+      },
       asyncStates,
     ];
   };

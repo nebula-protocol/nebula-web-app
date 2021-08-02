@@ -127,7 +127,7 @@ function ClustersDetailBase({
       <header className="header">
         <IconAndLabels
           text={clusterView?.name ?? '-'}
-          subtext={clusterView?.token.symbol ?? '-'}
+          subtext={clusterView?.tokenInfo.symbol ?? '-'}
           iconSize="1.5em"
           iconMarginRight="0.3em"
           subtextSize="0.4em"
@@ -147,7 +147,7 @@ function ClustersDetailBase({
             },
             {
               label: 'TOTAL SUPPLY',
-              text: <s>123,456 {clusterView?.token.symbol ?? '-'}</s>,
+              text: <s>123,456 {clusterView?.tokenInfo.symbol ?? '-'}</s>,
             },
           ]}
         />

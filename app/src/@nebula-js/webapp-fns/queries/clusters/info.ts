@@ -26,15 +26,16 @@ interface ClusterStateWasmQuery {
 
 export type ClusterInfoWasmQuery = ClusterStateWasmQuery;
 
+export type AssetTokenInfo = {
+  asset: terraswap.AssetInfo;
+  tokenInfo: cw20.TokenInfoResponse<Token>;
+};
+
 export type ClusterInfo = WasmQueryData<ClusterInfoWasmQuery> & {
   terraswapPair: terraswap.factory.PairResponse;
   terraswapPool: terraswap.pair.PoolResponse<CT, UST>;
   clusterTokenInfo: cw20.TokenInfoResponse<Token>;
-  assetTokenInfos: cw20.TokenInfoResponse<Token>[];
-  assetTokenInfoIndex: Map<
-    terraswap.Asset<Token>,
-    cw20.TokenInfoResponse<Token>
-  >;
+  assetTokenInfos: AssetTokenInfo[];
 };
 
 export type ClusterInfoQueryParams = Omit<
@@ -60,13 +61,7 @@ export async function clusterInfoQuery({
     ...params,
   });
 
-  console.log(
-    'info.ts..clusterInfoQuery()',
-    clusterState.cluster_contract_address,
-    clusterState,
-  );
-
-  const tokenInfos = await Promise.all(
+  const tokenInfos: AssetTokenInfo[] = await Promise.all(
     clusterState.target.map(({ info }) => {
       if ('token' in info) {
         return cw20TokenInfoQuery({
@@ -80,23 +75,31 @@ export async function clusterInfoQuery({
             },
           },
           ...params,
-        }).then(({ tokenInfo }) => tokenInfo);
+        }).then(
+          ({ tokenInfo }) => ({ asset: info, tokenInfo } as AssetTokenInfo),
+        );
       } else if ('native_token' in info) {
         switch (info.native_token.denom) {
           case 'uust':
           case 'uusd':
-            return Promise.resolve<cw20.TokenInfoResponse<Token>>({
-              decimals: 6,
-              name: 'UST',
-              symbol: 'UST',
-              total_supply: '0' as u<Token>,
+            return Promise.resolve({
+              asset: info,
+              tokenInfo: {
+                decimals: 6,
+                name: 'UST',
+                symbol: 'UST',
+                total_supply: '0' as u<Token>,
+              },
             });
           case 'uluna':
-            return Promise.resolve<cw20.TokenInfoResponse<Token>>({
-              decimals: 6,
-              name: 'LUNA',
-              symbol: 'LUNA',
-              total_supply: '0' as u<Token>,
+            return Promise.resolve({
+              asset: info,
+              tokenInfo: {
+                decimals: 6,
+                name: 'LUNA',
+                symbol: 'LUNA',
+                total_supply: '0' as u<Token>,
+              },
             });
         }
       }
@@ -158,14 +161,6 @@ export async function clusterInfoQuery({
     ...params,
   });
 
-  const assetTokenInfoIndex: Map<
-    terraswap.Asset<Token>,
-    cw20.TokenInfoResponse<Token>
-  > = clusterState.target.reduce((index, asset, i) => {
-    index.set(asset, tokenInfos[i]);
-    return index;
-  }, new Map());
-
   return {
     clusterState,
     clusterConfig,
@@ -173,6 +168,5 @@ export async function clusterInfoQuery({
     terraswapPool,
     clusterTokenInfo: tokenInfo,
     assetTokenInfos: tokenInfos,
-    assetTokenInfoIndex,
   };
 }

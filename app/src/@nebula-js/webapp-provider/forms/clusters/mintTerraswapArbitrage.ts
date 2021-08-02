@@ -1,8 +1,13 @@
 import { cluster, terraswap, Token } from '@nebula-js/types';
-import { clusterMintTerraswapArbitrageForm } from '@nebula-js/webapp-fns';
+import {
+  clusterMintTerraswapArbitrageForm,
+  NebulaTax,
+  NebulaTokenBalances,
+} from '@nebula-js/webapp-fns';
 import { useForm } from '@terra-dev/use-form';
-import { useTerraWebapp } from '@terra-money/webapp-provider';
+import { useBank, useTerraWebapp } from '@terra-money/webapp-provider';
 import { useMemo } from 'react';
+import { useNebulaWebapp } from '../../contexts/webapp';
 import { useTerraBalancesQuery } from '../../queries/terra/balances';
 
 export interface ClusterMintTerraswapArbitrageFormParams {
@@ -20,6 +25,10 @@ export function useClusterMintTerraswapArbitrageForm({
     return clusterState.target.map(({ info }) => info);
   }, [clusterState.target]);
 
+  const { tax } = useBank<NebulaTokenBalances, NebulaTax>();
+
+  const { constants } = useNebulaWebapp();
+
   const { data: balances } = useTerraBalancesQuery(assetInfos);
 
   return useForm(
@@ -31,6 +40,8 @@ export function useClusterMintTerraswapArbitrageForm({
       lastSyncedHeight,
       terraswapPair,
       balances,
+      tax,
+      fixedGas: constants.fixedGas,
     },
     () => {
       return {

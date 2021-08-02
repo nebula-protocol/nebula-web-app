@@ -1,8 +1,13 @@
 import { cluster, terraswap, Token } from '@nebula-js/types';
-import { clusterMintAdvancedForm } from '@nebula-js/webapp-fns';
+import {
+  clusterMintAdvancedForm,
+  NebulaTax,
+  NebulaTokenBalances,
+} from '@nebula-js/webapp-fns';
 import { useForm } from '@terra-dev/use-form';
-import { useTerraWebapp } from '@terra-money/webapp-provider';
+import { useBank, useTerraWebapp } from '@terra-money/webapp-provider';
 import { useMemo } from 'react';
+import { useNebulaWebapp } from '../../contexts/webapp';
 import { useTerraBalancesQuery } from '../../queries/terra/balances';
 
 export interface ClusterMintAdvancedFormParams {
@@ -18,6 +23,10 @@ export function useClusterMintAdvancedForm({
     return clusterState.target.map(({ info }) => info);
   }, [clusterState.target]);
 
+  const { tax } = useBank<NebulaTokenBalances, NebulaTax>();
+
+  const { constants } = useNebulaWebapp();
+
   const { data: balances } = useTerraBalancesQuery(assetInfos);
 
   return useForm(
@@ -28,6 +37,8 @@ export function useClusterMintAdvancedForm({
       clusterState,
       lastSyncedHeight,
       balances,
+      tax,
+      fixedGas: constants.fixedGas,
     },
     () => {
       return {

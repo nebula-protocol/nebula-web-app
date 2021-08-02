@@ -1,14 +1,15 @@
-import { cw20, Token, u } from '@nebula-js/types';
-import { TokenSpan } from '@nebula-js/ui';
-import { fixHMR } from 'fix-hmr';
-import styled from 'styled-components';
-import React from 'react';
 import { formatUToken } from '@nebula-js/notation';
+import { Token, u } from '@nebula-js/types';
+import { TokenSpan } from '@nebula-js/ui';
+import { AssetTokenInfo } from '@nebula-js/webapp-fns';
+import { fixHMR } from 'fix-hmr';
+import React from 'react';
+import styled from 'styled-components';
 
 export interface WithdrawnTokenTableProps {
   className?: string;
   redeemTokenAmounts: u<Token>[];
-  assetTokenInfos: cw20.TokenInfoResponse<Token>[];
+  assetTokenInfos: AssetTokenInfo[];
 }
 
 function WithdrawnTokenTableBase({
@@ -27,15 +28,15 @@ function WithdrawnTokenTableBase({
       </thead>
       <tbody>
         {redeemTokenAmounts.map((amount, i) => (
-          <tr key={assetTokenInfos[i].symbol}>
+          <tr key={assetTokenInfos[i].tokenInfo.symbol}>
             <td>
-              <TokenSpan>{assetTokenInfos[i].symbol}</TokenSpan>
+              <TokenSpan>{assetTokenInfos[i].tokenInfo.symbol}</TokenSpan>
             </td>
             <td>
-              <s>100 {assetTokenInfos[i].symbol}</s>
+              <s>100 {assetTokenInfos[i].tokenInfo.symbol}</s>
             </td>
             <td>
-              {formatUToken(amount)} {assetTokenInfos[i].symbol}
+              {formatUToken(amount)} {assetTokenInfos[i].tokenInfo.symbol}
             </td>
           </tr>
         ))}
