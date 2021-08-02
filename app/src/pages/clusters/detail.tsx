@@ -156,16 +156,7 @@ function ClustersDetailBase({
       <section className="about">
         <Section>
           <article>
-            <p>
-              <s>
-                <b>The New is always better</b> index is a digital asset index
-                designed to track the performance of 5 large cap US technology
-                companies. The intent is to provide DeFi users with on-chain
-                exposure to a basket of US large cap technology equities, as
-                well as to showcase the composable nature of Mirror Protocol’s
-                assets as building blocks for novel products.
-              </s>
-            </p>
+            <p>{clusterView?.description}</p>
           </article>
 
           {clusterView?.assets && (

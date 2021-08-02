@@ -25,6 +25,7 @@ export interface ClusterView {
   token: cw20.TokenInfoResponse<Token>;
   name: string;
   nameLowerCase: string;
+  description: string;
   price: u<UST<Big>>;
   hr24: Rate<Big>;
   hr24diff: Rate<Big>;
@@ -54,6 +55,7 @@ export function toClusterView({
       token: clusterTokenInfo,
       name: clusterConfig.config.name,
       nameLowerCase: clusterConfig.config.name.toLowerCase(),
+      description: clusterConfig.config.description,
       price: big(0) as u<UST<Big>>,
       hr24: big(0) as Rate<Big>,
       hr24diff: big(0) as Rate<Big>,
@@ -95,6 +97,7 @@ export function toClusterView({
     token: clusterTokenInfo,
     name: clusterConfig.config.name,
     nameLowerCase: clusterConfig.config.name.toLowerCase(),
+    description: clusterConfig.config.description,
     price,
     // TODO indexer data
     hr24: big(999) as Rate<Big>,
