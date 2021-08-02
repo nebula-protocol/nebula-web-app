@@ -1,6 +1,6 @@
 import { NominalType } from './common';
 
-export type u<T = string> = T & { __micro: T };
+export type u<T = string> = T & { __micro: true };
 
 // Native currencies
 export type UST<T = string> = T & NominalType<'ust'>;
