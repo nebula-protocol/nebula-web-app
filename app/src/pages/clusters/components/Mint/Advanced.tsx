@@ -1,4 +1,4 @@
-import { formatToken, microfy } from '@nebula-js/notation';
+import { formatUToken, microfy } from '@nebula-js/notation';
 import { CT, terraswap, Token, u } from '@nebula-js/types';
 import { ClusterInfo } from '@nebula-js/webapp-fns';
 import {
@@ -65,7 +65,7 @@ export function MintAdvanced({ clusterInfo }: MintAdvancedProps) {
             <li>
               <span>Minted {clusterInfo.clusterTokenInfo.symbol}</span>
               <span>
-                {formatToken(states.mintedAmount)}{' '}
+                {formatUToken(states.mintedAmount)}{' '}
                 {clusterInfo.clusterTokenInfo.symbol}
               </span>
             </li>

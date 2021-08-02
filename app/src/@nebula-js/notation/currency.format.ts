@@ -46,7 +46,9 @@ export function formatUInput(n: u<Token<BigSource>>): Token {
   return d6InputFormatter(demicrofy(n)) as any;
 }
 
-export function formatToken(n: Token<BigSource>): string {
+export function formatToken(
+  n: Token<BigSource> & { __micro?: undefined },
+): string {
   return d6Formatter(n);
 }
 

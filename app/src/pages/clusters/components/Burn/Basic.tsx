@@ -1,5 +1,5 @@
 import { WalletIcon } from '@nebula-js/icons';
-import { formatToken, formatUInput, formatUToken } from '@nebula-js/notation';
+import { formatUInput, formatUToken } from '@nebula-js/notation';
 import { CT } from '@nebula-js/types';
 import {
   breakpoints,
@@ -84,7 +84,7 @@ function BurnBasicBase({
           <li>
             <span>Burnt {clusterTokenInfo.symbol}</span>
             <span>
-              {formatToken(states.burntTokenAmount)} {clusterTokenInfo.symbol}
+              {formatUToken(states.burntTokenAmount)} {clusterTokenInfo.symbol}
             </span>
           </li>
         )}
@@ -92,7 +92,7 @@ function BurnBasicBase({
         {'redeemValue' in states && states.redeemValue && (
           <li>
             <span>Redeem Value</span>
-            <span>{formatToken(states.redeemValue)} UST</span>
+            <span>{formatUToken(states.redeemValue)} UST</span>
           </li>
         )}
 

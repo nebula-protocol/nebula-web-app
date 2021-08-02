@@ -1,4 +1,4 @@
-import { formatToken, microfy } from '@nebula-js/notation';
+import { formatUToken, microfy } from '@nebula-js/notation';
 import { CT, terraswap, Token, u } from '@nebula-js/types';
 import { ClusterInfo } from '@nebula-js/webapp-fns';
 import {
@@ -68,7 +68,7 @@ export function MintTerraswapArbitrage({
           states.returnedAmount && (
             <li>
               <span>Returned UST</span>
-              <span>{formatToken(states.returnedAmount)} UST</span>
+              <span>{formatUToken(states.returnedAmount)} UST</span>
             </li>
           )}
 
