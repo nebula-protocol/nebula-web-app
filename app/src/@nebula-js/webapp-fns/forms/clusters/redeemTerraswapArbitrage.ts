@@ -3,21 +3,22 @@ import {
   cluster,
   CT,
   NativeDenom,
+  NoMicro,
   terraswap,
   Token,
   u,
   UST,
 } from '@nebula-js/types';
 import { NebulaTax } from '@nebula-js/webapp-fns/types';
-import { sum, vectorMultiply } from '@terra-dev/big-math';
+import { min, sum, vectorMultiply } from '@terra-dev/big-math';
 import { MantleFetch } from '@terra-dev/mantle';
-import big, { BigSource } from 'big.js';
+import big, { Big, BigSource } from 'big.js';
 import { computeMaxUstBalanceForUstTransfer } from '../../logics/computeMaxUstBalanceForUstTransfer';
 import { clusterRedeemQuery } from '../../queries/clusters/redeem';
 import { terraswapSimulationQuery } from '../../queries/terraswap/simulation';
 
 export interface ClusterRedeemTerraswapArbitrageFormInput {
-  ustAmount: UST;
+  ustAmount: UST & NoMicro;
 }
 
 export interface ClusterRedeemTerraswapArbitrageFormDependency {
@@ -32,18 +33,22 @@ export interface ClusterRedeemTerraswapArbitrageFormDependency {
   ustBalance: u<UST>;
   tax: NebulaTax;
   fixedGas: u<UST<BigSource>>;
+  //
+  connected: boolean;
 }
 
 export interface ClusterRedeemTerraswapArbitrageFormStates
   extends ClusterRedeemTerraswapArbitrageFormInput {
   invalidUstAmount: string | null;
   maxUstAmount: u<UST<BigSource>>;
+  invalidTxFee: string | null;
 }
 
 export interface ClusterRedeemTerraswapArbitrageFormAsyncStates {
   burntTokenAmount?: u<CT>;
   redeemTokenAmounts?: u<Token>[];
   redeemValue?: u<UST>;
+  txFee?: u<UST>;
 }
 
 export const clusterRedeemTerraswapArbitrageForm = (
@@ -72,6 +77,7 @@ export const clusterRedeemTerraswapArbitrageForm = (
           ...input,
           maxUstAmount,
           invalidUstAmount: null,
+          invalidTxFee: null,
         },
         Promise.resolve({}),
       ];
@@ -90,11 +96,14 @@ export const clusterRedeemTerraswapArbitrageForm = (
 
     if (
       !asyncStates ||
+      dependency.connected !== prevDependency?.connected ||
       dependency.mantleEndpoint !== prevDependency?.mantleEndpoint ||
       dependency.lastSyncedHeight !== prevDependency?.lastSyncedHeight ||
       dependency.clusterState !== prevDependency?.clusterState ||
       input.ustAmount !== prevInput?.ustAmount
     ) {
+      let txFee: u<UST>;
+
       asyncStates = terraswapSimulationQuery({
         mantleEndpoint: dependency.mantleEndpoint,
         mantleFetch: dependency.mantleFetch,
@@ -117,37 +126,45 @@ export const clusterRedeemTerraswapArbitrageForm = (
           },
         },
       })
-        .then(({ simulation }) => {
-          console.log('redeemTerraswapArbitrage.ts..()', simulation);
-          return clusterRedeemQuery({
-            mantleEndpoint: dependency.mantleEndpoint,
-            mantleFetch: dependency.mantleFetch,
-            requestInit: dependency.requestInit,
-            lastSyncedHeight: dependency.lastSyncedHeight,
-            wasmQuery: {
-              redeem: {
-                contractAddress: dependency.clusterState.penalty,
-                query: {
-                  redeem: {
-                    block_height: -1,
-                    cluster_token_supply:
-                      dependency.clusterState.outstanding_balance_tokens,
-                    inventory: dependency.clusterState.inv,
-                    max_tokens: microfy(
-                      simulation.return_amount,
-                    ).toFixed() as u<CT>,
-                    asset_prices: dependency.clusterState.prices,
-                    target_weights: dependency.clusterState.target.map(
-                      ({ amount }) => amount,
-                    ),
-                    // TODO this field not optional
-                    redeem_asset_amounts: [],
+        .then(
+          ({
+            simulation: { return_amount, commission_amount, spread_amount },
+          }) => {
+            const _tax = min(
+              microfy(input.ustAmount!).mul(dependency.tax.taxRate),
+              dependency.tax.maxTaxUUSD,
+            ) as u<UST<Big>>;
+
+            txFee = _tax.plus(dependency.fixedGas).toFixed() as u<UST>;
+
+            return clusterRedeemQuery({
+              mantleEndpoint: dependency.mantleEndpoint,
+              mantleFetch: dependency.mantleFetch,
+              requestInit: dependency.requestInit,
+              lastSyncedHeight: dependency.lastSyncedHeight,
+              wasmQuery: {
+                redeem: {
+                  contractAddress: dependency.clusterState.penalty,
+                  query: {
+                    redeem: {
+                      block_height: -1,
+                      cluster_token_supply:
+                        dependency.clusterState.outstanding_balance_tokens,
+                      inventory: dependency.clusterState.inv,
+                      max_tokens: return_amount as u<CT>,
+                      asset_prices: dependency.clusterState.prices,
+                      target_weights: dependency.clusterState.target.map(
+                        ({ amount }) => amount,
+                      ),
+                      // TODO this field not optional
+                      redeem_asset_amounts: [],
+                    },
                   },
                 },
               },
-            },
-          });
-        })
+            });
+          },
+        )
         .then(({ redeem }) => {
           return {
             burntTokenAmount: redeem.token_cost,
@@ -158,10 +175,18 @@ export const clusterRedeemTerraswapArbitrageForm = (
                 dependency.clusterState.prices,
               ),
             ).toFixed() as u<UST>,
+            txFee,
+            invalidTxFee:
+              dependency.connected && big(txFee).gt(dependency.ustBalance)
+                ? 'Not enough transaction fees'
+                : null,
           };
         });
     }
 
-    return [{ ...input, maxUstAmount, invalidUstAmount }, asyncStates];
+    return [
+      { ...input, maxUstAmount, invalidUstAmount, invalidTxFee: null },
+      asyncStates,
+    ];
   };
 };

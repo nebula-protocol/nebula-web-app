@@ -32,10 +32,5 @@ export async function terraswapSimulationQuery({
     ...params,
   });
 
-  console.log(
-    'simulation.ts..terraswapSimulationQuery()',
-    data.simulation.return_amount,
-  );
-
   return data;
 }

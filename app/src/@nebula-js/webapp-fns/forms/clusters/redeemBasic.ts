@@ -1,5 +1,5 @@
 import { microfy } from '@nebula-js/notation';
-import { cluster, CT, Token, u, UST } from '@nebula-js/types';
+import { cluster, CT, NoMicro, Token, u, UST } from '@nebula-js/types';
 import { NebulaTax } from '@nebula-js/webapp-fns/types';
 import { sum, vectorMultiply } from '@terra-dev/big-math';
 import { MantleFetch } from '@terra-dev/mantle';
@@ -7,7 +7,7 @@ import big, { BigSource } from 'big.js';
 import { clusterRedeemQuery } from '../../queries/clusters/redeem';
 
 export interface ClusterRedeemBasicFormInput {
-  tokenAmount: CT & { __micro?: undefined };
+  tokenAmount: CT & NoMicro;
 }
 
 export interface ClusterRedeemBasicFormDependency {

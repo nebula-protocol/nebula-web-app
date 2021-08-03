@@ -1,6 +1,6 @@
 import { WalletIcon } from '@nebula-js/icons';
-import { formatUInput, formatUToken } from '@nebula-js/notation';
-import { UST } from '@nebula-js/types';
+import { formatUInput, formatUToken, microfy } from '@nebula-js/notation';
+import { u, UST } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
@@ -10,9 +10,13 @@ import {
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { ClusterInfo } from '@nebula-js/webapp-fns';
-import { useClusterRedeemTerraswapArbitrageForm } from '@nebula-js/webapp-provider';
+import {
+  useClusterArbRedeemTx,
+  useClusterRedeemTerraswapArbitrageForm,
+} from '@nebula-js/webapp-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { FeeBox } from 'components/boxes/FeeBox';
+import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
 import { WithdrawnTokenTable } from 'pages/clusters/components/Burn/WithdrawnTokenTable';
 import React, { useCallback } from 'react';
@@ -39,14 +43,38 @@ function BurnTerraswapArbitrageBase({
     terraswapPair,
   });
 
+  const { broadcast } = useTxBroadcast();
+
+  const postTx = useClusterArbRedeemTx(clusterState.cluster_contract_address);
+
+  const initForm = useCallback(() => {
+    updateInput({
+      ustAmount: '' as UST,
+    });
+  }, [updateInput]);
+
+  const proceed = useCallback(
+    (ustAmount: UST, txFee: u<UST>) => {
+      const stream = postTx?.({
+        amount: microfy(ustAmount).toFixed() as u<UST>,
+        txFee,
+        onTxSucceed: initForm,
+      });
+
+      if (stream) {
+        console.log('TerraswapArbitrage.tsx..()', stream);
+        broadcast(stream);
+      }
+    },
+    [broadcast, initForm, postTx],
+  );
+
   const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
     mobile: 'medium',
     tablet: 'normal',
     pc: 'normal',
     monitor: 'normal',
   });
-
-  const proceed = useCallback((ustAmount: UST) => {}, []);
 
   return (
     <div className={className}>
@@ -102,10 +130,12 @@ function BurnTerraswapArbitrageBase({
           </li>
         )}
 
-        {/*<li>*/}
-        {/*  <span>Tx Fee</span>*/}
-        {/*  <span>{'txFee' in states ? formatUToken(states.txFee) : 0} UST</span>*/}
-        {/*</li>*/}
+        {'txFee' in states && states.txFee && (
+          <li>
+            <span>Tx Fee</span>
+            <span>{formatUToken(states.txFee)} UST</span>
+          </li>
+        )}
       </FeeBox>
 
       <Button
@@ -115,10 +145,16 @@ function BurnTerraswapArbitrageBase({
         disabled={
           !connectedWallet ||
           !connectedWallet.availablePost ||
+          !states ||
           !!states.invalidUstAmount ||
-          states.ustAmount.length > 0
+          !!states.invalidTxFee ||
+          states.ustAmount.length === 0
         }
-        onClick={() => proceed(states.ustAmount)}
+        onClick={() =>
+          'txFee' in states &&
+          states.txFee &&
+          proceed(states.ustAmount, states.txFee)
+        }
       >
         Burn
       </Button>

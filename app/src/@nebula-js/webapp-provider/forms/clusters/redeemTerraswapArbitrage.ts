@@ -5,6 +5,7 @@ import {
   NebulaTokenBalances,
 } from '@nebula-js/webapp-fns';
 import { useForm } from '@terra-dev/use-form';
+import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useBank, useTerraWebapp } from '@terra-money/webapp-provider';
 import { useNebulaWebapp } from '../../contexts/webapp';
 
@@ -17,6 +18,8 @@ export function useClusterRedeemTerraswapArbitrageForm({
   clusterState,
   terraswapPair,
 }: ClusterRedeemTerraswapArbitrageFormParams) {
+  const connectedWallet = useConnectedWallet();
+
   const { mantleFetch, mantleEndpoint, lastSyncedHeight } = useTerraWebapp();
 
   const {
@@ -36,6 +39,7 @@ export function useClusterRedeemTerraswapArbitrageForm({
       tax,
       fixedGas,
       clusterState,
+      connected: !!connectedWallet,
     },
     () => {
       return {

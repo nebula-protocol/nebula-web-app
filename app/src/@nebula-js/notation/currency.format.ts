@@ -1,4 +1,4 @@
-import { Token, u } from '@nebula-js/types';
+import { NoMicro, Token, u } from '@nebula-js/types';
 import big, { BigSource } from 'big.js';
 import { demicrofy, MICRO } from './currency';
 import { formatDemimal, formatInteger } from './unit.format';
@@ -46,9 +46,7 @@ export function formatUInput(n: u<Token<BigSource>>): Token {
   return d6InputFormatter(demicrofy(n)) as any;
 }
 
-export function formatToken(
-  n: Token<BigSource> & { __micro?: undefined },
-): string {
+export function formatToken(n: Token<BigSource> & NoMicro): string {
   return d6Formatter(n);
 }
 
