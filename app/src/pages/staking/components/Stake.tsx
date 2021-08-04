@@ -1,6 +1,12 @@
 import { PlusIcon, WalletIcon } from '@nebula-js/icons';
-import { demicrofy, formatUToken } from '@nebula-js/notation';
-import { NEB, UST } from '@nebula-js/types';
+import {
+  formatFluidDecimalPoints,
+  formatRate,
+  formatUInput,
+  formatUToken,
+  microfy,
+} from '@nebula-js/notation';
+import { CT, u, UST } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
@@ -8,38 +14,90 @@ import {
   IconSeparator,
   TokenInput,
   TokenSpan,
+  useConfirm,
   useScreenSizeValue,
 } from '@nebula-js/ui';
+import { ClusterInfo } from '@nebula-js/webapp-fns';
 import {
-  computeMaxUstBalanceForUstTransfer,
-  NebulaTax,
-  NebulaTokenBalances,
-} from '@nebula-js/webapp-fns';
-import { useNebulaWebapp } from '@nebula-js/webapp-provider';
-import { useBank } from '@terra-money/webapp-provider';
+  useCW20ProvideTokenForm,
+  useStakingStakeTx,
+} from '@nebula-js/webapp-provider';
+import { useConnectedWallet } from '@terra-money/wallet-provider';
+import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
-import React, { useMemo, useState } from 'react';
+import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
+import { ExchangeRateAB } from 'components/text/ExchangeRateAB';
+import { useTxBroadcast } from 'contexts/tx-broadcast';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
 export interface StakingStakeProps {
   className?: string;
+  clusterInfo: ClusterInfo;
 }
 
-function StakingStakeBase({ className }: StakingStakeProps) {
-  const [fromAmount, setFromAmount] = useState<UST>('' as UST);
-  const [toAmount, setToAmount] = useState<NEB>('' as NEB);
+function StakingStakeBase({
+  className,
+  clusterInfo: { clusterState, clusterTokenInfo, terraswapPair },
+}: StakingStakeProps) {
+  const connectedWallet = useConnectedWallet();
 
-  const { tokenBalances, tax } = useBank<NebulaTokenBalances, NebulaTax>();
-  const {
-    constants: { fixedGas },
-  } = useNebulaWebapp();
+  const { broadcast } = useTxBroadcast();
 
-  const { uUST, uNEB } = tokenBalances;
+  const [openConfirm, confirmElement] = useConfirm();
 
-  const ustBalance = useMemo(() => {
-    return computeMaxUstBalanceForUstTransfer(uUST, tax, fixedGas);
-  }, [fixedGas, tax, uUST]);
+  const postTx = useStakingStakeTx(
+    clusterState.cluster_token,
+    terraswapPair.contract_addr,
+  );
 
+  const [updateInput, states] = useCW20ProvideTokenForm<CT>({
+    tokenAddr: clusterState.cluster_token,
+    ustTokenPairAddr: terraswapPair.contract_addr,
+  });
+
+  const initForm = useCallback(() => {
+    updateInput({
+      ustAmount: '' as UST,
+    });
+  }, [updateInput]);
+
+  const proceed = useCallback(
+    async (
+      ustAmount: UST,
+      tokenAmount: CT,
+      txFee: u<UST<BigSource>>,
+      warning: string | null,
+    ) => {
+      if (warning) {
+        const confirm = await openConfirm({
+          description: warning,
+          agree: 'Stake',
+          disagree: 'Cancel',
+        });
+
+        if (!confirm) {
+          return;
+        }
+      }
+
+      const stream = postTx?.({
+        ustAmount: microfy(ustAmount).toFixed() as u<UST>,
+        tokenAmount: microfy(tokenAmount).toFixed() as u<CT>,
+        txFee: big(txFee).toFixed() as u<UST>,
+        onTxSucceed: initForm,
+      });
+
+      if (stream) {
+        broadcast(stream);
+      }
+    },
+    [broadcast, initForm, openConfirm, postTx],
+  );
+
+  // ---------------------------------------------
+  // presentation
+  // ---------------------------------------------
   const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
     mobile: 'medium',
     tablet: 'normal',
@@ -47,19 +105,23 @@ function StakingStakeBase({ className }: StakingStakeProps) {
     monitor: 'normal',
   });
 
-  console.log('Stake.tsx..StakingStakeBase()', tokenBalances);
-
   return (
     <div className={className}>
       <TokenInput
-        value={fromAmount}
-        onChange={setFromAmount}
+        maxDecimalPoints={6}
+        value={states.ustAmount ?? ('' as UST)}
+        onChange={(nextUstAmount) =>
+          updateInput({ ustAmount: nextUstAmount, tokenAmount: undefined })
+        }
         placeholder="0.00"
         label="FROM"
         suggest={
           <EmptyButton
             onClick={() =>
-              setFromAmount(demicrofy(ustBalance).toFixed() as UST)
+              updateInput({
+                ustAmount: formatUInput(states.maxUstAmount) as UST,
+                tokenAmount: undefined,
+              })
             }
           >
             <WalletIcon
@@ -67,10 +129,11 @@ function StakingStakeBase({ className }: StakingStakeProps) {
                 transform: 'translateX(-0.3em)',
               }}
             />{' '}
-            {formatUToken(ustBalance)}
+            {formatUToken(states.maxUstAmount)}
           </EmptyButton>
         }
         token={<TokenSpan>UST</TokenSpan>}
+        error={states.invalidUstAmount}
       />
 
       <IconSeparator>
@@ -78,43 +141,104 @@ function StakingStakeBase({ className }: StakingStakeProps) {
       </IconSeparator>
 
       <TokenInput
-        value={toAmount}
-        onChange={setToAmount}
+        maxDecimalPoints={6}
+        value={states.tokenAmount ?? ('' as CT)}
+        onChange={(nextCtAmount) =>
+          updateInput({ ustAmount: undefined, tokenAmount: nextCtAmount })
+        }
         placeholder="0.00"
         label="TO"
         suggest={
           <EmptyButton
-            onClick={() => setToAmount(demicrofy(uNEB).toFixed() as NEB)}
+            onClick={() =>
+              updateInput({
+                ustAmount: undefined,
+                tokenAmount: states.maxTokenAmount,
+              })
+            }
           >
             <WalletIcon
               style={{
                 transform: 'translateX(-0.3em)',
               }}
             />{' '}
-            {uNEB}
+            {formatUToken(states.maxTokenAmount)}
           </EmptyButton>
         }
-        token={<TokenSpan>NEB</TokenSpan>}
+        token={<TokenSpan>{clusterTokenInfo.symbol}</TokenSpan>}
+        error={states.invalidTokenAmount}
       />
 
       <FeeBox className="feebox">
-        <li>
-          <span>Price</span>
-          <span>1.555555 UST</span>
-        </li>
-        <li>
-          <span>LP Staked from Tx</span>
-          <span>23.321 LP</span>
-        </li>
-        <li>
-          <span>Tx Fee</span>
-          <span>0.014072 UST</span>
-        </li>
+        {states.poolPrice && (
+          <li>
+            <span>Price</span>
+            <ExchangeRateAB
+              symbolA="UST"
+              symbolB={clusterTokenInfo.symbol}
+              exchangeRateAB={states.poolPrice}
+              initialDirection="b/a"
+              formatExchangeRate={(price) => formatFluidDecimalPoints(price, 6)}
+            />
+          </li>
+        )}
+        {states.lpFromTx && (
+          <li>
+            <span>LP from Tx</span>
+            <span>{formatUToken(states.lpFromTx)} LP</span>
+          </li>
+        )}
+        {states.shareOfPool && (
+          <li>
+            <span>Share of Pool</span>
+            <span>{formatRate(states.shareOfPool)}%</span>
+          </li>
+        )}
+        {states.txFee && (
+          <li>
+            <span>Tx Fee</span>
+            <span>{formatUToken(states.txFee)} UST</span>
+          </li>
+        )}
       </FeeBox>
 
-      <Button className="submit" color="paleblue" size={buttonSize}>
+      {states.invalidTxFee ? (
+        <WarningMessageBox level="critical" className="warning">
+          {states.invalidTxFee}
+        </WarningMessageBox>
+      ) : states.warningNextTxFee ? (
+        <WarningMessageBox level="warning" className="warning">
+          {states.warningNextTxFee}
+        </WarningMessageBox>
+      ) : null}
+
+      <Button
+        className="submit"
+        color="paleblue"
+        size={buttonSize}
+        disabled={
+          !connectedWallet ||
+          !connectedWallet.availablePost ||
+          !postTx ||
+          !states ||
+          !states.availableTx
+        }
+        onClick={() =>
+          states.ustAmount &&
+          states.tokenAmount &&
+          states.txFee &&
+          proceed(
+            states.ustAmount,
+            states.tokenAmount,
+            states.txFee,
+            states.warningNextTxFee,
+          )
+        }
+      >
         Stake
       </Button>
+
+      {confirmElement}
     </div>
   );
 }

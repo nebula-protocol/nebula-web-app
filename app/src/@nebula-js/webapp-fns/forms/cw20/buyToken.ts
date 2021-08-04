@@ -90,14 +90,14 @@ export const cw20BuyTokenForm = <T extends Token>({
   > => {
     const ustAmountExists: boolean =
       !!ustAmount && ustAmount.length > 0 && big(ustAmount).gt(0);
-    const ctAmountExists: boolean =
+    const tokenAmountExists: boolean =
       !!tokenAmount && tokenAmount.length > 0 && big(tokenAmount).gt(0);
 
-    if (!ustAmountExists && !ctAmountExists) {
+    if (!ustAmountExists && !tokenAmountExists) {
       return [
         {
           ustAmount,
-          tokenAmount: tokenAmount,
+          tokenAmount,
           maxUstAmount,
           invalidTxFee: null,
           invalidUstAmount: null,
@@ -206,7 +206,7 @@ export const cw20BuyTokenForm = <T extends Token>({
           },
         ),
       ];
-    } else if (ctAmountExists) {
+    } else if (tokenAmountExists) {
       return [
         {
           tokenAmount: tokenAmount,
@@ -304,7 +304,7 @@ export const cw20BuyTokenForm = <T extends Token>({
     return [
       {
         ustAmount,
-        tokenAmount: tokenAmount,
+        tokenAmount,
         maxUstAmount,
         invalidTxFee: null,
         invalidUstAmount: null,

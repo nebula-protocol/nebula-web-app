@@ -28,7 +28,7 @@ const queryFn = createQueryFn(
             },
           },
         })
-      : Promise.resolve('0' as any);
+      : Promise.resolve(undefined);
   },
 );
 
@@ -57,5 +57,5 @@ export function useCW20BalanceQuery<T extends Token>(
     },
   );
 
-  return result;
+  return result as UseQueryResult<CW20Balance<T> | undefined>;
 }

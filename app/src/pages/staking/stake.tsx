@@ -1,4 +1,6 @@
+import { HumanAddr } from '@nebula-js/types';
 import { Section, Tab, TabItem } from '@nebula-js/ui';
+import { useClusterInfoQuery } from '@nebula-js/webapp-provider';
 import { FormLayout } from 'components/layouts/FormLayout';
 import { fixHMR } from 'fix-hmr';
 import React, { useCallback, useMemo } from 'react';
@@ -13,7 +15,8 @@ import styled from 'styled-components';
 import { StakingStake } from './components/Stake';
 import { StakingUnstake } from './components/Unstake';
 
-export interface StakingStakeProps extends RouteComponentProps {
+export interface StakingStakeProps
+  extends RouteComponentProps<{ cluster: string }> {
   className?: string;
 }
 
@@ -23,6 +26,10 @@ const tabItems: TabItem[] = [
 ];
 
 function StakingStakeBase({ className, match, history }: StakingStakeProps) {
+  const clusterAddr = match.params.cluster as HumanAddr;
+
+  const { data: clusterInfo } = useClusterInfoQuery(clusterAddr);
+
   const pageMatch = useRouteMatch<{ page: string }>(`${match.url}/:page`);
 
   const tab = useMemo<TabItem | undefined>(() => {
@@ -49,8 +56,12 @@ function StakingStakeBase({ className, match, history }: StakingStakeProps) {
       <Section className="main">
         <Switch>
           <Redirect exact path={`${match.url}/`} to={`${match.url}/stake`} />
-          <Route path={`${match.url}/stake`} component={StakingStake} />
-          <Route path={`${match.url}/unstake`} component={StakingUnstake} />
+          <Route path={`${match.url}/stake`}>
+            {clusterInfo && <StakingStake clusterInfo={clusterInfo} />}
+          </Route>
+          <Route path={`${match.url}/unstake`}>
+            {clusterInfo && <StakingUnstake clusterInfo={clusterInfo} />}
+          </Route>
           <Redirect path={`${match.url}/*`} to={`${match.url}/stake`} />
         </Switch>
       </Section>
