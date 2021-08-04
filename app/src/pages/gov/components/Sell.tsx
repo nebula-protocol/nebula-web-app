@@ -5,7 +5,7 @@ import {
   formatUToken,
   microfy,
 } from '@nebula-js/notation';
-import { CT, u, UST } from '@nebula-js/types';
+import { NEB, u, UST } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
@@ -15,10 +15,10 @@ import {
   TokenSpan,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { ClusterInfo } from '@nebula-js/webapp-fns';
 import {
   useCW20SellTokenForm,
   useCW20SellTokenTx,
+  useNebulaWebapp,
 } from '@nebula-js/webapp-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
@@ -26,42 +26,41 @@ import { FeeBox } from 'components/boxes/FeeBox';
 import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
 import { ExchangeRateAB } from 'components/text/ExchangeRateAB';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
+import { fixHMR } from 'fix-hmr';
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
-export interface ClusterSellProps {
+export interface SellProps {
   className?: string;
-  clusterInfo: ClusterInfo;
 }
 
-function ClusterSellBase({
-  className,
-  clusterInfo: { clusterState, terraswapPair, clusterTokenInfo },
-}: ClusterSellProps) {
+function SellBase({ className }: SellProps) {
   const connectedWallet = useConnectedWallet();
 
   const { broadcast } = useTxBroadcast();
 
+  const { contractAddress } = useNebulaWebapp();
+
   const postTx = useCW20SellTokenTx(
-    clusterState.cluster_token,
-    terraswapPair.contract_addr,
-    clusterTokenInfo.symbol,
+    contractAddress.cw20.NEB,
+    contractAddress.terraswap.nebUstPair,
+    'NEB',
   );
 
-  const [updateInput, states] = useCW20SellTokenForm<CT>({
-    ustTokenPairAddr: terraswapPair.contract_addr,
-    tokenAddr: clusterState.cluster_token,
+  const [updateInput, states] = useCW20SellTokenForm<NEB>({
+    tokenAddr: contractAddress.cw20.NEB,
+    ustTokenPairAddr: contractAddress.terraswap.nebUstPair,
   });
 
   const initForm = useCallback(() => {
     updateInput({
       ustAmount: '' as UST,
-      tokenAmount: '' as CT,
+      tokenAmount: '' as NEB,
     });
   }, [updateInput]);
 
   const proceed = useCallback(
-    (tokenAmount: CT, txFee: u<UST<BigSource>>) => {
+    (tokenAmount: NEB, txFee: u<UST<BigSource>>) => {
       const stream = postTx?.({
         sellAmount: microfy(tokenAmount).toFixed() as u<UST>,
         txFee: big(txFee).toFixed() as u<UST>,
@@ -89,7 +88,7 @@ function ClusterSellBase({
     <div className={className}>
       <TokenInput
         maxDecimalPoints={6}
-        value={states.tokenAmount ?? ('' as CT)}
+        value={states.tokenAmount ?? ('' as NEB)}
         onChange={(nextTokenAmount) =>
           updateInput({ tokenAmount: nextTokenAmount, ustAmount: undefined })
         }
@@ -99,7 +98,7 @@ function ClusterSellBase({
           <EmptyButton
             onClick={() =>
               updateInput({
-                tokenAmount: formatUInput(states.tokenBalance) as CT,
+                tokenAmount: formatUInput(states.tokenBalance) as NEB,
                 ustAmount: undefined,
               })
             }
@@ -112,7 +111,7 @@ function ClusterSellBase({
             {formatUToken(states.tokenBalance)}
           </EmptyButton>
         }
-        token={<TokenSpan>{clusterTokenInfo.symbol}</TokenSpan>}
+        token={<TokenSpan>NEB</TokenSpan>}
         error={states.invalidTokenAmount}
       />
 
@@ -136,7 +135,7 @@ function ClusterSellBase({
           <li>
             <span>Price</span>
             <ExchangeRateAB
-              symbolA={clusterTokenInfo.symbol}
+              symbolA="NEB"
               symbolB="UST"
               exchangeRateAB={states.beliefPrice}
               initialDirection="b/a"
@@ -193,7 +192,7 @@ function ClusterSellBase({
   );
 }
 
-export const ClusterSell = styled(ClusterSellBase)`
+export const StyledSell = styled(SellBase)`
   font-size: 1rem;
 
   .feebox {
@@ -218,3 +217,5 @@ export const ClusterSell = styled(ClusterSellBase)`
     }
   }
 `;
+
+export const Sell = fixHMR(StyledSell);

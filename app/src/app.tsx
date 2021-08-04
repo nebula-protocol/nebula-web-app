@@ -10,6 +10,7 @@ import ClustersMain from './pages/clusters/main';
 import DashboardMain from './pages/dashboard/main';
 import GovMain from './pages/gov/main';
 import GovStake from './pages/gov/stake';
+import GovTrade from './pages/gov/trade';
 import MyPageMain from './pages/mypage/main';
 import PollCreate from './pages/poll/create';
 import PollDetail from './pages/poll/detail';
@@ -31,7 +32,8 @@ function App() {
           <Route path="/clusters/:cluster" component={ClustersDetail} />
           <Route exact path="/staking" component={StakingMain} />
           <Route path="/staking/:item" component={StakingStake} />
-          <Route path="/gov" component={GovMain} />
+          <Route exact path="/gov" component={GovMain} />
+          <Route path="/gov/trade" component={GovTrade} />
           <Route path="/gov/stake" component={GovStake} />
           <Route exact path="/polls" component={PollMain} />
           <Route path="/polls/:type" component={PollCreate} />

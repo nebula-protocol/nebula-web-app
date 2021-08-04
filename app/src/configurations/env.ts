@@ -1,48 +1,19 @@
+import { DEFAULT_CONTRACT_ADDRESS } from '@nebula-js/webapp-fns';
 import { NetworkInfo } from '@terra-money/wallet-provider';
 import { CW20Contract } from '@terra-money/webapp-provider';
-
-// TODO please fill the contract addresses on this
-export const ADDRESSES = {
-  mainnet: {
-    cw20: {
-      aUST: 'terra1hzh9vpxhsk8253se0vv5jj6etdvxu3nv8z07zu',
-      bLuna: 'terra1kc87mu460fwkqte29rquh4hc20m54fxwtsx7gp',
-      ANC: 'terra14z56l0fp2lsf86zy3hty2z47ezkhnthtr9yq76',
-    },
-  },
-  testnet: {
-    cw20: {
-      aUST: 'terra1ajt556dpzvjwl0kl5tzku3fc3p3knkg9mkv8jl',
-      bLuna: 'terra1u0t35drzyy0mujj8rkdyzhe264uls4ug3wdp3x',
-      ANC: 'terra1747mad58h0w4y589y3sk84r5efqdev9q4r02pc',
-    },
-  },
-} as const;
 
 export const CW20_TOKEN_CONTRACTS: Record<
   string,
   Record<string, CW20Contract>
 > = {
-  mainnet: {
-    uaUST: {
-      contractAddress: ADDRESSES.mainnet.cw20.aUST,
-    },
-    ubLuna: {
-      contractAddress: ADDRESSES.mainnet.cw20.bLuna,
-    },
-    uANC: {
-      contractAddress: ADDRESSES.mainnet.cw20.ANC,
-    },
-  },
+  //mainnet: {
+  //  uNEB: {
+  //    contractAddress: ADDRESSES.mainnet.cw20.aUST,
+  //  },
+  //},
   testnet: {
-    uaUST: {
-      contractAddress: ADDRESSES.testnet.cw20.aUST,
-    },
-    ubLuna: {
-      contractAddress: ADDRESSES.testnet.cw20.bLuna,
-    },
-    uANC: {
-      contractAddress: ADDRESSES.testnet.cw20.ANC,
+    uNEB: {
+      contractAddress: DEFAULT_CONTRACT_ADDRESS['testnet'].cw20.NEB,
     },
   },
 };

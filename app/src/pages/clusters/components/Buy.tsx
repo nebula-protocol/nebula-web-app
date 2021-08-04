@@ -54,13 +54,6 @@ function ClusterBuyBase({
     tokenAddr: clusterState.cluster_token,
   });
 
-  const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
-    mobile: 'medium',
-    tablet: 'normal',
-    pc: 'normal',
-    monitor: 'normal',
-  });
-
   const initForm = useCallback(() => {
     updateInput({
       ustAmount: '' as UST,
@@ -98,6 +91,16 @@ function ClusterBuyBase({
     },
     [broadcast, initForm, openConfirm, postTx],
   );
+
+  // ---------------------------------------------
+  // presentation
+  // ---------------------------------------------
+  const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
+    mobile: 'medium',
+    tablet: 'normal',
+    pc: 'normal',
+    monitor: 'normal',
+  });
 
   return (
     <div className={className}>

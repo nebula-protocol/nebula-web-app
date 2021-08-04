@@ -5,7 +5,7 @@ import {
   formatUToken,
   microfy,
 } from '@nebula-js/notation';
-import { CT, u, UST } from '@nebula-js/types';
+import { NEB, u, UST } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
@@ -13,12 +13,13 @@ import {
   IconSeparator,
   TokenInput,
   TokenSpan,
+  useConfirm,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { ClusterInfo } from '@nebula-js/webapp-fns';
 import {
-  useCW20SellTokenForm,
-  useCW20SellTokenTx,
+  useCW20BuyTokenForm,
+  useCW20BuyTokenTx,
+  useNebulaWebapp,
 } from '@nebula-js/webapp-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
@@ -26,44 +27,57 @@ import { FeeBox } from 'components/boxes/FeeBox';
 import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
 import { ExchangeRateAB } from 'components/text/ExchangeRateAB';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
+import { fixHMR } from 'fix-hmr';
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
-export interface ClusterSellProps {
+export interface BuyProps {
   className?: string;
-  clusterInfo: ClusterInfo;
 }
 
-function ClusterSellBase({
-  className,
-  clusterInfo: { clusterState, terraswapPair, clusterTokenInfo },
-}: ClusterSellProps) {
+function BuyBase({ className }: BuyProps) {
   const connectedWallet = useConnectedWallet();
 
   const { broadcast } = useTxBroadcast();
 
-  const postTx = useCW20SellTokenTx(
-    clusterState.cluster_token,
-    terraswapPair.contract_addr,
-    clusterTokenInfo.symbol,
-  );
+  const [openConfirm, confirmElement] = useConfirm();
 
-  const [updateInput, states] = useCW20SellTokenForm<CT>({
-    ustTokenPairAddr: terraswapPair.contract_addr,
-    tokenAddr: clusterState.cluster_token,
+  const { contractAddress } = useNebulaWebapp();
+
+  const postTx = useCW20BuyTokenTx(contractAddress.terraswap.nebUstPair, 'NEB');
+
+  const [updateInput, states] = useCW20BuyTokenForm<NEB>({
+    tokenAddr: contractAddress.cw20.NEB,
+    ustTokenPairAddr: contractAddress.terraswap.nebUstPair,
   });
 
   const initForm = useCallback(() => {
     updateInput({
       ustAmount: '' as UST,
-      tokenAmount: '' as CT,
+      tokenAmount: '' as NEB,
     });
   }, [updateInput]);
 
   const proceed = useCallback(
-    (tokenAmount: CT, txFee: u<UST<BigSource>>) => {
+    async (
+      ustAmount: UST,
+      txFee: u<UST<BigSource>>,
+      warning: string | null,
+    ) => {
+      if (warning) {
+        const confirm = await openConfirm({
+          description: warning,
+          agree: 'Buy',
+          disagree: 'Cancel',
+        });
+
+        if (!confirm) {
+          return;
+        }
+      }
+
       const stream = postTx?.({
-        sellAmount: microfy(tokenAmount).toFixed() as u<UST>,
+        buyAmount: microfy(ustAmount).toFixed() as u<UST>,
         txFee: big(txFee).toFixed() as u<UST>,
         onTxSucceed: initForm,
       });
@@ -72,7 +86,7 @@ function ClusterSellBase({
         broadcast(stream);
       }
     },
-    [broadcast, initForm, postTx],
+    [broadcast, initForm, openConfirm, postTx],
   );
 
   // ---------------------------------------------
@@ -89,18 +103,18 @@ function ClusterSellBase({
     <div className={className}>
       <TokenInput
         maxDecimalPoints={6}
-        value={states.tokenAmount ?? ('' as CT)}
-        onChange={(nextTokenAmount) =>
-          updateInput({ tokenAmount: nextTokenAmount, ustAmount: undefined })
+        value={states.ustAmount ?? ('' as UST)}
+        onChange={(nextUstAmount) =>
+          updateInput({ ustAmount: nextUstAmount, tokenAmount: undefined })
         }
         placeholder="0.00"
-        label="FROM"
+        label="UST AMOUNT"
         suggest={
           <EmptyButton
             onClick={() =>
               updateInput({
-                tokenAmount: formatUInput(states.tokenBalance) as CT,
-                ustAmount: undefined,
+                ustAmount: formatUInput(states.maxUstAmount) as UST,
+                tokenAmount: undefined,
               })
             }
           >
@@ -109,11 +123,11 @@ function ClusterSellBase({
                 transform: 'translateX(-0.3em)',
               }}
             />{' '}
-            {formatUToken(states.tokenBalance)}
+            {formatUToken(states.maxUstAmount)}
           </EmptyButton>
         }
-        token={<TokenSpan>{clusterTokenInfo.symbol}</TokenSpan>}
-        error={states.invalidTokenAmount}
+        token={<TokenSpan>UST</TokenSpan>}
+        error={states.invalidUstAmount}
       />
 
       <IconSeparator>
@@ -122,13 +136,13 @@ function ClusterSellBase({
 
       <TokenInput
         maxDecimalPoints={6}
-        value={states.ustAmount ?? ('' as UST)}
-        onChange={(nextUstAmount) =>
-          updateInput({ ustAmount: nextUstAmount, tokenAmount: undefined })
+        value={states.tokenAmount ?? ('' as NEB)}
+        onChange={(nextNebAmount) =>
+          updateInput({ ustAmount: undefined, tokenAmount: nextNebAmount })
         }
         placeholder="0.00"
-        label="TO"
-        token={<TokenSpan>UST</TokenSpan>}
+        label="NEB AMOUNT"
+        token={<TokenSpan>NEB</TokenSpan>}
       />
 
       <FeeBox className="feebox">
@@ -136,10 +150,10 @@ function ClusterSellBase({
           <li>
             <span>Price</span>
             <ExchangeRateAB
-              symbolA={clusterTokenInfo.symbol}
-              symbolB="UST"
+              symbolA="UST"
+              symbolB="NEB"
               exchangeRateAB={states.beliefPrice}
-              initialDirection="b/a"
+              initialDirection="a/b"
               formatExchangeRate={(price) => formatFluidDecimalPoints(price, 6)}
             />
           </li>
@@ -147,13 +161,13 @@ function ClusterSellBase({
         {'minimumReceived' in states && (
           <li>
             <span>Minimum Received</span>
-            <span>{formatUToken(states.minimumReceived)} UST</span>
+            <span>{formatUToken(states.minimumReceived)} NEB</span>
           </li>
         )}
         {'tradingFee' in states && (
           <li>
             <span>Trading Fee</span>
-            <span>{formatUToken(states.tradingFee)} UST</span>
+            <span>{formatUToken(states.tradingFee)} NEB</span>
           </li>
         )}
         {'txFee' in states && (
@@ -167,6 +181,10 @@ function ClusterSellBase({
       {states.invalidTxFee ? (
         <WarningMessageBox level="critical" className="warning">
           {states.invalidTxFee}
+        </WarningMessageBox>
+      ) : states.warningNextTxFee ? (
+        <WarningMessageBox level="warning" className="warning">
+          {states.warningNextTxFee}
         </WarningMessageBox>
       ) : null}
 
@@ -182,18 +200,20 @@ function ClusterSellBase({
           !states.availableTx
         }
         onClick={() =>
-          states.tokenAmount &&
+          states.ustAmount &&
           'txFee' in states &&
-          proceed(states.tokenAmount, states.txFee)
+          proceed(states.ustAmount, states.txFee, states.warningNextTxFee)
         }
       >
-        Sell
+        Buy
       </Button>
+
+      {confirmElement}
     </div>
   );
 }
 
-export const ClusterSell = styled(ClusterSellBase)`
+export const StyledBuy = styled(BuyBase)`
   font-size: 1rem;
 
   .feebox {
@@ -218,3 +238,5 @@ export const ClusterSell = styled(ClusterSellBase)`
     }
   }
 `;
+
+export const Buy = fixHMR(StyledBuy);

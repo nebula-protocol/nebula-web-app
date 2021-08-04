@@ -1,4 +1,5 @@
 import { PlusIcon, WalletIcon } from '@nebula-js/icons';
+import { demicrofy, formatUToken } from '@nebula-js/notation';
 import { NEB, UST } from '@nebula-js/types';
 import {
   breakpoints,
@@ -9,8 +10,15 @@ import {
   TokenSpan,
   useScreenSizeValue,
 } from '@nebula-js/ui';
+import {
+  computeMaxUstBalanceForUstTransfer,
+  NebulaTax,
+  NebulaTokenBalances,
+} from '@nebula-js/webapp-fns';
+import { useNebulaWebapp } from '@nebula-js/webapp-provider';
+import { useBank } from '@terra-money/webapp-provider';
 import { FeeBox } from 'components/boxes/FeeBox';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 export interface StakingStakeProps {
@@ -21,12 +29,25 @@ function StakingStakeBase({ className }: StakingStakeProps) {
   const [fromAmount, setFromAmount] = useState<UST>('' as UST);
   const [toAmount, setToAmount] = useState<NEB>('' as NEB);
 
+  const { tokenBalances, tax } = useBank<NebulaTokenBalances, NebulaTax>();
+  const {
+    constants: { fixedGas },
+  } = useNebulaWebapp();
+
+  const { uUST, uNEB } = tokenBalances;
+
+  const ustBalance = useMemo(() => {
+    return computeMaxUstBalanceForUstTransfer(uUST, tax, fixedGas);
+  }, [fixedGas, tax, uUST]);
+
   const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
     mobile: 'medium',
     tablet: 'normal',
     pc: 'normal',
     monitor: 'normal',
   });
+
+  console.log('Stake.tsx..StakingStakeBase()', tokenBalances);
 
   return (
     <div className={className}>
@@ -36,13 +57,17 @@ function StakingStakeBase({ className }: StakingStakeProps) {
         placeholder="0.00"
         label="FROM"
         suggest={
-          <EmptyButton onClick={() => setFromAmount('1490' as UST)}>
+          <EmptyButton
+            onClick={() =>
+              setFromAmount(demicrofy(ustBalance).toFixed() as UST)
+            }
+          >
             <WalletIcon
               style={{
                 transform: 'translateX(-0.3em)',
               }}
             />{' '}
-            1,490.000000
+            {formatUToken(ustBalance)}
           </EmptyButton>
         }
         token={<TokenSpan>UST</TokenSpan>}
@@ -58,13 +83,15 @@ function StakingStakeBase({ className }: StakingStakeProps) {
         placeholder="0.00"
         label="TO"
         suggest={
-          <EmptyButton onClick={() => setToAmount('1490' as NEB)}>
+          <EmptyButton
+            onClick={() => setToAmount(demicrofy(uNEB).toFixed() as NEB)}
+          >
             <WalletIcon
               style={{
                 transform: 'translateX(-0.3em)',
               }}
             />{' '}
-            1,490.000000
+            {uNEB}
           </EmptyButton>
         }
         token={<TokenSpan>NEB</TokenSpan>}

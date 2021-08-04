@@ -5,7 +5,9 @@ import {
   Sub,
   TitledLabel,
 } from '@nebula-js/ui';
+import { fixHMR } from 'fix-hmr';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export interface NEBSectionProps {
@@ -24,9 +26,20 @@ function NEBSectionBase({ className }: NEBSectionProps) {
         iconMarginRight="0.3em"
         textGap="-0.15em"
       />
-      <Button className="button" size="medium">
-        Stake
-      </Button>
+      <div className="buttons">
+        <Button
+          size="medium"
+          componentProps={{ component: Link, to: '/gov/trade' }}
+        >
+          Trade
+        </Button>
+        <Button
+          size="medium"
+          componentProps={{ component: Link, to: '/gov/stake' }}
+        >
+          Stake
+        </Button>
+      </div>
       <section className="labels">
         <TitledLabel
           title="STAKABLE NEB"
@@ -56,7 +69,7 @@ function NEBSectionBase({ className }: NEBSectionProps) {
   );
 }
 
-export const NEBSection = styled(NEBSectionBase)`
+const StyledNEBSection = styled(NEBSectionBase)`
   min-height: 230px;
 
   background-color: var(--color-gray14);
@@ -71,11 +84,17 @@ export const NEBSection = styled(NEBSectionBase)`
     align-self: start;
   }
 
-  .button {
-    min-width: 120px;
-    max-width: 120px;
+  .buttons {
+    a {
+      min-width: 120px;
+      max-width: 120px;
+    }
 
     justify-self: end;
+
+    display: flex;
+    justify-content: flex-end;
+    gap: 1em;
   }
 
   .labels {
@@ -148,7 +167,7 @@ export const NEBSection = styled(NEBSectionBase)`
       }
     }
 
-    .button {
+    .buttons {
       grid-column: 1/3;
       grid-row: 3;
 
@@ -156,6 +175,15 @@ export const NEBSection = styled(NEBSectionBase)`
       width: 100%;
 
       margin-top: 32px;
+
+      justify-content: space-between;
+
+      a {
+        max-width: unset;
+        flex: 1;
+      }
     }
   }
 `;
+
+export const NEBSection = fixHMR(StyledNEBSection);

@@ -10,19 +10,19 @@ import {
   useRouteMatch,
 } from 'react-router-dom';
 import styled from 'styled-components';
-import { StakingStake } from './components/Stake';
-import { StakingUnstake } from './components/Unstake';
+import { Buy } from './components/Buy';
+import { Sell } from './components/Sell';
 
-export interface StakingStakeProps extends RouteComponentProps {
+export interface TradeProps extends RouteComponentProps {
   className?: string;
 }
 
 const tabItems: TabItem[] = [
-  { id: 'stake', label: 'Stake' },
-  { id: 'unstake', label: 'Unstake' },
+  { id: 'buy', label: 'Buy' },
+  { id: 'sell', label: 'Sell' },
 ];
 
-function StakingStakeBase({ className, match, history }: StakingStakeProps) {
+function TradeBase({ className, match, history }: TradeProps) {
   const pageMatch = useRouteMatch<{ page: string }>(`${match.url}/:page`);
 
   const tab = useMemo<TabItem | undefined>(() => {
@@ -39,7 +39,7 @@ function StakingStakeBase({ className, match, history }: StakingStakeProps) {
   );
 
   return (
-    <FormLayout className={className} title="Stake">
+    <FormLayout className={className} title="Trade NEB">
       <Tab
         className="tab"
         items={tabItems}
@@ -48,17 +48,17 @@ function StakingStakeBase({ className, match, history }: StakingStakeProps) {
       />
       <Section className="main">
         <Switch>
-          <Redirect exact path={`${match.url}/`} to={`${match.url}/stake`} />
-          <Route path={`${match.url}/stake`} component={StakingStake} />
-          <Route path={`${match.url}/unstake`} component={StakingUnstake} />
-          <Redirect path={`${match.url}/*`} to={`${match.url}/stake`} />
+          <Redirect exact path={`${match.url}/`} to={`${match.url}/buy`} />
+          <Route path={`${match.url}/buy`} component={Buy} />
+          <Route path={`${match.url}/sell`} component={Sell} />
+          <Redirect path={`${match.url}/*`} to={`${match.url}/buy`} />
         </Switch>
       </Section>
     </FormLayout>
   );
 }
 
-const StyledStakingStake = styled(StakingStakeBase)`
+export const StyledTrade = styled(TradeBase)`
   .tab {
     margin-bottom: 1px;
 
@@ -81,4 +81,4 @@ const StyledStakingStake = styled(StakingStakeBase)`
   }
 `;
 
-export default fixHMR(StyledStakingStake);
+export default fixHMR(StyledTrade);
