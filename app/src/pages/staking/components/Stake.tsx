@@ -114,7 +114,7 @@ function StakingStakeBase({
           updateInput({ ustAmount: nextUstAmount, tokenAmount: undefined })
         }
         placeholder="0.00"
-        label="FROM"
+        label="AMOUNT"
         suggest={
           <EmptyButton
             onClick={() =>
@@ -147,7 +147,7 @@ function StakingStakeBase({
           updateInput({ ustAmount: undefined, tokenAmount: nextCtAmount })
         }
         placeholder="0.00"
-        label="TO"
+        label="AMOUNT"
         suggest={
           <EmptyButton
             onClick={() =>

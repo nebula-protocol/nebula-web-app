@@ -31,8 +31,8 @@ export namespace terraswap {
       /** Pair contract address */
       contract_addr: HumanAddr;
 
-      /** LP contract address */
-      liquidity_token: CW20Addr;
+      /** LP contract address (not lp minter cw20 token) */
+      liquidity_token: HumanAddr;
     }
   }
 
