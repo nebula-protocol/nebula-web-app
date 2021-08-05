@@ -40,7 +40,7 @@ export function clusterArbMintTx(
 
   const increaseAllownance = $.assets
     .map(({ info }, i) => {
-      if ('token' in info) {
+      if ('token' in info && big($.amounts[i]).gt(0)) {
         return new MsgExecuteContract($.walletAddr, info.token.contract_addr, {
           increase_allowance: {
             spender: $.incentivesAddr,
@@ -94,10 +94,12 @@ export function clusterArbMintTx(
             {
               arb_cluster_mint: {
                 cluster_contract: $.clusterAddr,
-                assets: $.assets.map(({ info }, i) => ({
-                  info,
-                  amount: $.amounts[i],
-                })),
+                assets: $.assets
+                  .map(({ info }, i) => ({
+                    info,
+                    amount: $.amounts[i],
+                  }))
+                  .filter(({ amount }) => big(amount).gt(0)),
               },
             } as incentives.ArbClusterMint,
             nativeCoins.length > 0 ? new Coins(nativeCoins) : undefined,
