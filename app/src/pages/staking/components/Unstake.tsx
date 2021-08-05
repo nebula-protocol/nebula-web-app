@@ -1,6 +1,12 @@
 import { WalletIcon } from '@nebula-js/icons';
-import { formatUInput, formatUToken } from '@nebula-js/notation';
-import { CT, LP, u } from '@nebula-js/types';
+import {
+  formatFluidDecimalPoints,
+  formatRate,
+  formatUInput,
+  formatUToken,
+  microfy,
+} from '@nebula-js/notation';
+import { CT, LP, u, UST } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
@@ -11,9 +17,15 @@ import {
 } from '@nebula-js/ui';
 import { ClusterInfo } from '@nebula-js/webapp-fns';
 import { useCW20WithdrawTokenForm } from '@nebula-js/webapp-provider';
+import { useStakingUnstakeTx } from '@nebula-js/webapp-provider/tx/staking/unstake';
+import { useConnectedWallet } from '@terra-money/wallet-provider';
+import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
+import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
+import { ExchangeRateAB } from 'components/text/ExchangeRateAB';
+import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
 export interface StakingUnstakeProps {
@@ -25,10 +37,41 @@ function StakingUnstakeBase({
   className,
   clusterInfo: { clusterState, clusterTokenInfo, terraswapPair },
 }: StakingUnstakeProps) {
+  const connectedWallet = useConnectedWallet();
+
+  const { broadcast } = useTxBroadcast();
+
+  const postTx = useStakingUnstakeTx(
+    clusterState.cluster_token,
+    terraswapPair.contract_addr,
+    terraswapPair.liquidity_token,
+  );
+
   const [updateInput, states] = useCW20WithdrawTokenForm<CT>({
     ustTokenPairAddr: terraswapPair.contract_addr,
     lpAddr: terraswapPair.liquidity_token,
   });
+
+  const initForm = useCallback(() => {
+    updateInput({
+      lpAmount: '' as LP,
+    });
+  }, [updateInput]);
+
+  const proceed = useCallback(
+    async (lpAmount: LP, txFee: u<UST<BigSource>>) => {
+      const stream = postTx?.({
+        lpAmount: microfy(lpAmount).toFixed() as u<LP>,
+        txFee: big(txFee).toFixed() as u<UST>,
+        onTxSucceed: initForm,
+      });
+
+      if (stream) {
+        broadcast(stream);
+      }
+    },
+    [broadcast, initForm, postTx],
+  );
 
   // ---------------------------------------------
   // presentation
@@ -69,13 +112,61 @@ function StakingUnstakeBase({
       />
 
       <FeeBox className="feebox">
-        <li>
-          <span>Tx Fee</span>
-          <span>100 UST</span>
-        </li>
+        {states.poolPrice && (
+          <li>
+            <span>Price</span>
+            <ExchangeRateAB
+              symbolA="UST"
+              symbolB={clusterTokenInfo.symbol}
+              exchangeRateAB={states.poolPrice}
+              initialDirection="a/b"
+              formatExchangeRate={(price) => formatFluidDecimalPoints(price, 6)}
+            />
+          </li>
+        )}
+        {states.lpAfterTx && (
+          <li>
+            <span>LP after Tx</span>
+            <span>{formatUToken(states.lpAfterTx)} LP</span>
+          </li>
+        )}
+        {states.shareOfPool && (
+          <li>
+            <span>Share share after Tx</span>
+            <span>{formatRate(states.shareOfPool)}%</span>
+          </li>
+        )}
+        {states.txFee && (
+          <li>
+            <span>Tx Fee</span>
+            <span>{formatUToken(states.txFee)} UST</span>
+          </li>
+        )}
       </FeeBox>
 
-      <Button className="submit" color="paleblue" size={buttonSize}>
+      {states.invalidTxFee && (
+        <WarningMessageBox level="critical" className="warning">
+          {states.invalidTxFee}
+        </WarningMessageBox>
+      )}
+
+      <Button
+        className="submit"
+        color="paleblue"
+        size={buttonSize}
+        disabled={
+          !connectedWallet ||
+          !connectedWallet.availablePost ||
+          !postTx ||
+          !states ||
+          !states.availableTx
+        }
+        onClick={() =>
+          states.lpAmount &&
+          states.txFee &&
+          proceed(states.lpAmount, states.txFee)
+        }
+      >
         Unstake
       </Button>
     </div>

@@ -1,4 +1,4 @@
-import { HumanAddr, LP, Token, u } from '@nebula-js/types';
+import { HumanAddr, LP, LPAddr, Token, u } from '@nebula-js/types';
 import {
   cw20WithdrawTokenForm,
   CW20WithdrawTokenForm,
@@ -6,16 +6,16 @@ import {
   NebulaTax,
   NebulaTokenBalances,
 } from '@nebula-js/webapp-fns';
-import { useLpBalanceQuery } from '../../queries/lp/balance';
 import { useForm } from '@terra-dev/use-form';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useBank } from '@terra-money/webapp-provider';
 import { useNebulaWebapp } from '../../contexts/webapp';
+import { useCW20BalanceQuery } from '../../queries/cw20/balance';
 import { useTerraswapPoolQuery } from '../../queries/terraswap/pool';
 
 export interface CW20WithdrawTokenFormParams {
   ustTokenPairAddr: HumanAddr;
-  lpAddr: HumanAddr;
+  lpAddr: LPAddr;
 }
 
 export function useCW20WithdrawTokenForm<T extends Token>({
@@ -30,10 +30,15 @@ export function useCW20WithdrawTokenForm<T extends Token>({
 
   const { tax, tokenBalances } = useBank<NebulaTokenBalances, NebulaTax>();
 
-  const { data: { tokenBalance } = {} } = useLpBalanceQuery(
+  const { data: { tokenBalance } = {} } = useCW20BalanceQuery<LP>(
+    //@ts-ignore
     lpAddr,
     connectedWallet?.walletAddress,
   );
+  //const { data: { tokenBalance } = {} } = useLpBalanceQuery(
+  //  lpAddr,
+  //  connectedWallet?.walletAddress,
+  //);
 
   console.log(
     'withdrawToken.ts..useCW20WithdrawTokenForm()',

@@ -1,14 +1,18 @@
-import { HumanAddr, LP, lp, terraswap } from '@nebula-js/types';
+import { HumanAddr, LP, lp, terraswap, UST } from '@nebula-js/types';
 import { MantleParams, WasmQuery } from '@terra-dev/mantle';
 import { CW20Balance, cw20BalanceQuery } from '../cw20/balance';
-import { terraswapPoolQuery } from '../terraswap/pool';
+import { TerraswapPoolInfo, terraswapPoolQuery } from '../terraswap/pool';
 import { lpMinterQuery } from './minter';
 
 export interface LpBalanceWasmQuery {
-  minter: WasmQuery<lp.Minter, lp.Minter>;
+  minter: WasmQuery<lp.Minter, lp.MinterResponse>;
 }
 
-export type LpBalance = CW20Balance<LP>;
+export type LpBalance = CW20Balance<LP> & {
+  minter: lp.MinterResponse;
+  terraswapPool: terraswap.pair.PoolResponse<LP, UST>;
+  terraswapPoolInfo: TerraswapPoolInfo<LP>;
+};
 
 export type LpBalanceQueryParams = Omit<
   MantleParams<LpBalanceWasmQuery>,
@@ -29,7 +33,7 @@ export async function lpBalanceQuery({
     ...params,
   });
 
-  const { terraswapPool } = await terraswapPoolQuery({
+  const { terraswapPool, terraswapPoolInfo } = await terraswapPoolQuery<LP>({
     mantleEndpoint,
     wasmQuery: {
       terraswapPool: {
@@ -46,7 +50,7 @@ export async function lpBalanceQuery({
     (asset): asset is terraswap.CW20Asset<LP> => 'token' in asset.info,
   )!;
 
-  return cw20BalanceQuery<LP>({
+  const { tokenBalance } = await cw20BalanceQuery<LP>({
     mantleEndpoint,
     wasmQuery: {
       tokenBalance: {
@@ -60,4 +64,11 @@ export async function lpBalanceQuery({
     },
     ...params,
   });
+
+  return {
+    tokenBalance,
+    minter,
+    terraswapPool,
+    terraswapPoolInfo,
+  };
 }

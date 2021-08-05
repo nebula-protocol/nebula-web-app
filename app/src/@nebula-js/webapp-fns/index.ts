@@ -48,4 +48,5 @@ export * from './tx/clusters/redeemAdvanced';
 export * from './tx/cw20/buyToken';
 export * from './tx/cw20/sellToken';
 export * from './tx/staking/stake';
+export * from './tx/staking/unstake';
 export * from './tx/TxCommonParams';

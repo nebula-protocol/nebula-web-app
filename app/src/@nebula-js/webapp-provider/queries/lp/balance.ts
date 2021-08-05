@@ -1,4 +1,4 @@
-import { HumanAddr } from '@nebula-js/types';
+import { HumanAddr, LPAddr } from '@nebula-js/types';
 import { LpBalance, lpBalanceQuery } from '@nebula-js/webapp-fns';
 import { createQueryFn } from '@terra-dev/react-query-utils';
 import { useBrowserInactive } from '@terra-dev/use-browser-inactive';
@@ -11,7 +11,7 @@ const queryFn = createQueryFn(
     mantleEndpoint: string,
     mantleFetch: MantleFetch,
     walletAddr: HumanAddr | undefined,
-    lpAddr: HumanAddr,
+    lpAddr: LPAddr,
   ) => {
     return walletAddr
       ? lpBalanceQuery({
@@ -32,7 +32,7 @@ const queryFn = createQueryFn(
 );
 
 export function useLpBalanceQuery(
-  lpAddr: HumanAddr,
+  lpAddr: LPAddr,
   walletAddr: HumanAddr | undefined,
 ): UseQueryResult<LpBalance | undefined> {
   const { mantleFetch, mantleEndpoint, queryErrorReporter } = useTerraWebapp();

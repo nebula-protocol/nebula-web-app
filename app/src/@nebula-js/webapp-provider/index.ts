@@ -29,3 +29,4 @@ export * from './tx/clusters/redeem';
 export * from './tx/cw20/buyToken';
 export * from './tx/cw20/sellToken';
 export * from './tx/staking/stake';
+export * from './tx/staking/unstake';

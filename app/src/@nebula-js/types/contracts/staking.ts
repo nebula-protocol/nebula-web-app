@@ -1,6 +1,6 @@
-import { terraswap } from './terraswap';
-import { Token } from '../tokens';
+import { LP, Token, u } from '../tokens';
 import { CW20Addr, HumanAddr, rs } from './common';
+import { terraswap } from './terraswap';
 
 export namespace staking {
   // ---------------------------------------------
@@ -8,15 +8,17 @@ export namespace staking {
   // ---------------------------------------------
   export interface Unbond {
     unbond: {
-      asset_token: HumanAddr;
+      // TODO is this CW20Addr or HumanAddr?
+      asset_token: CW20Addr;
       // TODO set token type to amount
-      amount: rs.Uint128;
+      amount: u<LP<rs.Uint128>>;
     };
   }
 
   export interface Withdraw {
     withdraw: {
-      asset_token?: HumanAddr;
+      // TODO is this CW20Addr or HumanAddr?
+      asset_token?: CW20Addr;
     };
   }
 
