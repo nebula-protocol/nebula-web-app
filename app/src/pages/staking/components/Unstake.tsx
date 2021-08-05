@@ -124,6 +124,15 @@ function StakingUnstakeBase({
             />
           </li>
         )}
+        {states.returnUstAmount && states.returnTokenAmount && (
+          <li>
+            <span>Returned</span>
+            <span>
+              {formatUToken(states.returnTokenAmount)} NEB +{' '}
+              {formatUToken(states.returnUstAmount)} UST
+            </span>
+          </li>
+        )}
         {states.lpAfterTx && (
           <li>
             <span>LP after Tx</span>
