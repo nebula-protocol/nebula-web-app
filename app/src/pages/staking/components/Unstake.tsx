@@ -1,7 +1,6 @@
 import { WalletIcon } from '@nebula-js/icons';
 import {
   formatFluidDecimalPoints,
-  formatRate,
   formatUInput,
   formatUToken,
   microfy,
@@ -16,8 +15,10 @@ import {
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { ClusterInfo } from '@nebula-js/webapp-fns';
-import { useCW20WithdrawTokenForm } from '@nebula-js/webapp-provider';
-import { useStakingUnstakeTx } from '@nebula-js/webapp-provider/tx/staking/unstake';
+import {
+  useStakingUnstakeForm,
+  useStakingUnstakeTx,
+} from '@nebula-js/webapp-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
@@ -47,9 +48,8 @@ function StakingUnstakeBase({
     terraswapPair.liquidity_token,
   );
 
-  const [updateInput, states] = useCW20WithdrawTokenForm<CT>({
+  const [updateInput, states] = useStakingUnstakeForm<CT>({
     ustTokenPairAddr: terraswapPair.contract_addr,
-    lpAddr: terraswapPair.liquidity_token,
   });
 
   const initForm = useCallback(() => {
@@ -124,25 +124,13 @@ function StakingUnstakeBase({
             />
           </li>
         )}
-        {states.returnUstAmount && states.returnTokenAmount && (
+        {states.returnedUstAmount && states.returnedTokenAmount && (
           <li>
             <span>Returned</span>
             <span>
-              {formatUToken(states.returnTokenAmount)} NEB +{' '}
-              {formatUToken(states.returnUstAmount)} UST
+              {formatUToken(states.returnedTokenAmount)} NEB +{' '}
+              {formatUToken(states.returnedUstAmount)} UST
             </span>
-          </li>
-        )}
-        {states.lpAfterTx && (
-          <li>
-            <span>LP after Tx</span>
-            <span>{formatUToken(states.lpAfterTx)} LP</span>
-          </li>
-        )}
-        {states.shareOfPool && (
-          <li>
-            <span>Share share after Tx</span>
-            <span>{formatRate(states.shareOfPool)}%</span>
           </li>
         )}
         {states.txFee && (

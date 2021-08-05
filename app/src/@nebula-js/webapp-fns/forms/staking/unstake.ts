@@ -1,16 +1,16 @@
 import { microfy } from '@nebula-js/notation';
-import { LP, Rate, Token, u, UST } from '@nebula-js/types';
+import { LP, Token, u, UST } from '@nebula-js/types';
 import { NebulaTax } from '@nebula-js/webapp-fns/types';
-import { max, min } from '@terra-dev/big-math';
+import { min } from '@terra-dev/big-math';
 import { FormFunction, FormReturn } from '@terra-dev/use-form';
 import big, { Big, BigSource } from 'big.js';
 import { TerraswapPoolInfo } from '../../queries/terraswap/pool';
 
-export interface CW20WithdrawTokenFormInput {
+export interface StakingUnstakeFormInput {
   lpAmount: LP;
 }
 
-export interface CW20WithdrawTokenFormDependency<T extends Token> {
+export interface StakingUnstakeFormDependency<T extends Token> {
   poolInfo: TerraswapPoolInfo<T> | undefined;
   //
   ustBalance: u<UST>;
@@ -20,46 +20,44 @@ export interface CW20WithdrawTokenFormDependency<T extends Token> {
   connected: boolean;
 }
 
-export interface CW20WithdrawTokenFormStates<T extends Token>
-  extends CW20WithdrawTokenFormInput {
+export interface StakingUnstakeFormStates<T extends Token>
+  extends StakingUnstakeFormInput {
   maxLpAmount: u<LP>;
   invalidTxFee: string | null;
   invalidLpAmount: string | null;
   availableTx: boolean;
   //
-  returnUstAmount: u<UST> | null;
-  returnTokenAmount: u<T> | null;
+  returnedUstAmount: u<UST> | null;
+  returnedTokenAmount: u<T> | null;
   //
   poolPrice: UST | null;
   txFee: u<UST<BigSource>> | null;
-  lpAfterTx: u<LP<BigSource>> | null;
-  shareOfPool: Rate<BigSource> | null;
 }
 
-export type CW20WithdrawTokenFormAsyncStates = {};
+export type StakingUnstakeFormAsyncStates = {};
 
-export type CW20WithdrawTokenForm<T extends Token> = FormFunction<
-  CW20WithdrawTokenFormInput,
-  CW20WithdrawTokenFormDependency<T>,
-  CW20WithdrawTokenFormStates<T>,
-  CW20WithdrawTokenFormAsyncStates
+export type StakingUnstakeForm<T extends Token> = FormFunction<
+  StakingUnstakeFormInput,
+  StakingUnstakeFormDependency<T>,
+  StakingUnstakeFormStates<T>,
+  StakingUnstakeFormAsyncStates
 >;
 
-export const cw20WithdrawTokenForm = <T extends Token>({
+export const stakingUnstakeForm = <T extends Token>({
   lpBalance,
   ustBalance,
   tax,
   fixedGas,
   poolInfo,
   connected,
-}: CW20WithdrawTokenFormDependency<T>) => {
+}: StakingUnstakeFormDependency<T>) => {
   const maxLpAmount = lpBalance;
 
   return ({
     lpAmount,
-  }: CW20WithdrawTokenFormInput): FormReturn<
-    CW20WithdrawTokenFormStates<T>,
-    CW20WithdrawTokenFormAsyncStates
+  }: StakingUnstakeFormInput): FormReturn<
+    StakingUnstakeFormStates<T>,
+    StakingUnstakeFormAsyncStates
   > => {
     const lpAmountExists: boolean =
       !!lpAmount && lpAmount.length > 0 && big(lpAmount).gt(0);
@@ -69,12 +67,10 @@ export const cw20WithdrawTokenForm = <T extends Token>({
         {
           lpAmount,
           maxLpAmount,
-          returnUstAmount: null,
-          returnTokenAmount: null,
+          returnedUstAmount: null,
+          returnedTokenAmount: null,
           poolPrice: null,
           txFee: null,
-          lpAfterTx: null,
-          shareOfPool: null,
           invalidTxFee: null,
           invalidLpAmount: null,
           availableTx: false,
@@ -92,12 +88,6 @@ export const cw20WithdrawTokenForm = <T extends Token>({
       .div(poolInfo.lpShare) as u<Token<Big>>;
 
     const poolPrice = poolInfo.tokenPrice;
-
-    const lpAfterTx = max(0, big(lpBalance).minus(lp)) as u<LP<Big>>;
-
-    const shareOfPool = lpAfterTx.div(
-      big(poolInfo.lpShare).plus(lpAfterTx),
-    ) as Rate<Big>;
 
     const txFee = min(ust.mul(tax.taxRate), tax.maxTaxUUSD).plus(fixedGas) as u<
       UST<Big>
@@ -117,10 +107,8 @@ export const cw20WithdrawTokenForm = <T extends Token>({
         maxLpAmount,
         poolPrice,
         txFee,
-        returnUstAmount: ust.toFixed() as u<UST>,
-        returnTokenAmount: token.toFixed() as u<T>,
-        lpAfterTx,
-        shareOfPool,
+        returnedUstAmount: ust.toFixed() as u<UST>,
+        returnedTokenAmount: token.toFixed() as u<T>,
         invalidTxFee,
         invalidLpAmount,
         availableTx,

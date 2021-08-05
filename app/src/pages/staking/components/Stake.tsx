@@ -1,7 +1,6 @@
 import { PlusIcon, WalletIcon } from '@nebula-js/icons';
 import {
   formatFluidDecimalPoints,
-  formatRate,
   formatUInput,
   formatUToken,
   microfy,
@@ -19,7 +18,7 @@ import {
 } from '@nebula-js/ui';
 import { ClusterInfo } from '@nebula-js/webapp-fns';
 import {
-  useCW20ProvideTokenForm,
+  useStakingStakeForm,
   useStakingStakeTx,
 } from '@nebula-js/webapp-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
@@ -51,8 +50,8 @@ function StakingStakeBase({
     terraswapPair.contract_addr,
   );
 
-  const [updateInput, states] = useCW20ProvideTokenForm<CT>({
-    tokenAddr: clusterState.cluster_token,
+  const [updateInput, states] = useStakingStakeForm({
+    clusterTokenAddr: clusterState.cluster_token,
     ustTokenPairAddr: terraswapPair.contract_addr,
   });
 
@@ -182,16 +181,10 @@ function StakingStakeBase({
             />
           </li>
         )}
-        {states.lpFromTx && (
+        {states.lpStakedFromTx && (
           <li>
-            <span>LP from Tx</span>
-            <span>{formatUToken(states.lpFromTx)} LP</span>
-          </li>
-        )}
-        {states.shareOfPool && (
-          <li>
-            <span>Share of Pool</span>
-            <span>{formatRate(states.shareOfPool)}%</span>
+            <span>LP Staked from Tx</span>
+            <span>{formatUToken(states.lpStakedFromTx)} LP</span>
           </li>
         )}
         {states.txFee && (

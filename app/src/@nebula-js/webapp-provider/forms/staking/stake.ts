@@ -1,10 +1,9 @@
-import { HumanAddr, LP, LPAddr, Token, u } from '@nebula-js/types';
+import { CT, CW20Addr, HumanAddr, u, UST } from '@nebula-js/types';
 import {
-  cw20WithdrawTokenForm,
-  CW20WithdrawTokenForm,
-  CW20WithdrawTokenFormInput,
   NebulaTax,
   NebulaTokenBalances,
+  stakingStakeForm,
+  StakingStakeFormInput,
 } from '@nebula-js/webapp-fns';
 import { useForm } from '@terra-dev/use-form';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
@@ -13,15 +12,15 @@ import { useNebulaWebapp } from '../../contexts/webapp';
 import { useCW20BalanceQuery } from '../../queries/cw20/balance';
 import { useTerraswapPoolQuery } from '../../queries/terraswap/pool';
 
-export interface CW20WithdrawTokenFormParams {
+export interface StakingStakeFormParams {
   ustTokenPairAddr: HumanAddr;
-  lpAddr: LPAddr;
+  clusterTokenAddr: CW20Addr;
 }
 
-export function useCW20WithdrawTokenForm<T extends Token>({
+export function useStakingStakeForm({
   ustTokenPairAddr,
-  lpAddr,
-}: CW20WithdrawTokenFormParams) {
+  clusterTokenAddr,
+}: StakingStakeFormParams) {
   const connectedWallet = useConnectedWallet();
 
   const {
@@ -30,37 +29,24 @@ export function useCW20WithdrawTokenForm<T extends Token>({
 
   const { tax, tokenBalances } = useBank<NebulaTokenBalances, NebulaTax>();
 
-  const { data: { tokenBalance } = {} } = useCW20BalanceQuery<LP>(
-    //@ts-ignore
-    lpAddr,
+  const { data: { tokenBalance } = {} } = useCW20BalanceQuery<CT>(
+    clusterTokenAddr,
     connectedWallet?.walletAddress,
-  );
-  //const { data: { tokenBalance } = {} } = useLpBalanceQuery(
-  //  lpAddr,
-  //  connectedWallet?.walletAddress,
-  //);
-
-  console.log(
-    'withdrawToken.ts..useCW20WithdrawTokenForm()',
-    lpAddr,
-    tokenBalance,
   );
 
   const { data: { terraswapPoolInfo } = {} } =
-    useTerraswapPoolQuery<T>(ustTokenPairAddr);
-
-  const form: CW20WithdrawTokenForm<T> = cw20WithdrawTokenForm;
+    useTerraswapPoolQuery<CT>(ustTokenPairAddr);
 
   return useForm(
-    form,
+    stakingStakeForm,
     {
-      lpBalance: tokenBalance?.balance ?? ('0' as u<LP>),
+      tokenBalance: tokenBalance?.balance ?? ('0' as u<CT>),
       ustBalance: tokenBalances.uUST,
       poolInfo: terraswapPoolInfo,
       tax,
       fixedGas,
       connected: !!connectedWallet,
     },
-    () => ({ lpAmount: '' as LP } as CW20WithdrawTokenFormInput),
+    () => ({ ustAmount: '' as UST } as StakingStakeFormInput),
   );
 }

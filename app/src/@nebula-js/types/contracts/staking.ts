@@ -1,4 +1,4 @@
-import { LP, Token, u } from '../tokens';
+import { LP, Token, u, UST } from '../tokens';
 import { CW20Addr, HumanAddr, rs } from './common';
 import { terraswap } from './terraswap';
 
@@ -61,18 +61,18 @@ export namespace staking {
   export interface RewardInfo {
     reward_info: {
       staker_addr: HumanAddr;
-      asset_token?: HumanAddr;
+      /** cluster_token */
+      asset_token?: CW20Addr;
     };
   }
 
   export interface RewardInfoResponse {
     staker_addr: HumanAddr;
     reward_infos: Array<{
-      asset_token: HumanAddr;
-      // TODO set token type to bond_amount
-      bond_amount: rs.Uint128;
+      asset_token: CW20Addr;
+      bond_amount: u<LP<rs.Uint128>>;
       // TODO set token type to pending_reward
-      pending_reward: rs.Uint128;
+      pending_reward: u<UST<rs.Uint128>>;
     }>;
   }
 }

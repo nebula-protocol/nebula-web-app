@@ -1,5 +1,5 @@
 import { formatUInput, microfy } from '@nebula-js/notation';
-import { LP, Rate, Token, u, UST } from '@nebula-js/types';
+import { CT, LP, Token, u, UST } from '@nebula-js/types';
 import { NebulaTax } from '@nebula-js/webapp-fns/types';
 import { min } from '@terra-dev/big-math';
 import { FormFunction, FormReturn } from '@terra-dev/use-form';
@@ -7,25 +7,24 @@ import big, { Big, BigSource } from 'big.js';
 import { computeMaxUstBalanceForUstTransfer } from '../../logics/computeMaxUstBalanceForUstTransfer';
 import { TerraswapPoolInfo } from '../../queries/terraswap/pool';
 
-export interface CW20ProvideTokenFormInput<T extends Token> {
+export interface StakingStakeFormInput {
   ustAmount?: UST;
-  tokenAmount?: T;
+  tokenAmount?: CT;
 }
 
-export interface CW20ProvideTokenFormDependency<T extends Token> {
-  poolInfo: TerraswapPoolInfo<T> | undefined;
+export interface StakingStakeFormDependency {
+  poolInfo: TerraswapPoolInfo<CT> | undefined;
   //
   ustBalance: u<UST>;
-  tokenBalance: u<T>;
+  tokenBalance: u<CT>;
   tax: NebulaTax;
   fixedGas: u<UST<BigSource>>;
   connected: boolean;
 }
 
-export interface CW20ProvideTokenFormStates<T extends Token>
-  extends CW20ProvideTokenFormInput<T> {
+export interface StakingStakeFormStates extends StakingStakeFormInput {
   maxUstAmount: u<UST<BigSource>>;
-  maxTokenAmount: u<T>;
+  maxTokenAmount: u<CT>;
   invalidTxFee: string | null;
   invalidUstAmount: string | null;
   invalidTokenAmount: string | null;
@@ -34,27 +33,26 @@ export interface CW20ProvideTokenFormStates<T extends Token>
   //
   poolPrice: UST | null;
   txFee: u<UST<BigSource>> | null;
-  lpFromTx: u<LP<BigSource>> | null;
-  shareOfPool: Rate<BigSource> | null;
+  lpStakedFromTx: u<LP<BigSource>> | null;
 }
 
-export type CW20ProvideTokenFormAsyncStates = {};
+export type StakingStakeFormAsyncStates = {};
 
-export type CW20ProvideTokenForm<T extends Token> = FormFunction<
-  CW20ProvideTokenFormInput<T>,
-  CW20ProvideTokenFormDependency<T>,
-  CW20ProvideTokenFormStates<T>,
-  CW20ProvideTokenFormAsyncStates
+export type StakingStakeForm = FormFunction<
+  StakingStakeFormInput,
+  StakingStakeFormDependency,
+  StakingStakeFormStates,
+  StakingStakeFormAsyncStates
 >;
 
-export const cw20ProvideTokenForm = <T extends Token>({
+export const stakingStakeForm = ({
   ustBalance,
   tokenBalance,
   tax,
   fixedGas,
   poolInfo,
   connected,
-}: CW20ProvideTokenFormDependency<T>) => {
+}: StakingStakeFormDependency) => {
   const maxUstAmount = computeMaxUstBalanceForUstTransfer(
     ustBalance,
     tax,
@@ -66,9 +64,9 @@ export const cw20ProvideTokenForm = <T extends Token>({
   return ({
     tokenAmount,
     ustAmount,
-  }: CW20ProvideTokenFormInput<T>): FormReturn<
-    CW20ProvideTokenFormStates<T>,
-    CW20ProvideTokenFormAsyncStates
+  }: StakingStakeFormInput): FormReturn<
+    StakingStakeFormStates,
+    StakingStakeFormAsyncStates
   > => {
     const ustAmountExists: boolean =
       !!ustAmount && ustAmount.length > 0 && big(ustAmount).gt(0);
@@ -84,8 +82,7 @@ export const cw20ProvideTokenForm = <T extends Token>({
           maxTokenAmount,
           poolPrice: null,
           txFee: null,
-          lpFromTx: null,
-          shareOfPool: null,
+          lpStakedFromTx: null,
           invalidTxFee: null,
           invalidUstAmount: null,
           invalidTokenAmount: null,
@@ -98,27 +95,23 @@ export const cw20ProvideTokenForm = <T extends Token>({
 
     let ust: u<UST<Big>>;
     let token: u<Token<Big>>;
-    let returnUstAmount: UST | null = null;
-    let returnTokenAmount: T | null = null;
+    let returnedUstAmount: UST | null = null;
+    let returnedTokenAmount: CT | null = null;
 
     if (ustAmountExists) {
       ust = microfy(ustAmount!);
       token = big(ust).div(poolInfo.tokenPrice) as u<Token<Big>>;
-      returnTokenAmount = formatUInput(token) as T;
+      returnedTokenAmount = formatUInput(token) as CT;
     } else {
       token = microfy(tokenAmount!);
       ust = token.mul(poolInfo.tokenPrice) as u<UST<Big>>;
-      returnUstAmount = formatUInput(ust) as UST;
+      returnedUstAmount = formatUInput(ust) as UST;
     }
 
     const lpFromTx = min(
       ust.mul(poolInfo.lpShare).div(poolInfo.ustPoolSize),
       token.mul(poolInfo.lpShare).div(poolInfo.tokenPoolSize),
     ) as u<LP<Big>>;
-
-    const shareOfPool = lpFromTx.div(
-      big(poolInfo.lpShare).plus(lpFromTx),
-    ) as Rate<Big>;
 
     const txFee = min(ust.mul(tax.taxRate), tax.maxTaxUUSD).plus(fixedGas) as u<
       UST<Big>
@@ -145,14 +138,13 @@ export const cw20ProvideTokenForm = <T extends Token>({
 
     return [
       {
-        ustAmount: returnUstAmount ?? ustAmount,
-        tokenAmount: returnTokenAmount ?? tokenAmount,
+        ustAmount: returnedUstAmount ?? ustAmount,
+        tokenAmount: returnedTokenAmount ?? tokenAmount,
         maxUstAmount,
         maxTokenAmount,
         txFee,
         poolPrice: poolInfo.tokenPrice,
-        lpFromTx,
-        shareOfPool,
+        lpStakedFromTx: lpFromTx,
         invalidTxFee,
         invalidUstAmount,
         invalidTokenAmount,
