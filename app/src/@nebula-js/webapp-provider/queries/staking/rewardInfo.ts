@@ -74,5 +74,11 @@ export function useStakingRewardInfoQuery(
     },
   );
 
+  console.log(
+    'rewardInfo.ts..useStakingRewardInfoQuery()',
+    clusterToken,
+    JSON.stringify(result.data, null, 2),
+  );
+
   return result;
 }

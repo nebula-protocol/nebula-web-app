@@ -48,8 +48,11 @@ function StakingUnstakeBase({
     terraswapPair.liquidity_token,
   );
 
+  console.log('Unstake.tsx..StakingUnstakeBase()', clusterState.cluster_token);
+
   const [updateInput, states] = useStakingUnstakeForm<CT>({
     ustTokenPairAddr: terraswapPair.contract_addr,
+    clusterTokenAddr: clusterState.cluster_token,
   });
 
   const initForm = useCallback(() => {

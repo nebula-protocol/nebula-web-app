@@ -52,6 +52,7 @@ export function useStakingUnstakeTx(
         mantleEndpoint,
         mantleFetch,
         txErrorReporter,
+        //terraswapPoolAddr: contractAddress.terraswap
         onTxSucceed: () => {
           onTxSucceed?.();
           refetchQueries(NEBULA_TX_KEYS.STAKING_STAKE);
