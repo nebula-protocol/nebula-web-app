@@ -2,7 +2,7 @@ import { formatUInput, microfy } from '@nebula-js/notation';
 import { CT, LP, Token, u, UST } from '@nebula-js/types';
 import { NebulaTax } from '@nebula-js/webapp-fns/types';
 import { min } from '@terra-dev/big-math';
-import { FormFunction, FormReturn } from '@terra-dev/use-form';
+import { FormReturn } from '@terra-dev/use-form';
 import big, { Big, BigSource } from 'big.js';
 import { computeMaxUstBalanceForUstTransfer } from '../../logics/computeMaxUstBalanceForUstTransfer';
 import { TerraswapPoolInfo } from '../../queries/terraswap/pool';
@@ -37,13 +37,6 @@ export interface StakingStakeFormStates extends StakingStakeFormInput {
 }
 
 export type StakingStakeFormAsyncStates = {};
-
-export type StakingStakeForm = FormFunction<
-  StakingStakeFormInput,
-  StakingStakeFormDependency,
-  StakingStakeFormStates,
-  StakingStakeFormAsyncStates
->;
 
 export const stakingStakeForm = ({
   ustBalance,
