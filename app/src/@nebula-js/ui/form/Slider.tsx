@@ -22,6 +22,23 @@ export const Slider = withStyles({
     },
   },
   active: {},
+  mark: {
+    width: 1,
+    height: 10,
+    transform: 'translate(-0.5px, -10px)',
+    opacity: 0.7,
+  },
+  markLabel: ({ marks = [] }: any) => ({
+    'fontSize': 11,
+    '--mark-y': 'var(--slider-mark-y, -40px)',
+    'transform': `translateY(var(--mark-y))`,
+    '&[data-index="0"]': {
+      transform: `translate(0, var(--mark-y))`,
+    },
+    [`&[data-index="${marks.length - 1}"]`]: {
+      transform: `translate(-100%, var(--mark-y))`,
+    },
+  }),
   track: {
     height: 8,
     borderRadius: 0,

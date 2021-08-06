@@ -1,4 +1,4 @@
-import { CW20Addr, HumanAddr, NEB, u } from '@nebula-js/types';
+import { cw20, CW20Addr, gov, HumanAddr, NEB, u } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
 import { floor } from '@terra-dev/big-math';
 import { MsgExecuteContract, StdFee } from '@terra-money/terra.js';
@@ -35,13 +35,14 @@ export function govStakeTx(
           send: {
             contract: $.govAddr,
             amount: $.nebAmount,
-            lock_for_weeks: $.lockForWeeks.toString(),
             msg: Buffer.from(
               JSON.stringify({
-                stake_voting_tokens: {},
-              }),
+                stake_voting_tokens: {
+                  lock_for_weeks: $.lockForWeeks,
+                },
+              } as gov.StakeVotingTokens),
             ).toString('base64'),
-          },
+          } as cw20.Send<NEB>,
         }),
       ],
       fee: new StdFee($.gasFee, floor($.txFee) + 'uusd'),

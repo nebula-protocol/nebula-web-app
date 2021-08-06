@@ -5,6 +5,7 @@ import {
   breakpoints,
   Button,
   EmptyButton,
+  Slider,
   TokenInput,
   TokenSpan,
   useScreenSizeValue,
@@ -16,7 +17,7 @@ import { FeeBox } from 'components/boxes/FeeBox';
 import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
-import React, { useCallback } from 'react';
+import React, { ChangeEvent, useCallback } from 'react';
 import styled from 'styled-components';
 
 export interface GovStakeProps {
@@ -93,6 +94,46 @@ function GovStakeBase({ className }: GovStakeProps) {
         error={states.invalidNebAmount}
       />
 
+      <TokenInput
+        className="lockup-weeks"
+        maxIntegerPoints={3}
+        maxDecimalPoints={0}
+        value={states.lockForWeeks.toString()}
+        onChange={(nextLockForWeeks) => {
+          if (nextLockForWeeks.length > 0) {
+            updateInput({
+              lockForWeeks: Math.min(+nextLockForWeeks, states.maxLockForWeeks),
+            });
+          } else {
+            updateInput({ lockForWeeks: 1 });
+          }
+        }}
+        placeholder="0"
+        label="LOCK-UP WEEKS"
+      />
+
+      <Slider
+        className="lockup-weeks-slider"
+        value={states.lockForWeeks}
+        min={states.minLockForWeeks}
+        max={states.maxLockForWeeks}
+        marks={[
+          {
+            value: states.minLockForWeeks,
+            label: `${states.minLockForWeeks} Week`,
+          },
+          {
+            value: states.maxLockForWeeks,
+            label: `${Math.round(states.maxLockForWeeks / 52)} Years`,
+          },
+        ]}
+        onChange={(_: ChangeEvent<{}>, nextLockForWeeks: number | number[]) => {
+          if (typeof nextLockForWeeks === 'number') {
+            updateInput({ lockForWeeks: nextLockForWeeks });
+          }
+        }}
+      />
+
       <FeeBox className="feebox">
         {states.txFee && (
           <li>
@@ -115,7 +156,7 @@ function GovStakeBase({ className }: GovStakeProps) {
         disabled={
           !connectedWallet ||
           !connectedWallet.availablePost ||
-          //!postTx ||
+          !postTx ||
           !states ||
           !states.availableTx
         }
@@ -134,8 +175,16 @@ function GovStakeBase({ className }: GovStakeProps) {
 export const StyledGovStake = styled(GovStakeBase)`
   font-size: 1rem;
 
+  .lockup-weeks {
+    margin-top: 2.28571429em;
+  }
+
+  .lockup-weeks-slider {
+    margin-top: 3.57142857em;
+  }
+
   .feebox {
-    margin-top: 2.8em;
+    margin-top: 2.4em;
   }
 
   .submit {
@@ -148,7 +197,7 @@ export const StyledGovStake = styled(GovStakeBase)`
   @media (max-width: ${breakpoints.mobile.max}px) {
     .feebox {
       font-size: 0.9em;
-      margin-top: 2.2em;
+      margin-top: 2em;
     }
 
     .submit {

@@ -29,6 +29,28 @@ export namespace gov {
   }
 
   // ---------------------------------------------
+  // CW20 HookMsg
+  // ---------------------------------------------
+  export interface StakeVotingTokens {
+    stake_voting_tokens: {
+      lock_for_weeks?: number;
+    };
+  }
+
+  export interface CreatePoll {
+    create_poll: {
+      title: string;
+      description: string;
+      link?: string;
+      execute_msg?: ExecuteMsg;
+    };
+  }
+
+  export interface DepositReward {
+    deposit_reward: {};
+  }
+
+  // ---------------------------------------------
   // HandleMsg
   // ---------------------------------------------
   export interface UpdateConfig {
