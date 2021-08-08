@@ -36,7 +36,7 @@ function GovStakeBase({ className }: GovStakeProps) {
   const initForm = useCallback(() => {
     updateInput({
       nebAmount: '' as NEB,
-      lockForWeeks: 52,
+      lockForWeeks: 0,
     });
   }, [updateInput]);
 
@@ -94,47 +94,65 @@ function GovStakeBase({ className }: GovStakeProps) {
         error={states.invalidNebAmount}
       />
 
-      <TokenInput
-        className="lockup-weeks"
-        maxIntegerPoints={3}
-        maxDecimalPoints={0}
-        value={states.lockForWeeks.toString()}
-        onChange={(nextLockForWeeks) => {
-          if (nextLockForWeeks.length > 0) {
-            updateInput({
-              lockForWeeks: Math.min(+nextLockForWeeks, states.maxLockForWeeks),
-            });
-          } else {
-            updateInput({ lockForWeeks: 1 });
-          }
-        }}
-        placeholder="0"
-        label="LOCK-UP WEEKS"
-      />
+      {states.minLockForWeeks + 10 < states.maxLockForWeeks && (
+        <>
+          <TokenInput
+            className="lockup-weeks"
+            maxIntegerPoints={3}
+            maxDecimalPoints={0}
+            value={states.lockForWeeks.toString()}
+            onChange={(nextLockForWeeks) => {
+              if (nextLockForWeeks.length > 0) {
+                updateInput({
+                  lockForWeeks: Math.min(
+                    +nextLockForWeeks,
+                    states.maxLockForWeeks,
+                  ),
+                });
+              } else {
+                updateInput({ lockForWeeks: 0 });
+              }
+            }}
+            placeholder="0"
+            label="LOCK-UP WEEKS"
+          />
 
-      <Slider
-        className="lockup-weeks-slider"
-        value={states.lockForWeeks}
-        min={states.minLockForWeeks}
-        max={states.maxLockForWeeks}
-        marks={[
-          {
-            value: states.minLockForWeeks,
-            label: `${states.minLockForWeeks} Week`,
-          },
-          {
-            value: states.maxLockForWeeks,
-            label: `${Math.round(states.maxLockForWeeks / 52)} Years`,
-          },
-        ]}
-        onChange={(_: ChangeEvent<{}>, nextLockForWeeks: number | number[]) => {
-          if (typeof nextLockForWeeks === 'number') {
-            updateInput({ lockForWeeks: nextLockForWeeks });
-          }
-        }}
-      />
+          <Slider
+            className="lockup-weeks-slider"
+            value={states.lockForWeeks}
+            min={0}
+            max={states.maxLockForWeeks}
+            marks={[
+              {
+                value: states.minLockForWeeks,
+                label: `${states.minLockForWeeks} Week${
+                  states.minLockForWeeks > 1 ? 's' : ''
+                }`,
+              },
+              {
+                value: states.maxLockForWeeks,
+                label: `${Math.round(states.maxLockForWeeks / 52)} Years`,
+              },
+            ]}
+            onChange={(
+              _: ChangeEvent<{}>,
+              nextLockForWeeks: number | number[],
+            ) => {
+              if (typeof nextLockForWeeks === 'number') {
+                updateInput({ lockForWeeks: nextLockForWeeks });
+              }
+            }}
+          />
+        </>
+      )}
 
       <FeeBox className="feebox">
+        {states.stakedNebAfterTx && (
+          <li>
+            <span>Staked after Tx</span>
+            <span>{formatUToken(states.stakedNebAfterTx)} NEB</span>
+          </li>
+        )}
         {states.txFee && (
           <li>
             <span>Tx Fee</span>

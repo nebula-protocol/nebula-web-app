@@ -9,6 +9,7 @@ import {
   TxStreamPhase,
 } from '@terra-money/webapp-fns';
 import { Observable } from 'rxjs';
+import { govStakerQuery } from '../../queries/gov/staker';
 import { _catchTxError } from '../internal/_catchTxError';
 import { _createTxOptions } from '../internal/_createTxOptions';
 import { _pollTxInfo } from '../internal/_pollTxInfo';
@@ -29,25 +30,76 @@ export function govStakeTx(
   const helper = new TxHelper($);
 
   return pipe(
-    _createTxOptions({
-      msgs: [
-        new MsgExecuteContract($.walletAddr, $.nebTokenAddr, {
-          send: {
-            contract: $.govAddr,
-            amount: $.nebAmount,
-            msg: Buffer.from(
-              JSON.stringify({
-                stake_voting_tokens: {
-                  lock_for_weeks: $.lockForWeeks,
-                },
-              } as gov.StakeVotingTokens),
-            ).toString('base64'),
-          } as cw20.Send<NEB>,
-        }),
-      ],
-      fee: new StdFee($.gasFee, floor($.txFee) + 'uusd'),
-      gasAdjustment: $.gasAdjustment,
-    }),
+    (_: void) => {
+      return govStakerQuery({
+        mantleEndpoint: $.mantleEndpoint,
+        mantleFetch: $.mantleFetch,
+        wasmQuery: {
+          govStaker: {
+            contractAddress: $.govAddr,
+            query: {
+              staker: {
+                address: $.walletAddr,
+              },
+            },
+          },
+        },
+      }).then(({ govStaker }) => {
+        return {
+          value: govStaker,
+          phase: TxStreamPhase.POST,
+          receipts: [],
+        } as TxResultRendering<gov.StakerResponse>;
+      });
+    },
+    ({ value }) => {
+      const hasLockEndWeek =
+        typeof value.lock_end_week === 'number' && value.lock_end_week > 0;
+
+      const increaseLockTime: MsgExecuteContract[] = [];
+
+      if (hasLockEndWeek) {
+        const lockEndWeeks =
+          value.lock_end_week! -
+          Math.floor(Date.now() / (1000 * 60 * 60 * 24 * 7));
+
+        const increaseWeeks = $.lockForWeeks - lockEndWeeks;
+
+        if (increaseWeeks > 0) {
+          increaseLockTime.push(
+            new MsgExecuteContract($.walletAddr, $.govAddr, {
+              increase_lock_time: {
+                increase_weeks: increaseWeeks,
+              },
+            } as gov.IncreaseLockTime),
+          );
+        }
+      }
+
+      return _createTxOptions({
+        msgs: [
+          ...increaseLockTime,
+          new MsgExecuteContract($.walletAddr, $.nebTokenAddr, {
+            send: {
+              contract: $.govAddr,
+              amount: $.nebAmount,
+              msg: Buffer.from(
+                JSON.stringify({
+                  stake_voting_tokens:
+                    !hasLockEndWeek && $.lockForWeeks > 0
+                      ? {
+                          lock_for_weeks: $.lockForWeeks,
+                        }
+                      : {},
+                } as gov.StakeVotingTokens),
+              ).toString('base64'),
+            } as cw20.Send<NEB>,
+          }),
+        ],
+        fee: new StdFee($.gasFee, floor($.txFee) + 'uusd'),
+        gasAdjustment: $.gasAdjustment,
+      })();
+    },
     _postTx({ helper, ...$ }),
     _pollTxInfo({ helper, ...$ }),
     ({ value: txInfo }) => {

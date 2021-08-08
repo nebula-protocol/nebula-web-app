@@ -24,8 +24,7 @@ export namespace gov {
 
   export interface VoterInfo {
     vote: VoteOption;
-    // TODO set token type to balance
-    balance: rs.Uint128;
+    balance: u<NEB<rs.Uint128>>;
   }
 
   // ---------------------------------------------
@@ -162,10 +161,8 @@ export namespace gov {
   }
 
   export interface StakerResponse {
-    // TODO set token type to balance
-    balance: rs.Uint128;
-    // TODO set token type to share
-    share: rs.Uint128;
+    balance: u<NEB<rs.Uint128>>;
+    share: u<NEB<rs.Uint128>>;
     locked_balance: Array<[rs.u64, VoterInfo]>;
     // TODO set token type to pending_voting_rewards
     pending_voting_rewards: rs.Uint128;

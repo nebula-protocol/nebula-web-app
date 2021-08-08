@@ -1,5 +1,5 @@
 import { microfy } from '@nebula-js/notation';
-import { NEB, u, UST } from '@nebula-js/types';
+import { gov, NEB, u, UST } from '@nebula-js/types';
 import { FormReturn } from '@terra-dev/use-form';
 import big, { Big, BigSource } from 'big.js';
 
@@ -15,6 +15,7 @@ export interface GovStakeFormDependency {
   ustBalance: u<UST<BigSource>>;
   fixedGas: u<UST<BigSource>>;
   connected: boolean;
+  govStaker: gov.StakerResponse | undefined;
 }
 
 export interface GovStakeFormStates extends GovStakeFormInput {
@@ -26,6 +27,7 @@ export interface GovStakeFormStates extends GovStakeFormInput {
   availableTx: boolean;
   //
   txFee: u<UST<BigSource>> | null;
+  stakedNebAfterTx: u<NEB> | null;
 }
 
 export type GovStakeFormAsyncStates = {};
@@ -37,8 +39,10 @@ export const govStakeForm = ({
   maxLockForWeeks = 104,
   fixedGas,
   connected,
+  govStaker,
 }: GovStakeFormDependency) => {
   const maxAmount = nebBalance;
+  const stakedNebBalance = govStaker?.balance;
 
   return ({
     nebAmount,
@@ -54,13 +58,17 @@ export const govStakeForm = ({
         {
           nebAmount,
           maxNebAmount: maxAmount,
-          lockForWeeks,
+          lockForWeeks: Math.max(
+            minLockForWeeks,
+            Math.min(maxLockForWeeks, lockForWeeks),
+          ),
           minLockForWeeks,
           maxLockForWeeks,
           txFee: null,
           invalidNebAmount: null,
           invalidTxFee: null,
           availableTx: false,
+          stakedNebAfterTx: null,
         },
         undefined,
       ];
@@ -84,13 +92,19 @@ export const govStakeForm = ({
       {
         nebAmount,
         maxNebAmount: maxAmount,
-        lockForWeeks,
+        lockForWeeks: Math.max(
+          minLockForWeeks,
+          Math.min(maxLockForWeeks, lockForWeeks),
+        ),
         minLockForWeeks,
         maxLockForWeeks,
         txFee,
         invalidTxFee,
         invalidNebAmount,
         availableTx,
+        stakedNebAfterTx: big(stakedNebBalance ?? '0')
+          .plus(neb)
+          .toFixed() as u<NEB>,
       },
       undefined,
     ];

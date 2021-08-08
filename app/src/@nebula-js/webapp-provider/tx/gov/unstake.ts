@@ -1,5 +1,5 @@
 import { NEB, u, UST } from '@nebula-js/types';
-import { govStakeTx } from '@nebula-js/webapp-fns';
+import { govUnstakeTx } from '@nebula-js/webapp-fns';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import {
   useRefetchQueries,
@@ -9,15 +9,14 @@ import { useCallback } from 'react';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { NEBULA_TX_KEYS } from '../../env';
 
-export interface GovStakeTxParams {
+export interface GovUnstakeTxParams {
   nebAmount: u<NEB>;
-  lockForWeeks: number;
   txFee: u<UST>;
 
   onTxSucceed?: () => void;
 }
 
-export function useGovStakeTx() {
+export function useGovUnstakeTx() {
   const connectedWallet = useConnectedWallet();
 
   const { mantleFetch, mantleEndpoint, txErrorReporter } = useTerraWebapp();
@@ -30,18 +29,16 @@ export function useGovStakeTx() {
   } = useNebulaWebapp();
 
   const stream = useCallback(
-    ({ nebAmount, lockForWeeks, txFee, onTxSucceed }: GovStakeTxParams) => {
+    ({ nebAmount, txFee, onTxSucceed }: GovUnstakeTxParams) => {
       if (!connectedWallet || !connectedWallet.availablePost) {
         throw new Error(`Can't post!`);
       }
 
-      return govStakeTx({
+      return govUnstakeTx({
         txFee,
         walletAddr: connectedWallet.walletAddress,
         nebAmount,
-        lockForWeeks,
         govAddr: contractAddress.gov,
-        nebTokenAddr: contractAddress.cw20.NEB,
         fixedGas,
         gasFee,
         gasAdjustment,
@@ -50,7 +47,7 @@ export function useGovStakeTx() {
         txErrorReporter,
         onTxSucceed: () => {
           onTxSucceed?.();
-          refetchQueries(NEBULA_TX_KEYS.GOV_STAKE);
+          refetchQueries(NEBULA_TX_KEYS.GOV_UNSTAKE);
         },
         network: connectedWallet.network,
         post: connectedWallet.post,
@@ -58,7 +55,6 @@ export function useGovStakeTx() {
     },
     [
       connectedWallet,
-      contractAddress.cw20.NEB,
       contractAddress.gov,
       fixedGas,
       gasAdjustment,
