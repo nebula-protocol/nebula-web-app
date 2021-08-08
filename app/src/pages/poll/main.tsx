@@ -74,6 +74,8 @@ function PollMainBase({ className }: PollMainProps) {
 }
 
 const StyledPollMain = styled(PollMainBase)`
+  --max-content-width: 704px;
+
   h2 {
     font-size: 1.42857143em;
     font-weight: 500;

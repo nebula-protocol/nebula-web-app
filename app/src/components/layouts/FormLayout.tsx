@@ -49,7 +49,7 @@ const Container = styled.section`
 
     > section {
       margin: 0 auto;
-      max-width: 650px;
+      max-width: var(--max-content-width, 650px);
     }
   }
 

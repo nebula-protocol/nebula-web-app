@@ -41,6 +41,8 @@ function PollCreateBaseBase({
 }
 
 export const StyledPollCreateBase = styled(PollCreateBaseBase)`
+  --max-content-width: 704px;
+
   .header {
     h2 {
       font-size: 2em;
