@@ -59,6 +59,11 @@ export function formatTokenWithPostfixUnits(n: Token<BigSource>): string {
   return bn.gte(M) ? d3Formatter(bn.div(M)) + 'M' : formatToken(n);
 }
 
+export function formatUTokenWithPostfixUnits(n: u<Token<BigSource>>): string {
+  const bn = demicrofy(n);
+  return bn.gte(M) ? d3Formatter(bn.div(M)) + 'M' : formatToken(bn);
+}
+
 // ---------------------------------------------
 // unspecific format functions
 // ---------------------------------------------

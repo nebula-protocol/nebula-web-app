@@ -26,11 +26,13 @@ function TradingVolumeBase({ className }: TradingVolumeProps) {
   return (
     <div className={className}>
       <p>
-        51M <Sub>UST</Sub>
+        <s>
+          51M <Sub>UST</Sub>
+        </s>
       </p>
       <p>
         <DiffSpan diff={-123.12} translateIconY="0.15em">
-          123.12%
+          <s>123.12%</s>
         </DiffSpan>
       </p>
 

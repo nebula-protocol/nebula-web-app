@@ -1,4 +1,10 @@
-import { DiffSpan, Sub } from '@nebula-js/ui';
+import { formatToken } from '@nebula-js/notation';
+import { NEB } from '@nebula-js/types';
+import { AnimateNumber, DiffSpan, Sub } from '@nebula-js/ui';
+import {
+  useNebulaWebapp,
+  useTerraswapPoolQuery,
+} from '@nebula-js/webapp-provider';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -7,20 +13,35 @@ export interface NEBPriceProps {
 }
 
 function NEBPriceBase({ className }: NEBPriceProps) {
+  const { contractAddress } = useNebulaWebapp();
+
+  const { data: { terraswapPoolInfo } = {} } = useTerraswapPoolQuery<NEB>(
+    contractAddress.terraswap.nebUstPair,
+  );
+
   return (
     <div className={className}>
       <p>
-        12.595 <Sub>UST</Sub>
+        <AnimateNumber format={formatToken}>
+          {terraswapPoolInfo
+            ? terraswapPoolInfo.tokenPrice
+            : (0 as NEB<number>)}
+        </AnimateNumber>
+        <Sub>UST</Sub>
       </p>
       <p>
-        <DiffSpan diff={123.12} translateIconY="0.15em">
-          123.12%
-        </DiffSpan>
+        <s>
+          <DiffSpan diff={123.12} translateIconY="0.15em">
+            123.12%
+          </DiffSpan>
+        </s>
       </p>
 
       <section>
         <h4>NEB CIRCULATING SUPPLY</h4>
-        <p>100,000.123 NEB</p>
+        <p>
+          <s>100,000.123 NEB</s>
+        </p>
       </section>
     </div>
   );

@@ -1,6 +1,11 @@
+import { formatUTokenWithPostfixUnits } from '@nebula-js/notation';
 import { JSDateTime, u, UST } from '@nebula-js/types';
-import { DiffSpan, Sub } from '@nebula-js/ui';
-import React from 'react';
+import { AnimateNumber, DiffSpan, Sub } from '@nebula-js/ui';
+import { computeProvided } from '@nebula-js/webapp-fns';
+import { useClustersInfoListQuery } from '@nebula-js/webapp-provider';
+import { sum } from '@terra-dev/big-math';
+import big, { Big } from 'big.js';
+import React, { useMemo } from 'react';
 import { useStyle } from 'style-router';
 import styled from 'styled-components';
 import { AreaChart } from './AreaChart';
@@ -23,15 +28,34 @@ export interface TotalProvidedProps {
 function TotalProvidedBase({ className }: TotalProvidedProps) {
   const { color } = useStyle();
 
+  const { data: clusterInfos = [] } = useClustersInfoListQuery();
+
+  const totalProvided = useMemo(() => {
+    if (clusterInfos.length === 0) {
+      return big(0) as u<UST<Big>>;
+    }
+
+    const provided = clusterInfos.map(({ clusterState }) => {
+      return computeProvided(clusterState);
+    });
+
+    return sum(...provided) as u<UST<Big>>;
+  }, [clusterInfos]);
+
   return (
     <div className={className}>
       <p>
-        270.4B <Sub>UST</Sub>
+        <AnimateNumber format={formatUTokenWithPostfixUnits}>
+          {totalProvided}
+        </AnimateNumber>{' '}
+        <Sub>UST</Sub>
       </p>
       <p>
-        <DiffSpan diff={123.12} translateIconY="0.15em">
-          123.12%
-        </DiffSpan>
+        <s>
+          <DiffSpan diff={123.12} translateIconY="0.15em">
+            123.12%
+          </DiffSpan>
+        </s>
       </p>
 
       <AreaChart data={chartData} color={color} />

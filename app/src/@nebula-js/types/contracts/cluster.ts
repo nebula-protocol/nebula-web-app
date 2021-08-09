@@ -1,5 +1,4 @@
 import { CT, Token, u, UST } from '../tokens';
-import { Rate } from '../units';
 import { CW20Addr, HumanAddr, rs } from './common';
 import { terraswap } from './terraswap';
 
@@ -90,7 +89,7 @@ export namespace cluster {
     outstanding_balance_tokens: u<CT<rs.Uint128>>;
     // TODO is this UST? (not u<UST>)
     prices: UST[];
-    inv: Rate<rs.Uint128>[];
+    inv: u<Token<rs.Uint128>>[];
     penalty: HumanAddr;
     // TODO is this CW20Addr or HumanAddr?
     cluster_token: CW20Addr;

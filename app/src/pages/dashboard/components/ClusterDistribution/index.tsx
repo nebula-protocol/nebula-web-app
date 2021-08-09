@@ -1,5 +1,10 @@
 import { Rate, u, UST } from '@nebula-js/types';
-import React, { useCallback, useEffect, useState } from 'react';
+import { computeMarketCap } from '@nebula-js/webapp-fns';
+import { useClustersInfoListQuery } from '@nebula-js/webapp-provider';
+import { sum } from '@terra-dev/big-math';
+import big from 'big.js';
+import { fixHMR } from 'fix-hmr';
+import React, { useMemo } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { PieChart } from './PieChart';
 import { Table } from './Table';
@@ -14,33 +19,62 @@ const colors = ['#E0687F', '#A87D99', '#6F9EBB', '#5BBAD6'];
 function ClusterDistributionBase({ className }: ClusterDistributionProps) {
   const theme = useTheme();
 
-  const createRandomData = useCallback((): Item[] => {
-    return Array.from(
-      { length: Math.floor(Math.random() * 3) + 3 },
-      (_, i) => ({
-        label: `Title Item ${i}`,
-        labelShort: `ITEM ${i}`,
-        amount: (
-          (Math.floor(Math.random() * 500) + 300) *
-          100000
-        ).toString() as u<UST>,
-        ratio: '0.301' as Rate,
-        color: colors[i % colors.length],
-      }),
+  const { data: clusterInfos = [] } = useClustersInfoListQuery();
+
+  const data = useMemo<Item[]>(() => {
+    if (clusterInfos.length === 0) {
+      return [];
+    }
+
+    const distributions = clusterInfos.map<Item>(
+      ({ clusterState, terraswapPool, clusterTokenInfo }, i) => {
+        const marketCap = computeMarketCap(
+          clusterState,
+          terraswapPool,
+        ).toFixed() as u<UST>;
+
+        return {
+          name: clusterTokenInfo.name,
+          symbol: clusterTokenInfo.symbol,
+          marketCap: marketCap,
+          color: colors[i % colors.length],
+          ratio: '0' as Rate,
+        };
+      },
     );
-  }, []);
 
-  const [data, setData] = useState(() => createRandomData());
+    const marketCapTotal = sum(
+      ...distributions.map(({ marketCap }) => marketCap),
+    );
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setData(createRandomData());
-    }, 5000);
+    for (const distribution of distributions) {
+      distribution.ratio = big(distribution.marketCap)
+        .div(marketCapTotal)
+        .toFixed() as Rate;
+    }
 
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [createRandomData]);
+    const sortedDistributions = distributions.sort((a, b) => {
+      return big(b.marketCap).minus(a.marketCap).toNumber();
+    });
+
+    const top3 = sortedDistributions.slice(0, 3);
+    const others = sortedDistributions.slice(3).reduce(
+      (o, { marketCap, ratio }) => {
+        o.marketCap = big(o.marketCap).plus(marketCap).toFixed() as u<UST>;
+        o.ratio = big(o.ratio).plus(ratio).toFixed() as Rate;
+        return o;
+      },
+      {
+        marketCap: '0' as u<UST>,
+        ratio: '0' as Rate,
+        color: colors[3],
+        name: 'Others',
+        symbol: 'others',
+      } as Item,
+    );
+
+    return [...top3, others];
+  }, [clusterInfos]);
 
   return (
     <div className={className}>
@@ -50,8 +84,10 @@ function ClusterDistributionBase({ className }: ClusterDistributionProps) {
   );
 }
 
-export const ClusterDistribution = styled(ClusterDistributionBase)`
+const StyledClusterDistribution = styled(ClusterDistributionBase)`
   canvas {
     max-height: 270px;
   }
 `;
+
+export const ClusterDistribution = fixHMR(StyledClusterDistribution);
