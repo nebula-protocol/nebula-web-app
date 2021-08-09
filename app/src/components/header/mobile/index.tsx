@@ -51,7 +51,7 @@ function MobileHeaderBase({ className }: MobileHeaderProps) {
   }, [connect, status]);
 
   return (
-    <header className={className}>
+    <header className={className + ' dark-color-set'}>
       <section>
         <Link to="/">
           <img src={logoImage} alt="Nebula Protocol" />

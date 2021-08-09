@@ -15,7 +15,7 @@ function DesktopHeaderBase({ className }: DesktopHeaderProps) {
   const { updateColor } = useStyle();
 
   return (
-    <header className={className}>
+    <header className={className + ' dark-color-set'}>
       <div>
         <Link to="/">
           <img src={logoImage} alt="Nebula Protocol" />
