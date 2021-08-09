@@ -1,5 +1,5 @@
-import { LP, terraswap, Token, u, UST } from '@nebula-js/types';
-import { MantleParams, WasmQuery } from '@terra-dev/mantle';
+import { HumanAddr, LP, terraswap, Token, u, UST } from '@nebula-js/types';
+import { defaultMantleFetch, MantleFetch, WasmQuery } from '@terra-dev/mantle';
 import { mantle, WasmQueryData } from '@terra-money/webapp-fns';
 import big from 'big.js';
 
@@ -23,23 +23,26 @@ export type TerraswapPool<T extends Token> = WasmQueryData<
   terraswapPoolInfo: TerraswapPoolInfo<T>;
 };
 
-export type TerraswapPoolQueryParams<T extends Token> = Omit<
-  MantleParams<TerraswapPoolWasmQuery<T>>,
-  'query' | 'variables'
->;
-
-export async function terraswapPoolQuery<T extends Token>({
-  mantleEndpoint,
-  wasmQuery,
-  ...params
-}: TerraswapPoolQueryParams<T>): Promise<TerraswapPool<T>> {
+export async function terraswapPoolQuery<T extends Token>(
+  ustPairAddr: HumanAddr,
+  mantleEndpoint: string,
+  mantleFetch: MantleFetch = defaultMantleFetch,
+  requestInit?: RequestInit,
+): Promise<TerraswapPool<T>> {
   const { terraswapPool } = await mantle<TerraswapPoolWasmQuery<T>>({
-    mantleEndpoint: `${mantleEndpoint}?terraswap--pool=${wasmQuery.terraswapPool.contractAddress}`,
+    mantleEndpoint: `${mantleEndpoint}?terraswap--pool=${ustPairAddr}`,
+    mantleFetch,
+    requestInit,
     variables: {},
     wasmQuery: {
-      terraswapPool: wasmQuery.terraswapPool,
+      terraswapPool: {
+        // pair contract address
+        contractAddress: ustPairAddr,
+        query: {
+          pool: {},
+        },
+      },
     },
-    ...params,
   });
 
   const tokenIndex = terraswapPool.assets.findIndex(

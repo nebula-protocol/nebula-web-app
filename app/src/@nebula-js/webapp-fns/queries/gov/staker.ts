@@ -1,7 +1,8 @@
-import { gov } from '@nebula-js/types';
+import { gov, HumanAddr } from '@nebula-js/types';
 import {
+  defaultMantleFetch,
   mantle,
-  MantleParams,
+  MantleFetch,
   WasmQuery,
   WasmQueryData,
 } from '@terra-dev/mantle';
@@ -12,18 +13,29 @@ export interface GovStakerWasmQuery {
 
 export type GovStaker = WasmQueryData<GovStakerWasmQuery>;
 
-export type GovStakerQueryParams = Omit<
-  MantleParams<GovStakerWasmQuery>,
-  'query' | 'variables'
->;
-
-export async function govStakerQuery({
-  mantleEndpoint,
-  ...params
-}: GovStakerQueryParams): Promise<GovStaker> {
-  return mantle<GovStakerWasmQuery>({
-    mantleEndpoint: `${mantleEndpoint}?gov--staker`,
-    variables: {},
-    ...params,
-  });
+export async function govStakerQuery(
+  walletAddr: HumanAddr | undefined,
+  govAddr: HumanAddr,
+  mantleEndpoint: string,
+  mantleFetch: MantleFetch = defaultMantleFetch,
+  requestInit?: RequestInit,
+): Promise<GovStaker | undefined> {
+  return walletAddr
+    ? mantle<GovStakerWasmQuery>({
+        mantleEndpoint: `${mantleEndpoint}?gov--staker`,
+        mantleFetch,
+        requestInit,
+        variables: {},
+        wasmQuery: {
+          govStaker: {
+            contractAddress: govAddr,
+            query: {
+              staker: {
+                address: walletAddr,
+              },
+            },
+          },
+        },
+      })
+    : undefined;
 }

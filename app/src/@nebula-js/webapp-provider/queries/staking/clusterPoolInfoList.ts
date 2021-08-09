@@ -1,39 +1,15 @@
-import { HumanAddr } from '@anchor-protocol/types';
 import {
   StakingClusterPoolInfoList,
   stakingClusterPoolInfoListQuery,
 } from '@nebula-js/webapp-fns';
 import { createQueryFn } from '@terra-dev/react-query-utils';
 import { useBrowserInactive } from '@terra-dev/use-browser-inactive';
-import { MantleFetch, useTerraWebapp } from '@terra-money/webapp-provider';
+import { useTerraWebapp } from '@terra-money/webapp-provider';
 import { useQuery, UseQueryResult } from 'react-query';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { NEBULA_QUERY_KEYS } from '../../env';
 
-const queryFn = createQueryFn(
-  (
-    mantleEndpoint: string,
-    mantleFetch: MantleFetch,
-    clusterFactoryAddr: HumanAddr,
-    stakingAddr: HumanAddr,
-    terraswapFactoryAddr: HumanAddr,
-  ) => {
-    return stakingClusterPoolInfoListQuery({
-      mantleEndpoint,
-      mantleFetch,
-      terraswapFactoryAddr,
-      stakingAddr,
-      wasmQuery: {
-        clusterList: {
-          contractAddress: clusterFactoryAddr,
-          query: {
-            cluster_list: {},
-          },
-        },
-      },
-    });
-  },
-);
+const queryFn = createQueryFn(stakingClusterPoolInfoListQuery);
 
 export function useStakingClusterPoolInfoListQuery(): UseQueryResult<
   StakingClusterPoolInfoList | undefined
@@ -49,11 +25,11 @@ export function useStakingClusterPoolInfoListQuery(): UseQueryResult<
   const result = useQuery(
     [
       NEBULA_QUERY_KEYS.STAKING_CLUSTER_POOL_INFO_LIST,
-      mantleEndpoint,
-      mantleFetch,
       clusterFactory,
       staking,
       terraswap.factory,
+      mantleEndpoint,
+      mantleFetch,
     ],
     queryFn,
     {

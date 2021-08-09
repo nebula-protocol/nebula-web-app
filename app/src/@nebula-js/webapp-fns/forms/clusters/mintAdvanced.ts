@@ -123,35 +123,14 @@ export const clusterMintAdvancedForm = (
       const hasAmounts = input.amounts.some((amount) => amount.length > 0);
 
       asyncStates = hasAmounts
-        ? clusterMintQuery({
-            mantleEndpoint: dependency.mantleEndpoint,
-            mantleFetch: dependency.mantleFetch,
-            requestInit: dependency.requestInit,
-            lastSyncedHeight: dependency.lastSyncedHeight,
-            wasmQuery: {
-              mint: {
-                contractAddress: dependency.clusterState.penalty,
-                query: {
-                  mint: {
-                    block_height: -1,
-                    cluster_token_supply:
-                      dependency.clusterState.outstanding_balance_tokens,
-                    inventory: dependency.clusterState.inv,
-                    mint_asset_amounts: input.amounts.map(
-                      (amount) =>
-                        (amount.length > 0
-                          ? microfy(amount).toFixed()
-                          : '0') as u<Token>,
-                    ),
-                    asset_prices: dependency.clusterState.prices,
-                    target_weights: dependency.clusterState.target.map(
-                      ({ amount }) => amount,
-                    ),
-                  },
-                },
-              },
-            },
-          }).then(({ mint }) => {
+        ? clusterMintQuery(
+            input.amounts,
+            dependency.clusterState,
+            dependency.lastSyncedHeight,
+            dependency.mantleEndpoint,
+            dependency.mantleFetch,
+            dependency.requestInit,
+          ).then(({ mint }) => {
             return { mintedAmount: mint.mint_tokens as u<CT> };
           })
         : Promise.resolve({ mintedAmount: undefined });

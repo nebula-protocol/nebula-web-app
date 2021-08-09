@@ -12,28 +12,12 @@ describe.skip('clusters/info', () => {
     process.env.MANTLE_GRAPHQL_PRINT = true;
 
     const { clusterState, clusterConfig, terraswapPair, terraswapPool } =
-      await clusterInfoQuery({
-        mantleEndpoint: TEST_MANTLE_ENDPOINT,
-        mantleFetch: defaultMantleFetch,
-        terraswapFactoryAddr: TEST_CONTRACT_ADDRESS.terraswap.factory,
-        wasmQuery: {
-          clusterConfig: {
-            contractAddress: 'terra1rkgpmrqmddwtq48e5mr4vsps53vudmd4mgvfkz',
-            query: {
-              config: {},
-            },
-          },
-          clusterState: {
-            contractAddress: 'terra1rkgpmrqmddwtq48e5mr4vsps53vudmd4mgvfkz',
-            query: {
-              cluster_state: {
-                cluster_contract_address:
-                  'terra1rkgpmrqmddwtq48e5mr4vsps53vudmd4mgvfkz' as HumanAddr,
-              },
-            },
-          },
-        },
-      });
+      await clusterInfoQuery(
+        'terra1rkgpmrqmddwtq48e5mr4vsps53vudmd4mgvfkz' as HumanAddr,
+        TEST_CONTRACT_ADDRESS.terraswap.factory,
+        TEST_MANTLE_ENDPOINT,
+        defaultMantleFetch,
+      );
 
     expect(clusterConfig).not.toBeUndefined();
     expect(clusterState).not.toBeUndefined();

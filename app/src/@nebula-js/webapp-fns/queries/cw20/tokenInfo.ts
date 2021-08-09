@@ -1,13 +1,14 @@
-import { cw20, Token } from '@nebula-js/types';
+import { cw20, CW20Addr, Token } from '@nebula-js/types';
 import {
+  defaultMantleFetch,
   mantle,
-  MantleParams,
+  MantleFetch,
   WasmQuery,
   WasmQueryData,
 } from '@terra-dev/mantle';
 import { cw20TokenInfoCache } from '../../caches/cw20TokenInfoCache';
 
-export interface CW20TokenInfoWasmQuery<T extends Token> {
+interface CW20TokenInfoWasmQuery<T extends Token> {
   tokenInfo: WasmQuery<cw20.TokenInfo, cw20.TokenInfoResponse<T>>;
 }
 
@@ -15,32 +16,36 @@ export type CW20TokenInfo<T extends Token> = WasmQueryData<
   CW20TokenInfoWasmQuery<T>
 >;
 
-export type CW20TokenInfoQueryParams<T extends Token> = Omit<
-  MantleParams<CW20TokenInfoWasmQuery<T>>,
-  'query' | 'variables'
->;
-
-export async function cw20TokenInfoQuery<T extends Token>({
-  mantleEndpoint,
-  wasmQuery,
-  ...params
-}: CW20TokenInfoQueryParams<T>): Promise<CW20TokenInfo<T>> {
-  if (cw20TokenInfoCache.has(wasmQuery.tokenInfo.contractAddress)) {
+export async function cw20TokenInfoQuery<T extends Token>(
+  tokenAddr: CW20Addr,
+  mantleEndpoint: string,
+  mantleFetch: MantleFetch = defaultMantleFetch,
+  requestInit?: RequestInit,
+): Promise<CW20TokenInfo<T>> {
+  if (cw20TokenInfoCache.has(tokenAddr)) {
     return {
       tokenInfo: cw20TokenInfoCache.get(
-        wasmQuery.tokenInfo.contractAddress,
+        tokenAddr,
       )! as cw20.TokenInfoResponse<T>,
     };
   }
 
   const { tokenInfo } = await mantle<CW20TokenInfoWasmQuery<T>>({
-    mantleEndpoint: `${mantleEndpoint}?cw20--token-info=${wasmQuery.tokenInfo.contractAddress}`,
+    mantleEndpoint: `${mantleEndpoint}?cw20--token-info=${tokenAddr}`,
+    mantleFetch,
+    requestInit,
     variables: {},
-    wasmQuery,
-    ...params,
+    wasmQuery: {
+      tokenInfo: {
+        contractAddress: tokenAddr,
+        query: {
+          token_info: {},
+        },
+      },
+    },
   });
 
-  cw20TokenInfoCache.set(wasmQuery.tokenInfo.contractAddress, tokenInfo);
+  cw20TokenInfoCache.set(tokenAddr, tokenInfo);
 
   return { tokenInfo };
 }

@@ -1,12 +1,13 @@
-import { cw20, Token } from '@nebula-js/types';
+import { cw20, CW20Addr, HumanAddr, Token } from '@nebula-js/types';
 import {
+  defaultMantleFetch,
   mantle,
-  MantleParams,
+  MantleFetch,
   WasmQuery,
   WasmQueryData,
 } from '@terra-dev/mantle';
 
-export interface CW20BalanceWasmQuery<T extends Token> {
+interface CW20BalanceWasmQuery<T extends Token> {
   tokenBalance: WasmQuery<cw20.Balance, cw20.BalanceResponse<T>>;
 }
 
@@ -14,20 +15,29 @@ export type CW20Balance<T extends Token> = WasmQueryData<
   CW20BalanceWasmQuery<T>
 >;
 
-export type CW20BalanceQueryParams<T extends Token> = Omit<
-  MantleParams<CW20BalanceWasmQuery<T>>,
-  'query' | 'variables'
->;
-
-export async function cw20BalanceQuery<T extends Token>({
-  mantleEndpoint,
-  wasmQuery,
-  ...params
-}: CW20BalanceQueryParams<T>): Promise<CW20Balance<T>> {
-  return mantle<CW20BalanceWasmQuery<T>>({
-    mantleEndpoint: `${mantleEndpoint}?cw20--balance=${wasmQuery.tokenBalance.contractAddress}`,
-    variables: {},
-    wasmQuery,
-    ...params,
-  });
+export async function cw20BalanceQuery<T extends Token>(
+  walletAddr: HumanAddr | undefined,
+  tokenAddr: CW20Addr,
+  mantleEndpoint: string,
+  mantleFetch: MantleFetch = defaultMantleFetch,
+  requestInit?: RequestInit,
+): Promise<CW20Balance<T> | undefined> {
+  return walletAddr
+    ? mantle<CW20BalanceWasmQuery<T>>({
+        mantleEndpoint: `${mantleEndpoint}?cw20--balance=${tokenAddr}`,
+        mantleFetch,
+        requestInit,
+        variables: {},
+        wasmQuery: {
+          tokenBalance: {
+            contractAddress: tokenAddr,
+            query: {
+              balance: {
+                address: walletAddr,
+              },
+            },
+          },
+        },
+      })
+    : Promise.resolve(undefined);
 }

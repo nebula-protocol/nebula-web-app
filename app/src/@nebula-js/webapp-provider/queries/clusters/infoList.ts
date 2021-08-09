@@ -1,34 +1,12 @@
-import { HumanAddr } from '@anchor-protocol/types';
 import { ClustersInfoList, clustersInfoListQuery } from '@nebula-js/webapp-fns';
 import { createQueryFn } from '@terra-dev/react-query-utils';
 import { useBrowserInactive } from '@terra-dev/use-browser-inactive';
-import { MantleFetch, useTerraWebapp } from '@terra-money/webapp-provider';
+import { useTerraWebapp } from '@terra-money/webapp-provider';
 import { useQuery, UseQueryResult } from 'react-query';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { NEBULA_QUERY_KEYS } from '../../env';
 
-const queryFn = createQueryFn(
-  (
-    mantleEndpoint: string,
-    mantleFetch: MantleFetch,
-    clusterFactoryAddr: HumanAddr,
-    terraswapFactoryAddr: HumanAddr,
-  ) => {
-    return clustersInfoListQuery({
-      mantleEndpoint,
-      mantleFetch,
-      terraswapFactoryAddr,
-      wasmQuery: {
-        clusterList: {
-          contractAddress: clusterFactoryAddr,
-          query: {
-            cluster_list: {},
-          },
-        },
-      },
-    });
-  },
-);
+const queryFn = createQueryFn(clustersInfoListQuery);
 
 export function useClustersInfoListQuery(): UseQueryResult<
   ClustersInfoList | undefined
@@ -44,10 +22,10 @@ export function useClustersInfoListQuery(): UseQueryResult<
   const result = useQuery(
     [
       NEBULA_QUERY_KEYS.CLUSTERS_LIST,
-      mantleEndpoint,
-      mantleFetch,
       clusterFactory,
       terraswap.factory,
+      mantleEndpoint,
+      mantleFetch,
     ],
     queryFn,
     {

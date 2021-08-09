@@ -6,10 +6,11 @@ import {
   Token,
   u,
 } from '@nebula-js/types';
-import { mantle, MantleParams } from '@terra-money/webapp-fns';
+import { defaultMantleFetch, MantleFetch } from '@terra-dev/mantle';
+import { mantle } from '@terra-money/webapp-fns';
 
 // language=graphql
-export const TERRA_BALANCES_QUERY = `
+const TERRA_BALANCES_QUERY = `
   query ($walletAddress: String!) {
     nativeTokenBalances: BankBalancesAddress(Address: $walletAddress) {
       Result {
@@ -20,11 +21,11 @@ export const TERRA_BALANCES_QUERY = `
   }
 `;
 
-export interface TerraBalancesQueryVariables {
+interface TerraBalancesQueryVariables {
   walletAddress: HumanAddr;
 }
 
-export interface TerraBalancesQueryResult {
+interface TerraBalancesQueryResult {
   nativeTokenBalances: {
     Result: Array<{ Denom: NativeDenom; Amount: u<Token> }>;
   };
@@ -35,25 +36,32 @@ export type TerraBalances = {
   balancesIndex: Map<terraswap.AssetInfo, u<Token>>;
 };
 
-export type TerraBalancesQueryParams = Omit<
-  MantleParams<{}>,
-  'wasmQuery' | 'query' | 'variables'
-> & {
-  assets: terraswap.AssetInfo[];
-  walletAddress: HumanAddr;
-};
-
-export async function terraBalancesQuery({
-  mantleEndpoint,
-  mantleFetch,
-  assets,
-  walletAddress,
-  requestInit,
-}: TerraBalancesQueryParams): Promise<TerraBalances> {
+export async function terraBalancesQuery(
+  walletAddr: HumanAddr | undefined,
+  assets: terraswap.AssetInfo[],
+  mantleEndpoint: string,
+  mantleFetch: MantleFetch = defaultMantleFetch,
+  requestInit?: RequestInit,
+): Promise<TerraBalances> {
   type CW20Query = Record<
     string,
     { contractAddress: string; query: cw20.Balance }
   >;
+
+  if (!walletAddr) {
+    const balances = assets.map((asset) => ({
+      asset,
+      balance: '0' as u<Token>,
+    }));
+
+    const balancesIndex = new Map<terraswap.AssetInfo, u<Token>>();
+
+    for (const { asset, balance } of balances) {
+      balancesIndex.set(asset, balance);
+    }
+
+    return Promise.resolve({ balances, balancesIndex });
+  }
 
   const wasmQuery: CW20Query = assets.reduce((wq, asset, i) => {
     if ('token' in asset) {
@@ -61,7 +69,7 @@ export async function terraBalancesQuery({
         contractAddress: asset.token.contract_addr,
         query: {
           balance: {
-            address: walletAddress,
+            address: walletAddr,
           },
         },
       };
@@ -74,10 +82,10 @@ export async function terraBalancesQuery({
     TerraBalancesQueryVariables,
     TerraBalancesQueryResult
   >({
-    mantleEndpoint: `${mantleEndpoint}?terra-balances=${walletAddress}`,
+    mantleEndpoint: `${mantleEndpoint}?terra-balances=${walletAddr}`,
     mantleFetch,
     variables: {
-      walletAddress,
+      walletAddress: walletAddr,
     },
     wasmQuery,
     query: TERRA_BALANCES_QUERY,

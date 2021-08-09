@@ -1,4 +1,4 @@
-import { microfy } from '@nebula-js/notation';
+import { demicrofy, microfy } from '@nebula-js/notation';
 import {
   cluster,
   CT,
@@ -104,67 +104,37 @@ export const clusterRedeemTerraswapArbitrageForm = (
     ) {
       let txFee: u<UST>;
 
-      asyncStates = terraswapSimulationQuery({
-        mantleEndpoint: dependency.mantleEndpoint,
-        mantleFetch: dependency.mantleFetch,
-        requestInit: dependency.requestInit,
-        wasmQuery: {
-          simulation: {
-            contractAddress: dependency.terraswapPair.contract_addr,
-            query: {
-              simulation: {
-                offer_asset: {
-                  amount: microfy(input.ustAmount).toFixed() as u<UST>,
-                  info: {
-                    native_token: {
-                      denom: 'uusd' as NativeDenom,
-                    },
-                  },
-                },
-              },
+      asyncStates = terraswapSimulationQuery(
+        dependency.terraswapPair.contract_addr,
+        {
+          amount: microfy(input.ustAmount).toFixed() as u<UST>,
+          info: {
+            native_token: {
+              denom: 'uusd' as NativeDenom,
             },
           },
         },
-      })
-        .then(
-          ({
-            simulation: { return_amount, commission_amount, spread_amount },
-          }) => {
-            const _tax = min(
-              microfy(input.ustAmount!).mul(dependency.tax.taxRate),
-              dependency.tax.maxTaxUUSD,
-            ) as u<UST<Big>>;
+        dependency.mantleEndpoint,
+        dependency.mantleFetch,
+        dependency.requestInit,
+      )
+        .then(({ simulation: { return_amount } }) => {
+          const _tax = min(
+            microfy(input.ustAmount!).mul(dependency.tax.taxRate),
+            dependency.tax.maxTaxUUSD,
+          ) as u<UST<Big>>;
 
-            txFee = _tax.plus(dependency.fixedGas).toFixed() as u<UST>;
+          txFee = _tax.plus(dependency.fixedGas).toFixed() as u<UST>;
 
-            return clusterRedeemQuery({
-              mantleEndpoint: dependency.mantleEndpoint,
-              mantleFetch: dependency.mantleFetch,
-              requestInit: dependency.requestInit,
-              lastSyncedHeight: dependency.lastSyncedHeight,
-              wasmQuery: {
-                redeem: {
-                  contractAddress: dependency.clusterState.penalty,
-                  query: {
-                    redeem: {
-                      block_height: -1,
-                      cluster_token_supply:
-                        dependency.clusterState.outstanding_balance_tokens,
-                      inventory: dependency.clusterState.inv,
-                      max_tokens: return_amount as u<CT>,
-                      asset_prices: dependency.clusterState.prices,
-                      target_weights: dependency.clusterState.target.map(
-                        ({ amount }) => amount,
-                      ),
-                      // TODO this field not optional
-                      redeem_asset_amounts: [],
-                    },
-                  },
-                },
-              },
-            });
-          },
-        )
+          return clusterRedeemQuery(
+            demicrofy(return_amount as u<CT>).toFixed() as CT,
+            dependency.clusterState,
+            dependency.lastSyncedHeight,
+            dependency.mantleEndpoint,
+            dependency.mantleFetch,
+            dependency.requestInit,
+          );
+        })
         .then(({ redeem }) => {
           return {
             burntTokenAmount: redeem.token_cost,

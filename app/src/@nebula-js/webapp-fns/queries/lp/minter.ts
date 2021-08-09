@@ -1,31 +1,36 @@
-import { lp } from '@nebula-js/types';
+import { lp, LPAddr } from '@nebula-js/types';
 import {
+  defaultMantleFetch,
   mantle,
-  MantleParams,
+  MantleFetch,
   WasmQuery,
   WasmQueryData,
 } from '@terra-dev/mantle';
 
-export interface LpMinterWasmQuery {
+interface LpMinterWasmQuery {
   minter: WasmQuery<lp.Minter, lp.MinterResponse>;
 }
 
 export type LpMinter = WasmQueryData<LpMinterWasmQuery>;
 
-export type LpMinterQueryParams = Omit<
-  MantleParams<LpMinterWasmQuery>,
-  'query' | 'variables'
->;
-
-export async function lpMinterQuery({
-  mantleEndpoint,
-  wasmQuery,
-  ...params
-}: LpMinterQueryParams): Promise<LpMinter> {
+export async function lpMinterQuery(
+  lpTokenAddr: LPAddr,
+  mantleEndpoint: string,
+  mantleFetch: MantleFetch = defaultMantleFetch,
+  requestInit?: RequestInit,
+): Promise<LpMinter> {
   return mantle<LpMinterWasmQuery>({
-    mantleEndpoint: `${mantleEndpoint}?lp--minter=${wasmQuery.minter.contractAddress}`,
+    mantleEndpoint: `${mantleEndpoint}?lp--minter=${lpTokenAddr}`,
+    mantleFetch,
+    requestInit,
     variables: {},
-    wasmQuery,
-    ...params,
+    wasmQuery: {
+      minter: {
+        contractAddress: lpTokenAddr,
+        query: {
+          minter: {},
+        },
+      },
+    },
   });
 }

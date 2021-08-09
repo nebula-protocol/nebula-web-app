@@ -26,12 +26,12 @@ const assetInfos: terraswap.AssetInfo[] = [
 
 describe('terraBalancesQuery()', () => {
   test('should get result', async () => {
-    const result = await terraBalancesQuery({
-      mantleEndpoint: TEST_MANTLE_ENDPOINT,
-      walletAddress: TEST_WALLET_ADDRESS,
-      mantleFetch: defaultMantleFetch,
-      assets: assetInfos,
-    });
+    const result = await terraBalancesQuery(
+      TEST_WALLET_ADDRESS,
+      assetInfos,
+      TEST_MANTLE_ENDPOINT,
+      defaultMantleFetch,
+    );
 
     expect(result.balances[0].asset).toEqual({
       native_token: { denom: 'uluna' },

@@ -65,18 +65,11 @@ export function clusterArbMintTx(
 
   return pipe(
     (_: void) => {
-      return terraswapPoolQuery({
-        mantleEndpoint: $.mantleEndpoint,
-        mantleFetch: $.mantleFetch,
-        wasmQuery: {
-          terraswapPool: {
-            contractAddress: $.terraswapPairAddr,
-            query: {
-              pool: {},
-            },
-          },
-        },
-      }).then(({ terraswapPool }) => {
+      return terraswapPoolQuery(
+        $.terraswapPairAddr,
+        $.mantleEndpoint,
+        $.mantleFetch,
+      ).then(({ terraswapPool }) => {
         return {
           value: terraswapPool,
           phase: TxStreamPhase.POST,

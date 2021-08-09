@@ -7,18 +7,11 @@ import { defaultMantleFetch } from '@terra-dev/mantle';
 
 describe('govStateQuery()', () => {
   test('should get query data', async () => {
-    const { govState } = await govStateQuery({
-      mantleEndpoint: TEST_MANTLE_ENDPOINT,
-      mantleFetch: defaultMantleFetch,
-      wasmQuery: {
-        govState: {
-          contractAddress: TEST_CONTRACT_ADDRESS.gov,
-          query: {
-            state: {},
-          },
-        },
-      },
-    });
+    const { govState } = await govStateQuery(
+      TEST_CONTRACT_ADDRESS.gov,
+      TEST_MANTLE_ENDPOINT,
+      defaultMantleFetch,
+    );
 
     expect(govState).not.toBeUndefined();
   });

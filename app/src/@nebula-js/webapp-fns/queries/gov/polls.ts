@@ -1,29 +1,37 @@
-import { gov } from '@nebula-js/types';
+import { gov, HumanAddr } from '@nebula-js/types';
 import {
+  defaultMantleFetch,
   mantle,
-  MantleParams,
+  MantleFetch,
   WasmQuery,
   WasmQueryData,
 } from '@terra-dev/mantle';
 
-export interface GovPollsWasmQuery {
+interface GovPollsWasmQuery {
   polls: WasmQuery<gov.Polls, gov.PollsResponse>;
 }
 
 export type GovPolls = WasmQueryData<GovPollsWasmQuery>;
 
-export type GovPollsQueryParams = Omit<
-  MantleParams<GovPollsWasmQuery>,
-  'query' | 'variables'
->;
-
-export async function govPollsQuery({
-  mantleEndpoint,
-  ...params
-}: GovPollsQueryParams): Promise<GovPolls> {
+export async function govPollsQuery(
+  govAddr: HumanAddr,
+  pollsQuery: gov.Polls['polls'],
+  mantleEndpoint: string,
+  mantleFetch: MantleFetch = defaultMantleFetch,
+  requestInit?: RequestInit,
+): Promise<GovPolls> {
   return mantle<GovPollsWasmQuery>({
     mantleEndpoint: `${mantleEndpoint}?gov--polls`,
+    mantleFetch,
+    requestInit,
     variables: {},
-    ...params,
+    wasmQuery: {
+      polls: {
+        contractAddress: govAddr,
+        query: {
+          polls: pollsQuery,
+        },
+      },
+    },
   });
 }

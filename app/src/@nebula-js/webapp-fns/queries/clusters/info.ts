@@ -10,8 +10,9 @@ import {
   UST,
 } from '@nebula-js/types';
 import {
+  defaultMantleFetch,
   mantle,
-  MantleParams,
+  MantleFetch,
   WasmQuery,
   WasmQueryData,
 } from '@terra-dev/mantle';
@@ -38,44 +39,45 @@ export type ClusterInfo = WasmQueryData<ClusterInfoWasmQuery> & {
   assetTokenInfos: AssetTokenInfo[];
 };
 
-export type ClusterInfoQueryParams = Omit<
-  MantleParams<ClusterInfoWasmQuery>,
-  'query' | 'variables'
-> & {
-  terraswapFactoryAddr: HumanAddr;
-};
-
-export async function clusterInfoQuery({
-  mantleEndpoint,
-  wasmQuery,
-  terraswapFactoryAddr,
-  ...params
-}: ClusterInfoQueryParams): Promise<ClusterInfo> {
+export async function clusterInfoQuery(
+  clusterAddr: HumanAddr,
+  terraswapFactoryAddr: HumanAddr,
+  mantleEndpoint: string,
+  mantleFetch: MantleFetch = defaultMantleFetch,
+  requestInit?: RequestInit,
+): Promise<ClusterInfo> {
   const { clusterState, clusterConfig } = await mantle<ClusterStateWasmQuery>({
-    mantleEndpoint: `${mantleEndpoint}?cluster--state=${wasmQuery.clusterState.contractAddress}`,
+    mantleEndpoint: `${mantleEndpoint}?cluster--state=${clusterAddr}`,
+    mantleFetch,
+    requestInit,
     variables: {},
     wasmQuery: {
-      clusterConfig: wasmQuery.clusterConfig,
-      clusterState: wasmQuery.clusterState,
+      clusterState: {
+        contractAddress: clusterAddr,
+        query: {
+          cluster_state: {
+            cluster_contract_address: clusterAddr,
+          },
+        },
+      },
+      clusterConfig: {
+        contractAddress: clusterAddr,
+        query: {
+          config: {},
+        },
+      },
     },
-    ...params,
   });
 
   const tokenInfos: AssetTokenInfo[] = await Promise.all(
     clusterState.target.map(({ info }) => {
       if ('token' in info) {
-        return cw20TokenInfoQuery({
+        return cw20TokenInfoQuery(
+          info.token.contract_addr,
           mantleEndpoint,
-          wasmQuery: {
-            tokenInfo: {
-              contractAddress: info.token.contract_addr,
-              query: {
-                token_info: {},
-              },
-            },
-          },
-          ...params,
-        }).then(
+          mantleFetch,
+          requestInit,
+        ).then(
           ({ tokenInfo }) => ({ asset: info, tokenInfo } as AssetTokenInfo),
         );
       } else if ('native_token' in info) {
@@ -108,58 +110,38 @@ export async function clusterInfoQuery({
     }),
   );
 
-  const { terraswapPair } = await terraswapPairQuery({
-    mantleEndpoint,
-    wasmQuery: {
-      terraswapPair: {
-        contractAddress: terraswapFactoryAddr,
-        query: {
-          pair: {
-            asset_infos: [
-              {
-                token: {
-                  contract_addr: clusterState.cluster_token,
-                },
-              },
-              {
-                native_token: {
-                  denom: 'uusd' as NativeDenom,
-                },
-              },
-            ],
-          },
+  const { terraswapPair } = await terraswapPairQuery(
+    terraswapFactoryAddr,
+    [
+      {
+        token: {
+          contract_addr: clusterState.cluster_token,
         },
       },
-    },
-    ...params,
-  });
+      {
+        native_token: {
+          denom: 'uusd' as NativeDenom,
+        },
+      },
+    ],
+    mantleEndpoint,
+    mantleFetch,
+    requestInit,
+  );
 
-  const { tokenInfo } = await cw20TokenInfoQuery({
+  const { tokenInfo } = await cw20TokenInfoQuery(
+    clusterState.cluster_token,
     mantleEndpoint,
-    wasmQuery: {
-      tokenInfo: {
-        contractAddress: clusterState.cluster_token,
-        query: {
-          token_info: {},
-        },
-      },
-    },
-    ...params,
-  });
+    mantleFetch,
+    requestInit,
+  );
 
-  const { terraswapPool } = await terraswapPoolQuery<CT>({
+  const { terraswapPool } = await terraswapPoolQuery<CT>(
+    terraswapPair.contract_addr,
     mantleEndpoint,
-    wasmQuery: {
-      terraswapPool: {
-        // pair contract address
-        contractAddress: terraswapPair.contract_addr,
-        query: {
-          pool: {},
-        },
-      },
-    },
-    ...params,
-  });
+    mantleFetch,
+    requestInit,
+  );
 
   return {
     clusterState,

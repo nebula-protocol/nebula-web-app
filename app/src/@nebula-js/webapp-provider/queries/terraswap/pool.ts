@@ -3,32 +3,11 @@ import { Token } from '@nebula-js/types';
 import { TerraswapPool, terraswapPoolQuery } from '@nebula-js/webapp-fns';
 import { createQueryFn } from '@terra-dev/react-query-utils';
 import { useBrowserInactive } from '@terra-dev/use-browser-inactive';
-import { MantleFetch, useTerraWebapp } from '@terra-money/webapp-provider';
+import { useTerraWebapp } from '@terra-money/webapp-provider';
 import { useQuery, UseQueryResult } from 'react-query';
 import { NEBULA_QUERY_KEYS } from '../../env';
 
-const queryFn = createQueryFn(
-  (
-    mantleEndpoint: string,
-    mantleFetch: MantleFetch,
-    terraswapPairAddr: HumanAddr | undefined,
-  ) => {
-    return terraswapPairAddr
-      ? terraswapPoolQuery({
-          mantleEndpoint,
-          mantleFetch,
-          wasmQuery: {
-            terraswapPool: {
-              contractAddress: terraswapPairAddr,
-              query: {
-                pool: {},
-              },
-            },
-          },
-        })
-      : Promise.resolve(undefined);
-  },
-);
+const queryFn = createQueryFn(terraswapPoolQuery);
 
 export function useTerraswapPoolQuery<T extends Token>(
   terraswapPairAddr: HumanAddr | undefined,
@@ -40,11 +19,11 @@ export function useTerraswapPoolQuery<T extends Token>(
   const result = useQuery(
     [
       NEBULA_QUERY_KEYS.TERRASWAP_POOL,
+      terraswapPairAddr,
       mantleEndpoint,
       mantleFetch,
-      terraswapPairAddr,
     ],
-    queryFn,
+    queryFn as any,
     {
       refetchInterval: browserInactive && 1000 * 60 * 5,
       enabled: !browserInactive,

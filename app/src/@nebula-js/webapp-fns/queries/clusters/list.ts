@@ -1,12 +1,13 @@
-import { cluster_factory } from '@nebula-js/types';
+import { cluster_factory, HumanAddr } from '@nebula-js/types';
 import {
+  defaultMantleFetch,
   mantle,
-  MantleParams,
+  MantleFetch,
   WasmQuery,
   WasmQueryData,
 } from '@terra-dev/mantle';
 
-export interface ClustersListWasmQuery {
+interface ClustersListWasmQuery {
   clusterList: WasmQuery<
     cluster_factory.ClusterList,
     cluster_factory.ClusterListResponse
@@ -15,20 +16,24 @@ export interface ClustersListWasmQuery {
 
 export type ClustersList = WasmQueryData<ClustersListWasmQuery>;
 
-export type ClustersListQueryParams = Omit<
-  MantleParams<ClustersListWasmQuery>,
-  'query' | 'variables'
->;
-
-export async function clustersListQuery({
-  mantleEndpoint,
-  ...params
-}: ClustersListQueryParams): Promise<ClustersList> {
-  const { clusterList } = await mantle<ClustersListWasmQuery>({
+export async function clustersListQuery(
+  clusterFactoryAddr: HumanAddr,
+  mantleEndpoint: string,
+  mantleFetch: MantleFetch = defaultMantleFetch,
+  requestInit?: RequestInit,
+): Promise<ClustersList> {
+  return await mantle<ClustersListWasmQuery>({
     mantleEndpoint: `${mantleEndpoint}?clusters--list`,
+    mantleFetch,
+    requestInit,
     variables: {},
-    ...params,
+    wasmQuery: {
+      clusterList: {
+        contractAddress: clusterFactoryAddr,
+        query: {
+          cluster_list: {},
+        },
+      },
+    },
   });
-
-  return { clusterList };
 }

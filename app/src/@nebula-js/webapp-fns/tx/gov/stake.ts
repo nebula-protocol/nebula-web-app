@@ -31,22 +31,14 @@ export function govStakeTx(
 
   return pipe(
     (_: void) => {
-      return govStakerQuery({
-        mantleEndpoint: $.mantleEndpoint,
-        mantleFetch: $.mantleFetch,
-        wasmQuery: {
-          govStaker: {
-            contractAddress: $.govAddr,
-            query: {
-              staker: {
-                address: $.walletAddr,
-              },
-            },
-          },
-        },
-      }).then(({ govStaker }) => {
+      return govStakerQuery(
+        $.walletAddr,
+        $.govAddr,
+        $.mantleEndpoint,
+        $.mantleFetch,
+      ).then((result) => {
         return {
-          value: govStaker,
+          value: result!.govStaker,
           phase: TxStreamPhase.POST,
           receipts: [],
         } as TxResultRendering<gov.StakerResponse>;

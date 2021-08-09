@@ -1,59 +1,38 @@
-import { cluster_factory, HumanAddr } from '@nebula-js/types';
-import { MantleParams, WasmQuery } from '@terra-dev/mantle';
+import { HumanAddr } from '@nebula-js/types';
+import { defaultMantleFetch, MantleFetch } from '@terra-dev/mantle';
 import { clustersListQuery } from '../clusters/list';
 import {
   StakingClusterPoolInfo,
   stakingClusterPoolInfoQuery,
 } from './clusterPoolInfo';
 
-export interface StakingClusterPoolInfoListWasmQuery {
-  clusterList: WasmQuery<
-    cluster_factory.ClusterList,
-    cluster_factory.ClusterListResponse
-  >;
-}
-
 export type StakingClusterPoolInfoList = StakingClusterPoolInfo[];
 
-export type StakingClusterPoolInfoListQueryParams = Omit<
-  MantleParams<StakingClusterPoolInfoListWasmQuery>,
-  'query' | 'variables'
-> & {
-  terraswapFactoryAddr: HumanAddr;
-  stakingAddr: HumanAddr;
-};
-
-export async function stakingClusterPoolInfoListQuery({
-  mantleEndpoint,
-  wasmQuery,
-  terraswapFactoryAddr,
-  stakingAddr,
-  ...params
-}: StakingClusterPoolInfoListQueryParams): Promise<StakingClusterPoolInfoList> {
-  const { clusterList } = await clustersListQuery({
+export async function stakingClusterPoolInfoListQuery(
+  clusterFactoryAddr: HumanAddr,
+  stakingAddr: HumanAddr,
+  terraswapFactoryAddr: HumanAddr,
+  mantleEndpoint: string,
+  mantleFetch: MantleFetch = defaultMantleFetch,
+  requestInit?: RequestInit,
+): Promise<StakingClusterPoolInfoList> {
+  const { clusterList } = await clustersListQuery(
+    clusterFactoryAddr,
     mantleEndpoint,
-    wasmQuery,
-    ...params,
-  });
+    mantleFetch,
+    requestInit,
+  );
 
   return Promise.all(
     clusterList.contract_infos.map(([clusterAddr]) =>
-      stakingClusterPoolInfoQuery({
-        mantleEndpoint,
-        terraswapFactoryAddr,
+      stakingClusterPoolInfoQuery(
+        clusterAddr,
         stakingAddr,
-        wasmQuery: {
-          clusterState: {
-            contractAddress: clusterAddr,
-            query: {
-              cluster_state: {
-                cluster_contract_address: clusterAddr,
-              },
-            },
-          },
-        },
-        ...params,
-      }),
+        terraswapFactoryAddr,
+        mantleEndpoint,
+        mantleFetch,
+        requestInit,
+      ),
     ),
   );
 }

@@ -7,18 +7,12 @@ import { defaultMantleFetch } from '@terra-dev/mantle';
 
 describe('govPollsQuery()', () => {
   test('should get query data', async () => {
-    const { polls } = await govPollsQuery({
-      mantleEndpoint: TEST_MANTLE_ENDPOINT,
-      mantleFetch: defaultMantleFetch,
-      wasmQuery: {
-        polls: {
-          contractAddress: TEST_CONTRACT_ADDRESS.gov,
-          query: {
-            polls: {},
-          },
-        },
-      },
-    });
+    const { polls } = await govPollsQuery(
+      TEST_CONTRACT_ADDRESS.gov,
+      {},
+      TEST_MANTLE_ENDPOINT,
+      defaultMantleFetch,
+    );
 
     expect(polls).not.toBeUndefined();
   });

@@ -1,5 +1,5 @@
-import { terraswap } from '@nebula-js/types';
-import { MantleParams, WasmQuery } from '@terra-dev/mantle';
+import { HumanAddr, terraswap } from '@nebula-js/types';
+import { defaultMantleFetch, MantleFetch, WasmQuery } from '@terra-dev/mantle';
 import { mantle, WasmQueryData } from '@terra-money/webapp-fns';
 
 export interface TerraswapPairWasmQuery {
@@ -11,17 +11,14 @@ export interface TerraswapPairWasmQuery {
 
 export type TerraswapPair = WasmQueryData<TerraswapPairWasmQuery>;
 
-export type TerraswapPairQueryParams = Omit<
-  MantleParams<TerraswapPairWasmQuery>,
-  'query' | 'variables'
->;
-
-export async function terraswapPairQuery({
-  mantleEndpoint,
-  wasmQuery,
-  ...params
-}: TerraswapPairQueryParams): Promise<TerraswapPair> {
-  const urlQuery = wasmQuery.terraswapPair.query.pair.asset_infos
+export async function terraswapPairQuery(
+  terraswapFactoryAddr: HumanAddr,
+  assetInfos: [terraswap.AssetInfo, terraswap.AssetInfo],
+  mantleEndpoint: string,
+  mantleFetch: MantleFetch = defaultMantleFetch,
+  requestInit?: RequestInit,
+): Promise<TerraswapPair> {
+  const urlQuery = assetInfos
     .reduce((urlQueries, asset, i) => {
       if ('token' in asset) {
         urlQueries.push(`token_${i + 1}=${asset.token.contract_addr}`);
@@ -34,10 +31,18 @@ export async function terraswapPairQuery({
 
   return mantle<TerraswapPairWasmQuery>({
     mantleEndpoint: `${mantleEndpoint}?terraswap--pair&${urlQuery}`,
+    mantleFetch,
+    requestInit,
     variables: {},
     wasmQuery: {
-      terraswapPair: wasmQuery.terraswapPair,
+      terraswapPair: {
+        contractAddress: terraswapFactoryAddr,
+        query: {
+          pair: {
+            asset_infos: assetInfos,
+          },
+        },
+      },
     },
-    ...params,
   });
 }

@@ -7,19 +7,12 @@ import { defaultMantleFetch } from '@terra-dev/mantle';
 
 describe('clusters/infoList', () => {
   test('should get result data', async () => {
-    const infoList = await clustersInfoListQuery({
-      mantleEndpoint: TEST_MANTLE_ENDPOINT,
-      mantleFetch: defaultMantleFetch,
-      terraswapFactoryAddr: TEST_CONTRACT_ADDRESS.terraswap.factory,
-      wasmQuery: {
-        clusterList: {
-          contractAddress: TEST_CONTRACT_ADDRESS.clusterFactory,
-          query: {
-            cluster_list: {},
-          },
-        },
-      },
-    });
+    const infoList = await clustersInfoListQuery(
+      TEST_CONTRACT_ADDRESS.clusterFactory,
+      TEST_CONTRACT_ADDRESS.terraswap.factory,
+      TEST_MANTLE_ENDPOINT,
+      defaultMantleFetch,
+    );
 
     expect(Array.isArray(infoList)).toBeTruthy();
   });

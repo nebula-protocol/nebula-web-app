@@ -41,27 +41,20 @@ export const clusterMintTerraswapArbitrageForm = (
 
     const asyncStates = _asyncStates.then(({ mintedAmount }) => {
       if (mintedAmount) {
-        return terraswapSimulationQuery({
-          mantleEndpoint: dependency.mantleEndpoint,
-          mantleFetch: dependency.mantleFetch,
-          wasmQuery: {
-            simulation: {
-              contractAddress: dependency.terraswapPair.contract_addr,
-              query: {
-                simulation: {
-                  offer_asset: {
-                    amount: mintedAmount,
-                    info: {
-                      token: {
-                        contract_addr: dependency.clusterState.cluster_token,
-                      },
-                    },
-                  },
-                },
+        return terraswapSimulationQuery(
+          dependency.terraswapPair.contract_addr,
+          {
+            amount: mintedAmount,
+            info: {
+              token: {
+                contract_addr: dependency.clusterState.cluster_token,
               },
             },
           },
-        }).then(({ simulation }) => {
+          dependency.mantleEndpoint,
+          dependency.mantleFetch,
+          dependency.requestInit,
+        ).then(({ simulation }) => {
           return {
             mintedAmount,
             returnedAmount: simulation.return_amount as u<UST>,

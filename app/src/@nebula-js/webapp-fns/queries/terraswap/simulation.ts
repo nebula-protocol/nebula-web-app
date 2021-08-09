@@ -1,10 +1,6 @@
-import { terraswap, Token } from '@nebula-js/types';
-import {
-  mantle,
-  MantleParams,
-  WasmQuery,
-  WasmQueryData,
-} from '@terra-money/webapp-fns';
+import { HumanAddr, terraswap, Token } from '@nebula-js/types';
+import { defaultMantleFetch, MantleFetch } from '@terra-dev/mantle';
+import { mantle, WasmQuery, WasmQueryData } from '@terra-money/webapp-fns';
 
 export interface TerraswapSimulationWasmQuery {
   simulation: WasmQuery<
@@ -15,21 +11,28 @@ export interface TerraswapSimulationWasmQuery {
 
 export type TerraswapSimulation = WasmQueryData<TerraswapSimulationWasmQuery>;
 
-export type TerraswapSimulationQueryParams = Omit<
-  MantleParams<TerraswapSimulationWasmQuery>,
-  'query' | 'variables'
->;
-
-export async function terraswapSimulationQuery({
-  mantleEndpoint,
-  wasmQuery,
-  ...params
-}: TerraswapSimulationQueryParams): Promise<TerraswapSimulation> {
+export async function terraswapSimulationQuery(
+  ustPairAddr: HumanAddr,
+  offerAssetQuery: terraswap.pair.Simulation<Token>['simulation']['offer_asset'],
+  mantleEndpoint: string,
+  mantleFetch: MantleFetch = defaultMantleFetch,
+  requestInit?: RequestInit,
+): Promise<TerraswapSimulation> {
   const data = await mantle<TerraswapSimulationWasmQuery>({
-    mantleEndpoint: `${mantleEndpoint}?terraswap--simulation?pair=${wasmQuery.simulation.contractAddress}`,
+    mantleEndpoint: `${mantleEndpoint}?terraswap--simulation?pair=${ustPairAddr}`,
+    mantleFetch,
+    requestInit,
     variables: {},
-    wasmQuery,
-    ...params,
+    wasmQuery: {
+      simulation: {
+        contractAddress: ustPairAddr,
+        query: {
+          simulation: {
+            offer_asset: offerAssetQuery,
+          },
+        },
+      },
+    },
   });
 
   return data;

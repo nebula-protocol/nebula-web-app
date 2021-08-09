@@ -110,28 +110,20 @@ export const cw20SellTokenForm = <T extends Token>({
           invalidTokenAmount: null,
           availableTx: false,
         },
-        terraswapSimulationQuery({
-          mantleEndpoint,
-          mantleFetch,
-          requestInit,
-          wasmQuery: {
-            simulation: {
-              contractAddress: ustTokenPairAddr,
-              query: {
-                simulation: {
-                  offer_asset: {
-                    amount: microfy(tokenAmount!).toFixed() as u<Token>,
-                    info: {
-                      token: {
-                        contract_addr: tokenAddr,
-                      },
-                    },
-                  },
-                },
+        terraswapSimulationQuery(
+          ustTokenPairAddr,
+          {
+            amount: microfy(tokenAmount!).toFixed() as u<Token>,
+            info: {
+              token: {
+                contract_addr: tokenAddr,
               },
             },
           },
-        }).then(
+          mantleEndpoint,
+          mantleFetch,
+          requestInit,
+        ).then(
           ({
             simulation: { return_amount, spread_amount, commission_amount },
           }) => {
@@ -200,28 +192,20 @@ export const cw20SellTokenForm = <T extends Token>({
           invalidTokenAmount: null,
           availableTx: false,
         },
-        terraswapSimulationQuery({
-          mantleEndpoint,
-          mantleFetch,
-          requestInit,
-          wasmQuery: {
-            simulation: {
-              contractAddress: ustTokenPairAddr,
-              query: {
-                simulation: {
-                  offer_asset: {
-                    amount: microfy(ustAmount!).toFixed() as u<UST>,
-                    info: {
-                      native_token: {
-                        denom: 'uusd' as NativeDenom,
-                      },
-                    },
-                  },
-                },
+        terraswapSimulationQuery(
+          ustTokenPairAddr,
+          {
+            amount: microfy(ustAmount!).toFixed() as u<UST>,
+            info: {
+              native_token: {
+                denom: 'uusd' as NativeDenom,
               },
             },
           },
-        }).then(
+          mantleEndpoint,
+          mantleFetch,
+          requestInit,
+        ).then(
           ({
             simulation: { return_amount, spread_amount, commission_amount },
           }) => {

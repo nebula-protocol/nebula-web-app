@@ -1,36 +1,13 @@
-import { HumanAddr } from '@anchor-protocol/types';
 import { terraswap } from '@nebula-js/types';
 import { TerraswapPair, terraswapPairQuery } from '@nebula-js/webapp-fns';
 import { createQueryFn } from '@terra-dev/react-query-utils';
 import { useBrowserInactive } from '@terra-dev/use-browser-inactive';
-import { MantleFetch, useTerraWebapp } from '@terra-money/webapp-provider';
+import { useTerraWebapp } from '@terra-money/webapp-provider';
 import { useQuery, UseQueryResult } from 'react-query';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { NEBULA_QUERY_KEYS } from '../../env';
 
-const queryFn = createQueryFn(
-  (
-    mantleEndpoint: string,
-    mantleFetch: MantleFetch,
-    terraswapFactoryAddr: HumanAddr,
-    assetInfos: [terraswap.AssetInfo, terraswap.AssetInfo],
-  ) => {
-    return terraswapPairQuery({
-      mantleEndpoint,
-      mantleFetch,
-      wasmQuery: {
-        terraswapPair: {
-          contractAddress: terraswapFactoryAddr,
-          query: {
-            pair: {
-              asset_infos: assetInfos,
-            },
-          },
-        },
-      },
-    });
-  },
-);
+const queryFn = createQueryFn(terraswapPairQuery);
 
 export function useTerraswapPairQuery(
   assetInfos: [terraswap.AssetInfo, terraswap.AssetInfo],
@@ -44,10 +21,10 @@ export function useTerraswapPairQuery(
   const result = useQuery(
     [
       NEBULA_QUERY_KEYS.TERRASWAP_PAIR,
-      mantleEndpoint,
-      mantleFetch,
       contractAddress.terraswap.factory,
       assetInfos,
+      mantleEndpoint,
+      mantleFetch,
     ],
     queryFn,
     {

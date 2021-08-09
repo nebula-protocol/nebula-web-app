@@ -2,36 +2,12 @@ import { HumanAddr } from '@nebula-js/types';
 import { GovStaker, govStakerQuery } from '@nebula-js/webapp-fns';
 import { createQueryFn } from '@terra-dev/react-query-utils';
 import { useBrowserInactive } from '@terra-dev/use-browser-inactive';
-import { MantleFetch, useTerraWebapp } from '@terra-money/webapp-provider';
+import { useTerraWebapp } from '@terra-money/webapp-provider';
 import { useQuery, UseQueryResult } from 'react-query';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { NEBULA_QUERY_KEYS } from '../../env';
 
-const queryFn = createQueryFn(
-  (
-    mantleEndpoint: string,
-    mantleFetch: MantleFetch,
-    walletAddr: HumanAddr | undefined,
-    govAddr: HumanAddr,
-  ) => {
-    return walletAddr
-      ? govStakerQuery({
-          mantleEndpoint,
-          mantleFetch,
-          wasmQuery: {
-            govStaker: {
-              contractAddress: govAddr,
-              query: {
-                staker: {
-                  address: walletAddr,
-                },
-              },
-            },
-          },
-        })
-      : Promise.resolve(undefined);
-  },
-);
+const queryFn = createQueryFn(govStakerQuery);
 
 export function useGovStakerQuery(
   walletAddr: HumanAddr | undefined,
@@ -45,10 +21,10 @@ export function useGovStakerQuery(
   const result = useQuery(
     [
       NEBULA_QUERY_KEYS.CW20_BALANCE,
-      mantleEndpoint,
-      mantleFetch,
       walletAddr,
       contractAddress.gov,
+      mantleEndpoint,
+      mantleFetch,
     ],
     queryFn,
     {

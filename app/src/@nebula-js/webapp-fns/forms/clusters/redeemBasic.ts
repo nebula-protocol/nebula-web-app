@@ -79,32 +79,14 @@ export const clusterRedeemBasicForm = (
       dependency.clusterState !== prevDependency?.clusterState ||
       input.tokenAmount !== prevInput?.tokenAmount
     ) {
-      asyncStates = clusterRedeemQuery({
-        mantleEndpoint: dependency.mantleEndpoint,
-        mantleFetch: dependency.mantleFetch,
-        requestInit: dependency.requestInit,
-        lastSyncedHeight: dependency.lastSyncedHeight,
-        wasmQuery: {
-          redeem: {
-            contractAddress: dependency.clusterState.penalty,
-            query: {
-              redeem: {
-                block_height: -1,
-                cluster_token_supply:
-                  dependency.clusterState.outstanding_balance_tokens,
-                inventory: dependency.clusterState.inv,
-                max_tokens: microfy(input.tokenAmount).toFixed() as u<CT>,
-                asset_prices: dependency.clusterState.prices,
-                target_weights: dependency.clusterState.target.map(
-                  ({ amount }) => amount,
-                ),
-                // TODO this field not optional
-                redeem_asset_amounts: [],
-              },
-            },
-          },
-        },
-      }).then(({ redeem }) => {
+      asyncStates = clusterRedeemQuery(
+        input.tokenAmount,
+        dependency.clusterState,
+        dependency.lastSyncedHeight,
+        dependency.mantleEndpoint,
+        dependency.mantleFetch,
+        dependency.requestInit,
+      ).then(({ redeem }) => {
         return {
           burntTokenAmount: redeem.token_cost,
           redeemTokenAmounts: redeem.redeem_assets,
