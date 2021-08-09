@@ -1,34 +1,31 @@
 import { ChevronRight } from '@material-ui/icons';
-import { formatRate } from '@nebula-js/notation';
-import { Rate } from '@nebula-js/types';
+import { formatRate, formatUTokenWithPostfixUnits } from '@nebula-js/notation';
+import { Rate, u, UST } from '@nebula-js/types';
 import {
   Carousel,
   DiffSpan,
   MiniTab,
   PartitionBarGraph,
-  partitionColor,
-  PartitionLabel,
   PartitionLabels,
-  Sub,
 } from '@nebula-js/ui';
+import {
+  ClusterInfo,
+  computeMarketCap,
+  computeProvided,
+} from '@nebula-js/webapp-fns';
+import { useClustersInfoListQuery } from '@nebula-js/webapp-provider';
+import { Big } from 'big.js';
+import { ClusterView, toClusterView } from 'pages/clusters/models/clusters';
 import React, { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import useResizeObserver from 'use-resize-observer/polyfilled';
 
-const tabItems = [
-  { id: '1', label: '1' },
-  { id: '2', label: '2' },
-  { id: '3', label: '3' },
-];
-
-const data = Array.from(
-  { length: Math.floor(Math.random() * 4) + 4 },
-  (_, i) => ({
-    label: `ITEM${i}`,
-    value: Math.floor(Math.random() * 1000) + 300,
-    color: partitionColor[i % partitionColor.length],
-  }),
-);
+interface TopCluster extends ClusterInfo {
+  marketCap: u<UST<Big>>;
+  provided: u<UST<Big>>;
+  view: ClusterView;
+}
 
 export interface TopClustersProps {
   className?: string;
@@ -37,59 +34,117 @@ export interface TopClustersProps {
 function TopClustersBase({ className }: TopClustersProps) {
   const [slide, setSlide] = useState<number>(0);
 
+  const { data: clusterInfos = [] } = useClustersInfoListQuery();
+
+  const topClusters = useMemo<TopCluster[]>(() => {
+    return clusterInfos
+      .map((clusterInfo) => {
+        const marketCap = computeMarketCap(
+          clusterInfo.clusterState,
+          clusterInfo.terraswapPool,
+        ) as u<UST<Big>>;
+
+        return { ...clusterInfo, marketCap };
+      })
+      .sort((a, b) => {
+        return b.marketCap.minus(a.marketCap).toNumber();
+      })
+      .slice(0, 3)
+      .map((clusterInfo) => {
+        const provided = computeProvided(clusterInfo.clusterState);
+        const view = toClusterView(clusterInfo);
+
+        return {
+          ...clusterInfo,
+          provided,
+          view,
+        };
+      });
+  }, [clusterInfos]);
+
+  const tabItems = useMemo(() => {
+    return topClusters.map((_, i) => {
+      return { id: i.toString(), label: i.toString() };
+    });
+  }, [topClusters]);
+
   const { width = 300, ref } = useResizeObserver();
-
-  const partitionLabels = useMemo<PartitionLabel[]>(() => {
-    const total = data.reduce((t, { value }) => t + value, 0) - data.length;
-
-    return data.slice(0, 3).map(({ label, value, color }) => ({
-      label,
-      value: formatRate((value / total) as Rate<number>) + '%',
-      color,
-    }));
-  }, []);
 
   return (
     <div className={className} ref={ref}>
       <Carousel slide={slide}>
-        {tabItems.map((_, i) => (
-          <Content key={'cluster' + i}>
-            <section className="summary">
-              <i />
-              <div>
-                <h4>
-                  Next DOGE <ChevronRight />
-                </h4>
-                <p>100.100232 UST</p>
+        {topClusters.map(
+          (
+            {
+              clusterState,
+              clusterTokenInfo,
+              marketCap,
+              provided,
+              view: { assets },
+            },
+            i,
+          ) => (
+            <Content key={'cluster' + i}>
+              <section className="summary">
+                <i />
+                <div>
+                  <h4>
+                    <Link
+                      to={`/clusters/${clusterState.cluster_contract_address}`}
+                    >
+                      {clusterTokenInfo.name} <ChevronRight />
+                    </Link>
+                  </h4>
+                  <p>{formatUTokenWithPostfixUnits(marketCap)} UST</p>
+                  <p>
+                    <s>
+                      <DiffSpan diff={10} translateIconY="0.15em">
+                        10.00%
+                      </DiffSpan>
+                    </s>
+                  </p>
+                </div>
+              </section>
+
+              <section className="provided-asset">
+                <h4>PROVIDED ASSET</h4>
+                <p>{formatUTokenWithPostfixUnits(provided)} UST</p>
+              </section>
+
+              <section className="supply">
+                <h4>SUPPLY</h4>
                 <p>
-                  <DiffSpan diff={10} translateIconY="0.15em">
-                    10.00%
-                  </DiffSpan>
+                  {formatUTokenWithPostfixUnits(
+                    clusterState.outstanding_balance_tokens,
+                  )}{' '}
+                  {clusterTokenInfo.symbol}
                 </p>
-              </div>
-            </section>
+              </section>
 
-            <section className="provided-asset">
-              <h4>PROVIDED ASSET</h4>
-              <p>1,000 UST</p>
-            </section>
-
-            <section className="supply">
-              <h4>SUPPLY</h4>
-              <p>100,000.123 NIAB</p>
-            </section>
-
-            <section className="graph">
-              <PartitionLabels data={partitionLabels}>
-                <li>
-                  <span>+12</span>
-                  <Sub>more</Sub>
-                </li>
-              </PartitionLabels>
-              <PartitionBarGraph data={data} width={width} height={8} />
-            </section>
-          </Content>
-        ))}
+              <section className="graph">
+                <PartitionLabels
+                  data={assets
+                    .slice(0, 3)
+                    .map(({ token, color, portfolioRatio }) => ({
+                      label: token.symbol,
+                      color,
+                      value: formatRate(portfolioRatio as Rate<number>) + '%',
+                    }))}
+                >
+                  {assets.length - 3 > 0 && <li>+{assets.length - 3} more</li>}
+                </PartitionLabels>
+                <PartitionBarGraph
+                  data={assets.map(({ color, portfolioRatio }) => ({
+                    color,
+                    value: portfolioRatio,
+                  }))}
+                  width={width}
+                  height={8}
+                />
+              </section>
+            </Content>
+          ),
+        )}
       </Carousel>
 
       <MiniTab
@@ -121,6 +176,11 @@ const Content = styled.div`
 
     h4 {
       font-size: var(--font-size20);
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
 
       svg {
         font-size: 0.8em;
