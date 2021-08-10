@@ -24,10 +24,14 @@ export interface StakingSectionProps {
 function StakingSectionBase({ className }: StakingSectionProps) {
   const { contractAddress } = useNebulaWebapp();
 
-  const { data: { tokenBalance } = {} } = useCW20BalanceQuery<NEB>(
-    contractAddress.cw20.NEB,
-    contractAddress.gov,
-  );
+  const { data: { tokenBalance: govNebBalance } = {} } =
+    useCW20BalanceQuery<NEB>(contractAddress.cw20.NEB, contractAddress.gov);
+
+  const { data: { tokenBalance: communityNebBalance } = {} } =
+    useCW20BalanceQuery<NEB>(
+      contractAddress.cw20.NEB,
+      contractAddress.community,
+    );
 
   const { data: { govState } = {} } = useGovStateQuery();
 
@@ -36,14 +40,14 @@ function StakingSectionBase({ className }: StakingSectionProps) {
   );
 
   const { totalStaked, stakingRatio } = useMemo(() => {
-    if (!tokenBalance || !govState || !tokenInfo) {
+    if (!govNebBalance || !govState || !tokenInfo) {
       return {
         totalStaked: big(0) as u<NEB<Big>>,
         stakingRatio: big(0) as Rate<Big>,
       };
     }
 
-    const _totalStaked = big(tokenBalance.balance).minus(
+    const _totalStaked = big(govNebBalance.balance).minus(
       govState.total_deposit,
     ) as u<NEB<Big>>;
 
@@ -53,9 +57,7 @@ function StakingSectionBase({ className }: StakingSectionProps) {
       totalStaked: _totalStaked,
       stakingRatio: _stakingRatio,
     };
-  }, [govState, tokenBalance, tokenInfo]);
-
-  console.log('StakingSection.tsx..StakingSectionBase()', tokenBalance);
+  }, [govState, govNebBalance, tokenInfo]);
 
   return (
     <Section className={className}>
@@ -82,9 +84,14 @@ function StakingSectionBase({ className }: StakingSectionProps) {
       <TitledLabel
         title="COMMUNITY POOL"
         text={
-          <s>
-            22.22M <Sub>NEB</Sub>
-          </s>
+          <>
+            <AnimateNumber format={formatUTokenWithPostfixUnits}>
+              {communityNebBalance
+                ? communityNebBalance.balance
+                : (0 as u<NEB<number>>)}
+            </AnimateNumber>
+            <Sub>NEB</Sub>
+          </>
         }
       />
     </Section>

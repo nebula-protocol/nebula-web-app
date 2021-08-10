@@ -1,10 +1,19 @@
+import { formatUTokenWithPostfixUnits } from '@nebula-js/notation';
+import { NEB, u } from '@nebula-js/types';
 import {
+  AnimateNumber,
   Button,
   IconAndLabels,
   Section,
   Sub,
   TitledLabel,
 } from '@nebula-js/ui';
+import {
+  useCW20BalanceQuery,
+  useGovStakerQuery,
+  useNebulaWebapp,
+} from '@nebula-js/webapp-provider';
+import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { fixHMR } from 'fix-hmr';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -15,6 +24,19 @@ export interface NEBSectionProps {
 }
 
 function NEBSectionBase({ className }: NEBSectionProps) {
+  const connectedWallet = useConnectedWallet();
+
+  const { contractAddress } = useNebulaWebapp();
+
+  const { data: { tokenBalance: nebBalance } = {} } = useCW20BalanceQuery<NEB>(
+    contractAddress.cw20.NEB,
+    connectedWallet?.walletAddress,
+  );
+
+  const { data: { govStaker } = {} } = useGovStakerQuery(
+    connectedWallet?.walletAddress,
+  );
+
   return (
     <Section className={className}>
       <IconAndLabels
@@ -44,17 +66,23 @@ function NEBSectionBase({ className }: NEBSectionProps) {
         <TitledLabel
           title="STAKABLE NEB"
           text={
-            <s>
-              123.123456 <Sub>NEB</Sub>
-            </s>
+            <>
+              <AnimateNumber format={formatUTokenWithPostfixUnits}>
+                {nebBalance ? nebBalance.balance : (0 as u<NEB<number>>)}
+              </AnimateNumber>{' '}
+              <Sub>NEB</Sub>
+            </>
           }
         />
         <TitledLabel
           title="STAKED NEB"
           text={
-            <s>
-              123.123456 <Sub>NEB</Sub>
-            </s>
+            <>
+              <AnimateNumber format={formatUTokenWithPostfixUnits}>
+                {govStaker ? govStaker.balance : (0 as u<NEB<number>>)}
+              </AnimateNumber>{' '}
+              <Sub>NEB</Sub>
+            </>
           }
         />
       </section>
