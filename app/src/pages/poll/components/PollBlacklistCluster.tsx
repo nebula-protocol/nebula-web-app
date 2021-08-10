@@ -25,24 +25,26 @@ export default function PollBlacklistCluster() {
       onCreateMsg={() => null}
       submitButtonStatus
     >
-      <FormLabel label="Choose a Cluster" className="form-label">
-        <NativeSelect
-          fullWidth
-          value={targetClusterSymbol}
-          onChange={({ target }: ChangeEvent<HTMLSelectElement>) =>
-            setTargetClusterSymbol(target.value)
-          }
-        >
-          {clustersList.map(({ clusterTokenInfo }) => (
-            <option
-              key={clusterTokenInfo.symbol}
-              value={clusterTokenInfo.symbol}
-            >
-              {clusterTokenInfo.symbol} - {clusterTokenInfo.name}
-            </option>
-          ))}
-        </NativeSelect>
-      </FormLabel>
+      {typeof targetClusterSymbol === 'string' && (
+        <FormLabel label="Choose a Cluster" className="form-label">
+          <NativeSelect
+            fullWidth
+            value={targetClusterSymbol}
+            onChange={({ target }: ChangeEvent<HTMLSelectElement>) =>
+              setTargetClusterSymbol(target.value)
+            }
+          >
+            {clustersList.map(({ clusterTokenInfo }) => (
+              <option
+                key={clusterTokenInfo.symbol}
+                value={clusterTokenInfo.symbol}
+              >
+                {clusterTokenInfo.symbol} - {clusterTokenInfo.name}
+              </option>
+            ))}
+          </NativeSelect>
+        </FormLabel>
+      )}
     </PollCreateBase>
   );
 }

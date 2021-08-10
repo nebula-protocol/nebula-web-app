@@ -19,7 +19,7 @@ export interface PollCreateBaseProps {
 
   title: string;
   description: ReactNode;
-  children: ReactNode;
+  children?: ReactNode;
   submitButtonStatus: 'disabled' | 'hidden' | true;
   onCreateMsg: () => gov.ExecuteMsg[] | null;
 }
@@ -97,7 +97,10 @@ function PollCreateBaseBase({
           }
           className="form-label"
         >
-          <Deposit>1,000 NEB</Deposit>
+          <Deposit>
+            <span>1,000</span>
+            <span>NEB</span>
+          </Deposit>
         </FormLabel>
 
         <FeeBox className="fee-box">
@@ -136,6 +139,8 @@ const Deposit = styled.div`
   border-radius: 8px;
   background-color: var(--color-gray22);
   padding: 20px;
+  display: flex;
+  justify-content: space-between;
 `;
 
 export const StyledPollCreateBase = styled(PollCreateBaseBase)`
