@@ -12,25 +12,25 @@ function StakingSectionBase({ className }: StakingSectionProps) {
       <TitledLabel
         title="TOTAL STAKED"
         text={
-          <>
+          <s>
             18M <Sub>NEB</Sub>
-          </>
+          </s>
         }
       />
       <TitledLabel
         title="STAKING RATIO"
         text={
-          <>
+          <s>
             29.14 <Sub>%</Sub>
-          </>
+          </s>
         }
       />
       <TitledLabel
         title="COMMUNITY POOL"
         text={
-          <>
+          <s>
             22.22M <Sub>NEB</Sub>
-          </>
+          </s>
         }
       />
     </Section>

@@ -44,25 +44,27 @@ function NEBSectionBase({ className }: NEBSectionProps) {
         <TitledLabel
           title="STAKABLE NEB"
           text={
-            <>
+            <s>
               123.123456 <Sub>NEB</Sub>
-            </>
+            </s>
           }
         />
         <TitledLabel
           title="STAKED NEB"
           text={
-            <>
+            <s>
               123.123456 <Sub>NEB</Sub>
-            </>
+            </s>
           }
         />
       </section>
       <section className="apr">
         <div>APR</div>
         <div>
-          <span>80</span>
-          <Sub>.8%</Sub>
+          <s>
+            <span>80</span>
+            <Sub>.8%</Sub>
+          </s>
         </div>
       </section>
     </Section>

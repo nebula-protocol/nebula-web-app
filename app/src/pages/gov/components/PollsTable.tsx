@@ -46,7 +46,9 @@ function PollsTableBase({ className }: PollsTableProps) {
       endPadding={startPadding}
       headerContents={
         <TableHeader>
-          <h2>Polls</h2>
+          <h2>
+            <s>Polls</s>
+          </h2>
           <div className="buttons">
             <EmptyButton>
               All
