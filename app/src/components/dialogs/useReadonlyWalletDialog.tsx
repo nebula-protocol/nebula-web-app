@@ -2,6 +2,7 @@ import { Modal } from '@material-ui/core';
 import {
   Button,
   Dialog,
+  FormLabel,
   NativeSelect,
   TextInput,
   useScreenSizeValue,
@@ -76,43 +77,36 @@ function ComponentBase({
         <h1>View Address</h1>
 
         {/* Network */}
-        <div className="network-description">
-          <p>Network</p>
-          <p />
-        </div>
-
-        <NativeSelect
-          fullWidth
-          value={chainID}
-          onChange={({ target }: ChangeEvent<HTMLSelectElement>) =>
-            setChainID(target.value)
-          }
-        >
-          {networks.map((item) => (
-            <option key={item.chainID} value={item.chainID}>
-              {item.name} ({item.chainID})
-            </option>
-          ))}
-        </NativeSelect>
+        <FormLabel label="Network">
+          <NativeSelect
+            fullWidth
+            value={chainID}
+            onChange={({ target }: ChangeEvent<HTMLSelectElement>) =>
+              setChainID(target.value)
+            }
+          >
+            {networks.map((item) => (
+              <option key={item.chainID} value={item.chainID}>
+                {item.name} ({item.chainID})
+              </option>
+            ))}
+          </NativeSelect>
+        </FormLabel>
 
         {/* Address */}
-        <div className="address-description">
-          <p>Wallet Address</p>
-          <p />
-        </div>
-
-        <TextInput
-          className="address"
-          fullWidth
-          multiline
-          placeholder="ADDRESS"
-          value={address}
-          error={!!invalidAddress}
-          helperText={invalidAddress}
-          onChange={({ target }: ChangeEvent<HTMLInputElement>) =>
-            setAddress(target.value)
-          }
-        />
+        <FormLabel label="Wallet Address" className="address">
+          <TextInput
+            fullWidth
+            multiline
+            placeholder="terra1..."
+            value={address}
+            error={!!invalidAddress}
+            helperText={invalidAddress}
+            onChange={({ target }: ChangeEvent<HTMLInputElement>) =>
+              setAddress(target.value)
+            }
+          />
+        </FormLabel>
 
         <Button
           fullWidth
@@ -138,26 +132,11 @@ const Component = styled(ComponentBase)`
     margin-bottom: 2.28571429em;
   }
 
-  .address-description,
-  .network-description {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 12px;
-    color: var(--color-white64);
-
-    > :last-child {
-      font-size: 12px;
-    }
-
-    margin-bottom: 12px;
-  }
-
-  .address-description {
-    margin-top: 20px;
+  .address {
+    margin-top: 1.42857142857143em;
   }
 
   .connect {
-    margin-top: 40px;
+    margin-top: 2.85714285714286em;
   }
 `;

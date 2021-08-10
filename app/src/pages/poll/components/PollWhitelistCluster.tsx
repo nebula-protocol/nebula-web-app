@@ -1,7 +1,10 @@
+import { FormLabel, TextInput } from '@nebula-js/ui';
+import React, { useState } from 'react';
 import { PollCreateBase } from './PollCreateBase';
-import React from 'react';
 
 export default function PollWhitelistCluster() {
+  const [oracleFeederAddress, setOracleFeederAddress] = useState<string>('');
+
   return (
     <PollCreateBase
       title="Whitelist Cluster"
@@ -9,7 +12,14 @@ export default function PollWhitelistCluster() {
       onCreateMsg={() => null}
       submitButtonStatus
     >
-      Form...
+      <FormLabel label="Oracle Feeder Address" className="form-label">
+        <TextInput
+          placeholder="terra1..."
+          fullWidth
+          value={oracleFeederAddress}
+          onChange={({ target }) => setOracleFeederAddress(target.value)}
+        />
+      </FormLabel>
     </PollCreateBase>
   );
 }
