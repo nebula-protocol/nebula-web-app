@@ -148,8 +148,7 @@ export namespace gov {
   export interface StateResponse {
     poll_count: rs.u64;
     total_share: u<NEB<rs.Uint128>>;
-    // TODO set token type to total_deposit
-    total_deposit: rs.Uint128;
+    total_deposit: u<NEB<rs.Uint128>>;
     // TODO set token type to pending_voting_rewards
     pending_voting_rewards: rs.Uint128;
   }
