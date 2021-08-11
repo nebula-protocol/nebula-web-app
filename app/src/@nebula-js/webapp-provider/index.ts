@@ -20,6 +20,7 @@ export * from './queries/clusters/list';
 export * from './queries/cw20/balance';
 export * from './queries/cw20/tokenInfo';
 export * from './queries/gov/config';
+export * from './queries/gov/poll';
 export * from './queries/gov/polls';
 export * from './queries/gov/staker';
 export * from './queries/gov/state';

@@ -1,4 +1,9 @@
-import { formatToken } from '@nebula-js/notation';
+import {
+  formatRate,
+  formatToken,
+  formatUTokenWithPostfixUnits,
+  truncate,
+} from '@nebula-js/notation';
 import { Token } from '@nebula-js/types';
 import {
   breakpoints,
@@ -9,9 +14,12 @@ import {
   TwoLine,
   useScreenSizeValue,
 } from '@nebula-js/ui';
+import { useGovPollQuery } from '@nebula-js/webapp-provider';
+import { useWallet } from '@terra-money/wallet-provider';
 import { MainLayout } from 'components/layouts/MainLayout';
 import { fixHMR } from 'fix-hmr';
 import React, { useState } from 'react';
+import { useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
 import useResizeObserver from 'use-resize-observer/polyfilled';
 import { VoteForm } from './components/VoteForm';
@@ -21,6 +29,12 @@ export interface PollDetailProps {
 }
 
 function PollDetailBase({ className }: PollDetailProps) {
+  const { network } = useWallet();
+
+  const match = useRouteMatch<{ pollId: string }>('/poll/:pollId');
+
+  const { data: { parsedPoll } = {} } = useGovPollQuery(+match!.params.pollId);
+
   const [startVote, setStartVote] = useState<boolean>(false);
 
   const { ref, width = 300 } = useResizeObserver();
@@ -40,17 +54,27 @@ function PollDetailBase({ className }: PollDetailProps) {
         <div className="description-column">
           <Section className="summary">
             <header>
-              <div>Whitelist CV</div>
-              <div>In Progress</div>
+              <div>
+                <s>Whitelist CV</s>
+              </div>
+              <div>{parsedPoll?.status}</div>
             </header>
 
-            <h2>Whitelist $NDOG</h2>
+            <h2>{parsedPoll?.poll.title}</h2>
 
             <p>
-              <span>Creater</span>terra...dkjekjf
+              <span>Creator</span>
+              <a
+                href={`https://finder.terra.money/${network.chainID}/address/${parsedPoll?.poll.creator}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {truncate(parsedPoll?.poll.creator)}
+              </a>
             </p>
             <p>
-              <span>Estimated end time</span>Mon, May 30, 12:34 PM
+              <span>Estimated end time</span>
+              {parsedPoll?.endsIn.toLocaleString()}
             </p>
             {startVote ? (
               <VoteForm className="form" />
@@ -69,26 +93,27 @@ function PollDetailBase({ className }: PollDetailProps) {
           <Section className="detail">
             <div>
               <h4>Description</h4>
-              <p>
-                The following is a proposal to whitelist the parameters of SPY,
-                which has been passed. Please see the ref whitelist poll and
-                attached link. Also note that the collateral ratio has been set
-                as 130%.
-              </p>
+              <p>{parsedPoll?.poll.description}</p>
             </div>
 
             <div>
-              <h4>Affected Cluster</h4>
+              <h4>
+                <s>Affected Cluster</s>
+              </h4>
               <p>Next DOGE (NDOG)</p>
             </div>
 
             <div>
-              <h4>Oracle Feeder</h4>
+              <h4>
+                <s>Oracle Feeder</s>
+              </h4>
               <p>terra128968w0r6cche4pmf4xn5358kx2gth6tr</p>
             </div>
 
             <div>
-              <h4>Asset Allocation</h4>
+              <h4>
+                <s>Asset Allocation</s>
+              </h4>
               <ul>
                 <li>
                   <i /> Mirror Protocol (MIR) : 40%
@@ -103,7 +128,9 @@ function PollDetailBase({ className }: PollDetailProps) {
             </div>
 
             <div>
-              <h4>Penalty Parameters</h4>
+              <h4>
+                <s>Penalty Parameters</s>
+              </h4>
               <p>Alpha Plus : 1</p>
               <p>Alpha Minus : -1</p>
               <p>Sigma Plus : 1</p>
@@ -114,21 +141,55 @@ function PollDetailBase({ className }: PollDetailProps) {
 
         <Section className="voters">
           <header>
-            <TwoLine text="Yes 30%" subText="195.494 NEB" />
-            <TwoLine text="No 30%" subText="195.494 NEB" />
-            <TwoLine text="Abstain 30%" subText="195.494 NEB" />
+            <TwoLine
+              text={`Yes ${
+                parsedPoll ? formatRate(parsedPoll?.votes.yesRatio) : '-'
+              }%`}
+              subText={`${
+                parsedPoll
+                  ? formatUTokenWithPostfixUnits(parsedPoll.votes.yes)
+                  : '-'
+              } NEB`}
+            />
+            <TwoLine
+              text={`No ${
+                parsedPoll ? formatRate(parsedPoll?.votes.noRatio) : '-'
+              }%`}
+              subText={`${
+                parsedPoll
+                  ? formatUTokenWithPostfixUnits(parsedPoll.votes.no)
+                  : '-'
+              } NEB`}
+            />
+            <TwoLine
+              text={`Abstain ${
+                parsedPoll ? formatRate(parsedPoll?.votes.abstainRatio) : '-'
+              }%`}
+              subText={`${
+                parsedPoll
+                  ? formatUTokenWithPostfixUnits(parsedPoll.votes.abstain)
+                  : '-'
+              } NEB`}
+            />
           </header>
 
           <div ref={ref} className="voters-table">
             <PartitionBarGraph
               data={[
-                { value: 3, color: '#23bed9' },
-                { value: 1, color: '#f15e7e' },
+                { value: +(parsedPoll?.votes.yesRatio ?? 0), color: '#23bed9' },
+                { value: +(parsedPoll?.votes.noRatio ?? 0), color: '#f15e7e' },
                 {
-                  value: 1,
+                  value: +(parsedPoll?.votes.abstainRatio ?? 0),
                   color: '#a4a4a4',
                 },
-                { value: 7, color: '#3d3d3d' },
+                {
+                  value:
+                    1 -
+                    +(parsedPoll?.votes.yesRatio ?? 0) -
+                    +(parsedPoll?.votes.noRatio ?? 0) -
+                    +(parsedPoll?.votes.abstainRatio ?? 0),
+                  color: '#3d3d3d',
+                },
               ]}
               width={width}
               height={16}
@@ -195,6 +256,10 @@ const Table = styled(HorizontalScrollTable)`
 const StyledPollDetail = styled(PollDetailBase)`
   h1 {
     margin-bottom: 24px;
+  }
+
+  a {
+    color: inherit;
   }
 
   .layout {
