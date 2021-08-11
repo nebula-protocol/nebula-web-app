@@ -21,13 +21,13 @@ function PollMainBase({ className }: PollMainProps) {
             <ul>
               <li>
                 <Link to="/polls/create/whitelist-cluster">
-                  <span>Whitelist Cluster</span>
+                  <s>Whitelist Cluster</s>
                   <ChevronRightRounded />
                 </Link>
               </li>
               <li>
                 <Link to="/polls/create/blacklist-cluster">
-                  <span>Blacklist Cluster</span>
+                  <s>Blacklist Cluster</s>
                   <ChevronRightRounded />
                 </Link>
               </li>
@@ -38,13 +38,13 @@ function PollMainBase({ className }: PollMainProps) {
             <ul>
               <li>
                 <Link to="/polls/create/cluster-parameter-change">
-                  <span>Cluster Parameter Change</span>
+                  <s>Cluster Parameter Change</s>
                   <ChevronRightRounded />
                 </Link>
               </li>
               <li>
                 <Link to="/polls/create/governance-parameter-change">
-                  <span>Governance Parameter Change</span>
+                  <s>Governance Parameter Change</s>
                   <ChevronRightRounded />
                 </Link>
               </li>
@@ -55,7 +55,7 @@ function PollMainBase({ className }: PollMainProps) {
             <ul>
               <li>
                 <Link to="/polls/create/community-pool-spend">
-                  <span>Community Pool spend</span>
+                  <s>Community Pool spend</s>
                   <ChevronRightRounded />
                 </Link>
               </li>
