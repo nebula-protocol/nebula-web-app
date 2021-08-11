@@ -1,3 +1,4 @@
+import { formatRate } from '@nebula-js/notation';
 import { gov } from '@nebula-js/types';
 import {
   Button,
@@ -7,7 +8,7 @@ import {
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { EmptySelect } from '@nebula-js/ui/form/EmptySelect';
-import { GovPolls } from '@nebula-js/webapp-fns';
+import { GovPolls, ParsedPoll } from '@nebula-js/webapp-fns';
 import { useGovPollsQuery } from '@nebula-js/webapp-provider';
 import { fixHMR } from 'fix-hmr';
 import React, { useCallback, useMemo, useState } from 'react';
@@ -29,7 +30,7 @@ function PollsTableBase({ className }: PollsTableProps) {
     fetchNextPage,
   } = useGovPollsQuery(filter, 6);
 
-  const polls = useMemo<gov.PollResponse[]>(() => {
+  const polls = useMemo<ParsedPoll[]>(() => {
     if (!pages || pages.length === 0) {
       return [];
     }
@@ -37,7 +38,7 @@ function PollsTableBase({ className }: PollsTableProps) {
     return [].concat(
       ...(pages
         .filter((page): page is GovPolls => !!page)
-        .map((page) => page.polls.polls) as any),
+        .map((page) => page.parsedPolls) as any),
     );
   }, [pages]);
 
@@ -122,7 +123,7 @@ function PollsTableBase({ className }: PollsTableProps) {
           </tr>
         </thead>
         <tbody>
-          {polls.map(({ id, title, status }) => (
+          {polls.map(({ poll: { id, title }, votes, quorum, status }) => (
             <tr key={id} onClick={() => gotoPoll(id)}>
               <td>
                 <s>Whitelist CV</s>
@@ -138,10 +139,12 @@ function PollsTableBase({ className }: PollsTableProps) {
               </td>
               <td>
                 <p>
-                  <s>Quorum 7.24% / 10%</s>
+                  Quorum {formatRate(quorum.current)}% /{' '}
+                  {formatRate(quorum.gov)}%
                 </p>
                 <p>
-                  <s>YES 5.12% NO 2.12%</s>
+                  YES {formatRate(votes.yesRatio)}% NO{' '}
+                  {formatRate(votes.noRatio)}%
                 </p>
               </td>
               <td>{status}</td>

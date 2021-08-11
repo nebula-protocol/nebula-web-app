@@ -1,11 +1,12 @@
 import { u, NEB } from '@nebula-js/types/tokens';
+import { Rate } from '@nebula-js/types/units';
 import { HumanAddr, OrderBy, rs } from './common';
 
 export namespace gov {
   export enum VoteOption {
-    Yes = 'Yes',
-    No = 'No',
-    Abstain = 'Abstain',
+    Yes = 'yes',
+    No = 'no',
+    Abstain = 'abstain',
   }
 
   export enum PollStatus {
@@ -131,8 +132,8 @@ export namespace gov {
   export interface ConfigResponse {
     owner: HumanAddr;
     nebula_token: HumanAddr;
-    quorum: rs.Decimal;
-    threshold: rs.Decimal;
+    quorum: Rate<rs.Decimal>;
+    threshold: Rate<rs.Decimal>;
     voting_period: rs.u64;
     effective_delay: rs.u64;
     expiration_period: rs.u64;
@@ -188,12 +189,11 @@ export namespace gov {
     yes_votes: u<NEB<rs.Uint128>>; // balance
     no_votes: u<NEB<rs.Uint128>>; // balance
     abstain_votes: u<NEB<rs.Uint128>>; // balance
-    // TODO set token type to total_balance_at_end_poll
-    total_balance_at_end_poll?: rs.Uint128;
+    total_balance_at_end_poll?: u<NEB<rs.Uint128>>;
     // TODO set token type to voters_reward
     voters_reward: rs.Uint128;
     // TODO set token type to staked_amount
-    staked_amount?: rs.Uint128;
+    staked_amount?: u<NEB<rs.Uint128>>;
   }
 
   export interface Polls {

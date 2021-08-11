@@ -10,7 +10,8 @@ export function useGovPollsQuery(
   filter: gov.PollStatus | undefined,
   limit: number,
 ): UseInfiniteQueryResult<GovPolls | undefined> {
-  const { mantleFetch, mantleEndpoint, queryErrorReporter } = useTerraWebapp();
+  const { mantleFetch, mantleEndpoint, queryErrorReporter, lastSyncedHeight } =
+    useTerraWebapp();
 
   const { contractAddress } = useNebulaWebapp();
 
@@ -26,6 +27,8 @@ export function useGovPollsQuery(
           limit,
           start_after: pageParam,
         },
+        contractAddress.cw20.NEB,
+        lastSyncedHeight,
         mantleEndpoint,
         mantleFetch,
       );

@@ -10,6 +10,8 @@ describe('govPollsQuery()', () => {
     const { polls } = await govPollsQuery(
       TEST_CONTRACT_ADDRESS.gov,
       {},
+      TEST_CONTRACT_ADDRESS.cw20.NEB,
+      () => Promise.resolve(100000),
       TEST_MANTLE_ENDPOINT,
       defaultMantleFetch,
     );

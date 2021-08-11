@@ -25,6 +25,7 @@ export * from './logics/gov/computeGovStakingAPR';
 export * from './logics/gov/computeGovStakingRatio';
 export * from './logics/gov/computeGovTotalStaked';
 export * from './logics/gov/computeUnstakableNebBalance';
+export * from './logics/gov/parseGovPollResponse';
 export * from './models/assetTokens';
 export * from './queries/clusters/arbRedeem';
 export * from './queries/clusters/info';
