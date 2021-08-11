@@ -1,10 +1,9 @@
 import {
   formatRate,
-  formatToken,
   formatUTokenWithPostfixUnits,
   truncate,
 } from '@nebula-js/notation';
-import { Token } from '@nebula-js/types';
+import { gov } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
@@ -14,11 +13,12 @@ import {
   TwoLine,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { useGovPollQuery } from '@nebula-js/webapp-provider';
+import { GovVoters } from '@nebula-js/webapp-fns';
+import { useGovPollQuery, useGovVotersQuery } from '@nebula-js/webapp-provider';
 import { useWallet } from '@terra-money/wallet-provider';
 import { MainLayout } from 'components/layouts/MainLayout';
 import { fixHMR } from 'fix-hmr';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
 import useResizeObserver from 'use-resize-observer/polyfilled';
@@ -38,6 +38,26 @@ function PollDetailBase({ className }: PollDetailProps) {
   const [startVote, setStartVote] = useState<boolean>(false);
 
   const { ref, width = 300 } = useResizeObserver();
+
+  const {
+    data: { pages } = {},
+    hasNextPage,
+    fetchNextPage,
+  } = useGovVotersQuery(+match!.params.pollId, 10);
+
+  const voters = useMemo<Array<gov.VotersResponse['voters'][number]>>(() => {
+    if (!pages || pages.length === 0) {
+      return [];
+    }
+
+    return [].concat(
+      ...(pages
+        .filter((page): page is GovVoters => !!page)
+        .map((page) => page.voters.voters) as any),
+    );
+  }, [pages]);
+
+  // TODO check already voted (disable button)
 
   const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
     mobile: 'medium',
@@ -76,8 +96,12 @@ function PollDetailBase({ className }: PollDetailProps) {
               <span>Estimated end time</span>
               {parsedPoll?.endsIn.toLocaleString()}
             </p>
-            {startVote ? (
-              <VoteForm className="form" />
+            {startVote && !!match ? (
+              <VoteForm
+                className="form"
+                pollId={+match.params.pollId}
+                onVoteComplete={() => setStartVote(false)}
+              />
             ) : (
               <Button
                 size={buttonSize}
@@ -217,17 +241,27 @@ function PollDetailBase({ className }: PollDetailProps) {
               </tr>
             </thead>
             <tbody>
-              {Array.from({ length: 20 }, (_, i) => (
-                <tr key={'row' + i}>
-                  <td>terra1…4w8zd7</td>
-                  <td>{Math.random() > 0.5 ? 'YES' : 'NO'}</td>
+              {voters.map(({ voter, vote, balance }) => (
+                <tr key={'row' + voter}>
                   <td>
-                    {formatToken((Math.random() * 100000) as Token<number>)} NEB
+                    <a
+                      href={`https://finder.terra.money/${network.chainID}/address/${voter}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {truncate(voter)}
+                    </a>
                   </td>
+                  <td>{vote.toUpperCase()}</td>
+                  <td>{formatUTokenWithPostfixUnits(balance)} NEB</td>
                 </tr>
               ))}
             </tbody>
           </Table>
+
+          {hasNextPage && (
+            <Button onClick={() => fetchNextPage()}>Load More</Button>
+          )}
         </Section>
       </div>
     </MainLayout>

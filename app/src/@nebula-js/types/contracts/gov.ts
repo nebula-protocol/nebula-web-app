@@ -1,4 +1,4 @@
-import { u, NEB } from '@nebula-js/types/tokens';
+import { NEB, u } from '@nebula-js/types/tokens';
 import { Rate } from '@nebula-js/types/units';
 import { HumanAddr, OrderBy, rs } from './common';
 
@@ -222,8 +222,7 @@ export namespace gov {
     voters: Array<{
       voter: HumanAddr;
       vote: VoteOption;
-      // TODO set token type to balance
-      balance: rs.Uint128;
+      balance: u<NEB<rs.Uint128>>;
     }>;
   }
 }

@@ -1,5 +1,6 @@
 import { WalletIcon } from '@nebula-js/icons';
-import { NEB } from '@nebula-js/types';
+import { formatUToken, microfy } from '@nebula-js/notation';
+import { gov, NEB, u } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
@@ -8,16 +9,33 @@ import {
   TokenSpan,
   useScreenSizeValue,
 } from '@nebula-js/ui';
+import { NebulaTokenBalances } from '@nebula-js/webapp-fns';
+import { useGovVoteTx } from '@nebula-js/webapp-provider/tx/gov/vote';
+import { useConnectedWallet } from '@terra-money/wallet-provider';
+import { useBank } from '@terra-money/webapp-provider';
+import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
+import VoteOption = gov.VoteOption;
 
 export interface VoteFormProps {
   className?: string;
+  pollId: number;
+  onVoteComplete: () => void;
 }
 
-function VoteFormBase({ className }: VoteFormProps) {
+function VoteFormBase({ className, pollId, onVoteComplete }: VoteFormProps) {
+  const connectedWallet = useConnectedWallet();
+
+  const { broadcast } = useTxBroadcast();
+
+  const postTx = useGovVoteTx(pollId);
+
+  const [vote, setVote] = useState<gov.VoteOption | null>(null);
   const [amount, setAmount] = useState<NEB>('' as NEB);
+
+  const { tokenBalances } = useBank<NebulaTokenBalances>();
 
   const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
     mobile: 'medium',
@@ -26,16 +44,46 @@ function VoteFormBase({ className }: VoteFormProps) {
     monitor: 'normal',
   });
 
+  const proceed = useCallback(
+    async (_vote: VoteOption, _amount: NEB) => {
+      const stream = postTx?.({
+        vote: _vote,
+        amount: microfy(_amount).toFixed() as u<NEB>,
+        onTxSucceed: onVoteComplete,
+      });
+
+      if (stream) {
+        broadcast(stream);
+      }
+    },
+    [broadcast, onVoteComplete, postTx],
+  );
+
   return (
     <div className={className}>
       <section className="buttons">
-        <Button size="normal" color="border">
+        <Button
+          size="normal"
+          color="border"
+          onClick={() => setVote(VoteOption.Yes)}
+          aria-selected={vote === VoteOption.Yes}
+        >
           YES
         </Button>
-        <Button size="normal" color="border">
+        <Button
+          size="normal"
+          color="border"
+          onClick={() => setVote(VoteOption.No)}
+          aria-selected={vote === VoteOption.No}
+        >
           NO
         </Button>
-        <Button size="normal" color="border">
+        <Button
+          size="normal"
+          color="border"
+          onClick={() => setVote(VoteOption.Abstain)}
+          aria-selected={vote === VoteOption.Abstain}
+        >
           Abstain
         </Button>
       </section>
@@ -44,21 +92,33 @@ function VoteFormBase({ className }: VoteFormProps) {
         value={amount}
         onChange={setAmount}
         label="AMOUNT"
-        placeholder="0.000000"
+        placeholder="0.00"
         token={<TokenSpan>NEB</TokenSpan>}
         suggest={
-          <EmptyButton onClick={() => setAmount('100000' as NEB)}>
+          <EmptyButton onClick={() => setAmount(tokenBalances.uNEB)}>
             <WalletIcon
               style={{
                 transform: 'translate(-0.3em, -0.1em)',
               }}
             />{' '}
-            2,000.000000
+            {formatUToken(tokenBalances.uNEB)}
           </EmptyButton>
         }
       />
 
-      <Button size={buttonSize} color="paleblue" fullWidth>
+      <Button
+        size={buttonSize}
+        color="paleblue"
+        fullWidth
+        disabled={
+          !vote ||
+          amount.length === 0 ||
+          !postTx ||
+          !connectedWallet ||
+          !connectedWallet.availablePost
+        }
+        onClick={() => vote && proceed(vote, amount)}
+      >
         Vote
       </Button>
     </div>
@@ -80,6 +140,11 @@ export const StyledVoteForm = styled(VoteFormBase)`
       height: 96px;
 
       font-weight: 400;
+
+      &[aria-selected='true'] {
+        color: var(--color-paleblue);
+        border-color: var(--color-paleblue);
+      }
     }
 
     margin-bottom: 32px;
