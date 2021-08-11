@@ -1,6 +1,6 @@
-import { InputAdornment } from '@material-ui/core';
 import { WalletIcon } from '@nebula-js/icons';
-import { gov } from '@nebula-js/types';
+import { formatUToken } from '@nebula-js/notation';
+import { gov, NEB, u } from '@nebula-js/types';
 import {
   Button,
   FormLabel,
@@ -8,10 +8,25 @@ import {
   TextInput,
   useScreenSizeValue,
 } from '@nebula-js/ui';
+import { NebulaTokenBalances } from '@nebula-js/webapp-fns';
+import {
+  useGovConfigQuery,
+  useGovCreatePollTx,
+  useNebulaWebapp,
+} from '@nebula-js/webapp-provider';
+import {
+  BytesValid,
+  useValidateStringBytes,
+} from '@terra-dev/use-string-bytes-length';
+import { useConnectedWallet } from '@terra-money/wallet-provider';
+import { useBank } from '@terra-money/webapp-provider';
+import big from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { FormLayout } from 'components/layouts/FormLayout';
+import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useCallback, useMemo, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 export interface PollCreateBaseProps {
@@ -21,7 +36,7 @@ export interface PollCreateBaseProps {
   description: ReactNode;
   children?: ReactNode;
   submitButtonStatus: 'disabled' | 'hidden' | true;
-  onCreateMsg: () => gov.ExecuteMsg[] | null;
+  onCreateMsg: () => gov.ExecuteMsg | undefined;
 }
 
 function PollCreateBaseBase({
@@ -32,9 +47,50 @@ function PollCreateBaseBase({
   submitButtonStatus,
   children,
 }: PollCreateBaseProps) {
+  const connectedWallet = useConnectedWallet();
+  const history = useHistory();
+
+  const { broadcast } = useTxBroadcast();
+
+  const postTx = useGovCreatePollTx();
+
+  const { data: { govConfig } = {} } = useGovConfigQuery();
+  const { tokenBalances } = useBank<NebulaTokenBalances>();
+  const {
+    constants: { fixedGas },
+  } = useNebulaWebapp();
+
   const [pollTitle, setPollTitle] = useState<string>('');
   const [pollDescription, setPollDescription] = useState<string>('');
   const [pollExternalLink, setPollExternalLink] = useState<string>('');
+
+  const invalidDepositAmount = useMemo(() => {
+    if (!govConfig) {
+      return null;
+    }
+
+    return big(tokenBalances.uNEB).lt(govConfig.proposal_deposit)
+      ? 'Not enough NEB'
+      : null;
+  }, [govConfig, tokenBalances.uNEB]);
+
+  const invalidPollTitleBytes = useValidateStringBytes(pollTitle, 4, 64);
+
+  const invalidPollDescriptionBytes = useValidateStringBytes(
+    pollDescription,
+    4,
+    1024,
+  );
+
+  const invalidPollExternalLinkBytes = useValidateStringBytes(
+    pollExternalLink,
+    12,
+    128,
+  );
+
+  const invalidPollExternalLinkProtocol = useMemo(() => {
+    return validateLinkAddress(pollExternalLink);
+  }, [pollExternalLink]);
 
   const buttonSize = useScreenSizeValue<'medium' | 'normal'>({
     mobile: 'medium',
@@ -42,6 +98,31 @@ function PollCreateBaseBase({
     pc: 'normal',
     monitor: 'normal',
   });
+
+  const proceed = useCallback(
+    async (
+      _title: string,
+      _description: string,
+      _link: string,
+      _depositAmount: u<NEB>,
+    ) => {
+      const stream = postTx?.({
+        title: _title,
+        description: _description,
+        link: _link.length > 0 ? _link : undefined,
+        execute_msg: onCreateMsg(),
+        depositAmount: _depositAmount,
+        onTxSucceed: () => {
+          history.push(`/gov`);
+        },
+      });
+
+      if (stream) {
+        broadcast(stream);
+      }
+    },
+    [broadcast, history, onCreateMsg, postTx],
+  );
 
   return (
     <FormLayout className={className} title="Create Poll">
@@ -57,11 +138,19 @@ function PollCreateBaseBase({
             fullWidth
             value={pollTitle}
             onChange={({ target }) => setPollTitle(target.value)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">TEST</InputAdornment>
-              ),
-            }}
+            error={!!invalidPollTitleBytes}
+            helperText={
+              invalidPollTitleBytes === BytesValid.LESS
+                ? 'Title must be at least 4 bytes.'
+                : invalidPollTitleBytes === BytesValid.MUCH
+                ? 'Title cannot be longer than 64 bytes.'
+                : undefined
+            }
+            //InputProps={{
+            //  endAdornment: (
+            //    <InputAdornment position="end">TEST</InputAdornment>
+            //  ),
+            //}}
           />
         </FormLabel>
 
@@ -74,6 +163,14 @@ function PollCreateBaseBase({
             maxRows={10}
             value={pollDescription}
             onChange={({ target }) => setPollDescription(target.value)}
+            error={!!invalidPollDescriptionBytes}
+            helperText={
+              invalidPollDescriptionBytes === BytesValid.LESS
+                ? 'Proposal rational must be at least 4 bytes.'
+                : invalidPollDescriptionBytes === BytesValid.MUCH
+                ? 'Proposal rational cannot be longer than 1024 bytes.'
+                : undefined
+            }
           />
         </FormLabel>
 
@@ -83,30 +180,43 @@ function PollCreateBaseBase({
             fullWidth
             value={pollExternalLink}
             onChange={({ target }) => setPollExternalLink(target.value)}
+            error={
+              !!invalidPollExternalLinkBytes ||
+              !!invalidPollExternalLinkProtocol
+            }
+            helperText={
+              invalidPollExternalLinkBytes === BytesValid.LESS
+                ? 'Information link must be at least 12 bytes.'
+                : invalidPollExternalLinkBytes === BytesValid.MUCH
+                ? 'Information link cannot be longer than 128 bytes.'
+                : invalidPollExternalLinkProtocol
+            }
           />
         </FormLabel>
 
         {children}
 
-        <FormLabel
-          label="Deposit"
-          aside={
-            <DepositAside>
-              <WalletIcon /> 1,490,000
-            </DepositAside>
-          }
-          className="form-label"
-        >
-          <Deposit>
-            <span>1,000</span>
-            <span>NEB</span>
-          </Deposit>
-        </FormLabel>
+        {govConfig && (
+          <FormLabel
+            label="Deposit"
+            aside={
+              <DepositAside>
+                <WalletIcon /> {formatUToken(tokenBalances.uNEB)}
+              </DepositAside>
+            }
+            className="form-label"
+          >
+            <Deposit>
+              <span>{formatUToken(govConfig.proposal_deposit)}</span>
+              <span>NEB</span>
+            </Deposit>
+          </FormLabel>
+        )}
 
         <FeeBox className="fee-box">
           <li>
             <span>Tx Fee</span>
-            <span>0.25 UST</span>
+            <span>{formatUToken(fixedGas)} UST</span>
           </li>
         </FeeBox>
 
@@ -116,7 +226,28 @@ function PollCreateBaseBase({
             fullWidth
             size={buttonSize}
             color="paleblue"
-            disabled={submitButtonStatus === 'disabled'}
+            disabled={
+              submitButtonStatus !== true ||
+              !connectedWallet ||
+              !connectedWallet.availablePost ||
+              !postTx ||
+              pollTitle.length === 0 ||
+              pollDescription.length === 0 ||
+              !!invalidDepositAmount ||
+              !!invalidPollTitleBytes ||
+              !!invalidPollDescriptionBytes ||
+              !!invalidPollExternalLinkBytes ||
+              !!invalidPollExternalLinkProtocol
+            }
+            onClick={() =>
+              govConfig &&
+              proceed(
+                pollTitle,
+                pollDescription,
+                pollExternalLink,
+                govConfig.proposal_deposit,
+              )
+            }
           >
             Submit
           </Button>
@@ -179,3 +310,11 @@ export const StyledPollCreateBase = styled(PollCreateBaseBase)`
 `;
 
 export const PollCreateBase = fixHMR(StyledPollCreateBase);
+
+function validateLinkAddress(link: string): ReactNode {
+  if (link.length === 0) return undefined;
+  if (!/^(http|https):\/\//.test(link)) {
+    return 'Must begin with http:// or https://';
+  }
+  return undefined;
+}

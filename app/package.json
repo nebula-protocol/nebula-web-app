@@ -64,6 +64,7 @@
     "@terra-dev/use-resolve-last": "^0.20.1",
     "@terra-dev/use-restricted-input": "^0.20.1",
     "@terra-dev/use-router-scroll-restoration": "^0.20.1",
+    "@terra-dev/use-string-bytes-length": "^0.20.1",
     "@terra-money/terra.js": "^1.8.8",
     "@terra-money/wallet-provider": "^1.2.1",
     "@terra-money/webapp-provider": "^0.20.1",

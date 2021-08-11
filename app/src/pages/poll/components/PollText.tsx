@@ -6,7 +6,7 @@ export default function PollText() {
     <PollCreateBase
       title="Text Poll"
       description="Submit a text poll"
-      onCreateMsg={() => null}
+      onCreateMsg={() => undefined}
       submitButtonStatus
     />
   );

@@ -6,7 +6,7 @@ export default function PollClusterParameterChange() {
     <PollCreateBase
       title="Cluster Parameter Change"
       description="Modify parameters of an existing cluster"
-      onCreateMsg={() => null}
+      onCreateMsg={() => undefined}
       submitButtonStatus
     >
       <div>...</div>

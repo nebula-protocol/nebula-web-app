@@ -9,7 +9,7 @@ export default function PollWhitelistCluster() {
     <PollCreateBase
       title="Whitelist Cluster"
       description="Register a new cluster on Nebula Protocol"
-      onCreateMsg={() => null}
+      onCreateMsg={() => undefined}
       submitButtonStatus
     >
       <FormLabel label="Oracle Feeder Address" className="form-label">

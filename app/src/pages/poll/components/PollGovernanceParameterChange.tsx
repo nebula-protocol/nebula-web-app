@@ -6,7 +6,7 @@ export default function PollGovernanceParameterChange() {
     <PollCreateBase
       title="Governance Parameter Change"
       description="Modify parameters of an existing cluster"
-      onCreateMsg={() => null}
+      onCreateMsg={() => undefined}
       submitButtonStatus
     >
       <div>...</div>

@@ -9,11 +9,11 @@ export namespace gov {
   }
 
   export enum PollStatus {
-    InProgress = 'InProgress',
-    Passed = 'Passed',
-    Rejected = 'Rejected',
-    Executed = 'Executed',
-    Expired = 'Expired',
+    InProgress = 'in_progress',
+    Passed = 'passed',
+    Rejected = 'rejected',
+    Executed = 'executed',
+    Expired = 'expired',
   }
 
   export interface ExecuteMsg {
@@ -136,7 +136,7 @@ export namespace gov {
     voting_period: rs.u64;
     effective_delay: rs.u64;
     expiration_period: rs.u64;
-    proposal_deposit: rs.Uint128;
+    proposal_deposit: u<NEB<rs.Uint128>>;
     voter_weight: rs.Decimal;
     snapshot_period: rs.u64;
   }

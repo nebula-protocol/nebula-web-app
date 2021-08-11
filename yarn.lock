@@ -2633,6 +2633,7 @@ __metadata:
     "@terra-dev/use-resolve-last": ^0.20.1
     "@terra-dev/use-restricted-input": ^0.20.1
     "@terra-dev/use-router-scroll-restoration": ^0.20.1
+    "@terra-dev/use-string-bytes-length": ^0.20.1
     "@terra-money/terra.js": ^1.8.8
     "@terra-money/wallet-provider": ^1.2.1
     "@terra-money/webapp-provider": ^0.20.1
@@ -4651,6 +4652,15 @@ __metadata:
     react: ^17.0.0
     react-router-dom: ^5.0.0
   checksum: daae8170ce5d872285dd64848fe3d13cb93112282fa2024ee4d31f362ea46c3000017e95979991a535c7165ad66c0d649130ac3d49a69ffb1f2f0dd89f95fc1c
+  languageName: node
+  linkType: hard
+
+"@terra-dev/use-string-bytes-length@npm:^0.20.1":
+  version: 0.20.1
+  resolution: "@terra-dev/use-string-bytes-length@npm:0.20.1"
+  peerDependencies:
+    react: ^17.0.0
+  checksum: 79ee3ee204b4700e1fb3ce10cefcef974a91e77623230913728c156921b898ec0981c565506fc7930a4ac7fa76928f93d645b58ab31e2b8c309d4bb966e18834
   languageName: node
   linkType: hard
 

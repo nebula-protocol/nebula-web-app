@@ -22,7 +22,7 @@ export default function PollBlacklistCluster() {
     <PollCreateBase
       title="Blacklist Cluster"
       description="Delist an existing cluster from Nebula Protocol"
-      onCreateMsg={() => null}
+      onCreateMsg={() => undefined}
       submitButtonStatus
     >
       {typeof targetClusterSymbol === 'string' && (
