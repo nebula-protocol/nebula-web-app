@@ -25,8 +25,8 @@ export namespace rs {
 }
 
 export enum OrderBy {
-  Asc = 'Asc',
-  Desc = 'Desc',
+  Asc = 'asc',
+  Desc = 'desc',
 }
 
 export interface ContractAddress {

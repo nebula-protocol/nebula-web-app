@@ -1,8 +1,4 @@
-import { CW20Addr } from '@nebula-js/types';
-import {
-  StakingRewardInfo,
-  stakingRewardInfoQuery,
-} from '@nebula-js/webapp-fns';
+import { GovMyPolls, govMyPollsQuery } from '@nebula-js/webapp-fns';
 import { createQueryFn } from '@terra-dev/react-query-utils';
 import { useBrowserInactive } from '@terra-dev/use-browser-inactive';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
@@ -11,27 +7,25 @@ import { useQuery, UseQueryResult } from 'react-query';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { NEBULA_QUERY_KEYS } from '../../env';
 
-const queryFn = createQueryFn(stakingRewardInfoQuery);
+const queryFn = createQueryFn(govMyPollsQuery);
 
-export function useStakingRewardInfoQuery(
-  tokenAddr?: CW20Addr | undefined,
-): UseQueryResult<StakingRewardInfo | undefined> {
+export function useGovMyPollsQuery(): UseQueryResult<GovMyPolls | undefined> {
   const connectedWallet = useConnectedWallet();
 
-  const { mantleFetch, mantleEndpoint, queryErrorReporter } = useTerraWebapp();
+  const { mantleFetch, mantleEndpoint, queryErrorReporter, lastSyncedHeight } =
+    useTerraWebapp();
 
-  const {
-    contractAddress: { staking },
-  } = useNebulaWebapp();
+  const { contractAddress } = useNebulaWebapp();
 
   const { browserInactive } = useBrowserInactive();
 
   const result = useQuery(
     [
-      NEBULA_QUERY_KEYS.STAKING_REWARD_INFO,
+      NEBULA_QUERY_KEYS.GOV_MY_POLLS,
       connectedWallet?.walletAddress,
-      staking,
-      tokenAddr,
+      contractAddress.gov,
+      contractAddress.cw20.NEB,
+      lastSyncedHeight,
       mantleEndpoint,
       mantleFetch,
     ],

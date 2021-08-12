@@ -1,4 +1,6 @@
 import { SendIcon } from '@nebula-js/icons';
+import { formatUTokenWithPostfixUnits } from '@nebula-js/notation';
+import { NEB, Token, u, UST } from '@nebula-js/types';
 import {
   Button,
   Descriptions,
@@ -8,7 +10,14 @@ import {
   TwoLine,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import React from 'react';
+import {
+  useCW20PoolInfoQuery,
+  useMypageStakingQuery,
+  useNebulaWebapp,
+} from '@nebula-js/webapp-provider';
+import big, { Big } from 'big.js';
+import React, { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export interface StakingProps {
@@ -16,6 +25,69 @@ export interface StakingProps {
 }
 
 function StakingBase({ className }: StakingProps) {
+  const { contractAddress } = useNebulaWebapp();
+
+  const { data = [] } = useMypageStakingQuery();
+
+  const { data: nebInfo } = useCW20PoolInfoQuery<NEB>(contractAddress.cw20.NEB);
+
+  const stakings = useMemo(() => {
+    return data.map(
+      ({ tokenAddr, tokenInfo, rewardInfo, terraswapPoolInfo }) => {
+        const withdrawableToken = big(terraswapPoolInfo.tokenPoolSize)
+          .mul(rewardInfo.bond_amount)
+          .div(
+            terraswapPoolInfo.lpShare === '0' ? 1 : terraswapPoolInfo.lpShare,
+          ) as u<Token<Big>>;
+
+        const withdrawableUst = big(terraswapPoolInfo.ustPoolSize)
+          .mul(rewardInfo.bond_amount)
+          .div(
+            terraswapPoolInfo.lpShare === '0' ? 1 : terraswapPoolInfo.lpShare,
+          ) as u<UST<Big>>;
+
+        const withdrawableValue = withdrawableToken.mul(
+          terraswapPoolInfo.tokenPrice,
+        ) as u<UST<Big>>;
+
+        return {
+          symbol: tokenInfo.symbol,
+          staked: rewardInfo.bond_amount,
+          withdrawableToken,
+          withdrawableUst,
+          withdrawableValue,
+          rewardAmount: rewardInfo.pending_reward,
+          rewardAmountValue: (nebInfo
+            ? big(rewardInfo.pending_reward).mul(
+                nebInfo.terraswapPoolInfo.tokenPrice,
+              )
+            : big(0)) as u<UST<Big>>,
+          to: `/staking/${tokenAddr}/unstake`,
+        };
+      },
+    );
+  }, [data, nebInfo]);
+
+  const stakingsTotal = useMemo(() => {
+    return stakings.reduce(
+      (total, { rewardAmount, rewardAmountValue, withdrawableValue }) => {
+        total.farmValue = total.farmValue.plus(withdrawableValue) as u<
+          UST<Big>
+        >;
+        total.reward = total.reward.plus(rewardAmount) as u<NEB<Big>>;
+        total.rewardValue = total.rewardValue.plus(rewardAmountValue) as u<
+          UST<Big>
+        >;
+        return total;
+      },
+      {
+        farmValue: big(0) as u<UST<Big>>,
+        reward: big(0) as u<NEB<Big>>,
+        rewardValue: big(0) as u<UST<Big>>,
+      },
+    );
+  }, [stakings]);
+
   const tableMinWidth = useScreenSizeValue({
     mobile: 700,
     tablet: 900,
@@ -53,21 +125,36 @@ function StakingBase({ className }: StakingProps) {
       endPadding={startPadding}
       headerContents={
         <Table3SectionHeader>
-          <h2>
-            <s>Staking</s>
-          </h2>
+          <h2>Staking</h2>
           <div className="buttons">
             <EmptyButton>
-              <SendIcon style={{ marginRight: '0.5em' }} /> Claim All Rewards
+              <s>
+                <SendIcon style={{ marginRight: '0.5em' }} /> Claim All Rewards
+              </s>
             </EmptyButton>
           </div>
           <Descriptions
             className="descriptions"
             direction={descriptionDisplay}
             descriptions={[
-              { label: 'Total Farm Value', text: '2,020.06 UST' },
-              { label: 'Total Reward', text: '2,020.06 NEB' },
-              { label: 'Total Reward Value', text: '2,020.06 UST' },
+              {
+                label: 'Total Farm Value',
+                text: `${formatUTokenWithPostfixUnits(
+                  stakingsTotal.farmValue,
+                )} UST`,
+              },
+              {
+                label: 'Total Reward',
+                text: `${formatUTokenWithPostfixUnits(
+                  stakingsTotal.reward,
+                )} NEB`,
+              },
+              {
+                label: 'Total Reward Value',
+                text: `${formatUTokenWithPostfixUnits(
+                  stakingsTotal.rewardValue,
+                )} UST`,
+              },
             ]}
           />
         </Table3SectionHeader>
@@ -105,26 +192,54 @@ function StakingBase({ className }: StakingProps) {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>
-            <TwoLine text="NEB-UST LP" subText="123.12%" />
-          </td>
-          <td>254.062 UST</td>
-          <td>
-            <TwoLine
-              text="100.34625 NEB + 100.11 UST"
-              subText="10,000.11 UST"
-            />
-          </td>
-          <td>
-            <TwoLine text="100.34625 NEB" subText="10,000.11 UST" />
-          </td>
-          <td>
-            <Button size={tableButtonSize} color="border">
-              Unstake
-            </Button>
-          </td>
-        </tr>
+        {stakings.map(
+          ({
+            symbol,
+            staked,
+            withdrawableToken,
+            withdrawableUst,
+            withdrawableValue,
+            rewardAmount,
+            rewardAmountValue,
+            to,
+          }) => (
+            <tr key={'staking' + symbol}>
+              <td>
+                <TwoLine text={`${symbol}-UST LP`} subText={<s>123.12%</s>} />
+              </td>
+              <td>{formatUTokenWithPostfixUnits(staked)} LP</td>
+              <td>
+                <TwoLine
+                  text={`${formatUTokenWithPostfixUnits(
+                    withdrawableToken,
+                  )} ${symbol} + ${formatUTokenWithPostfixUnits(
+                    withdrawableUst,
+                  )} UST`}
+                  subText={`${formatUTokenWithPostfixUnits(
+                    withdrawableValue,
+                  )} UST`}
+                />
+              </td>
+              <td>
+                <TwoLine
+                  text={`${formatUTokenWithPostfixUnits(rewardAmount)} NEB`}
+                  subText={`${formatUTokenWithPostfixUnits(
+                    rewardAmountValue,
+                  )} UST`}
+                />
+              </td>
+              <td>
+                <Button
+                  size={tableButtonSize}
+                  color="border"
+                  componentProps={{ component: Link, to }}
+                >
+                  Unstake
+                </Button>
+              </td>
+            </tr>
+          ),
+        )}
       </tbody>
     </HorizontalScrollTable>
   );

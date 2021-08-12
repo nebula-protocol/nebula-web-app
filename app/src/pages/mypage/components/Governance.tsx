@@ -1,4 +1,5 @@
 import { SendIcon } from '@nebula-js/icons';
+import { formatUTokenWithPostfixUnits } from '@nebula-js/notation';
 import {
   Button,
   Descriptions,
@@ -7,7 +8,13 @@ import {
   Table3SectionHeader,
   useScreenSizeValue,
 } from '@nebula-js/ui';
+import {
+  useGovMyPollsQuery,
+  useGovStakerQuery,
+} from '@nebula-js/webapp-provider';
+import { useConnectedWallet } from '@terra-money/wallet-provider';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export interface GovernanceProps {
@@ -15,6 +22,14 @@ export interface GovernanceProps {
 }
 
 function GovernanceBase({ className }: GovernanceProps) {
+  const connectedWallet = useConnectedWallet();
+
+  const { data: myPolls = [] } = useGovMyPollsQuery();
+
+  const { data: { govStaker } = {} } = useGovStakerQuery(
+    connectedWallet?.walletAddress,
+  );
+
   const tableMinWidth = useScreenSizeValue({
     mobile: 600,
     tablet: 900,
@@ -52,24 +67,33 @@ function GovernanceBase({ className }: GovernanceProps) {
       endPadding={startPadding}
       headerContents={
         <Table3SectionHeader>
-          <h2>
-            <s>Governance</s>
-          </h2>
+          <h2>Governance</h2>
           <div className="buttons">
             <EmptyButton>
-              <SendIcon style={{ marginRight: '0.5em' }} /> Claim Rewards
+              <s>
+                <SendIcon style={{ marginRight: '0.5em' }} /> Claim Rewards
+              </s>
             </EmptyButton>
             <EmptyButton>
-              <SendIcon style={{ marginRight: '0.5em' }} /> Restake Reward
+              <s>
+                <SendIcon style={{ marginRight: '0.5em' }} /> Restake Reward
+              </s>
             </EmptyButton>
           </div>
           <Descriptions
             className="descriptions"
             direction={descriptionDisplay}
             descriptions={[
-              { label: 'Staked NEB', text: '2,020.06 NEB' },
-              { label: 'Staking APR', text: '123.12%' },
-              { label: 'Voting Reward', text: '2,020.06 UST' },
+              {
+                label: 'Staked NEB',
+                text: `${
+                  govStaker
+                    ? formatUTokenWithPostfixUnits(govStaker.balance)
+                    : '-'
+                } NEB`,
+              },
+              { label: 'Staking APR', text: <s>123.12%</s> },
+              { label: 'Voting Reward', text: <s>2,020.06 UST</s> },
             ]}
           />
         </Table3SectionHeader>
@@ -92,16 +116,31 @@ function GovernanceBase({ className }: GovernanceProps) {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Register NEB Parameters</td>
-          <td>YES</td>
-          <td>54.062222 NEB</td>
-          <td>
-            <Button size={tableButtonSize} color="border">
-              Poll Detail
-            </Button>
-          </td>
-        </tr>
+        {myPolls.map(({ poll, voterInfo }) => (
+          <tr key={'poll' + poll.poll.id}>
+            <td data-in-progress-over={poll.inProgressOver}>
+              {poll.poll.title}
+            </td>
+            <td>{voterInfo ? voterInfo.vote.toUpperCase() : '-'}</td>
+            <td>
+              {voterInfo
+                ? `${formatUTokenWithPostfixUnits(voterInfo.balance)} NEB`
+                : '-'}
+            </td>
+            <td>
+              <Button
+                size={tableButtonSize}
+                color="border"
+                componentProps={{
+                  component: Link,
+                  to: `/poll/${poll.poll.id}`,
+                }}
+              >
+                Poll Detail
+              </Button>
+            </td>
+          </tr>
+        ))}
       </tbody>
     </HorizontalScrollTable>
   );
@@ -110,6 +149,10 @@ function GovernanceBase({ className }: GovernanceProps) {
 export const Governance = styled(GovernanceBase)`
   background-color: var(--color-gray14);
   border-radius: 8px;
+
+  [data-in-progress-over='true'] {
+    text-decoration: line-through;
+  }
 
   td,
   th {

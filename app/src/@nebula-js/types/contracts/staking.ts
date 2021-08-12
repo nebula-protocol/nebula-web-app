@@ -1,4 +1,4 @@
-import { LP, Token, u, UST } from '../tokens';
+import { LP, NEB, Token, u } from '../tokens';
 import { CW20Addr, HumanAddr, rs } from './common';
 import { terraswap } from './terraswap';
 
@@ -71,8 +71,7 @@ export namespace staking {
     reward_infos: Array<{
       asset_token: CW20Addr;
       bond_amount: u<LP<rs.Uint128>>;
-      // TODO set token type to pending_reward
-      pending_reward: u<UST<rs.Uint128>>;
+      pending_reward: u<NEB<rs.Uint128>>;
     }>;
   }
 }

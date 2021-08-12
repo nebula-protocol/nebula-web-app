@@ -105,7 +105,9 @@ function HoldingsBase({ className }: HoldingsProps) {
           <h2>Holdings</h2>
           <div className="buttons">
             <EmptyButton>
-              <SendIcon style={{ marginRight: '0.5em' }} /> Send
+              <s>
+                <SendIcon style={{ marginRight: '0.5em' }} /> Send
+              </s>
             </EmptyButton>
           </div>
           <Descriptions

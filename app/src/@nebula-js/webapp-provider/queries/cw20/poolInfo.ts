@@ -1,41 +1,34 @@
-import { CW20Addr } from '@nebula-js/types';
-import {
-  StakingRewardInfo,
-  stakingRewardInfoQuery,
-} from '@nebula-js/webapp-fns';
+import { CW20Addr, Token } from '@nebula-js/types';
+import { CW20PoolInfo, cw20PoolInfoQuery } from '@nebula-js/webapp-fns';
 import { createQueryFn } from '@terra-dev/react-query-utils';
 import { useBrowserInactive } from '@terra-dev/use-browser-inactive';
-import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useTerraWebapp } from '@terra-money/webapp-provider';
 import { useQuery, UseQueryResult } from 'react-query';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { NEBULA_QUERY_KEYS } from '../../env';
 
-const queryFn = createQueryFn(stakingRewardInfoQuery);
+const queryFn = createQueryFn(cw20PoolInfoQuery);
 
-export function useStakingRewardInfoQuery(
-  tokenAddr?: CW20Addr | undefined,
-): UseQueryResult<StakingRewardInfo | undefined> {
-  const connectedWallet = useConnectedWallet();
-
+export function useCW20PoolInfoQuery<T extends Token>(
+  tokenAddr: CW20Addr,
+): UseQueryResult<CW20PoolInfo<T> | undefined> {
   const { mantleFetch, mantleEndpoint, queryErrorReporter } = useTerraWebapp();
 
   const {
-    contractAddress: { staking },
+    contractAddress: { terraswap },
   } = useNebulaWebapp();
 
   const { browserInactive } = useBrowserInactive();
 
   const result = useQuery(
     [
-      NEBULA_QUERY_KEYS.STAKING_REWARD_INFO,
-      connectedWallet?.walletAddress,
-      staking,
+      NEBULA_QUERY_KEYS.STAKING_POOL_INFO,
       tokenAddr,
+      terraswap.factory,
       mantleEndpoint,
       mantleFetch,
     ],
-    queryFn,
+    queryFn as any,
     {
       refetchInterval: browserInactive && 1000 * 60 * 5,
       enabled: !browserInactive,
@@ -44,5 +37,5 @@ export function useStakingRewardInfoQuery(
     },
   );
 
-  return result;
+  return result as UseQueryResult<CW20PoolInfo<T>>;
 }
