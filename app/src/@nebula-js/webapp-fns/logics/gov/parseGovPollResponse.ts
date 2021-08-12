@@ -7,6 +7,8 @@ export interface ParsedPoll {
 
   status: string;
 
+  inProgressOver: boolean;
+
   votes: {
     yes: u<NEB>;
     yesRatio: Rate;
@@ -59,6 +61,10 @@ export function parseGovPollResponse(
     .div(votesTotal)
     .toFixed() as Rate;
 
+  const endsIn = new Date((poll.end_height - blockHeight) * 6000 + Date.now());
+
+  const inProgressOver = poll.status === 'in_progress' && endsIn <= new Date();
+
   return {
     poll,
 
@@ -74,6 +80,8 @@ export function parseGovPollResponse(
         : poll.status === 'expired'
         ? 'Expired'
         : 'Unknown Status',
+
+    inProgressOver,
 
     votes: {
       yes: poll.yes_votes,
@@ -103,6 +111,6 @@ export function parseGovPollResponse(
           value: big(govConfig.quorum).mul(votesTotal).toFixed() as Rate,
         },
 
-    endsIn: new Date((poll.end_height - blockHeight) * 6000 + Date.now()),
+    endsIn,
   };
 }

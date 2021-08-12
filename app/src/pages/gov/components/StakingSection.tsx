@@ -89,7 +89,7 @@ function StakingSectionBase({ className }: StakingSectionProps) {
               {communityNebBalance
                 ? communityNebBalance.balance
                 : (0 as u<NEB<number>>)}
-            </AnimateNumber>
+            </AnimateNumber>{' '}
             <Sub>NEB</Sub>
           </>
         }

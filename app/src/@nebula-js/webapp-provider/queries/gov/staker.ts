@@ -20,7 +20,7 @@ export function useGovStakerQuery(
 
   const result = useQuery(
     [
-      NEBULA_QUERY_KEYS.CW20_BALANCE,
+      NEBULA_QUERY_KEYS.GOV_STAKER,
       walletAddr,
       contractAddress.gov,
       mantleEndpoint,

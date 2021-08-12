@@ -1,3 +1,4 @@
+import { ExpandMore } from '@material-ui/icons';
 import { formatRate } from '@nebula-js/notation';
 import { gov } from '@nebula-js/types';
 import {
@@ -123,46 +124,82 @@ function PollsTableBase({ className }: PollsTableProps) {
           </tr>
         </thead>
         <tbody>
-          {polls.map(({ poll: { id, title }, votes, quorum, status }) => (
-            <tr key={id} onClick={() => gotoPoll(id)}>
-              <td>
-                <s>Whitelist CV</s>
-              </td>
-              <td
-                style={{
-                  wordBreak: 'break-all',
-                  whiteSpace: 'break-spaces',
-                  maxWidth: 400,
-                }}
-              >
-                {title}
-              </td>
-              <td>
-                <p>
-                  Quorum {formatRate(quorum.current)}% /{' '}
-                  {formatRate(quorum.gov)}%
-                </p>
-                <p>
-                  YES {formatRate(votes.yesRatio)}% NO{' '}
-                  {formatRate(votes.noRatio)}%
-                </p>
-              </td>
-              <td>{status}</td>
-            </tr>
-          ))}
+          {polls.map(
+            ({
+              poll: { id, title },
+              votes,
+              quorum,
+              status,
+              inProgressOver,
+            }) => (
+              <tr key={id} onClick={() => gotoPoll(id)}>
+                <td>
+                  <s>Whitelist CV</s>
+                </td>
+                <td
+                  style={{
+                    wordBreak: 'break-all',
+                    whiteSpace: 'break-spaces',
+                    maxWidth: 400,
+                  }}
+                >
+                  {title}
+                </td>
+                <td>
+                  <p>
+                    Quorum {formatRate(quorum.current)}% /{' '}
+                    {formatRate(quorum.gov)}%
+                  </p>
+                  <p>
+                    YES {formatRate(votes.yesRatio)}% NO{' '}
+                    {formatRate(votes.noRatio)}%
+                  </p>
+                </td>
+                <td data-in-progress-over={inProgressOver}>{status}</td>
+              </tr>
+            ),
+          )}
         </tbody>
       </HorizontalScrollTable>
 
       {hasNextPage && (
-        <Button onClick={() => fetchNextPage()}>Load More</Button>
+        <More>
+          <Button
+            color="darkgray"
+            size="medium"
+            onClick={() => fetchNextPage()}
+          >
+            More <ExpandMore />
+          </Button>
+        </More>
       )}
     </>
   );
 }
 
+const More = styled.footer`
+  margin-top: 2.14285714285714em;
+
+  button {
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 230px;
+
+    svg {
+      font-size: 1em;
+      transform: scale(1.2) translateY(0.1em);
+    }
+  }
+`;
+
 const StyledPollsTable = styled(PollsTableBase)`
   background-color: var(--color-gray14);
   border-radius: 8px;
+
+  [data-in-progress-over='true'] {
+    text-decoration: line-through;
+  }
 
   select {
     color: var(--color-paleblue);

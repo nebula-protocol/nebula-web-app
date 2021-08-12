@@ -8,7 +8,14 @@ import styled, { css } from 'styled-components';
 
 export interface ButtonProps extends Omit<MuiButtonBaseProps, 'ref' | 'color'> {
   size?: 'normal' | 'medium' | 'small' | 'tiny';
-  color?: 'paleblue' | 'gray' | 'dark' | 'dim' | 'border' | PaletteColor;
+  color?:
+    | 'paleblue'
+    | 'gray'
+    | 'darkgray'
+    | 'dark'
+    | 'dim'
+    | 'border'
+    | PaletteColor;
   fullWidth?: boolean;
   componentProps?: Record<string, any>;
 }
@@ -98,6 +105,20 @@ export const buttonColorStyle = (color: ButtonProps['color']) => {
 
       &:hover {
         background-color: var(--color-gray34);
+      }
+
+      &:disabled {
+        color: var(--color-white44);
+        background-color: var(--color-gray22);
+      }
+    `;
+  } else if (color === 'darkgray') {
+    return css`
+      color: var(--color-white64);
+      background-color: var(--color-gray14);
+
+      &:hover {
+        background-color: var(--color-gray24);
       }
 
       &:disabled {

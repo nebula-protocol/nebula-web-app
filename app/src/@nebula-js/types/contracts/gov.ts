@@ -163,6 +163,7 @@ export namespace gov {
   export interface StakerResponse {
     balance: u<NEB<rs.Uint128>>;
     share: u<NEB<rs.Uint128>>;
+    /** Array<[ poll_id, VoterInfo ]> */
     locked_balance: Array<[rs.u64, VoterInfo]>;
     // TODO set token type to pending_voting_rewards
     pending_voting_rewards: rs.Uint128;

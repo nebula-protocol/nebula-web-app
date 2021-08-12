@@ -13,9 +13,13 @@ import {
   TwoLine,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { GovVoters } from '@nebula-js/webapp-fns';
-import { useGovPollQuery, useGovVotersQuery } from '@nebula-js/webapp-provider';
-import { useWallet } from '@terra-money/wallet-provider';
+import { GovVoters, pickGovPollVoted } from '@nebula-js/webapp-fns';
+import {
+  useGovPollQuery,
+  useGovStakerQuery,
+  useGovVotersQuery,
+} from '@nebula-js/webapp-provider';
+import { useConnectedWallet, useWallet } from '@terra-money/wallet-provider';
 import { MainLayout } from 'components/layouts/MainLayout';
 import { fixHMR } from 'fix-hmr';
 import React, { useMemo, useState } from 'react';
@@ -45,6 +49,16 @@ function PollDetailBase({ className }: PollDetailProps) {
     fetchNextPage,
   } = useGovVotersQuery(+match!.params.pollId, 10);
 
+  const connectedWallet = useConnectedWallet();
+
+  const { data: { govStaker } = {} } = useGovStakerQuery(
+    connectedWallet?.walletAddress,
+  );
+
+  const userVoterInfo = useMemo(() => {
+    return pickGovPollVoted(govStaker, +match!.params.pollId);
+  }, [govStaker, match]);
+
   const voters = useMemo<Array<gov.VotersResponse['voters'][number]>>(() => {
     if (!pages || pages.length === 0) {
       return [];
@@ -56,8 +70,6 @@ function PollDetailBase({ className }: PollDetailProps) {
         .map((page) => page.voters.voters) as any),
     );
   }, [pages]);
-
-  // TODO check already voted (disable button)
 
   const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
     mobile: 'medium',
@@ -77,7 +89,9 @@ function PollDetailBase({ className }: PollDetailProps) {
               <div>
                 <s>Whitelist CV</s>
               </div>
-              <div>{parsedPoll?.status}</div>
+              <div data-in-progress-over={parsedPoll?.inProgressOver}>
+                {parsedPoll?.status}
+              </div>
             </header>
 
             <h2>{parsedPoll?.poll.title}</h2>
@@ -96,22 +110,33 @@ function PollDetailBase({ className }: PollDetailProps) {
               <span>Estimated end time</span>
               {parsedPoll?.endsIn.toLocaleString()}
             </p>
-            {startVote && !!match ? (
-              <VoteForm
-                className="form"
-                pollId={+match.params.pollId}
-                onVoteComplete={() => setStartVote(false)}
-              />
-            ) : (
-              <Button
-                size={buttonSize}
-                color="paleblue"
-                fullWidth
-                onClick={() => setStartVote(true)}
-              >
-                Vote
-              </Button>
+            {userVoterInfo && (
+              <p>
+                <span>You voted</span>
+                {userVoterInfo.vote.toUpperCase()},{' '}
+                {formatUTokenWithPostfixUnits(userVoterInfo.balance)} NEB
+              </p>
             )}
+            {!userVoterInfo &&
+            parsedPoll?.poll.status === 'in_progress' &&
+            parsedPoll?.inProgressOver === false ? (
+              startVote && !!match ? (
+                <VoteForm
+                  className="form"
+                  pollId={+match.params.pollId}
+                  onVoteComplete={() => setStartVote(false)}
+                />
+              ) : (
+                <Button
+                  size={buttonSize}
+                  color="paleblue"
+                  fullWidth
+                  onClick={() => setStartVote(true)}
+                >
+                  Vote
+                </Button>
+              )
+            ) : null}
           </Section>
 
           <Section className="detail">
@@ -294,6 +319,10 @@ const StyledPollDetail = styled(PollDetailBase)`
 
   a {
     color: inherit;
+  }
+
+  [data-in-progress-over='true'] {
+    text-decoration: line-through;
   }
 
   .layout {
