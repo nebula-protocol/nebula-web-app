@@ -10,7 +10,7 @@ import {
 } from '@nebula-js/ui';
 import {
   useNEBPoolQuery,
-  useStakingClusterPoolInfoListQuery,
+  useStakingPoolInfoListQuery,
 } from '@nebula-js/webapp-provider';
 import { useQueryBoundInput } from '@terra-dev/use-query-bound-input';
 import big, { Big } from 'big.js';
@@ -29,19 +29,18 @@ function StakingMainBase({ className }: StakingMainProps) {
 
   const { data: nebPool } = useNEBPoolQuery();
 
-  const { data: clusterPoolInfoList = [] } =
-    useStakingClusterPoolInfoListQuery();
+  const { data: poolInfoList = [] } = useStakingPoolInfoListQuery();
 
   const data = useMemo(() => {
     return nebPool
-      ? clusterPoolInfoList.map(
+      ? poolInfoList.map(
           (
             {
               poolInfo,
               terraswapPool,
               terraswapPoolInfo,
               tokenInfo,
-              clusterState,
+              tokenAddr,
               terraswapPair,
             },
             i,
@@ -62,7 +61,7 @@ function StakingMainBase({ className }: StakingMainProps) {
 
             return {
               index: i,
-              id: clusterState.cluster_contract_address,
+              id: tokenAddr,
               name: `${tokenInfo.symbol}-UST LP`,
               nameLowerCase: `${tokenInfo.symbol}-UST LP`.toLowerCase(),
               apr: '123.12',
@@ -71,9 +70,7 @@ function StakingMainBase({ className }: StakingMainProps) {
           },
         )
       : [];
-  }, [clusterPoolInfoList, nebPool]);
-
-  console.log('main.tsx..StakingMainBase()', nebPool, clusterPoolInfoList);
+  }, [nebPool, poolInfoList]);
 
   const tableButtonSize = useScreenSizeValue<'small' | 'tiny'>({
     mobile: 'tiny',

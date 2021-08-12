@@ -16,7 +16,7 @@ import {
   useConfirm,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { ClusterInfo } from '@nebula-js/webapp-fns';
+import { StakingPoolInfo } from '@nebula-js/webapp-fns';
 import {
   useStakingStakeForm,
   useStakingStakeTx,
@@ -32,12 +32,12 @@ import styled from 'styled-components';
 
 export interface StakingStakeProps {
   className?: string;
-  clusterInfo: ClusterInfo;
+  poolInfo: StakingPoolInfo;
 }
 
 function StakingStakeBase({
   className,
-  clusterInfo: { clusterState, clusterTokenInfo, terraswapPair },
+  poolInfo: { tokenAddr, tokenInfo, terraswapPair },
 }: StakingStakeProps) {
   const connectedWallet = useConnectedWallet();
 
@@ -45,13 +45,10 @@ function StakingStakeBase({
 
   const [openConfirm, confirmElement] = useConfirm();
 
-  const postTx = useStakingStakeTx(
-    clusterState.cluster_token,
-    terraswapPair.contract_addr,
-  );
+  const postTx = useStakingStakeTx(tokenAddr, terraswapPair.contract_addr);
 
   const [updateInput, states] = useStakingStakeForm({
-    clusterTokenAddr: clusterState.cluster_token,
+    tokenAddr: tokenAddr,
     ustTokenPairAddr: terraswapPair.contract_addr,
   });
 
@@ -164,7 +161,7 @@ function StakingStakeBase({
             {formatUToken(states.maxTokenAmount)}
           </EmptyButton>
         }
-        token={<TokenSpan>{clusterTokenInfo.symbol}</TokenSpan>}
+        token={<TokenSpan>{tokenInfo.symbol}</TokenSpan>}
         error={states.invalidTokenAmount}
       />
 
@@ -174,7 +171,7 @@ function StakingStakeBase({
             <span>Price</span>
             <ExchangeRateAB
               symbolA="UST"
-              symbolB={clusterTokenInfo.symbol}
+              symbolB={tokenInfo.symbol}
               exchangeRateAB={states.poolPrice}
               initialDirection="b/a"
               formatExchangeRate={(price) => formatFluidDecimalPoints(price, 6)}

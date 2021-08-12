@@ -140,7 +140,8 @@ function PollsTableBase({ className }: PollsTableProps) {
                   style={{
                     wordBreak: 'break-all',
                     whiteSpace: 'break-spaces',
-                    maxWidth: 400,
+                    minWidth: 300,
+                    maxWidth: 600,
                   }}
                 >
                   {title}

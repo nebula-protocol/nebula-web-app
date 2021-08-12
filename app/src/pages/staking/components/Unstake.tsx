@@ -14,7 +14,7 @@ import {
   TokenSpan,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { ClusterInfo } from '@nebula-js/webapp-fns';
+import { StakingPoolInfo } from '@nebula-js/webapp-fns';
 import {
   useStakingUnstakeForm,
   useStakingUnstakeTx,
@@ -31,28 +31,26 @@ import styled from 'styled-components';
 
 export interface StakingUnstakeProps {
   className?: string;
-  clusterInfo: ClusterInfo;
+  poolInfo: StakingPoolInfo;
 }
 
 function StakingUnstakeBase({
   className,
-  clusterInfo: { clusterState, clusterTokenInfo, terraswapPair },
+  poolInfo: { tokenAddr, tokenInfo, terraswapPair },
 }: StakingUnstakeProps) {
   const connectedWallet = useConnectedWallet();
 
   const { broadcast } = useTxBroadcast();
 
   const postTx = useStakingUnstakeTx(
-    clusterState.cluster_token,
+    tokenAddr,
     terraswapPair.contract_addr,
     terraswapPair.liquidity_token,
   );
 
-  console.log('Unstake.tsx..StakingUnstakeBase()', clusterState.cluster_token);
-
   const [updateInput, states] = useStakingUnstakeForm<CT>({
     ustTokenPairAddr: terraswapPair.contract_addr,
-    clusterTokenAddr: clusterState.cluster_token,
+    tokenAddr: tokenAddr,
   });
 
   const initForm = useCallback(() => {
@@ -110,7 +108,7 @@ function StakingUnstakeBase({
             {formatUToken(states.maxLpAmount)}
           </EmptyButton>
         }
-        token={<TokenSpan>{clusterTokenInfo.symbol}-UST LP</TokenSpan>}
+        token={<TokenSpan>{tokenInfo.symbol}-UST LP</TokenSpan>}
         error={states.invalidLpAmount}
       />
 
@@ -120,7 +118,7 @@ function StakingUnstakeBase({
             <span>Price</span>
             <ExchangeRateAB
               symbolA="UST"
-              symbolB={clusterTokenInfo.symbol}
+              symbolB={tokenInfo.symbol}
               exchangeRateAB={states.poolPrice}
               initialDirection="a/b"
               formatExchangeRate={(price) => formatFluidDecimalPoints(price, 6)}

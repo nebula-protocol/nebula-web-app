@@ -1,6 +1,6 @@
 import {
-  cluster,
   cw20,
+  CW20Addr,
   HumanAddr,
   NativeDenom,
   staking,
@@ -19,54 +19,32 @@ import { cw20TokenInfoQuery } from '../cw20/tokenInfo';
 import { terraswapPairQuery } from '../terraswap/pair';
 import { TerraswapPoolInfo, terraswapPoolQuery } from '../terraswap/pool';
 
-interface StakingClusterPoolInfoWasmQuery {
-  clusterState: WasmQuery<cluster.ClusterState, cluster.ClusterStateResponse>;
-}
-
-interface PoolInfoWasmQuery {
+interface StakingPoolInfoWasmQuery {
   poolInfo: WasmQuery<staking.PoolInfo, staking.PoolInfoResponse>;
 }
 
-export type StakingClusterPoolInfo =
-  WasmQueryData<StakingClusterPoolInfoWasmQuery> &
-    WasmQueryData<PoolInfoWasmQuery> & {
-      terraswapPair: terraswap.factory.PairResponse;
-      terraswapPool: terraswap.pair.PoolResponse<Token, UST>;
-      terraswapPoolInfo: TerraswapPoolInfo<Token>;
-      tokenInfo: cw20.TokenInfoResponse<Token>;
-    };
+export type StakingPoolInfo = WasmQueryData<StakingPoolInfoWasmQuery> & {
+  tokenAddr: CW20Addr;
+  terraswapPair: terraswap.factory.PairResponse;
+  terraswapPool: terraswap.pair.PoolResponse<Token, UST>;
+  terraswapPoolInfo: TerraswapPoolInfo<Token>;
+  tokenInfo: cw20.TokenInfoResponse<Token>;
+};
 
-export async function stakingClusterPoolInfoQuery(
-  clusterAddr: HumanAddr,
+export async function stakingPoolInfoQuery(
+  tokenAddr: CW20Addr,
   stakingAddr: HumanAddr,
   terraswapFactoryAddr: HumanAddr,
   mantleEndpoint: string,
   mantleFetch: MantleFetch = defaultMantleFetch,
   requestInit?: RequestInit,
-): Promise<StakingClusterPoolInfo> {
-  const { clusterState } = await mantle<StakingClusterPoolInfoWasmQuery>({
-    mantleEndpoint: `${mantleEndpoint}?staking--cluster-pool-info`,
-    mantleFetch,
-    requestInit,
-    variables: {},
-    wasmQuery: {
-      clusterState: {
-        contractAddress: clusterAddr,
-        query: {
-          cluster_state: {
-            cluster_contract_address: clusterAddr,
-          },
-        },
-      },
-    },
-  });
-
+): Promise<StakingPoolInfo> {
   const { terraswapPair } = await terraswapPairQuery(
     terraswapFactoryAddr,
     [
       {
         token: {
-          contract_addr: clusterState.cluster_token,
+          contract_addr: tokenAddr,
         },
       },
       {
@@ -81,7 +59,7 @@ export async function stakingClusterPoolInfoQuery(
   );
 
   const { tokenInfo } = await cw20TokenInfoQuery(
-    clusterState.cluster_token,
+    tokenAddr,
     mantleEndpoint,
     mantleFetch,
     requestInit,
@@ -94,8 +72,8 @@ export async function stakingClusterPoolInfoQuery(
     requestInit,
   );
 
-  const { poolInfo } = await mantle<PoolInfoWasmQuery>({
-    mantleEndpoint,
+  const { poolInfo } = await mantle<StakingPoolInfoWasmQuery>({
+    mantleEndpoint: `${mantleEndpoint}?staking--pool-info=${tokenAddr}`,
     mantleFetch,
     requestInit,
     variables: {},
@@ -104,7 +82,7 @@ export async function stakingClusterPoolInfoQuery(
         contractAddress: stakingAddr,
         query: {
           pool_info: {
-            asset_token: clusterState.cluster_token,
+            asset_token: tokenAddr,
           },
         },
       },
@@ -112,11 +90,11 @@ export async function stakingClusterPoolInfoQuery(
   });
 
   return {
+    tokenAddr,
     poolInfo,
     terraswapPair,
     terraswapPool,
     terraswapPoolInfo,
     tokenInfo,
-    clusterState,
   };
 }

@@ -14,12 +14,12 @@ import { useTerraswapPoolQuery } from '../../queries/terraswap/pool';
 
 export interface StakingStakeFormParams {
   ustTokenPairAddr: HumanAddr;
-  clusterTokenAddr: CW20Addr;
+  tokenAddr: CW20Addr;
 }
 
 export function useStakingStakeForm({
   ustTokenPairAddr,
-  clusterTokenAddr,
+  tokenAddr,
 }: StakingStakeFormParams) {
   const connectedWallet = useConnectedWallet();
 
@@ -30,7 +30,7 @@ export function useStakingStakeForm({
   const { tax, tokenBalances } = useBank<NebulaTokenBalances, NebulaTax>();
 
   const { data: { tokenBalance } = {} } = useCW20BalanceQuery<CT>(
-    clusterTokenAddr,
+    tokenAddr,
     connectedWallet?.walletAddress,
   );
 

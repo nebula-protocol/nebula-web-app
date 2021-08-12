@@ -36,7 +36,7 @@ function App() {
           <Route exact path="/clusters" component={ClustersMain} />
           <Route path="/clusters/:cluster" component={ClustersDetail} />
           <Route exact path="/staking" component={StakingMain} />
-          <Route path="/staking/:cluster" component={StakingStake} />
+          <Route path="/staking/:token" component={StakingStake} />
           <Route exact path="/gov" component={GovMain} />
           <Route path="/gov/trade" component={GovTrade} />
           <Route path="/gov/stake" component={GovStake} />
