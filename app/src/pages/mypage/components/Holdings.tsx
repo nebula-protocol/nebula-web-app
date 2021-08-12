@@ -1,5 +1,10 @@
 import { SendIcon } from '@nebula-js/icons';
 import {
+  formatTokenWithPostfixUnits,
+  formatUTokenWithPostfixUnits,
+} from '@nebula-js/notation';
+import { u, UST } from '@nebula-js/types';
+import {
   Button,
   Descriptions,
   EmptyButton,
@@ -8,7 +13,14 @@ import {
   TwoLine,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import React from 'react';
+import {
+  useMypageHoldingsQuery,
+  useNebulaWebapp,
+} from '@nebula-js/webapp-provider';
+import { sum } from '@terra-dev/big-math';
+import big, { Big } from 'big.js';
+import React, { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export interface HoldingsProps {
@@ -16,6 +28,44 @@ export interface HoldingsProps {
 }
 
 function HoldingsBase({ className }: HoldingsProps) {
+  const { contractAddress } = useNebulaWebapp();
+
+  const { data = [] } = useMypageHoldingsQuery();
+
+  const holdings = useMemo(() => {
+    return data
+      .filter(({ tokenBalance }) => big(tokenBalance.balance).gt(0))
+      .map(
+        ({
+          tokenAddr,
+          tokenInfo,
+          tokenBalance,
+          terraswapPoolInfo,
+          clusterState,
+        }) => {
+          const price = terraswapPoolInfo.tokenPrice;
+          const balance = tokenBalance.balance;
+          const value = big(balance).mul(price) as u<UST<Big>>;
+
+          return {
+            symbol: tokenInfo.symbol,
+            name: tokenInfo.name,
+            price,
+            balance,
+            value,
+            to:
+              tokenAddr === contractAddress.cw20.NEB
+                ? `/gov/trade`
+                : `/clusters/${clusterState?.cluster_contract_address}/buy`,
+          };
+        },
+      );
+  }, [contractAddress.cw20.NEB, data]);
+
+  const totalHoldingsValue = useMemo(() => {
+    return sum(...holdings.map(({ value }) => value)) as u<UST<Big>>;
+  }, [holdings]);
+
   const tableMinWidth = useScreenSizeValue({
     mobile: 600,
     tablet: 900,
@@ -62,7 +112,10 @@ function HoldingsBase({ className }: HoldingsProps) {
             className="descriptions"
             direction={descriptionDisplay}
             descriptions={[
-              { label: 'Total Holdings Value', text: '2,020.06 UST' },
+              {
+                label: 'Total Holdings Value',
+                text: `${formatUTokenWithPostfixUnits(totalHoldingsValue)} UST`,
+              },
             ]}
           />
         </Table3SectionHeader>
@@ -88,32 +141,25 @@ function HoldingsBase({ className }: HoldingsProps) {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>
-            <TwoLine text="NEB" subText="Nebula" />
-          </td>
-          <td>254.062 UST</td>
-          <td>100.34625</td>
-          <td>254,110.172 UST</td>
-          <td>
-            <Button size={tableButtonSize} color="border">
-              Trade
-            </Button>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <TwoLine text="NDOG" subText="Next DOGE" />
-          </td>
-          <td>254.062 UST</td>
-          <td>100.34625</td>
-          <td>254,110.172 UST</td>
-          <td>
-            <Button size={tableButtonSize} color="border">
-              Trade
-            </Button>
-          </td>
-        </tr>
+        {holdings.map(({ symbol, name, price, balance, value, to }) => (
+          <tr key={'holdings' + symbol}>
+            <td>
+              <TwoLine text={symbol} subText={name} />
+            </td>
+            <td>{formatTokenWithPostfixUnits(price)} UST</td>
+            <td>{formatUTokenWithPostfixUnits(balance)}</td>
+            <td>{formatUTokenWithPostfixUnits(value)} UST</td>
+            <td>
+              <Button
+                size={tableButtonSize}
+                color="border"
+                componentProps={{ component: Link, to }}
+              >
+                Trade
+              </Button>
+            </td>
+          </tr>
+        ))}
       </tbody>
     </HorizontalScrollTable>
   );

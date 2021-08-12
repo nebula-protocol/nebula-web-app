@@ -1,5 +1,5 @@
 import { CallMade, Check } from '@material-ui/icons';
-import { formatUToken, truncate } from '@nebula-js/notation';
+import { formatUTokenWithPostfixUnits, truncate } from '@nebula-js/notation';
 import { Button, Tooltip } from '@nebula-js/ui';
 import { NebulaTokenBalances } from '@nebula-js/webapp-fns';
 import { useConnectedWallet, useWallet } from '@terra-money/wallet-provider';
@@ -27,7 +27,7 @@ function WalletDetailsBase({ className, buttonSize }: WalletDetailsProps) {
   );
 
   const {
-    tokenBalances: { uUST, uLuna },
+    tokenBalances: { uUST, uLuna, uNEB },
   } = useBank<NebulaTokenBalances>();
 
   if (!connectedWallet) {
@@ -54,13 +54,19 @@ function WalletDetailsBase({ className, buttonSize }: WalletDetailsProps) {
         {big(uUST).gt(0) && (
           <li>
             <span>UST</span>
-            <span>{formatUToken(uUST)}</span>
+            <span>{formatUTokenWithPostfixUnits(uUST)}</span>
           </li>
         )}
         {big(uLuna).gt(0) && (
           <li>
             <span>LUNA</span>
-            <span>{formatUToken(uLuna)}</span>
+            <span>{formatUTokenWithPostfixUnits(uLuna)}</span>
+          </li>
+        )}
+        {big(uNEB).gt(0) && (
+          <li>
+            <span>NEB</span>
+            <span>{formatUTokenWithPostfixUnits(uNEB)}</span>
           </li>
         )}
       </ul>

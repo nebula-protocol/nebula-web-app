@@ -52,7 +52,9 @@ function GovernanceBase({ className }: GovernanceProps) {
       endPadding={startPadding}
       headerContents={
         <Table3SectionHeader>
-          <h2>Governance</h2>
+          <h2>
+            <s>Governance</s>
+          </h2>
           <div className="buttons">
             <EmptyButton>
               <SendIcon style={{ marginRight: '0.5em' }} /> Claim Rewards

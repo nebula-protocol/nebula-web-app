@@ -3,7 +3,6 @@ import {
   CT,
   cw20,
   HumanAddr,
-  NativeDenom,
   terraswap,
   Token,
   u,
@@ -16,9 +15,9 @@ import {
   WasmQuery,
   WasmQueryData,
 } from '@terra-dev/mantle';
+import { cw20PoolInfoQuery } from '../cw20/poolInfo';
 import { cw20TokenInfoQuery } from '../cw20/tokenInfo';
-import { terraswapPairQuery } from '../terraswap/pair';
-import { terraswapPoolQuery } from '../terraswap/pool';
+import { TerraswapPoolInfo } from '../terraswap/pool';
 
 interface ClusterStateWasmQuery {
   clusterConfig: WasmQuery<cluster.Config, cluster.ConfigResponse>;
@@ -35,6 +34,7 @@ export type AssetTokenInfo = {
 export type ClusterInfo = WasmQueryData<ClusterInfoWasmQuery> & {
   terraswapPair: terraswap.factory.PairResponse;
   terraswapPool: terraswap.pair.PoolResponse<CT, UST>;
+  terraswapPoolInfo: TerraswapPoolInfo<CT>;
   clusterTokenInfo: cw20.TokenInfoResponse<Token>;
   assetTokenInfos: AssetTokenInfo[];
 };
@@ -110,44 +110,21 @@ export async function clusterInfoQuery(
     }),
   );
 
-  const { terraswapPair } = await terraswapPairQuery(
-    terraswapFactoryAddr,
-    [
-      {
-        token: {
-          contract_addr: clusterState.cluster_token,
-        },
-      },
-      {
-        native_token: {
-          denom: 'uusd' as NativeDenom,
-        },
-      },
-    ],
-    mantleEndpoint,
-    mantleFetch,
-    requestInit,
-  );
-
-  const { tokenInfo } = await cw20TokenInfoQuery(
-    clusterState.cluster_token,
-    mantleEndpoint,
-    mantleFetch,
-    requestInit,
-  );
-
-  const { terraswapPool } = await terraswapPoolQuery<CT>(
-    terraswapPair.contract_addr,
-    mantleEndpoint,
-    mantleFetch,
-    requestInit,
-  );
+  const { terraswapPair, terraswapPool, terraswapPoolInfo, tokenInfo } =
+    await cw20PoolInfoQuery<CT>(
+      clusterState.cluster_token,
+      terraswapFactoryAddr,
+      mantleEndpoint,
+      mantleFetch,
+      requestInit,
+    );
 
   return {
     clusterState,
     clusterConfig,
     terraswapPair,
     terraswapPool,
+    terraswapPoolInfo,
     clusterTokenInfo: tokenInfo,
     assetTokenInfos: tokenInfos,
   };

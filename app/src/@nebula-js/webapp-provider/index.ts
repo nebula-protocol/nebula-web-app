@@ -25,6 +25,7 @@ export * from './queries/gov/polls';
 export * from './queries/gov/staker';
 export * from './queries/gov/state';
 export * from './queries/gov/voters';
+export * from './queries/mypage/holdings';
 export * from './queries/neb/nebPool';
 export * from './queries/staking/poolInfo';
 export * from './queries/staking/poolInfoList';

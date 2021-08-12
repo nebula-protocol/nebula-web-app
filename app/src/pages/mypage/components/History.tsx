@@ -11,7 +11,9 @@ function HistoryBase({ className }: HistoryProps) {
   return (
     <div className={className}>
       <TableHeader>
-        <h2>History</h2>
+        <h2>
+          <s>History</s>
+        </h2>
         <div className="buttons">
           <EmptyButton>
             <SendIcon style={{ marginRight: '0.5em' }} /> CSV

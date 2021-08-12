@@ -1,24 +1,24 @@
-import { cluster, CW20Addr, HumanAddr } from '@nebula-js/types';
+import { cluster, HumanAddr } from '@nebula-js/types';
 import {
   defaultMantleFetch,
   mantle,
   MantleFetch,
   WasmQuery,
 } from '@terra-dev/mantle';
-import { clustersListQuery } from '../clusters/list';
+import { clustersListQuery } from './list';
 
-interface StakingClusterTokenListWasmQuery {
+interface ClusterTokenListWasmQuery {
   clusterState: WasmQuery<cluster.ClusterState, cluster.ClusterStateResponse>;
 }
 
-export type StakingClusterTokenList = CW20Addr[];
+export type ClusterStateList = cluster.ClusterStateResponse[];
 
-export async function stakingClusterTokenListQuery(
+export async function clusterStateListQuery(
   clusterFactoryAddr: HumanAddr,
   mantleEndpoint: string,
   mantleFetch: MantleFetch = defaultMantleFetch,
   requestInit?: RequestInit,
-): Promise<StakingClusterTokenList> {
+): Promise<ClusterStateList> {
   const { clusterList } = await clustersListQuery(
     clusterFactoryAddr,
     mantleEndpoint,
@@ -26,9 +26,9 @@ export async function stakingClusterTokenListQuery(
     requestInit,
   );
 
-  const clusterStates = await Promise.all(
+  return Promise.all(
     clusterList.contract_infos.map(([clusterAddr]) => {
-      return mantle<StakingClusterTokenListWasmQuery>({
+      return mantle<ClusterTokenListWasmQuery>({
         mantleEndpoint: `${mantleEndpoint}?staking--cluster-state=${clusterAddr}`,
         mantleFetch,
         requestInit,
@@ -43,9 +43,7 @@ export async function stakingClusterTokenListQuery(
             },
           },
         },
-      });
+      }).then(({ clusterState }) => clusterState);
     }),
   );
-
-  return clusterStates.map(({ clusterState }) => clusterState.cluster_token);
 }

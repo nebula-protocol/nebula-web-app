@@ -1,6 +1,6 @@
 import { CW20Addr, HumanAddr } from '@nebula-js/types';
 import { defaultMantleFetch, MantleFetch } from '@terra-dev/mantle';
-import { stakingClusterTokenListQuery } from './clusterTokenList';
+import { clusterStateListQuery } from '../clusters/stateList';
 import { StakingPoolInfo, stakingPoolInfoQuery } from './poolInfo';
 
 export type StakingPoolInfoList = StakingPoolInfo[];
@@ -14,7 +14,7 @@ export async function stakingPoolInfoListQuery(
   mantleFetch: MantleFetch = defaultMantleFetch,
   requestInit?: RequestInit,
 ): Promise<StakingPoolInfoList> {
-  const clusterTokenAddrs = await stakingClusterTokenListQuery(
+  const clusterStates = await clusterStateListQuery(
     clusterFactoryAddr,
     mantleEndpoint,
     mantleFetch,
@@ -22,7 +22,9 @@ export async function stakingPoolInfoListQuery(
   );
 
   // TODO add NEB
-  const tokenAddrs = [...clusterTokenAddrs];
+  const tokenAddrs = [
+    ...clusterStates.map(({ cluster_token }) => cluster_token),
+  ];
   //const tokenAddrs = [nebTokenAddr, ...clusterTokenAddrs];
 
   return await Promise.all(

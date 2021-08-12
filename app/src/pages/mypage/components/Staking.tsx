@@ -53,7 +53,9 @@ function StakingBase({ className }: StakingProps) {
       endPadding={startPadding}
       headerContents={
         <Table3SectionHeader>
-          <h2>Staking</h2>
+          <h2>
+            <s>Staking</s>
+          </h2>
           <div className="buttons">
             <EmptyButton>
               <SendIcon style={{ marginRight: '0.5em' }} /> Claim All Rewards

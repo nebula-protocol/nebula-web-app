@@ -32,9 +32,7 @@ function MyPageMainBase({ className }: MyPageMainProps) {
 
   return (
     <MainLayout className={className}>
-      <h1>
-        <s>My Page</s>
-      </h1>
+      <h1>My Page</h1>
       {!showAll && (
         <Tab
           className="tab"
