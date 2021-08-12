@@ -17,6 +17,7 @@ import PollText from 'pages/poll/components/PollText';
 import PollWhitelistCluster from 'pages/poll/components/PollWhitelistCluster';
 import PollDetail from 'pages/poll/detail';
 import PollMain from 'pages/poll/main';
+import Send from 'pages/send/main';
 import StakingMain from 'pages/staking/main';
 import StakingStake from 'pages/staking/stake';
 import { StyleRouterTest } from 'pages/test/style-router-test';
@@ -63,6 +64,7 @@ function App() {
           />
           <Route path="/polls/create/text" component={PollText} />
           <Route path="/poll/:poll" component={PollDetail} />
+          <Route path="/send" component={Send} />
           <Route path="/test/style-router" component={StyleRouterTest} />
           <Redirect to="/" />
         </Switch>

@@ -9,7 +9,7 @@ import { NEBULA_QUERY_KEYS } from '../../env';
 const queryFn = createQueryFn(cw20BalanceQuery);
 
 export function useCW20BalanceQuery<T extends Token>(
-  tokenAddr: CW20Addr,
+  tokenAddr: CW20Addr | undefined,
   walletAddr: HumanAddr | undefined,
 ): UseQueryResult<CW20Balance<T> | undefined> {
   const { mantleFetch, mantleEndpoint, queryErrorReporter } = useTerraWebapp();

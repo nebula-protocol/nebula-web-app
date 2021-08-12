@@ -62,7 +62,10 @@ function ConnectedBase({ ...buttonProps }: ConnectedProps) {
               timeout={200}
             >
               <Dropdown>
-                <WalletDetails buttonSize="small" />
+                <WalletDetails
+                  buttonSize="small"
+                  onExit={() => setAnchorElement(null)}
+                />
               </Dropdown>
             </Grow>
           )}

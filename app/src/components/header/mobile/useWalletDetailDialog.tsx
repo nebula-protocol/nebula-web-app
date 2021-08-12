@@ -32,7 +32,7 @@ function ComponentBase({
   return (
     <Modal open onClose={() => closeDialog()}>
       <Dialog className={className} onClose={() => closeDialog()}>
-        <WalletDetails buttonSize="medium" />
+        <WalletDetails buttonSize="medium" onExit={() => closeDialog()} />
       </Dialog>
     </Modal>
   );

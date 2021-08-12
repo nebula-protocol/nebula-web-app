@@ -7,7 +7,7 @@ import { u, UST } from '@nebula-js/types';
 import {
   Button,
   Descriptions,
-  EmptyButton,
+  EmptyLink,
   HorizontalScrollTable,
   Table3SectionHeader,
   TwoLine,
@@ -104,11 +104,13 @@ function HoldingsBase({ className }: HoldingsProps) {
         <Table3SectionHeader>
           <h2>Holdings</h2>
           <div className="buttons">
-            <EmptyButton>
-              <s>
-                <SendIcon style={{ marginRight: '0.5em' }} /> Send
-              </s>
-            </EmptyButton>
+            <EmptyLink
+              component={Link}
+              to="/send"
+              style={{ color: 'var(--color-paleblue)' }}
+            >
+              <SendIcon style={{ marginRight: '0.5em' }} /> Send
+            </EmptyLink>
           </div>
           <Descriptions
             className="descriptions"

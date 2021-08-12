@@ -21,8 +21,9 @@ export async function cw20TokenInfoQuery<T extends Token>(
   mantleEndpoint: string,
   mantleFetch: MantleFetch = defaultMantleFetch,
   requestInit?: RequestInit,
+  ignoreCache: boolean = false,
 ): Promise<CW20TokenInfo<T>> {
-  if (cw20TokenInfoCache.has(tokenAddr)) {
+  if (!ignoreCache && cw20TokenInfoCache.has(tokenAddr)) {
     return {
       tokenInfo: cw20TokenInfoCache.get(
         tokenAddr,

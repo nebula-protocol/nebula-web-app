@@ -6,15 +6,21 @@ import { useConnectedWallet, useWallet } from '@terra-money/wallet-provider';
 import { useBank } from '@terra-money/webapp-provider';
 import big from 'big.js';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import useClipboard from 'react-use-clipboard';
 import styled from 'styled-components';
 
 export interface WalletDetailsProps {
   className?: string;
   buttonSize: 'small' | 'medium';
+  onExit?: () => void;
 }
 
-function WalletDetailsBase({ className, buttonSize }: WalletDetailsProps) {
+function WalletDetailsBase({
+  className,
+  buttonSize,
+  onExit,
+}: WalletDetailsProps) {
   const { disconnect } = useWallet();
 
   const connectedWallet = useConnectedWallet();
@@ -72,11 +78,25 @@ function WalletDetailsBase({ className, buttonSize }: WalletDetailsProps) {
       </ul>
 
       <footer>
-        <Button size={buttonSize} color="paleblue" fullWidth>
+        <Button
+          size={buttonSize}
+          color="paleblue"
+          fullWidth
+          componentProps={{ component: Link, to: '/send' }}
+          onClick={onExit}
+        >
           Send
         </Button>
 
-        <Button size={buttonSize} color="dim" fullWidth onClick={disconnect}>
+        <Button
+          size={buttonSize}
+          color="dim"
+          fullWidth
+          onClick={() => {
+            disconnect();
+            onExit?.();
+          }}
+        >
           Disconnect
         </Button>
       </footer>

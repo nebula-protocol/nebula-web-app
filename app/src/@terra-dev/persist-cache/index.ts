@@ -3,8 +3,7 @@ export class PersistCache<T> {
 
   constructor(
     private storageKey: string,
-    private storage: Storage | undefined = typeof globalThis.localStorage !==
-    'undefined'
+    private storage: Storage | undefined = typeof localStorage !== 'undefined'
       ? localStorage
       : undefined,
   ) {

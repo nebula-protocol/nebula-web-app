@@ -17,12 +17,12 @@ export type CW20Balance<T extends Token> = WasmQueryData<
 
 export async function cw20BalanceQuery<T extends Token>(
   walletAddr: HumanAddr | undefined,
-  tokenAddr: CW20Addr,
+  tokenAddr: CW20Addr | undefined,
   mantleEndpoint: string,
   mantleFetch: MantleFetch = defaultMantleFetch,
   requestInit?: RequestInit,
 ): Promise<CW20Balance<T> | undefined> {
-  return walletAddr
+  return walletAddr && tokenAddr
     ? mantle<CW20BalanceWasmQuery<T>>({
         mantleEndpoint: `${mantleEndpoint}?cw20--balance=${tokenAddr}`,
         mantleFetch,

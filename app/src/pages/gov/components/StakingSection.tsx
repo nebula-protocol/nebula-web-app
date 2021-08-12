@@ -37,6 +37,7 @@ function StakingSectionBase({ className }: StakingSectionProps) {
 
   const { data: { tokenInfo } = {} } = useCW20TokenInfoQuery<NEB>(
     contractAddress.cw20.NEB,
+    true,
   );
 
   const { totalStaked, stakingRatio } = useMemo(() => {
