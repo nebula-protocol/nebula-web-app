@@ -1,11 +1,26 @@
 import { SendIcon } from '@nebula-js/icons';
-import { breakpoints, EmptyButton, TableHeader } from '@nebula-js/ui';
+import { breakpoints, EmptyLink, TableHeader } from '@nebula-js/ui';
 import React from 'react';
+import { CSVLink } from 'react-csv';
 import styled from 'styled-components';
 
 export interface HistoryProps {
   className?: string;
 }
+
+const headers = [
+  { label: 'Date', key: 'date' },
+  { label: 'From', key: 'from' },
+  { label: 'To', key: 'to' },
+  { label: 'Description', key: 'description' },
+];
+
+const data = [
+  { date: new Date(), from: 'aaaaa1', to: 'bbbb1', description: 'Sample Data' },
+  { date: new Date(), from: 'aaaaa2', to: 'bbbb2', description: 'Sample Data' },
+  { date: new Date(), from: 'aaaaa3', to: 'bbbb3', description: 'Sample Data' },
+  { date: new Date(), from: 'aaaaa4', to: 'bbbb4', description: 'Sample Data' },
+];
 
 function HistoryBase({ className }: HistoryProps) {
   return (
@@ -15,9 +30,9 @@ function HistoryBase({ className }: HistoryProps) {
           <s>History</s>
         </h2>
         <div className="buttons">
-          <EmptyButton>
+          <EmptyLink component={CSVLink} data={data} headers={headers}>
             <SendIcon style={{ marginRight: '0.5em' }} /> CSV
-          </EmptyButton>
+          </EmptyLink>
         </div>
       </TableHeader>
       <ul>

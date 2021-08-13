@@ -11,6 +11,7 @@ export default defineConfig({
       '@terra-money/terra.js': '@terra-money/terra.js/dist/bundle.js',
       'styled-components': 'styled-components/dist/styled-components.browser.esm.js',
       'process': path.resolve(__dirname, 'src/polyfills/process-es6.js'),
+      'react-csv': 'react-csv/lib/index.js',
     },
   },
   //define: {

@@ -2652,6 +2652,7 @@ __metadata:
     "@types/puppeteer": ^5.4.4
     "@types/ramda": ^0.27.44
     "@types/react": ^17.0.14
+    "@types/react-csv": ^1.1.2
     "@types/react-dom": ^17.0.9
     "@types/react-is": ^17.0.2
     "@types/react-responsive": ^8.0.3
@@ -2678,6 +2679,7 @@ __metadata:
     numeral: ^2.0.6
     puppeteer: ^10.1.0
     react: ^17.0.2
+    react-csv: ^2.0.3
     react-dom: ^17.0.2
     react-masonry-css: ^1.0.16
     react-query: ^3.19.0
@@ -5358,6 +5360,15 @@ __metadata:
   dependencies:
     "@types/react": "*"
   checksum: 5244b72e7fff11ef7d0dbd1fdd3401e97e3e6cd65cb395eea0ee8e3560afdd98c79f9ff5599ce7962f212a346ced58ff378c7a04d4aae0c2cc766c72ca87c18a
+  languageName: node
+  linkType: hard
+
+"@types/react-csv@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "@types/react-csv@npm:1.1.2"
+  dependencies:
+    "@types/react": "*"
+  checksum: 0c69c969544cfbbf9b921e3bc8933d83a976af6edd1e126098467d47bb1e3f5c49b1aa6ecd3d5ec0b713c08ec5371ded4db121a91929ace893ef06d200557f49
   languageName: node
   linkType: hard
 
@@ -18283,6 +18294,13 @@ fsevents@^1.2.7:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
   checksum: fc4a42a2504d0c2ccc120fcfb56de8090a49d06f478212a69ef6bc453f6793eaadebe15109174bbac67a9d00158eba154e79fb376b7f610311f1894b73f7e5f9
+  languageName: node
+  linkType: hard
+
+"react-csv@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "react-csv@npm:2.0.3"
+  checksum: 5ca5f8bd06e279e016d4e77a08190a43e9e6ae1ca62bc3d9b8a6cec91bcf7b4cf1d84c3513358116b753f48e7078e78c8f40cf2b8bae8f24caf82536fe2ec3df
   languageName: node
   linkType: hard
 
