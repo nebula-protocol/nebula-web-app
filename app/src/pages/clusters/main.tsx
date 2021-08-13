@@ -17,40 +17,52 @@ export interface ClustersMainProps {
 }
 
 function ClustersMainBase({ className }: ClustersMainProps) {
-  const { data: infoList = [] } = useClustersInfoListQuery();
-
-  const [view, setView] = useLocalStorage<'table' | 'card'>(
-    '__nebula_clusters_view__',
-    () => 'table',
-  );
-
-  const tableItems = useMemo<ClusterView[]>(() => {
-    return infoList.map((info) => toClusterView(info));
-  }, [infoList]);
+  const { value, updateValue } = useQueryBoundInput({ queryParam: 'search' });
 
   const history = useHistory();
 
-  const { value, updateValue } = useQueryBoundInput({ queryParam: 'search' });
+  // ---------------------------------------------
+  // queries
+  // ---------------------------------------------
+  const { data: infoList = [] } = useClustersInfoListQuery();
 
-  const filteredTableItems = useMemo(() => {
+  const data = useMemo<ClusterView[]>(() => {
+    return infoList.map((info) => toClusterView(info));
+  }, [infoList]);
+
+  // ---------------------------------------------
+  // computes
+  // ---------------------------------------------
+  const filteredData = useMemo(() => {
     if (!value || value.trim().length === 0) {
-      return tableItems;
+      return data;
     }
 
     const tokens = value.split(' ');
 
-    return tableItems.filter(({ nameLowerCase }) => {
+    return data.filter(({ nameLowerCase }) => {
       return tokens.some((token) => {
         return nameLowerCase.indexOf(token) > -1;
       });
     });
-  }, [tableItems, value]);
+  }, [data, value]);
 
+  // ---------------------------------------------
+  // callbacks
+  // ---------------------------------------------
   const gotoCluster = useCallback(
     (clusterId: string) => {
       history.push(`/clusters/${clusterId}`);
     },
     [history],
+  );
+
+  // ---------------------------------------------
+  // presentation
+  // ---------------------------------------------
+  const [view, setView] = useLocalStorage<'table' | 'card'>(
+    '__nebula_clusters_view__',
+    () => 'table',
   );
 
   return (
@@ -85,15 +97,9 @@ function ClustersMainBase({ className }: ClustersMainProps) {
       </Search>
 
       {view === 'card' ? (
-        <ClustersCards
-          clusters={filteredTableItems}
-          onClusterClick={gotoCluster}
-        />
+        <ClustersCards clusters={filteredData} onClusterClick={gotoCluster} />
       ) : (
-        <ClustersTable
-          clusters={filteredTableItems}
-          onClusterClick={gotoCluster}
-        />
+        <ClustersTable clusters={filteredData} onClusterClick={gotoCluster} />
       )}
     </MainLayout>
   );

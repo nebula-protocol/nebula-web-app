@@ -1,23 +1,17 @@
-import { formatTokenWithPostfixUnits } from '@nebula-js/notation';
-import { u, UST } from '@nebula-js/types';
-import {
-  breakpoints,
-  Button,
-  CoupledIconsHolder,
-  HorizontalScrollTable,
-  Search,
-  useScreenSizeValue,
-} from '@nebula-js/ui';
+import { List, ViewModule } from '@material-ui/icons';
+import { breakpoints, EmptyButton, Search } from '@nebula-js/ui';
 import {
   useNEBPoolQuery,
   useStakingPoolInfoListQuery,
 } from '@nebula-js/webapp-provider';
+import { useLocalStorage } from '@terra-dev/use-local-storage';
 import { useQueryBoundInput } from '@terra-dev/use-query-bound-input';
-import big, { Big } from 'big.js';
 import { MainLayout } from 'components/layouts/MainLayout';
 import { fixHMR } from 'fix-hmr';
-import React, { useCallback, useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
+import { StakingCards } from 'pages/staking/components/StakingCards';
+import { StakingTable } from 'pages/staking/components/StakingTable';
+import { toStakingView } from 'pages/staking/models/staking';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 
 export interface StakingMainProps {
@@ -25,68 +19,21 @@ export interface StakingMainProps {
 }
 
 function StakingMainBase({ className }: StakingMainProps) {
-  const history = useHistory();
+  const { value, updateValue } = useQueryBoundInput({ queryParam: 'search' });
 
+  // ---------------------------------------------
+  // queries
+  // ---------------------------------------------
   const { data: nebPool } = useNEBPoolQuery();
 
   const { data: poolInfoList = [] } = useStakingPoolInfoListQuery();
 
+  // ---------------------------------------------
+  // computes
+  // ---------------------------------------------
   const data = useMemo(() => {
-    return nebPool
-      ? poolInfoList.map(
-          (
-            {
-              poolInfo,
-              terraswapPool,
-              terraswapPoolInfo,
-              tokenInfo,
-              tokenAddr,
-              terraswapPair,
-            },
-            i,
-          ) => {
-            const liquidityValue = big(
-              big(nebPool.terraswapPoolInfo.tokenPrice).mul(
-                terraswapPoolInfo.tokenPoolSize,
-              ),
-            ).plus(terraswapPoolInfo.ustPoolSize) as u<UST<Big>>;
-
-            const totalStaked = liquidityValue.mul(
-              big(poolInfo.total_bond_amount).div(
-                +terraswapPool.total_share === 0
-                  ? 1
-                  : terraswapPool.total_share,
-              ),
-            ) as u<UST<Big>>;
-
-            return {
-              index: i,
-              id: tokenAddr,
-              name: `${tokenInfo.symbol}-UST LP`,
-              nameLowerCase: `${tokenInfo.symbol}-UST LP`.toLowerCase(),
-              apr: '123.12',
-              totalStaked,
-            };
-          },
-        )
-      : [];
+    return toStakingView(nebPool, poolInfoList);
   }, [nebPool, poolInfoList]);
-
-  const tableButtonSize = useScreenSizeValue<'small' | 'tiny'>({
-    mobile: 'tiny',
-    tablet: 'small',
-    pc: 'small',
-    monitor: 'small',
-  });
-
-  const tableMinWidth = useScreenSizeValue({
-    mobile: 600,
-    tablet: 900,
-    pc: 900,
-    monitor: 900,
-  });
-
-  const { value, updateValue } = useQueryBoundInput({ queryParam: 'search' });
 
   const filteredData = useMemo(() => {
     if (!value || value.length === 0) {
@@ -102,11 +49,12 @@ function StakingMainBase({ className }: StakingMainProps) {
     });
   }, [value, data]);
 
-  const gotoCluster = useCallback(
-    (stakeId: string, page: 'stake' | 'unstake') => {
-      history.push(`/staking/${stakeId}/${page}`);
-    },
-    [history],
+  // ---------------------------------------------
+  // presentation
+  // ---------------------------------------------
+  const [view, setView] = useLocalStorage<'table' | 'card'>(
+    '__nebula_staking_view__',
+    () => 'table',
   );
 
   return (
@@ -120,116 +68,49 @@ function StakingMainBase({ className }: StakingMainProps) {
         onChange={({ target }) =>
           updateValue(target.value.length > 0 ? target.value : null)
         }
-      />
+      >
+        <ViewIcons>
+          <EmptyButton
+            role="radio"
+            onClick={() => setView('table')}
+            aria-checked={view === 'table'}
+          >
+            <List />
+          </EmptyButton>
 
-      <Table minWidth={tableMinWidth}>
-        <thead>
-          <tr>
-            <th>
-              <span>Name</span>
-            </th>
-            <th>
-              <span>APR</span>
-            </th>
-            <th>
-              <span>Total Staked</span>
-            </th>
-            <th />
-          </tr>
-        </thead>
+          <EmptyButton
+            role="radio"
+            onClick={() => setView('card')}
+            aria-checked={view === 'card'}
+          >
+            <ViewModule />
+          </EmptyButton>
+        </ViewIcons>
+      </Search>
 
-        <tbody>
-          {filteredData.map(({ index, id, name, apr, totalStaked }) => (
-            <tr key={'row' + index}>
-              <td>
-                <CoupledIconsHolder radiusEm={1.1}>
-                  <figure />
-                  <figure />
-                </CoupledIconsHolder>
-                {name}
-              </td>
-              <td>
-                <s>{apr}%</s>
-              </td>
-              <td>${formatTokenWithPostfixUnits(totalStaked)}</td>
-              <td>
-                <Button
-                  size={tableButtonSize}
-                  color="paleblue"
-                  onClick={() => gotoCluster(id, 'stake')}
-                >
-                  Stake
-                </Button>
-                <Button
-                  size={tableButtonSize}
-                  color="border"
-                  onClick={() => gotoCluster(id, 'unstake')}
-                >
-                  Unstake
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      {view === 'card' ? (
+        <StakingCards staking={filteredData} />
+      ) : (
+        <StakingTable staking={filteredData} />
+      )}
     </MainLayout>
   );
 }
 
-const Table = styled(HorizontalScrollTable)`
-  background-color: var(--color-gray14);
-  border-radius: 8px;
+const ViewIcons = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1em;
 
-  td,
-  th {
-    text-align: right;
-
-    &:first-child {
-      text-align: left;
-    }
+  svg {
+    font-size: 20px;
   }
 
-  td {
-    &:nth-child(1) {
-      display: flex;
-      align-items: center;
-      gap: 0.6em;
+  button {
+    color: var(--color-gray34);
 
-      font-weight: 500 !important;
-
-      figure:nth-of-type(1) {
-        border: 1px solid var(--color-gray34);
-      }
-
-      figure:nth-of-type(2) {
-        background-color: var(--color-gray34);
-      }
-    }
-
-    &:nth-child(4) {
-      button {
-        min-width: 6.5em;
-
-        &:last-child {
-          margin-left: 0.9em;
-        }
-      }
-    }
-  }
-
-  thead {
-    tr {
-      th {
-        border-bottom: 2px solid var(--color-gray11);
-      }
-    }
-  }
-
-  tbody {
-    tr:not(:last-child) {
-      td {
-        border-bottom: 1px solid var(--color-gray11);
-      }
+    &[aria-checked='true'] {
+      color: var(--color-paleblue);
     }
   }
 `;
