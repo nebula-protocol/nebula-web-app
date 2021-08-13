@@ -1,7 +1,7 @@
-import { WalletIcon } from '@nebula-js/icons';
 import { Add } from '@material-ui/icons';
-import { formatUInput, formatUToken } from '@nebula-js/notation';
-import { Token, u } from '@nebula-js/types';
+import { WalletIcon } from '@nebula-js/icons';
+import { formatUInput, formatUToken, microfy } from '@nebula-js/notation';
+import { HumanAddr, terraswap, Token, u, UST } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
@@ -11,12 +11,19 @@ import {
   Section,
   TokenInput,
   TokenSpan,
+  useConfirm,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { useSendForm, useSendTokensForm } from '@nebula-js/webapp-provider';
+import {
+  useSendForm,
+  useSendTokensForm,
+  useSendTx,
+} from '@nebula-js/webapp-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
+import big, { BigSource } from 'big.js';
 import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
 import { FormLayout } from 'components/layouts/FormLayout';
+import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
 import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
@@ -28,6 +35,12 @@ export interface SendMainProps {
 
 function SendMainBase({ className }: SendMainProps) {
   const connectedWallet = useConnectedWallet();
+
+  const { broadcast } = useTxBroadcast();
+
+  const [openConfirm, confirmElement] = useConfirm();
+
+  const postTx = useSendTx();
 
   const [updateTokens, tokens] = useSendTokensForm();
 
@@ -60,6 +73,51 @@ function SendMainBase({ className }: SendMainProps) {
       });
     }
   }, [openCW20AddrDialog, tokens.cw20Addrs, updateTokens]);
+
+  const initForm = useCallback(() => {
+    updateInput({
+      amount: '' as Token,
+      toAddr: '',
+      memo: '',
+    });
+  }, [updateInput]);
+
+  const proceed = useCallback(
+    async (
+      asset: terraswap.AssetInfo,
+      amount: Token,
+      toAddr: string,
+      memo: string,
+      txFee: u<UST<BigSource>>,
+      warning: string | null,
+    ) => {
+      if (warning) {
+        const confirm = await openConfirm({
+          description: warning,
+          agree: 'Send',
+          disagree: 'Cancel',
+        });
+
+        if (!confirm) {
+          return;
+        }
+      }
+
+      const stream = postTx?.({
+        amount: microfy(amount).toFixed() as u<UST>,
+        asset,
+        toAddr: toAddr as HumanAddr,
+        memo: memo.length > 0 ? memo : undefined,
+        txFee: big(txFee).toFixed() as u<UST>,
+        onTxSucceed: initForm,
+      });
+
+      if (stream) {
+        broadcast(stream);
+      }
+    },
+    [broadcast, initForm, openConfirm, postTx],
+  );
 
   // ---------------------------------------------
   // presentation
@@ -132,9 +190,16 @@ function SendMainBase({ className }: SendMainProps) {
           value={states.toAddr}
           onChange={(nextToAddr) => updateInput({ toAddr: nextToAddr })}
           placeholder="terra1..."
-          label="ADDRESS"
-          token="TO"
+          label="TO"
           error={states.invalidToAddr}
+        />
+
+        <Input
+          className="memo"
+          value={states.memo}
+          onChange={(nextMemo) => updateInput({ memo: nextMemo })}
+          label="MEMO"
+          error={states.invalidMemo}
         />
 
         {states.invalidTxFee ? (
@@ -158,9 +223,21 @@ function SendMainBase({ className }: SendMainProps) {
           disabled={
             !connectedWallet ||
             !connectedWallet.availablePost ||
-            //!postTx ||
+            !postTx ||
             !states ||
             !states.availableTx
+          }
+          onClick={() =>
+            'txFee' in states &&
+            states.txFee &&
+            proceed(
+              tokens.selectedTokenInfo.assetInfo,
+              states.amount,
+              states.toAddr,
+              states.memo,
+              states.txFee,
+              states.warningNextTxFee,
+            )
           }
         >
           Send
@@ -168,6 +245,7 @@ function SendMainBase({ className }: SendMainProps) {
       </Section>
 
       {cw20AddrDialogElement}
+      {confirmElement}
     </FormLayout>
   );
 }
@@ -190,6 +268,12 @@ const StyledSendMain = styled(SendMainBase)`
   }
 
   .to-address {
+    --text-align: left;
+    margin-top: 2.14285714285714em;
+  }
+
+  .memo {
+    --text-align: left;
     margin-top: 2.14285714285714em;
   }
 

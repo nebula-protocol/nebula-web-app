@@ -68,6 +68,7 @@ export * from './tx/gov/createPoll';
 export * from './tx/gov/stake';
 export * from './tx/gov/unstake';
 export * from './tx/gov/vote';
+export * from './tx/send/send';
 export * from './tx/staking/stake';
 export * from './tx/staking/unstake';
 export * from './tx/TxCommonParams';

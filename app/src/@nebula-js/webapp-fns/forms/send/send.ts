@@ -33,6 +33,7 @@ export interface SendFormStates<T extends Token> extends SendFormInput<T> {
   invalidToAddr: string | null;
   invalidTxFee: string | null;
   invalidAmount: string | null;
+  invalidMemo: string | null;
   warningNextTxFee: string | null;
   warningEmptyMemo: string | null;
 
@@ -80,6 +81,11 @@ export const sendForm = <T extends Token>({
         ? 'Invalid address'
         : null;
 
+    const invalidMemo =
+      memo.length > 0 && /[<>]/.test(memo)
+        ? 'Characters < and > are not allowed'
+        : null;
+
     if (!amountExists) {
       return [
         {
@@ -89,6 +95,7 @@ export const sendForm = <T extends Token>({
           maxAmount,
           txFee: null,
           invalidToAddr,
+          invalidMemo,
           invalidAmount: null,
           invalidTxFee: null,
           warningNextTxFee: null,
@@ -126,6 +133,7 @@ export const sendForm = <T extends Token>({
       toAddr.length > 0 &&
       !invalidTxFee &&
       !invalidToAddr &&
+      !invalidMemo &&
       !invalidAmount;
 
     const warningNextTxFee =
@@ -149,6 +157,7 @@ export const sendForm = <T extends Token>({
         maxAmount,
         txFee,
         invalidToAddr,
+        invalidMemo,
         invalidTxFee,
         invalidAmount,
         warningNextTxFee,

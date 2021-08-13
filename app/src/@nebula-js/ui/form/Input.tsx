@@ -105,7 +105,7 @@ export const InputContainer = styled.div`
 
       font-size: inherit;
 
-      text-align: right;
+      text-align: var(--text-align, right);
     }
   }
 
