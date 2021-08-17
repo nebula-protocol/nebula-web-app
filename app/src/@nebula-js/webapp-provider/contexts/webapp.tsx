@@ -36,6 +36,10 @@ export function NebulaWebappProvider({
 }: NebulaWebappProviderProps) {
   const { network } = useWallet();
 
+  if (network.name === 'mainnet') {
+    alert(`Now only support "testnet". please change your network.`);
+  }
+
   const states = useMemo<NebulaWebapp>(
     () => ({
       contractAddress:
