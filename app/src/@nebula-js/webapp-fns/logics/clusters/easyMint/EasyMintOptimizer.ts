@@ -1,4 +1,11 @@
-import { HumanAddr, NativeDenom, terraswap, Token, u, UST } from '@nebula-js/types';
+import {
+  HumanAddr,
+  NativeDenom,
+  terraswap,
+  Token,
+  u,
+  UST,
+} from '@nebula-js/types';
 import { defaultMantleFetch, MantleFetch } from '@terra-dev/mantle';
 import big, { Big, BigSource } from 'big.js';
 import { terraswapPairQuery } from '../../../queries/terraswap/pair';
@@ -22,7 +29,7 @@ export class EasyMintOptimizer {
 
   // reset_initial_state
   resetInitialState = async () => {
-    await this.clusterSimulator.init();
+    await this.clusterSimulator.resetInitialState();
 
     this.pairContracts = await Promise.all(
       this.clusterSimulator.clusterState.target.map(({ info }, i) => {
@@ -90,14 +97,19 @@ export class EasyMintOptimizer {
           info: {
             native_token: {
               denom: 'uusd' as NativeDenom,
-            }
+            },
           },
           amount: uusdPerChunk.toFixed() as u<UST>,
-        }
+        };
+
+        const { return_amount } = tsSim.simulateSwap(offerAsset);
+
+        const addAmts = this.clusterSimulator.targetAssets.map(
+          (_, index) => (index === j ? big(return_amount) : big(0)) as u<Token<Big>>,
+        );
         
-        const {commission_amount, return_amount, spread_amount} = tsSim.simulateSwap(offerAsset);
-        
-        const addAmts = this.clusterSimulator.targetAssets.map((_, i) => big(0));
+        // TODO
+        const clusterTokenAmt = clusterSim.simulateMint(addAmts);
       }
     }
   };

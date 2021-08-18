@@ -44,42 +44,70 @@ export function floor(number: BigSource): Big {
   return integer.length > 0 ? big(integer) : big('0');
 }
 
-export function vectorPlus(a: BigSource[], b: BigSource[]): Big[] {
-  if (a.length !== b.length) {
-    throw new Error(`Not equal a and b`);
+export function vectorizeAB(
+  a: BigSource[] | BigSource,
+  b: BigSource[] | BigSource,
+): [BigSource[], BigSource[]] {
+  if (Array.isArray(a) && Array.isArray(b)) {
+    if (a.length !== b.length) {
+      throw new Error(`Not equal vector items length of a and b`);
+    }
+    return [a, b];
+  } else if (Array.isArray(a) && !Array.isArray(b)) {
+    return [a, Array.from({ length: a.length }, () => b)];
+  } else if (!Array.isArray(a) && Array.isArray(b)) {
+    return [Array.from({ length: b.length }, () => a), b];
+  } else if (!Array.isArray(a) && !Array.isArray(b)) {
+    return [[a], [b]];
+  } else {
+    throw new Error(`Unknown cases a=${a.toString()}, b=${b.toString()}`);
   }
+}
 
+export function abs(a: BigSource): Big {
+  return big(a).abs();
+}
+
+export function exp(a: BigSource): Big {
+  return big(a)
+}
+
+export function vectorPlus(
+  _a: BigSource[] | BigSource,
+  _b: BigSource[] | BigSource,
+): Big[] {
+  const [a, b] = vectorizeAB(_a, _b);
   return a.map((value, i) => big(value).plus(b[i]));
 }
 
-export function vectorMinus(a: BigSource[], b: BigSource[]): Big[] {
-  if (a.length !== b.length) {
-    throw new Error(`Not equal a and b`);
-  }
-
+export function vectorMinus(
+  _a: BigSource[] | BigSource,
+  _b: BigSource[] | BigSource,
+): Big[] {
+  const [a, b] = vectorizeAB(_a, _b);
   return a.map((value, i) => big(value).minus(b[i]));
 }
 
-export function vectorMultiply(a: BigSource[], b: BigSource[]): Big[] {
-  if (a.length !== b.length) {
-    throw new Error(`Not equal a and b`);
-  }
-
+export function vectorMultiply(
+  _a: BigSource[] | BigSource,
+  _b: BigSource[] | BigSource,
+): Big[] {
+  const [a, b] = vectorizeAB(_a, _b);
   return a.map((value, i) => big(value).mul(b[i]));
 }
 
-export function vectorDivision(a: BigSource[], b: BigSource[]): Big[] {
-  if (a.length !== b.length) {
-    throw new Error(`Not equal a and b`);
-  }
-
+export function vectorDivision(
+  _a: BigSource[] | BigSource,
+  _b: BigSource[] | BigSource,
+): Big[] {
+  const [a, b] = vectorizeAB(_a, _b);
   return a.map((value, i) => big(value).div(b[i]));
 }
 
-export function vectorDot(a: BigSource[], b: BigSource[]): Big {
-  if (a.length !== b.length) {
-    throw new Error(`Not equal a and b`);
-  }
-
+export function vectorDot(
+  _a: BigSource[] | BigSource,
+  _b: BigSource[] | BigSource,
+): Big {
+  const [a, b] = vectorizeAB(_a, _b);
   return sum(...vectorMultiply(a, b));
 }
