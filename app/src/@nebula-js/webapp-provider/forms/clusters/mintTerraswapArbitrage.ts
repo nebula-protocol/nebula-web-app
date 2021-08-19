@@ -42,6 +42,8 @@ export function useClusterMintTerraswapArbitrageForm({
       balances,
       tax,
       fixedGas: constants.fixedGas,
+      clusterFee: constants.clusterFee,
+      gasPriceEndpoint: constants.gasPriceEndpoint,
     },
     () => {
       return {

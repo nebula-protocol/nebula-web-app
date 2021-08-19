@@ -1,10 +1,20 @@
 import { Rate, u, Luna, NEB, UST } from '@nebula-js/types';
 
+// gas_price = uusd of https://[tequila-]fcd.terra.dev/v1/txs/gas_prices
+// assetLength = length of cluster_info.target
+// (base * gas_price) + (assetLength * (perAsset * gas_price))
+export interface ClusterFee {
+  base: number;
+  perAsset: number;
+}
+
 export interface NebulaContants {
   gasFee: u<UST<number>>;
   fixedGas: u<UST<number>>;
   blocksPerYear: number;
   gasAdjustment: Rate<number>;
+  gasPriceEndpoint: string;
+  clusterFee: ClusterFee;
 }
 
 /**

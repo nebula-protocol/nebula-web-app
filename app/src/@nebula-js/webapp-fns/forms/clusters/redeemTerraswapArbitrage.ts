@@ -9,10 +9,11 @@ import {
   u,
   UST,
 } from '@nebula-js/types';
-import { NebulaTax } from '@nebula-js/webapp-fns/types';
-import { min, sum, vectorMultiply } from '@terra-dev/big-math';
+import { clusterTxFeeQuery } from '@nebula-js/webapp-fns/queries/clusters/clusterTxFee';
+import { ClusterFee, NebulaTax } from '@nebula-js/webapp-fns/types';
+import { sum, vectorMultiply } from '@terra-dev/big-math';
 import { MantleFetch } from '@terra-dev/mantle';
-import big, { Big, BigSource } from 'big.js';
+import big, { BigSource } from 'big.js';
 import { computeMaxUstBalanceForUstTransfer } from '../../logics/computeMaxUstBalanceForUstTransfer';
 import { clusterRedeemQuery } from '../../queries/clusters/redeem';
 import { terraswapSimulationQuery } from '../../queries/terraswap/simulation';
@@ -33,6 +34,8 @@ export interface ClusterRedeemTerraswapArbitrageFormDependency {
   ustBalance: u<UST>;
   tax: NebulaTax;
   fixedGas: u<UST<BigSource>>;
+  gasPriceEndpoint: string;
+  clusterFee: ClusterFee;
   //
   connected: boolean;
 }
@@ -104,37 +107,53 @@ export const clusterRedeemTerraswapArbitrageForm = (
     ) {
       let txFee: u<UST>;
 
-      asyncStates = terraswapSimulationQuery(
-        dependency.terraswapPair.contract_addr,
-        {
-          amount: microfy(input.ustAmount).toFixed() as u<UST>,
-          info: {
-            native_token: {
-              denom: 'uusd' as NativeDenom,
+      asyncStates = Promise.all([
+        terraswapSimulationQuery(
+          dependency.terraswapPair.contract_addr,
+          {
+            amount: microfy(input.ustAmount).toFixed() as u<UST>,
+            info: {
+              native_token: {
+                denom: 'uusd' as NativeDenom,
+              },
             },
           },
-        },
-        dependency.mantleEndpoint,
-        dependency.mantleFetch,
-        dependency.requestInit,
-      )
-        .then(({ simulation: { return_amount } }) => {
-          const _tax = min(
-            microfy(input.ustAmount!).mul(dependency.tax.taxRate),
-            dependency.tax.maxTaxUUSD,
-          ) as u<UST<Big>>;
+          dependency.mantleEndpoint,
+          dependency.mantleFetch,
+          dependency.requestInit,
+        ),
+        clusterTxFeeQuery(
+          dependency.gasPriceEndpoint,
+          dependency.clusterFee,
+          dependency.clusterState.target.length,
+          dependency.requestInit,
+        ),
+      ])
+        .then(
+          ([
+            {
+              simulation: { return_amount },
+            },
+            clusterTxFee,
+          ]) => {
+            //const _tax = min(
+            //  microfy(input.ustAmount!).mul(dependency.tax.taxRate),
+            //  dependency.tax.maxTaxUUSD,
+            //) as u<UST<Big>>;
+            //
+            //txFee = _tax.plus(dependency.fixedGas).toFixed() as u<UST>;
+            txFee = clusterTxFee.toFixed() as u<UST>;
 
-          txFee = _tax.plus(dependency.fixedGas).toFixed() as u<UST>;
-
-          return clusterRedeemQuery(
-            demicrofy(return_amount as u<CT>).toFixed() as CT,
-            dependency.clusterState,
-            dependency.lastSyncedHeight,
-            dependency.mantleEndpoint,
-            dependency.mantleFetch,
-            dependency.requestInit,
-          );
-        })
+            return clusterRedeemQuery(
+              demicrofy(return_amount as u<CT>).toFixed() as CT,
+              dependency.clusterState,
+              dependency.lastSyncedHeight,
+              dependency.mantleEndpoint,
+              dependency.mantleFetch,
+              dependency.requestInit,
+            );
+          },
+        )
         .then(({ redeem }) => {
           return {
             burntTokenAmount: redeem.token_cost,

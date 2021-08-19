@@ -1,4 +1,3 @@
-import { Add } from '@material-ui/icons';
 import { WalletIcon } from '@nebula-js/icons';
 import { demicrofy, formatUTokenInteger } from '@nebula-js/notation';
 import { terraswap, Token, u, UST } from '@nebula-js/types';
@@ -19,8 +18,7 @@ import {
 import { FormInput, FormStates } from '@terra-dev/use-form';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big from 'big.js';
-import { useAssetSelectDialog } from 'components/dialogs/useAssetSelectDialog';
-import { AddAssetTextButton } from 'components/form/AddAssetTextButton';
+import { AddAssetBadges } from 'components/form/AddAssetBadges';
 import { TokenInputRemoveTool } from 'components/form/TokenInputRemoveTool';
 import { fixHMR } from 'fix-hmr';
 import React, { ReactNode, useCallback } from 'react';
@@ -54,8 +52,6 @@ function TokenFormBase({
     pc: 'normal',
     monitor: 'normal',
   });
-
-  const [openAssetSelect, assetSelectElement] = useAssetSelectDialog();
 
   // ---------------------------------------------
   // callbacks
@@ -121,18 +117,6 @@ function TokenFormBase({
     [clusterState.target, updateInput],
   );
 
-  const openAddAsset = useCallback(async () => {
-    const selectedAsset = await openAssetSelect({
-      title: 'Select Asset',
-      assets: states.remainAssets,
-      assetTokenInfos,
-    });
-
-    if (selectedAsset) {
-      addAsset(selectedAsset);
-    }
-  }, [addAsset, assetTokenInfos, openAssetSelect, states.remainAssets]);
-
   return (
     <div className={className}>
       <ul className="added-tokens">
@@ -191,9 +175,13 @@ function TokenFormBase({
       </ul>
 
       {states.remainAssets.length > 0 && (
-        <AddAssetTextButton className="add-token" onClick={openAddAsset}>
-          <Add /> Add another asset
-        </AddAssetTextButton>
+        <AddAssetBadges
+          className="add-token"
+          assets={states.remainAssets}
+          assetTokenInfos={assetTokenInfos}
+          addedAssets={states.addedAssets}
+          onAdd={addAsset}
+        />
       )}
 
       {children}
@@ -213,8 +201,6 @@ function TokenFormBase({
       >
         Mint
       </Button>
-
-      {assetSelectElement}
     </div>
   );
 }

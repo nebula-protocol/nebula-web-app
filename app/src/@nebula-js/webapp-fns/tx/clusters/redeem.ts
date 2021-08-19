@@ -45,7 +45,7 @@ export function clusterRedeemTx(
         } as incentives.Redeem),
       ],
       fee: new StdFee($.gasFee, floor($.txFee) + 'uusd'),
-      gasAdjustment: $.gasAdjustment,
+      gasAdjustment: $.gasAdjustment + 0.1,
     }),
     _postTx({ helper, ...$ }),
     _pollTxInfo({ helper, ...$ }),

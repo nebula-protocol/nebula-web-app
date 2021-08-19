@@ -22,9 +22,7 @@ export function useClusterRedeemTerraswapArbitrageForm({
 
   const { mantleFetch, mantleEndpoint, lastSyncedHeight } = useTerraWebapp();
 
-  const {
-    constants: { fixedGas },
-  } = useNebulaWebapp();
+  const { constants } = useNebulaWebapp();
 
   const { tax, tokenBalances } = useBank<NebulaTokenBalances, NebulaTax>();
 
@@ -37,7 +35,9 @@ export function useClusterRedeemTerraswapArbitrageForm({
       ustBalance: tokenBalances.uUST,
       terraswapPair,
       tax,
-      fixedGas,
+      fixedGas: constants.fixedGas,
+      clusterFee: constants.clusterFee,
+      gasPriceEndpoint: constants.gasPriceEndpoint,
       clusterState,
       connected: !!connectedWallet,
     },

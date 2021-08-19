@@ -35,11 +35,21 @@ export const DEFAULT_CONSTANTS: Record<string, NebulaContants> = {
     fixedGas: 250_000 as u<UST<number>>,
     blocksPerYear: 4_656_810,
     gasAdjustment: 1.6 as Rate<number>,
+    gasPriceEndpoint: 'https://fcd.terra.dev/v1/txs/gas_prices',
+    clusterFee: {
+      base: 5_000_000,
+      perAsset: 300_000,
+    },
   },
   testnet: {
     gasFee: 6_000_000 as u<UST<number>>,
     fixedGas: 3_500_000 as u<UST<number>>,
     blocksPerYear: 4_656_810,
-    gasAdjustment: 1.4 as Rate<number>,
+    gasAdjustment: 1.6 as Rate<number>,
+    gasPriceEndpoint: 'https://tequila-fcd.terra.dev/v1/txs/gas_prices',
+    clusterFee: {
+      base: 10_000_000,
+      perAsset: 600_000,
+    },
   },
 };

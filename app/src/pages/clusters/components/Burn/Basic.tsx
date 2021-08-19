@@ -1,6 +1,6 @@
 import { WalletIcon } from '@nebula-js/icons';
 import { formatUInput, formatUToken, microfy } from '@nebula-js/notation';
-import { CT, u } from '@nebula-js/types';
+import { CT, u, UST } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
@@ -13,7 +13,6 @@ import { ClusterInfo } from '@nebula-js/webapp-fns';
 import {
   useClusterRedeemBasicForm,
   useClusterRedeemTx,
-  useNebulaWebapp,
 } from '@nebula-js/webapp-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { FeeBox } from 'components/boxes/FeeBox';
@@ -34,8 +33,6 @@ function BurnBasicBase({
 }: BurnBasicProps) {
   const connectedWallet = useConnectedWallet();
 
-  const { constants } = useNebulaWebapp();
-
   const [updateInput, states] = useClusterRedeemBasicForm({ clusterState });
 
   const { broadcast } = useTxBroadcast();
@@ -52,9 +49,10 @@ function BurnBasicBase({
   }, [updateInput]);
 
   const proceed = useCallback(
-    (tokenAmount: CT) => {
+    (tokenAmount: CT, txFee: u<UST>) => {
       const stream = postTx?.({
         amount: microfy(tokenAmount).toFixed() as u<CT>,
+        txFee,
         onTxSucceed: initForm,
       });
 
@@ -129,10 +127,10 @@ function BurnBasicBase({
           </li>
         )}
 
-        {states.tokenAmount.length > 0 && (
+        {states.txFee !== null && (
           <li>
             <span>Tx Fee</span>
-            <span>{formatUToken(constants.fixedGas)} UST</span>
+            <span>{formatUToken(states.txFee)} UST</span>
           </li>
         )}
       </FeeBox>
@@ -146,9 +144,12 @@ function BurnBasicBase({
           !connectedWallet.availablePost ||
           !states ||
           !!states.invalidTokenAmount ||
-          states.tokenAmount.length === 0
+          states.tokenAmount.length === 0 ||
+          !states.txFee
         }
-        onClick={() => proceed(states.tokenAmount)}
+        onClick={() =>
+          states.txFee && proceed(states.tokenAmount, states.txFee)
+        }
       >
         Burn
       </Button>

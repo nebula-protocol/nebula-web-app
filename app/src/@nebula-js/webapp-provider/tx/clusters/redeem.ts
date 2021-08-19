@@ -11,6 +11,7 @@ import { useNebulaWebapp } from '../../contexts/webapp';
 
 export interface ClusterRedeemTxParams {
   amount: u<CT>;
+  txFee: u<UST>;
 
   onTxSucceed?: () => void;
 }
@@ -31,13 +32,13 @@ export function useClusterRedeemTx(
   } = useNebulaWebapp();
 
   const stream = useCallback(
-    ({ amount, onTxSucceed }: ClusterRedeemTxParams) => {
+    ({ amount, txFee, onTxSucceed }: ClusterRedeemTxParams) => {
       if (!connectedWallet || !connectedWallet.availablePost) {
         throw new Error(`Can't post!`);
       }
 
       return clusterRedeemTx({
-        txFee: fixedGas.toFixed() as u<UST>,
+        txFee,
         walletAddr: connectedWallet.walletAddress,
         incentivesAddr: contractAddress.incentives,
         clusterAddr,

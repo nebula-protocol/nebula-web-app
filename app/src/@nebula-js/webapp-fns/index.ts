@@ -33,6 +33,7 @@ export * from './logics/gov/parseGovPollResponse';
 export * from './logics/gov/pickGovPollVoted';
 export * from './models/assetTokens';
 export * from './queries/clusters/arbRedeem';
+export * from './queries/clusters/clusterTxFee';
 export * from './queries/clusters/info';
 export * from './queries/clusters/infoList';
 export * from './queries/clusters/list';

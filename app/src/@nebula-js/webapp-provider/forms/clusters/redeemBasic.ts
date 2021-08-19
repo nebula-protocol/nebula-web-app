@@ -21,9 +21,7 @@ export function useClusterRedeemBasicForm({
 
   const { mantleFetch, mantleEndpoint, lastSyncedHeight } = useTerraWebapp();
 
-  const {
-    constants: { fixedGas },
-  } = useNebulaWebapp();
+  const { constants } = useNebulaWebapp();
 
   const { tax } = useBank<NebulaTokenBalances, NebulaTax>();
 
@@ -40,8 +38,10 @@ export function useClusterRedeemBasicForm({
       lastSyncedHeight,
       tokenBalance: tokenBalance?.balance ?? ('0' as u<CT>),
       tax,
-      fixedGas,
       clusterState,
+      fixedGas: constants.fixedGas,
+      clusterFee: constants.clusterFee,
+      gasPriceEndpoint: constants.gasPriceEndpoint,
     },
     () => {
       return {

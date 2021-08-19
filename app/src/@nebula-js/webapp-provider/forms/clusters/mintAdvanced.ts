@@ -39,6 +39,8 @@ export function useClusterMintAdvancedForm({
       balances,
       tax,
       fixedGas: constants.fixedGas,
+      clusterFee: constants.clusterFee,
+      gasPriceEndpoint: constants.gasPriceEndpoint,
     },
     () => {
       return {

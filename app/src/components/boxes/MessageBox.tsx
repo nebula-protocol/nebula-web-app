@@ -8,5 +8,8 @@ export const MessageBox = styled.div`
   font-weight: 400;
   line-height: 1.5;
 
+  word-break: break-all;
+  white-space: break-spaces;
+
   padding: 1.4em 1.7em;
 `;
