@@ -45,9 +45,11 @@ export async function terraswapPoolQuery<T extends Token>(
     },
   });
 
-  const tokenIndex = terraswapPool.assets.findIndex(
-    (asset) => 'token' in asset.info,
+  const ustIndex = terraswapPool.assets.findIndex(
+    (asset) =>
+      'native_token' in asset.info && asset.info.native_token.denom === 'uusd',
   )!;
+  const tokenIndex = ustIndex === 0 ? 1 : 0;
 
   const tokenAsset = terraswapPool.assets[tokenIndex] as terraswap.CW20Asset<T>;
   const ustAsset = terraswapPool.assets[

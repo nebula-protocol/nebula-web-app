@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import big, { Big, BigSource } from 'big.js';
 
 export function min(...numbers: BigSource[]): Big {
@@ -69,7 +70,7 @@ export function abs(a: BigSource): Big {
 }
 
 export function exp(a: BigSource): Big {
-  return big(a)
+  return big(Math.pow(Math.E, big(a).toNumber()));
 }
 
 export function vectorPlus(

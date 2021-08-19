@@ -17,6 +17,10 @@ export class EasyMintOptimizer {
   private terraswapSimulators!: TerraswapPoolSimulation[];
   private pairContracts!: HumanAddr[];
 
+  private initialized: boolean = false;
+  private inInitialize: boolean = false;
+  private initializers: Set<() => void> = new Set();
+
   constructor(
     private clusterAddr: HumanAddr,
     private terraswapFactoryAddr: HumanAddr,
@@ -24,11 +28,28 @@ export class EasyMintOptimizer {
     private mantleFetch: MantleFetch = defaultMantleFetch,
     private requestInit?: RequestInit,
   ) {
-    this.clusterSimulator = new ClusterSimulatorWithPenalty(clusterAddr);
+    this.clusterSimulator = new ClusterSimulatorWithPenalty(
+      clusterAddr,
+      mantleEndpoint,
+      mantleFetch,
+      requestInit,
+    );
   }
 
   // reset_initial_state
   resetInitialState = async () => {
+    if (this.initialized) {
+      return;
+    }
+
+    if (this.inInitialize) {
+      return new Promise<void>((resolve) => {
+        this.initializers.add(resolve);
+      });
+    }
+
+    this.inInitialize = true;
+
     await this.clusterSimulator.resetInitialState();
 
     this.pairContracts = await Promise.all(
@@ -63,6 +84,12 @@ export class EasyMintOptimizer {
     });
 
     await Promise.all(this.terraswapSimulators.map((ts) => ts.reset()));
+
+    this.initialized = true;
+
+    for (const initializer of this.initializers) {
+      initializer();
+    }
   };
 
   findOptimalAllocation = (ust: u<UST<BigSource>>) => {
@@ -90,7 +117,7 @@ export class EasyMintOptimizer {
       let j: number = -1;
       const jmax: number = clusterSim.targetAssets.length;
       while (++j < jmax) {
-        const asset = clusterSim.targetAssets[j];
+        //const asset = clusterSim.targetAssets[j];
         const tsSim = tsSims[j];
 
         const offerAsset: terraswap.Asset<UST> = {
@@ -103,14 +130,54 @@ export class EasyMintOptimizer {
         };
 
         const { return_amount } = tsSim.simulateSwap(offerAsset);
+        const assetAmt = big(return_amount);
 
         const addAmts = this.clusterSimulator.targetAssets.map(
-          (_, index) => (index === j ? big(return_amount) : big(0)) as u<Token<Big>>,
+          //eslint-disable-next-line no-loop-func
+          (_, index) => (index === j ? big(assetAmt) : big(0)) as u<Token<Big>>,
         );
-        
-        // TODO
+
         const clusterTokenAmt = clusterSim.simulateMint(addAmts);
+
+        if (clusterTokenAmt.gt(maxClusterAmt)) {
+          maxClusterAmt = clusterTokenAmt;
+          maxAssetIndex = j;
+          bestAssetAmt = assetAmt;
+        }
       }
+
+      optimalAssetAllocation[maxAssetIndex] =
+        optimalAssetAllocation[maxAssetIndex].plus(bestAssetAmt);
+      uusdPerAsset[maxAssetIndex] =
+        uusdPerAsset[maxAssetIndex].plus(uusdPerChunk);
+
+      expectedClusterTokens = expectedClusterTokens.plus(maxClusterAmt);
+
+      const offerAsset: terraswap.Asset<UST> = {
+        amount: uusdPerChunk.toFixed() as u<UST>,
+        info: {
+          native_token: {
+            denom: 'uusd' as NativeDenom,
+          },
+        },
+      };
+
+      tsSims[maxAssetIndex].executeSwap(offerAsset);
+
+      const addAmts = this.clusterSimulator.targetAssets.map(
+        (_, index) =>
+          (index === maxAssetIndex ? big(bestAssetAmt) : big(0)) as u<
+            Token<Big>
+          >,
+      );
+
+      clusterSim.executeMint(addAmts);
+
+      return {
+        optimalAssetAllocation,
+        uusdPerAsset,
+        expectedClusterTokens,
+      };
     }
   };
 }

@@ -1,6 +1,6 @@
-import { HumanAddr, terraswap, Token, u, UST } from '@nebula-js/types';
+import { HumanAddr, terraswap, Token, u } from '@nebula-js/types';
 import { defaultMantleFetch, MantleFetch } from '@terra-dev/mantle';
-import big, { Big, BigSource } from 'big.js';
+import big, { Big } from 'big.js';
 import {
   TerraswapPoolInfo,
   terraswapPoolQuery,
@@ -9,6 +9,8 @@ import {
 export class TerraswapPoolSimulation {
   public pool!: terraswap.pair.PoolResponse<Token, Token>;
   public poolInfo!: TerraswapPoolInfo<Token>;
+  //public asset0!: terraswap.Asset<Token>;
+  //public asset1!: terraswap.Asset<Token>;
 
   constructor(
     private pairContract: HumanAddr,
@@ -27,6 +29,8 @@ export class TerraswapPoolSimulation {
     ).then(({ terraswapPool, terraswapPoolInfo }) => {
       this.pool = terraswapPool;
       this.poolInfo = terraswapPoolInfo;
+      //this.asset0 = {...this.pool.assets[0]};
+      //this.asset1 = {...this.pool.assets[1]};
     });
   };
 
@@ -57,6 +61,34 @@ export class TerraswapPoolSimulation {
       return_amount: returnAmt.minus(comissionAmt).toFixed() as u<Token>,
       spread_amount: spreadAmt.toFixed() as u<Token>,
       commission_amount: comissionAmt.toFixed() as u<Token>,
+    };
+  };
+
+  executeSwap = (offerAsset: terraswap.Asset<Token>) => {
+    const { commission_amount, return_amount, spread_amount } =
+      this.simulateSwap(offerAsset);
+
+    const assetIndex0 =
+      JSON.stringify(offerAsset.info) === JSON.stringify(this.pool.assets[0])
+        ? 0
+        : 1;
+    const assetIndex1 = assetIndex0 === 0 ? 1 : 0;
+
+    this.pool.assets[assetIndex0].amount = big(
+      this.pool.assets[assetIndex0].amount,
+    )
+      .plus(offerAsset.amount)
+      .toFixed() as u<Token>;
+    this.pool.assets[assetIndex1].amount = big(
+      this.pool.assets[assetIndex1].amount,
+    )
+      .minus(return_amount)
+      .toFixed() as u<Token>;
+
+    return {
+      return_amount,
+      commission_amount,
+      spread_amount,
     };
   };
 }
