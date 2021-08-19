@@ -1,3 +1,4 @@
+import { Num } from '@nebula-js/types/units';
 import { CT, Token, u } from '../tokens';
 import { rs } from './common';
 
@@ -61,24 +62,24 @@ export namespace penalty {
   }
 
   export interface ParamsResponse {
-    //penalty_params: PenaltyParams;
+    penalty_params: PenaltyParams;
     last_block: rs.u64;
-    ema: String;
+    ema: Num;
   }
 
-  //export interface PenaltyParams {
-  //  // penalty_amt_lo -> amount of penalty when imbalance <= penalty_cutoff_lo * E
-  //  penalty_amt_lo: FPDecimal;
-  //  penalty_cutoff_lo: FPDecimal;
-  //
-  //  // penalty_amt_hi -> amount of penalty when imbalance >= penalty_cutoff_hi * E
-  //  penalty_amt_hi: FPDecimal;
-  //  penalty_cutoff_hi: FPDecimal;
-  //  // in between penalty_cutoff_hi and penalty_cutoff_lo, the amount of penalty increases linearly
-  //
-  //  // reward_amt -> amount of reward when imbalance >= reward_cutoff * E
-  //  // no reward everywhere else
-  //  reward_amt: FPDecimal;
-  //  reward_cutoff: FPDecimal;
-  //}
+  export interface PenaltyParams {
+    // penalty_amt_lo -> amount of penalty when imbalance <= penalty_cutoff_lo * E
+    penalty_amt_lo: rs.FPDecimal;
+    penalty_cutoff_lo: rs.FPDecimal;
+
+    // penalty_amt_hi -> amount of penalty when imbalance >= penalty_cutoff_hi * E
+    penalty_amt_hi: rs.FPDecimal;
+    penalty_cutoff_hi: rs.FPDecimal;
+    // in between penalty_cutoff_hi and penalty_cutoff_lo, the amount of penalty increases linearly
+
+    // reward_amt -> amount of reward when imbalance >= reward_cutoff * E
+    // no reward everywhere else
+    reward_amt: rs.FPDecimal;
+    reward_cutoff: rs.FPDecimal;
+  }
 }

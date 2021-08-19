@@ -22,6 +22,7 @@ export namespace rs {
   export type u64 = number;
   export type Uint128 = string;
   export type Decimal = string;
+  export type FPDecimal = string;
 }
 
 export enum OrderBy {

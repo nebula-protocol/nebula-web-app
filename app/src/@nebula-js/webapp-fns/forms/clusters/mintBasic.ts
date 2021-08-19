@@ -1,6 +1,8 @@
-import { cluster, u, UST } from '@nebula-js/types';
+import { microfy } from '@nebula-js/notation';
+import { HumanAddr, u, UST } from '@nebula-js/types';
 import { MantleFetch } from '@terra-dev/mantle';
 import { BigSource } from 'big.js';
+import { EasyMintOptimizer } from '../../logics/clusters/easyMint/EasyMintOptimizer';
 import { computeMaxUstBalanceForUstTransfer } from '../../logics/computeMaxUstBalanceForUstTransfer';
 import { NebulaTax } from '../../types';
 
@@ -13,7 +15,8 @@ export interface ClusterMintBaicFormDependency {
   mantleFetch: MantleFetch;
   requestInit?: Omit<RequestInit, 'method' | 'body'>;
   //
-  clusterState: cluster.ClusterStateResponse;
+  clusterAddr: HumanAddr;
+  terraswapFactoryAddr: HumanAddr;
   //
   ustBalance: u<UST>;
   tax: NebulaTax;
@@ -31,7 +34,8 @@ export const clusterMintBasicForm = ({
   mantleFetch,
   requestInit,
   ustBalance,
-  clusterState,
+  clusterAddr,
+  terraswapFactoryAddr,
   tax,
   fixedGas,
 }: ClusterMintBaicFormDependency) => {
@@ -41,13 +45,34 @@ export const clusterMintBasicForm = ({
     fixedGas,
   );
 
+  const optimizer = new EasyMintOptimizer(
+    clusterAddr,
+    terraswapFactoryAddr,
+    mantleEndpoint,
+    mantleFetch,
+    requestInit,
+  );
+
+  optimizer.resetInitialState();
+
   return ({
     ustAmount,
   }: ClusterMintBasicFormInput): [
     ClusterMintBasicFormStates,
     Promise<ClusterMintBasicFormAsyncStates> | undefined,
   ] => {
-    //if (ustAmount.length > 0) {
+    const asyncStates =
+      ustAmount.length > 0
+        ? optimizer
+            .resetInitialState()
+            .then(() => {
+              return optimizer.findOptimalAllocation(microfy(ustAmount));
+            })
+            .then(() => {
+              return {};
+            })
+        : undefined;
+
     //  const amountInUst = new Decimal(microfy(ustAmount).toFixed());
     //  const orderUst = Decimal.log10(amountInUst);
     //  const numChunks = Decimal.pow(10, orderUst);
@@ -88,6 +113,6 @@ export const clusterMintBasicForm = ({
     //  }
     //}
 
-    return [{ ustAmount, maxUstAmount }, undefined];
+    return [{ ustAmount, maxUstAmount }, asyncStates];
   };
 };

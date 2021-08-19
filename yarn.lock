@@ -2619,7 +2619,6 @@ __metadata:
     "@storybook/react": ^6.3.4
     "@storybook/theming": ^6.3.4
     "@terra-dev/big-interpolate": ^0.20.1
-    "@terra-dev/big-math": ^0.20.1
     "@terra-dev/browser-check": ^1.2.1
     "@terra-dev/mantle": ^0.20.1
     "@terra-dev/patch-react-query-focus-refetching": ^0.20.1
@@ -4468,15 +4467,6 @@ __metadata:
     big.js: ^6.1.1
     d3-ease: ^2.0.0
   checksum: 8b7d219f74450efe47f477d45e6cbb80e82afd4e9085e670ef76c092cc9736fa2fa1493ad92d39df6f2dbb9594e9e1459de92c6e433aa04bd25be017dc4bf03f
-  languageName: node
-  linkType: hard
-
-"@terra-dev/big-math@npm:^0.20.1":
-  version: 0.20.1
-  resolution: "@terra-dev/big-math@npm:0.20.1"
-  dependencies:
-    big.js: ^6.1.1
-  checksum: 766f11452450f4f83269aa59a581e0fba2fef86b8e4beaef9450eee44252e4df241b119728729cdea1e2b430c7418231fce07a794c48053f876127a66999ea0d
   languageName: node
   linkType: hard
 
