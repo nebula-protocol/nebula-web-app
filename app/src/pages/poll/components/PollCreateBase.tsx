@@ -4,6 +4,7 @@ import { gov, NEB, u } from '@nebula-js/types';
 import {
   Button,
   FormLabel,
+  FormLabelAside,
   Section,
   TextInput,
   useScreenSizeValue,
@@ -146,11 +147,6 @@ function PollCreateBaseBase({
                 ? 'Title cannot be longer than 64 bytes.'
                 : undefined
             }
-            //InputProps={{
-            //  endAdornment: (
-            //    <InputAdornment position="end">TEST</InputAdornment>
-            //  ),
-            //}}
           />
         </FormLabel>
 
@@ -200,9 +196,9 @@ function PollCreateBaseBase({
           <FormLabel
             label="Deposit"
             aside={
-              <DepositAside>
+              <FormLabelAside>
                 <WalletIcon /> {formatUToken(tokenBalances.uNEB)}
-              </DepositAside>
+              </FormLabelAside>
             }
             className="form-label"
           >
@@ -256,15 +252,6 @@ function PollCreateBaseBase({
     </FormLayout>
   );
 }
-
-const DepositAside = styled.span`
-  font-size: 12px;
-
-  svg {
-    font-size: 1em;
-    transform: scale(1.1) translateY(0.1em);
-  }
-`;
 
 const Deposit = styled.div`
   border-radius: 8px;

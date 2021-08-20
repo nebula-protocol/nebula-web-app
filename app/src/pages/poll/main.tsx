@@ -1,10 +1,10 @@
+import { ChevronRightRounded } from '@material-ui/icons';
 import { Section } from '@nebula-js/ui';
 import { FormLayout } from 'components/layouts/FormLayout';
 import { fixHMR } from 'fix-hmr';
-import styled from 'styled-components';
 import React from 'react';
-import { ChevronRightRounded } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 export interface PollMainProps {
   className?: string;
@@ -44,7 +44,7 @@ function PollMainBase({ className }: PollMainProps) {
               </li>
               <li>
                 <Link to="/polls/create/governance-parameter-change">
-                  <s>Governance Parameter Change</s>
+                  Governance Parameter Change
                   <ChevronRightRounded />
                 </Link>
               </li>
@@ -55,7 +55,7 @@ function PollMainBase({ className }: PollMainProps) {
             <ul>
               <li>
                 <Link to="/polls/create/community-pool-spend">
-                  <s>Community Pool spend</s>
+                  Community Pool spend
                   <ChevronRightRounded />
                 </Link>
               </li>

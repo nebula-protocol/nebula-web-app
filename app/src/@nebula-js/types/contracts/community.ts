@@ -1,3 +1,4 @@
+import { NEB, u } from '../tokens';
 import { HumanAddr, rs } from './common';
 
 export namespace community {
@@ -12,10 +13,9 @@ export namespace community {
   }
 
   export interface Spend {
-    send: {
+    spend: {
       recipient: HumanAddr;
-      // TODO set token type to amount
-      amount: rs.Uint128;
+      amount: u<NEB<rs.Uint128>>;
     };
   }
 

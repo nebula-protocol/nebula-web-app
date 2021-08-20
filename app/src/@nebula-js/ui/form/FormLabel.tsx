@@ -40,3 +40,12 @@ export const StyledFormLabel = styled(FormLabelBase)`
 `;
 
 export const FormLabel = fixHMR(StyledFormLabel);
+
+export const FormLabelAside = styled.span`
+  font-size: 12px;
+
+  svg {
+    font-size: 1em;
+    transform: scale(1.1) translateY(0.1em);
+  }
+`;

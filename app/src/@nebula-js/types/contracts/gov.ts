@@ -61,8 +61,7 @@ export namespace gov {
       voting_period?: rs.u64;
       effective_delay?: rs.u64;
       expiration_period?: rs.u64;
-      // TODO set token type to proposal_deposit
-      proposal_deposit?: rs.Uint128;
+      proposal_deposit?: u<NEB<rs.Uint128>>;
       // TODO is this token?
       voter_weight?: rs.Decimal;
       snapshot_period?: rs.u64;
