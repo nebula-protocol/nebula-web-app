@@ -39,6 +39,7 @@ export const DEFAULT_CONSTANTS: Record<string, NebulaContants> = {
     clusterFee: {
       base: 5_000_000,
       perAsset: 300_000,
+      gasLimitPerAsset: 10_000,
     },
   },
   testnet: {
@@ -50,6 +51,7 @@ export const DEFAULT_CONSTANTS: Record<string, NebulaContants> = {
     clusterFee: {
       base: 10_000_000,
       perAsset: 600_000,
+      gasLimitPerAsset: 20_000,
     },
   },
 };

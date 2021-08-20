@@ -6,7 +6,7 @@ import { CreateTxOptions } from '@terra-money/terra.js';
 export interface TxCommonParams {
   // tx
   txFee: u<UST>;
-  gasFee: u<UST<number>>;
+  gasFee: number;
   gasAdjustment: Rate<number>;
   fixedGas: u<UST<number>>;
   // network

@@ -1,9 +1,10 @@
 import { microfy } from '@nebula-js/notation';
 import { cluster, CT, NoMicro, Token, u, UST } from '@nebula-js/types';
-import { clusterTxFeeQuery } from '@nebula-js/webapp-fns/queries/clusters/clusterTxFee';
 import { sum, vectorMultiply } from '@terra-dev/big-math';
 import { MantleFetch } from '@terra-dev/mantle';
+import { FormReturn } from '@terra-dev/use-form';
 import big, { BigSource } from 'big.js';
+import { clusterTxFeeQuery } from '../../queries/clusters/clusterTxFee';
 import { clusterRedeemQuery } from '../../queries/clusters/redeem';
 import { ClusterFee, NebulaTax } from '../../types';
 
@@ -49,10 +50,10 @@ export const clusterRedeemBasicForm = (
   return (
     input: ClusterRedeemBasicFormInput,
     prevInput: ClusterRedeemBasicFormInput | undefined,
-  ): [
+  ): FormReturn<
     ClusterRedeemBasicFormStates,
-    Promise<ClusterRedeemBasicFormAsyncStates>,
-  ] => {
+    ClusterRedeemBasicFormAsyncStates
+  > => {
     if (input.tokenAmount.trim().length === 0 || big(input.tokenAmount).eq(0)) {
       return [
         {

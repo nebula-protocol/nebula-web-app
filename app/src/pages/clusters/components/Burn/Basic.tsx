@@ -40,6 +40,7 @@ function BurnBasicBase({
   const postTx = useClusterRedeemTx(
     clusterState.cluster_contract_address,
     clusterState.cluster_token,
+    clusterState.target,
   );
 
   const initForm = useCallback(() => {

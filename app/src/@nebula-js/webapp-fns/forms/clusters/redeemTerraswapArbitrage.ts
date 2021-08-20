@@ -9,12 +9,13 @@ import {
   u,
   UST,
 } from '@nebula-js/types';
-import { clusterTxFeeQuery } from '@nebula-js/webapp-fns/queries/clusters/clusterTxFee';
 import { ClusterFee, NebulaTax } from '@nebula-js/webapp-fns/types';
 import { sum, vectorMultiply } from '@terra-dev/big-math';
 import { MantleFetch } from '@terra-dev/mantle';
+import { FormReturn } from '@terra-dev/use-form';
 import big, { BigSource } from 'big.js';
 import { computeMaxUstBalanceForUstTransfer } from '../../logics/computeMaxUstBalanceForUstTransfer';
+import { clusterTxFeeQuery } from '../../queries/clusters/clusterTxFee';
 import { clusterRedeemQuery } from '../../queries/clusters/redeem';
 import { terraswapSimulationQuery } from '../../queries/terraswap/simulation';
 
@@ -70,10 +71,10 @@ export const clusterRedeemTerraswapArbitrageForm = (
   return (
     input: ClusterRedeemTerraswapArbitrageFormInput,
     prevInput: ClusterRedeemTerraswapArbitrageFormInput | undefined,
-  ): [
+  ): FormReturn<
     ClusterRedeemTerraswapArbitrageFormStates,
-    Promise<ClusterRedeemTerraswapArbitrageFormAsyncStates>,
-  ] => {
+    ClusterRedeemTerraswapArbitrageFormAsyncStates
+  > => {
     if (input.ustAmount.trim().length === 0 || big(input.ustAmount).eq(0)) {
       return [
         {

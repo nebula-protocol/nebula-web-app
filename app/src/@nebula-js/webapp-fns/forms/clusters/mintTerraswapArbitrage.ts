@@ -1,4 +1,5 @@
 import { terraswap, u, UST } from '@nebula-js/types';
+import { FormReturn } from '@terra-dev/use-form';
 import { terraswapSimulationQuery } from '../../queries/terraswap/simulation';
 import {
   clusterMintAdvancedForm,
@@ -33,13 +34,13 @@ export const clusterMintTerraswapArbitrageForm = (
   return (
     input: ClusterMintTerraswapArbitrageFormInput,
     prevInput: ClusterMintTerraswapArbitrageFormInput | undefined,
-  ): [
+  ): FormReturn<
     ClusterMintTerraswapArbitrageFormStates,
-    Promise<ClusterMintTerraswapArbitrageFormAsyncStates>,
-  ] => {
+    ClusterMintTerraswapArbitrageFormAsyncStates
+  > => {
     const [states, _asyncStates] = dep(input, prevInput);
 
-    const asyncStates = _asyncStates.then((advancedAsyncStates) => {
+    const asyncStates = _asyncStates?.then((advancedAsyncStates) => {
       if (advancedAsyncStates.mintedAmount) {
         return terraswapSimulationQuery(
           dependency.terraswapPair.contract_addr,

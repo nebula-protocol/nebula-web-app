@@ -27,7 +27,7 @@ export function useClusterMintTx(
   const refetchQueries = useRefetchQueries();
 
   const {
-    constants: { fixedGas, gasFee, gasAdjustment },
+    constants: { fixedGas, gasFee, gasAdjustment, clusterFee },
     contractAddress,
   } = useNebulaWebapp();
 
@@ -45,7 +45,7 @@ export function useClusterMintTx(
         assets,
         amounts,
         fixedGas,
-        gasFee,
+        gasFee: gasFee + clusterFee.gasLimitPerAsset * assets.length,
         gasAdjustment,
         mantleEndpoint,
         mantleFetch,
@@ -61,6 +61,7 @@ export function useClusterMintTx(
     [
       assets,
       clusterAddr,
+      clusterFee.gasLimitPerAsset,
       connectedWallet,
       contractAddress.incentives,
       fixedGas,

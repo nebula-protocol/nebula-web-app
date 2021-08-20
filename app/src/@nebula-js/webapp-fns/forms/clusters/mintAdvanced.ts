@@ -3,6 +3,7 @@ import { cluster, CT, terraswap, Token, u, UST } from '@nebula-js/types';
 import { clusterTxFeeQuery } from '@nebula-js/webapp-fns/queries/clusters/clusterTxFee';
 import { max, min } from '@terra-dev/big-math';
 import { MantleFetch } from '@terra-dev/mantle';
+import { FormReturn } from '@terra-dev/use-form';
 import big, { Big, BigSource } from 'big.js';
 import { clusterMintQuery } from '../../queries/clusters/mint';
 import { TerraBalances } from '../../queries/terra/balances';
@@ -49,10 +50,10 @@ export const clusterMintAdvancedForm = (
   return (
     input: ClusterMintAdvancedFormInput,
     prevInput: ClusterMintAdvancedFormInput | undefined,
-  ): [
+  ): FormReturn<
     ClusterMintAdvancedFormStates,
-    Promise<ClusterMintAdvancedFormAsyncStates>,
-  ] => {
+    ClusterMintAdvancedFormAsyncStates
+  > => {
     if (
       !invalidAmounts ||
       dependency.clusterState !== prevDependency?.clusterState ||

@@ -6,6 +6,7 @@ import { Rate, u, Luna, NEB, UST } from '@nebula-js/types';
 export interface ClusterFee {
   base: number;
   perAsset: number;
+  gasLimitPerAsset: number;
 }
 
 export interface NebulaContants {

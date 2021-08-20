@@ -17,10 +17,7 @@ export function useClusterMintBasicForm({
 }: ClusterMintBasicFormParams) {
   const { mantleFetch, mantleEndpoint } = useTerraWebapp();
 
-  const {
-    constants: { fixedGas },
-    contractAddress,
-  } = useNebulaWebapp();
+  const { constants, contractAddress } = useNebulaWebapp();
 
   const { tax, tokenBalances } = useBank<NebulaTokenBalances, NebulaTax>();
 
@@ -31,9 +28,11 @@ export function useClusterMintBasicForm({
       mantleFetch,
       ustBalance: tokenBalances.uUST,
       tax,
-      fixedGas,
-      clusterAddr: clusterState.cluster_contract_address,
+      clusterState,
       terraswapFactoryAddr: contractAddress.terraswap.factory,
+      fixedGas: constants.fixedGas,
+      clusterFee: constants.clusterFee,
+      gasPriceEndpoint: constants.gasPriceEndpoint,
     },
     () => {
       return {

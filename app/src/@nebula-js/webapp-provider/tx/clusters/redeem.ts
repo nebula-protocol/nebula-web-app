@@ -1,4 +1,12 @@
-import { CT, CW20Addr, HumanAddr, u, UST } from '@nebula-js/types';
+import {
+  CT,
+  CW20Addr,
+  HumanAddr,
+  terraswap,
+  Token,
+  u,
+  UST,
+} from '@nebula-js/types';
 import { clusterRedeemTx } from '@nebula-js/webapp-fns';
 import { NEBULA_TX_KEYS } from '@nebula-js/webapp-provider/env';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
@@ -19,6 +27,7 @@ export interface ClusterRedeemTxParams {
 export function useClusterRedeemTx(
   clusterAddr: HumanAddr,
   clusterTokenAddr: CW20Addr,
+  assets: terraswap.Asset<Token>[],
 ) {
   const connectedWallet = useConnectedWallet();
 
@@ -27,7 +36,7 @@ export function useClusterRedeemTx(
   const refetchQueries = useRefetchQueries();
 
   const {
-    constants: { fixedGas, gasFee, gasAdjustment },
+    constants: { fixedGas, gasFee, gasAdjustment, clusterFee },
     contractAddress,
   } = useNebulaWebapp();
 
@@ -45,7 +54,7 @@ export function useClusterRedeemTx(
         clusterTokenAddr,
         amount,
         fixedGas,
-        gasFee,
+        gasFee: gasFee + clusterFee.gasLimitPerAsset * assets.length,
         gasAdjustment,
         mantleEndpoint,
         mantleFetch,
@@ -59,7 +68,9 @@ export function useClusterRedeemTx(
       });
     },
     [
+      assets.length,
       clusterAddr,
+      clusterFee.gasLimitPerAsset,
       clusterTokenAddr,
       connectedWallet,
       contractAddress.incentives,

@@ -45,7 +45,10 @@ function BurnTerraswapArbitrageBase({
 
   const { broadcast } = useTxBroadcast();
 
-  const postTx = useClusterArbRedeemTx(clusterState.cluster_contract_address);
+  const postTx = useClusterArbRedeemTx(
+    clusterState.cluster_contract_address,
+    clusterState.target,
+  );
 
   const initForm = useCallback(() => {
     updateInput({

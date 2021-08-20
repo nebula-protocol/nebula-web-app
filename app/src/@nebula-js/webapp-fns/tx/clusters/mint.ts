@@ -36,13 +36,15 @@ export function clusterMintTx(
 ): Observable<TxResultRendering> {
   const helper = new TxHelper($);
 
+  const amounts = $.amounts.map((n) => floor(n).toFixed());
+
   const increaseAllownance = $.assets
     .map(({ info }, i) => {
-      if ('token' in info && big($.amounts[i]).gt(0)) {
+      if ('token' in info && big(amounts[i]).gt(0)) {
         return new MsgExecuteContract($.walletAddr, info.token.contract_addr, {
           increase_allowance: {
             spender: $.incentivesAddr,
-            amount: $.amounts[i],
+            amount: amounts[i],
           },
         } as cw20.IncreaseAllowance);
       } else {
@@ -53,8 +55,8 @@ export function clusterMintTx(
 
   const nativeCoins = $.assets
     .map(({ info }, i) => {
-      if ('native_token' in info && big($.amounts[i]).gt(0)) {
-        return new Coin(info.native_token.denom, $.amounts[i]);
+      if ('native_token' in info && big(amounts[i]).gt(0)) {
+        return new Coin(info.native_token.denom, amounts[i]);
       } else {
         return undefined;
       }
@@ -74,7 +76,7 @@ export function clusterMintTx(
               asset_amounts: $.assets
                 .map(({ info }, i) => ({
                   info,
-                  amount: $.amounts[i],
+                  amount: amounts[i],
                 }))
                 .filter(({ amount }) => big(amount).gt(0)),
             },
