@@ -15,7 +15,6 @@ export namespace cluster {
       pricing_oracle?: HumanAddr;
       composition_oracle?: HumanAddr;
       penalty?: HumanAddr;
-      // TODO is Asset type CT or Token?
       target?: terraswap.Asset<Token>[]; // recomp oracle
     };
   }
@@ -51,15 +50,14 @@ export namespace cluster {
   // QueryMsg
   // ---------------------------------------------
   export interface ClusterConfig {
+    owner: HumanAddr;
     name: string;
     description: string;
-    owner: HumanAddr;
-    // TODO is this CW20Addr or HumanAddr?
     cluster_token?: CW20Addr;
-    factory: HumanAddr;
     pricing_oracle: HumanAddr;
     composition_oracle: HumanAddr;
     penalty: HumanAddr;
+    factory: HumanAddr;
     active: boolean;
   }
 

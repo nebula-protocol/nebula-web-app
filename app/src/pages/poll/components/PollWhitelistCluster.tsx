@@ -2,6 +2,8 @@ import { FormLabel, TextInput } from '@nebula-js/ui';
 import React, { useState } from 'react';
 import { PollCreateBase } from './PollCreateBase';
 
+// TODO need token list for adding token
+
 export default function PollWhitelistCluster() {
   const [oracleFeederAddress, setOracleFeederAddress] = useState<string>('');
 

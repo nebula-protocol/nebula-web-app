@@ -3,6 +3,8 @@ import { useClustersInfoListQuery } from '@nebula-js/webapp-provider';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { PollCreateBase } from './PollCreateBase';
 
+// TODO need token list for adding token
+
 export default function PollBlacklistCluster() {
   const { data: clustersList = [] } = useClustersInfoListQuery();
 
