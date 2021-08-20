@@ -39,12 +39,12 @@ export const clusterMintTerraswapArbitrageForm = (
   ] => {
     const [states, _asyncStates] = dep(input, prevInput);
 
-    const asyncStates = _asyncStates.then(({ mintedAmount }) => {
-      if (mintedAmount) {
+    const asyncStates = _asyncStates.then((advancedAsyncStates) => {
+      if (advancedAsyncStates.mintedAmount) {
         return terraswapSimulationQuery(
           dependency.terraswapPair.contract_addr,
           {
-            amount: mintedAmount,
+            amount: advancedAsyncStates.mintedAmount,
             info: {
               token: {
                 contract_addr: dependency.clusterState.cluster_token,
@@ -56,13 +56,13 @@ export const clusterMintTerraswapArbitrageForm = (
           dependency.requestInit,
         ).then(({ simulation }) => {
           return {
-            mintedAmount,
+            ...advancedAsyncStates,
             returnedAmount: simulation.return_amount as u<UST>,
           } as ClusterMintTerraswapArbitrageFormAsyncStates;
         });
       } else {
         return {
-          mintedAmount,
+          ...advancedAsyncStates,
           returnedAmount: undefined,
         };
       }
