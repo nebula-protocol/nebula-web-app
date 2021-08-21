@@ -1,0 +1,9 @@
+{
+  "name": "@terra-ux/packages",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "private": true,
+  "devDependencies": {
+    "typescript": "^4.3.5"
+  }
+}

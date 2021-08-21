@@ -2,3 +2,5 @@ dist/
 out/
 storybook-static/
 react-app-env.d.ts
+
+tsconfig.tsbuildinfo

@@ -1,0 +1,3 @@
+[submodule "deps/terra.js"]
+	path = deps/terra.js
+	url = https://github.com/terra-money/terra.js.git

@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2018",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "downlevelIteration": true,
     "allowJs": true,
     "skipLibCheck": true,
@@ -18,23 +14,11 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
+    "noEmit": false,
     "watch": false,
     "jsx": "react",
     "baseUrl": "src",
-    "paths": {
-      "@terra-ux/*": [
-        "../../deps/terra-ux/src/@terra-ux/*",
-        "../../deps/terra-ux2/src/@terra-ux/*"
-      ],
-      "@terra-money/terra.js": [
-        "../../deps/terra.js/src"
-      ]
-    }
+    "composite": true
   },
-  "include": [
-    "src",
-    "scripts",
-    "vite.config.ts"
-  ]
+  "include": ["src"]
 }
