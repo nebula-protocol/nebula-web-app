@@ -1,4 +1,5 @@
 {
+  "extends": "./tsconfig.paths.json",
   "compilerOptions": {
     "target": "ES2018",
     "lib": [
@@ -20,17 +21,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "watch": false,
-    "jsx": "react",
-    "baseUrl": "src",
-    "paths": {
-      "@terra-ux/*": [
-        "../../deps/terra-ux/src/@terra-ux/*",
-        "../../deps/terra-ux2/src/@terra-ux/*"
-      ],
-      "@terra-money/terra.js": [
-        "../../deps/terra.js/src"
-      ]
-    }
+    "jsx": "react"
   },
   "include": [
     "src",

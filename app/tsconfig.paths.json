@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@terra-ux/*": [
+        "../../deps/terra-ux/src/@terra-ux/*",
+        "../../deps/terra-ux2/src/@terra-ux/*"
+      ],
+      "@terra-money/terra.js": ["../../deps/terrajs/src"]
+    }
+  }
+}
