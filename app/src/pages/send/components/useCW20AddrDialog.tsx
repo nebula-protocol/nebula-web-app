@@ -1,7 +1,7 @@
 import { Modal } from '@material-ui/core';
 import { CW20Addr } from '@nebula-js/types';
 import { Button, Dialog, TextInput, useScreenSizeValue } from '@nebula-js/ui';
-import { DialogProps, OpenDialog, useDialog } from '@terra-dev/use-dialog';
+import { DialogProps, OpenDialog, useDialog } from '@packages/use-dialog';
 import { AccAddress } from '@terra-money/terra.js';
 import React, { ReactNode, useMemo, useState } from 'react';
 import styled from 'styled-components';

@@ -4,7 +4,7 @@ import {
   mantle,
   MantleFetch,
   WasmQuery,
-} from '@terra-dev/mantle';
+} from '@packages/mantle';
 import { clustersListQuery } from './list';
 
 interface ClusterTokenListWasmQuery {

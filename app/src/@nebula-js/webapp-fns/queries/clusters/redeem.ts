@@ -6,7 +6,7 @@ import {
   MantleFetch,
   WasmQuery,
   WasmQueryData,
-} from '@terra-dev/mantle';
+} from '@packages/mantle';
 
 interface ClusterRedeemWasmQuery {
   redeem: WasmQuery<penalty.Redeem, penalty.RedeemResponse>;

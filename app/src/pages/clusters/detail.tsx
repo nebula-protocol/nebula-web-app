@@ -28,7 +28,7 @@ import {
   Switch,
   useRouteMatch,
 } from 'react-router-dom';
-import { useStyle } from 'style-router';
+import { useStyle } from '@packages/style-router';
 import styled from 'styled-components';
 import useResizeObserver from 'use-resize-observer/polyfilled';
 import { ClusterBurn } from './components/Burn';

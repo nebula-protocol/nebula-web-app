@@ -6,9 +6,9 @@ import {
   NebulaTokenBalances,
 } from '@nebula-js/webapp-fns';
 import { useGovStakerQuery } from '@nebula-js/webapp-provider/queries/gov/staker';
-import { useForm } from '@terra-dev/use-form';
+import { useForm } from '@packages/use-form';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useBank } from '@terra-money/webapp-provider';
+import { useBank } from '@packages/webapp-provider';
 import { useMemo } from 'react';
 import { useNebulaWebapp } from '../../contexts/webapp';
 

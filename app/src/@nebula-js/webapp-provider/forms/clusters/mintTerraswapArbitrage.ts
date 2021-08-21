@@ -4,8 +4,8 @@ import {
   NebulaTax,
   NebulaTokenBalances,
 } from '@nebula-js/webapp-fns';
-import { useForm } from '@terra-dev/use-form';
-import { useBank, useTerraWebapp } from '@terra-money/webapp-provider';
+import { useForm } from '@packages/use-form';
+import { useBank, useTerraWebapp } from '@packages/webapp-provider';
 import { useMemo } from 'react';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { useTerraBalancesQuery } from '../../queries/terra/balances';

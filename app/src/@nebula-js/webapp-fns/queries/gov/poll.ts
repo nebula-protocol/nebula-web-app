@@ -8,7 +8,7 @@ import {
   MantleFetch,
   WasmQuery,
   WasmQueryData,
-} from '@terra-dev/mantle';
+} from '@packages/mantle';
 import {
   ParsedPoll,
   parseGovPollResponse,

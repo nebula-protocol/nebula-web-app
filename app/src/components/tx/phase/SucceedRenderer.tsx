@@ -1,6 +1,6 @@
 import { DoneAllRounded } from '@material-ui/icons';
 import { Button, useScreenSizeValue } from '@nebula-js/ui';
-import { TxReceipt } from '@terra-money/webapp-fns';
+import { TxReceipt } from '@packages/webapp-fns';
 import { fixHMR } from 'fix-hmr';
 import React from 'react';
 import styled from 'styled-components';

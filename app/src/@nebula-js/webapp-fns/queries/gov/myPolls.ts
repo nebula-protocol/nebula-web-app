@@ -1,5 +1,5 @@
 import { CW20Addr, gov, HumanAddr, OrderBy } from '@nebula-js/types';
-import { defaultMantleFetch, MantleFetch } from '@terra-dev/mantle';
+import { defaultMantleFetch, MantleFetch } from '@packages/mantle';
 import { ParsedPoll } from '../../logics/gov/parseGovPollResponse';
 import { govPollsQuery } from './polls';
 import { govStakerQuery } from './staker';

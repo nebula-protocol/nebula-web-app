@@ -1,5 +1,5 @@
 import { gov, NEB, u } from '@nebula-js/types';
-import { max } from '@terra-dev/big-math';
+import { max } from '@packages/big-math';
 import big, { Big } from 'big.js';
 
 export function computeUnstakableNebBalance(

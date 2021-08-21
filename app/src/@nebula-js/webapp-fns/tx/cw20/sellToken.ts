@@ -1,20 +1,19 @@
-import { createHookMsg } from '@anchor-protocol/anchor.js/dist/utils/cw20/create-hook-msg';
 import {
   formatTokenIntegerWithPostfixUnits,
   formatUTokenIntegerWithPostfixUnits,
   stripUUSD,
 } from '@nebula-js/notation';
 import { CW20Addr, HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
-import { pipe } from '@rx-stream/pipe';
-import { floor } from '@terra-dev/big-math';
-import { MsgExecuteContract, StdFee } from '@terra-money/terra.js';
+import { floor } from '@packages/big-math';
 import {
   pickAttributeValueByKey,
   pickEvent,
   pickRawLog,
   TxResultRendering,
   TxStreamPhase,
-} from '@terra-money/webapp-fns';
+} from '@packages/webapp-fns';
+import { pipe } from '@rx-stream/pipe';
+import { MsgExecuteContract, StdFee } from '@terra-money/terra.js';
 import big, { Big } from 'big.js';
 import { Observable } from 'rxjs';
 import { NebulaTax } from '../../types';
@@ -47,12 +46,14 @@ export function cw20SellTokenTx<T extends Token>(
           send: {
             contract: $.tokenUstPairAddr,
             amount: $.sellAmount,
-            msg: createHookMsg({
-              swap: {
-                belief_price: $.beliefPrice,
-                max_spread: $.maxSpread,
-              },
-            }),
+            msg: Buffer.from(
+              JSON.stringify({
+                swap: {
+                  belief_price: $.beliefPrice,
+                  max_spread: $.maxSpread,
+                },
+              }),
+            ),
           },
         }),
       ],

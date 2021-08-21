@@ -5,7 +5,7 @@ import {
   MantleFetch,
   WasmQuery,
   WasmQueryData,
-} from '@terra-dev/mantle';
+} from '@packages/mantle';
 import { cw20TokenInfoCache } from '../../caches/cw20TokenInfoCache';
 
 interface CW20TokenInfoWasmQuery<T extends Token> {

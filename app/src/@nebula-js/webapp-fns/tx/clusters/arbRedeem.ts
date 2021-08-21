@@ -1,13 +1,13 @@
 import { HumanAddr, incentives, NativeDenom, u, UST } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
-import { floor } from '@terra-dev/big-math';
+import { floor } from '@packages/big-math';
 import { Coin, Coins, MsgExecuteContract, StdFee } from '@terra-money/terra.js';
 import {
   pickEvent,
   pickRawLog,
   TxResultRendering,
   TxStreamPhase,
-} from '@terra-money/webapp-fns';
+} from '@packages/webapp-fns';
 import { Observable } from 'rxjs';
 import { _catchTxError } from '../internal/_catchTxError';
 import { _createTxOptions } from '../internal/_createTxOptions';

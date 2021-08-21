@@ -3,8 +3,8 @@ import {
   TEST_CONTRACT_ADDRESS,
   TEST_MANTLE_ENDPOINT,
 } from '@nebula-js/webapp-fns/test-env';
-import { defaultMantleFetch, WasmQuery } from '@terra-dev/mantle';
-import { mantle } from '@terra-money/webapp-fns';
+import { defaultMantleFetch, WasmQuery } from '@packages/mantle';
+import { mantle } from '@packages/webapp-fns';
 
 type AncWasmQuery = {
   anc: WasmQuery<terraswap.factory.Pair, terraswap.factory.PairResponse>;

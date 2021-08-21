@@ -1,5 +1,4 @@
 {
-  "extends": "./tsconfig.paths.json",
   "compilerOptions": {
     "target": "ES2018",
     "lib": [
@@ -21,13 +20,12 @@
     "isolatedModules": true,
     "noEmit": true,
     "watch": false,
-    "jsx": "react"
+    "jsx": "react",
+    "baseUrl": "src"
   },
   "include": [
     "src",
     "scripts",
-    "vite.config.ts",
-    "../deps/terra-dev/src",
-    "../deps/terra-ux/src"
+    "vite.config.ts"
   ]
 }

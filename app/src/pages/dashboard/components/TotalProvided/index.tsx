@@ -3,10 +3,10 @@ import { JSDateTime, u, UST } from '@nebula-js/types';
 import { AnimateNumber, DiffSpan, Sub } from '@nebula-js/ui';
 import { computeProvided } from '@nebula-js/webapp-fns';
 import { useClustersInfoListQuery } from '@nebula-js/webapp-provider';
-import { sum } from '@terra-dev/big-math';
+import { sum } from '@packages/big-math';
 import big, { Big } from 'big.js';
 import React, { useMemo } from 'react';
-import { useStyle } from 'style-router';
+import { useStyle } from '@packages/style-router';
 import styled from 'styled-components';
 import { AreaChart } from './AreaChart';
 

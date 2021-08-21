@@ -1,13 +1,13 @@
 import { CW20Addr, HumanAddr, LP, LPAddr, staking, u } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
-import { floor } from '@terra-dev/big-math';
+import { floor } from '@packages/big-math';
 import { MsgExecuteContract, StdFee } from '@terra-money/terra.js';
 import {
   pickEvent,
   pickRawLog,
   TxResultRendering,
   TxStreamPhase,
-} from '@terra-money/webapp-fns';
+} from '@packages/webapp-fns';
 import { Observable } from 'rxjs';
 import { _catchTxError } from '../internal/_catchTxError';
 import { _createTxOptions } from '../internal/_createTxOptions';

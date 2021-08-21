@@ -8,7 +8,7 @@ import {
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { ReadonlyWalletSession } from '@terra-dev/readonly-wallet';
-import { DialogProps, OpenDialog, useDialog } from '@terra-dev/use-dialog';
+import { DialogProps, OpenDialog, useDialog } from '@packages/use-dialog';
 import { NetworkInfo } from '@terra-dev/wallet-types';
 import { AccAddress } from '@terra-money/terra.js';
 import React, {

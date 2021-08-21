@@ -5,7 +5,7 @@ import {
   MantleFetch,
   WasmQuery,
   WasmQueryData,
-} from '@terra-dev/mantle';
+} from '@packages/mantle';
 
 interface GovConfigWasmQuery {
   govConfig: WasmQuery<gov.Config, gov.ConfigResponse>;

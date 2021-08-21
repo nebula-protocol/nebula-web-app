@@ -1,5 +1,5 @@
 import { gov, Rate } from '@nebula-js/types';
-import { sum } from '@terra-dev/big-math';
+import { sum } from '@packages/big-math';
 import { Big } from 'big.js';
 
 export function computeGovPollQuorum(

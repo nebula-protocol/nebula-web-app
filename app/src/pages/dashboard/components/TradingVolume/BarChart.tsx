@@ -3,7 +3,7 @@ import { JSDateTime, UST, u } from '@nebula-js/types';
 import { Chart } from 'chart.js';
 import { format } from 'date-fns';
 import React, { Component, createRef } from 'react';
-import { getCssVariable } from 'style-router';
+import { getCssVariable } from '@packages/style-router';
 import styled from 'styled-components';
 
 interface ChartData {

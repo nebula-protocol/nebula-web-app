@@ -4,7 +4,7 @@ import { demicrofy, formatTokenWithPostfixUnits } from '@nebula-js/notation';
 import { EmptyButton, EmptyButtonProps, EmptyIconHolder } from '@nebula-js/ui';
 import { NebulaTokenBalances } from '@nebula-js/webapp-fns';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useBank } from '@terra-money/webapp-provider';
+import { useBank } from '@packages/webapp-provider';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { WalletDetails } from '../../wallet-details';

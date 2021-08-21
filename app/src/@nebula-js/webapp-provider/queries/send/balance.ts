@@ -1,7 +1,7 @@
 import { CW20Addr, NativeDenom, Token, u } from '@nebula-js/types';
 import { NebulaTokenBalances } from '@nebula-js/webapp-fns';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useBank } from '@terra-money/webapp-provider';
+import { useBank } from '@packages/webapp-provider';
 import { useMemo } from 'react';
 import { useCW20BalanceQuery } from '../cw20/balance';
 

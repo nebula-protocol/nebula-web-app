@@ -5,7 +5,7 @@ import {
   useBank,
   useRefetchQueries,
   useTerraWebapp,
-} from '@terra-money/webapp-provider';
+} from '@packages/webapp-provider';
 import { useCallback } from 'react';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { NEBULA_TX_KEYS } from '../../env';

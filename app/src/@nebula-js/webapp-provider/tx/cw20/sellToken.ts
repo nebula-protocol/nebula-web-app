@@ -10,7 +10,7 @@ import {
   useBank,
   useRefetchQueries,
   useTerraWebapp,
-} from '@terra-money/webapp-provider';
+} from '@packages/webapp-provider';
 import big from 'big.js';
 import { useCallback } from 'react';
 import { useNebulaWebapp } from '../../contexts/webapp';

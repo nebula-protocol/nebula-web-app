@@ -10,9 +10,9 @@ import {
   UST,
 } from '@nebula-js/types';
 import { ClusterFee, NebulaTax } from '@nebula-js/webapp-fns/types';
-import { sum, vectorMultiply } from '@terra-dev/big-math';
-import { MantleFetch } from '@terra-dev/mantle';
-import { FormReturn } from '@terra-dev/use-form';
+import { sum, vectorMultiply } from '@packages/big-math';
+import { MantleFetch } from '@packages/mantle';
+import { FormReturn } from '@packages/use-form';
 import big, { BigSource } from 'big.js';
 import { computeMaxUstBalanceForUstTransfer } from '../../logics/computeMaxUstBalanceForUstTransfer';
 import { clusterTxFeeQuery } from '../../queries/clusters/clusterTxFee';

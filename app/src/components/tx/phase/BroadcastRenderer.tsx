@@ -1,4 +1,4 @@
-import { TxReceipt } from '@terra-money/webapp-fns';
+import { TxReceipt } from '@packages/webapp-fns';
 import { fixHMR } from 'fix-hmr';
 import React from 'react';
 import { GuardSpinner } from 'react-spinners-kit';

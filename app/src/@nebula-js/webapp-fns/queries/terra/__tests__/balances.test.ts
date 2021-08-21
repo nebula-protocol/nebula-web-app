@@ -4,7 +4,7 @@ import {
   TEST_MANTLE_ENDPOINT,
   TEST_WALLET_ADDRESS,
 } from '@nebula-js/webapp-fns/test-env';
-import { defaultMantleFetch } from '@terra-dev/mantle';
+import { defaultMantleFetch } from '@packages/mantle';
 
 const assetInfos: terraswap.AssetInfo[] = [
   {

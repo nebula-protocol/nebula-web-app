@@ -1,6 +1,6 @@
 import { microfy } from '@nebula-js/notation';
 import { gov, NEB, u, UST } from '@nebula-js/types';
-import { FormReturn } from '@terra-dev/use-form';
+import { FormReturn } from '@packages/use-form';
 import big, { Big, BigSource } from 'big.js';
 
 export interface GovStakeFormInput {

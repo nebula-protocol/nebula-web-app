@@ -1,5 +1,5 @@
 import { u, UST } from '@nebula-js/types';
-import { PersistCache } from '@terra-dev/persist-cache';
+import { PersistCache } from '@packages/persist-cache';
 import big, { Big } from 'big.js';
 import { ClusterFee } from '../../types';
 

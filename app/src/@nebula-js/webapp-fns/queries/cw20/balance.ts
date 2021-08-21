@@ -5,7 +5,7 @@ import {
   MantleFetch,
   WasmQuery,
   WasmQueryData,
-} from '@terra-dev/mantle';
+} from '@packages/mantle';
 
 interface CW20BalanceWasmQuery<T extends Token> {
   tokenBalance: WasmQuery<cw20.Balance, cw20.BalanceResponse<T>>;

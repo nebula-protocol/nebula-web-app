@@ -1,5 +1,5 @@
 import { cluster, cw20, CW20Addr, HumanAddr, Token, u } from '@nebula-js/types';
-import { defaultMantleFetch, MantleFetch } from '@terra-dev/mantle';
+import { defaultMantleFetch, MantleFetch } from '@packages/mantle';
 import { clusterStateListQuery } from '../clusters/stateList';
 import { cw20BalanceQuery } from '../cw20/balance';
 import { CW20PoolInfo, cw20PoolInfoQuery } from '../cw20/poolInfo';

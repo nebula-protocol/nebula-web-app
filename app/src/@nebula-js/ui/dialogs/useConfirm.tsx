@@ -5,7 +5,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@material-ui/core';
-import { DialogProps, OpenDialog, useDialog } from '@terra-dev/use-dialog';
+import { DialogProps, OpenDialog, useDialog } from '@packages/use-dialog';
 import React, { ReactNode } from 'react';
 import { Button } from '../buttons/Button';
 import { useAlertStyles } from './useAlert';

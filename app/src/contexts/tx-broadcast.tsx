@@ -1,4 +1,4 @@
-import { TxResultRendering } from '@terra-money/webapp-fns';
+import { TxResultRendering } from '@packages/webapp-fns';
 import { TxMiniRenderer } from 'components/tx/TxMiniRenderer';
 import { TxRenderer } from 'components/tx/TxRenderer';
 import React, {

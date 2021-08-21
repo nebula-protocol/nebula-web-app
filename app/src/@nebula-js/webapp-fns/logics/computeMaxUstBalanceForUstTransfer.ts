@@ -1,5 +1,5 @@
 import { u, UST } from '@nebula-js/types';
-import { min } from '@terra-dev/big-math';
+import { min } from '@packages/big-math';
 import big, { Big, BigSource } from 'big.js';
 import { NebulaTax } from '../types';
 

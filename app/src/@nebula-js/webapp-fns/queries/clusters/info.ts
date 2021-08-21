@@ -13,7 +13,7 @@ import {
   MantleFetch,
   WasmQuery,
   WasmQueryData,
-} from '@terra-dev/mantle';
+} from '@packages/mantle';
 import { nativeTokenInfoQuery } from '../cw20/nativeTokenInfo';
 import { cw20PoolInfoQuery } from '../cw20/poolInfo';
 import { cw20TokenInfoQuery } from '../cw20/tokenInfo';

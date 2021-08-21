@@ -1,6 +1,6 @@
 import { Modal } from '@material-ui/core';
 import { Dialog } from '@nebula-js/ui';
-import { DialogProps, OpenDialog, useDialog } from '@terra-dev/use-dialog';
+import { DialogProps, OpenDialog, useDialog } from '@packages/use-dialog';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';

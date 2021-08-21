@@ -8,9 +8,9 @@ import {
   u,
   UST,
 } from '@nebula-js/types';
-import { min } from '@terra-dev/big-math';
-import { MantleFetch } from '@terra-dev/mantle';
-import { FormFunction, FormReturn } from '@terra-dev/use-form';
+import { min } from '@packages/big-math';
+import { MantleFetch } from '@packages/mantle';
+import { FormFunction, FormReturn } from '@packages/use-form';
 import big, { Big, BigSource } from 'big.js';
 import { terraswapSimulationQuery } from '../../queries/terraswap/simulation';
 import { NebulaTax } from '../../types';

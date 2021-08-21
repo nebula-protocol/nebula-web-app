@@ -1,6 +1,6 @@
 import { Modal } from '@material-ui/core';
 import { Dialog, DialogProps } from '@nebula-js/ui';
-import { TxResultRendering, TxStreamPhase } from '@terra-money/webapp-fns';
+import { TxResultRendering, TxStreamPhase } from '@packages/webapp-fns';
 import { fixHMR } from 'fix-hmr';
 import React, { useCallback } from 'react';
 import styled from 'styled-components';

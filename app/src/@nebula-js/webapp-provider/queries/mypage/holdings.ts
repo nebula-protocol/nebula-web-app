@@ -1,8 +1,8 @@
 import { MypageHoldings, mypageHoldingsQuery } from '@nebula-js/webapp-fns';
-import { createQueryFn } from '@terra-dev/react-query-utils';
-import { useBrowserInactive } from '@terra-dev/use-browser-inactive';
+import { createQueryFn } from '@packages/react-query-utils';
+import { useBrowserInactive } from '@packages/use-browser-inactive';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useTerraWebapp } from '@terra-money/webapp-provider';
+import { useTerraWebapp } from '@packages/webapp-provider';
 import { useQuery, UseQueryResult } from 'react-query';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { NEBULA_QUERY_KEYS } from '../../env';
