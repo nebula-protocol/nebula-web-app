@@ -1,5 +1,4 @@
-import { useStateRef } from '@terra-dev/use-state-ref';
-import { useEffect, useMemo, useRef } from 'react';
+import { MutableRefObject, RefObject, useEffect, useMemo, useRef } from 'react';
 
 export interface ImportCssProps {
   href: string;
@@ -58,4 +57,14 @@ export function ImportCss({ href, selector }: ImportCssProps) {
   }, [element, hrefRef]);
 
   return null;
+}
+
+function useStateRef<T>(value: T): RefObject<T> {
+  const ref: MutableRefObject<T> = useRef<T>(value);
+
+  useEffect(() => {
+    ref.current = value;
+  }, [value]);
+
+  return ref;
 }

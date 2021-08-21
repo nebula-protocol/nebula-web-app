@@ -2,9 +2,14 @@
   "compilerOptions": {
     "baseUrl": "src",
     "paths": {
+      "@terra-dev/*": [
+        "../../deps/terra-dev/src/@terra-dev/*"
+      ],
       "@terra-ux/*": [
-        "../../deps/terra-ux/src/@terra-ux/*",
-        "../../deps/terra-ux2/src/@terra-ux/*"
+        "../../deps/terra-ux/src/@terra-ux/*"
+      ],
+      "style-router": [
+        "../../deps/terra-ux/src/style-router/index.ts"
       ]
     }
   }

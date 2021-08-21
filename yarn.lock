@@ -4468,6 +4468,14 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@terra-dev/packages@workspace:deps/terra-dev":
+  version: 0.0.0-use.local
+  resolution: "@terra-dev/packages@workspace:deps/terra-dev"
+  dependencies:
+    typescript: ^4.3.5
+  languageName: unknown
+  linkType: soft
+
 "@terra-dev/patch-react-query-focus-refetching@npm:^0.20.1":
   version: 0.20.1
   resolution: "@terra-dev/patch-react-query-focus-refetching@npm:0.20.1"
@@ -4780,14 +4788,6 @@ __metadata:
   checksum: 652e9d60607307caad098ed1a8182338edbf7baf6074f443471a0bf55cb32b6d792c841156191dde64a8ce71720445250d143fedef68ce4899023c4fd039d8a4
   languageName: node
   linkType: hard
-
-"@terra-ux/packages2@workspace:deps/terra-ux2":
-  version: 0.0.0-use.local
-  resolution: "@terra-ux/packages2@workspace:deps/terra-ux2"
-  dependencies:
-    typescript: ^4.3.5
-  languageName: unknown
-  linkType: soft
 
 "@terra-ux/packages@workspace:deps/terra-ux":
   version: 0.0.0-use.local

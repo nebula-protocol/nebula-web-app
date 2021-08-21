@@ -26,6 +26,8 @@
   "include": [
     "src",
     "scripts",
-    "vite.config.ts"
+    "vite.config.ts",
+    "../deps/terra-dev/src",
+    "../deps/terra-ux/src"
   ]
 }

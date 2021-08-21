@@ -1,5 +1,4 @@
 import { matchSizeQuery } from '@terra-ux/size-query';
-import { hello_terra_ux } from '@terra-ux/hello';
 import React, {
   Consumer,
   Context,
@@ -13,8 +12,6 @@ import React, {
   useRef,
   useState,
 } from 'react';
-
-console.log('StyleRouter.tsx..()', hello_terra_ux());
 
 export type Breakpoint = [key: string, query: string];
 

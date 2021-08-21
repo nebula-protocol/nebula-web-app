@@ -17,8 +17,7 @@
     "noEmit": false,
     "watch": false,
     "jsx": "react",
-    "baseUrl": "src",
-    "composite": true
+    "baseUrl": "src"
   },
   "include": ["src"]
 }
