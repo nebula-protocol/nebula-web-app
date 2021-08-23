@@ -32,25 +32,25 @@ export const DEFAULT_CONTRACT_ADDRESS: Record<string, ContractAddress> = {
 export const DEFAULT_CONSTANTS: Record<string, NebulaContants> = {
   mainnet: {
     gasFee: 1_000_000 as u<UST<number>>,
-    fixedGas: 250_000 as u<UST<number>>,
+    fixedGas: 635_000 as u<UST<number>>,
     blocksPerYear: 4_656_810,
     gasAdjustment: 1.6 as Rate<number>,
     gasPriceEndpoint: 'https://fcd.terra.dev/v1/txs/gas_prices',
     clusterFee: {
-      base: 5_000_000,
-      perAsset: 300_000,
+      base: 12_700_000,
+      perAsset: 762_000,
       gasLimitPerAsset: 10_000,
     },
   },
   testnet: {
-    gasFee: 6_000_000 as u<UST<number>>,
-    fixedGas: 3_500_000 as u<UST<number>>,
+    gasFee: 1_000_000 as u<UST<number>>,
+    fixedGas: 635_000 as u<UST<number>>,
     blocksPerYear: 4_656_810,
     gasAdjustment: 1.6 as Rate<number>,
     gasPriceEndpoint: 'https://tequila-fcd.terra.dev/v1/txs/gas_prices',
     clusterFee: {
-      base: 10_000_000,
-      perAsset: 600_000,
+      base: 12_700_000,
+      perAsset: 762_000,
       gasLimitPerAsset: 20_000,
     },
   },
