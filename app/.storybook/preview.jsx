@@ -2,7 +2,7 @@ import React from 'react';
 import { createGlobalStyle } from 'styled-components';
 import { GlobalStyle } from '../src/@nebula-js/ui/GlobalStyle';
 import { ThemeProvider } from '../src/contexts/theme';
-import { Breakpoint, CssRoute, StaticStyleRouter } from '../src/style-router';
+import { Breakpoint, CssRoute, StaticStyleRouter } from '../src/@libs/style-router';
 import { theme } from './theme';
 
 const breakpoints: Breakpoint[] = [
