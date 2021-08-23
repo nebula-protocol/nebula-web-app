@@ -1,5 +1,5 @@
 import { Button, useScreenSizeValue } from '@nebula-js/ui';
-import { TxReceipt } from '@terra-money/webapp-fns';
+import { TxReceipt } from '@libs/webapp-fns';
 import { fixHMR } from 'fix-hmr';
 import React from 'react';
 import { RotateSpinner } from 'react-spinners-kit';

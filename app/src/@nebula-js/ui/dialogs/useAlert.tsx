@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { DialogProps, OpenDialog, useDialog } from '@terra-dev/use-dialog';
+import { DialogProps, OpenDialog, useDialog } from '@libs/use-dialog';
 import React from 'react';
 import { ReactNode } from 'react';
 import { Button } from '../buttons/Button';

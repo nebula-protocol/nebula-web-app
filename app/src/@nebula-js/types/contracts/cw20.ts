@@ -1,5 +1,4 @@
-import { u, Token } from '../tokens';
-import { HumanAddr } from './common';
+import { HumanAddr, Token, u } from '@libs/types';
 
 export namespace cw20 {
   // ---------------------------------------------

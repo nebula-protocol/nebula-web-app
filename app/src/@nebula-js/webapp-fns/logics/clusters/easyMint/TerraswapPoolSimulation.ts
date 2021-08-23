@@ -1,5 +1,5 @@
 import { HumanAddr, terraswap, Token, u } from '@nebula-js/types';
-import { defaultMantleFetch, MantleFetch } from '@terra-dev/mantle';
+import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
 import big, { Big } from 'big.js';
 import {
   TerraswapPoolInfo,

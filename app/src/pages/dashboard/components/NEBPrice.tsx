@@ -1,6 +1,7 @@
-import { formatToken } from '@nebula-js/notation';
+import { formatToken } from '@libs/formatter';
+import { AnimateNumber } from '@libs/ui';
 import { NEB } from '@nebula-js/types';
-import { AnimateNumber, DiffSpan, Sub } from '@nebula-js/ui';
+import { DiffSpan, Sub } from '@nebula-js/ui';
 import {
   useNebulaWebapp,
   useTerraswapPoolQuery,

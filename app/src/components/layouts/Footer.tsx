@@ -9,7 +9,7 @@ import {
 } from '@nebula-js/icons';
 import { EmptyButton } from '@nebula-js/ui';
 import React from 'react';
-import { useStyle } from 'style-router';
+import { useStyle } from '@libs/style-router';
 import styled from 'styled-components';
 
 export interface FooterProps {

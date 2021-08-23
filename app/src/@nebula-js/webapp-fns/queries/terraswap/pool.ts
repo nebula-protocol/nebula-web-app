@@ -1,6 +1,6 @@
 import { HumanAddr, LP, terraswap, Token, u, UST } from '@nebula-js/types';
-import { defaultMantleFetch, MantleFetch, WasmQuery } from '@terra-dev/mantle';
-import { mantle, WasmQueryData } from '@terra-money/webapp-fns';
+import { defaultMantleFetch, MantleFetch, WasmQuery } from '@libs/mantle';
+import { mantle, WasmQueryData } from '@libs/webapp-fns';
 import big from 'big.js';
 
 interface TerraswapPoolWasmQuery<T extends Token> {

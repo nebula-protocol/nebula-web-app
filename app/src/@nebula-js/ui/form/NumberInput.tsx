@@ -1,5 +1,5 @@
 import { TextFieldProps } from '@material-ui/core';
-import { useRestrictedNumberInput } from '@terra-dev/use-restricted-input';
+import { useRestrictedNumberInput } from '@libs/use-restricted-input';
 import React, { ChangeEvent, useCallback } from 'react';
 import { TextInput } from './TextInput';
 

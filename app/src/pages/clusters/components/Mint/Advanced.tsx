@@ -1,4 +1,4 @@
-import { formatUToken, microfy } from '@nebula-js/notation';
+import { formatUToken, microfy } from '@libs/formatter';
 import { CT, terraswap, Token, u, UST } from '@nebula-js/types';
 import { ClusterInfo } from '@nebula-js/webapp-fns';
 import {

@@ -2,7 +2,7 @@ import { Button } from '@nebula-js/ui';
 import { MainLayout } from 'components/layouts/MainLayout';
 import { fixHMR } from 'fix-hmr';
 import React from 'react';
-import { StyleRoute, useCssVariable, useStyle } from 'style-router';
+import { StyleRoute, useCssVariable, useStyle } from '@libs/style-router';
 import styled, { createGlobalStyle } from 'styled-components';
 
 export interface StyleRouterTestProps {

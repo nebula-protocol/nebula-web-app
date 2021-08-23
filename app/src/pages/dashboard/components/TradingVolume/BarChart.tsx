@@ -1,9 +1,9 @@
-import { formatToken } from '@nebula-js/notation';
+import { formatToken } from '@libs/formatter';
 import { JSDateTime, UST, u } from '@nebula-js/types';
 import { Chart } from 'chart.js';
 import { format } from 'date-fns';
 import React, { Component, createRef } from 'react';
-import { getCssVariable } from 'style-router';
+import { getCssVariable } from '@libs/style-router';
 import styled from 'styled-components';
 
 interface ChartData {

@@ -5,8 +5,8 @@ import {
   terraswap,
   Token,
 } from '@nebula-js/types';
-import { MantleFetch } from '@terra-dev/mantle';
-import { FormReturn } from '@terra-dev/use-form';
+import { MantleFetch } from '@libs/mantle';
+import { FormReturn } from '@libs/use-form';
 import { nativeTokenInfoQuery } from '../../queries/cw20/nativeTokenInfo';
 import { cw20TokenInfoQuery } from '../../queries/cw20/tokenInfo';
 

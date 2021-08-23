@@ -7,9 +7,9 @@ import {
   SendTokensFormInput,
 } from '@nebula-js/webapp-fns';
 import { useNebulaWebapp } from '@nebula-js/webapp-provider';
-import { PersistCache } from '@terra-dev/persist-cache';
-import { useForm } from '@terra-dev/use-form';
-import { useTerraWebapp } from '@terra-money/webapp-provider';
+import { PersistCache } from '@libs/persist-cache';
+import { useForm } from '@libs/use-form';
+import { useTerraWebapp } from '@libs/webapp-provider';
 import { useCallback, useEffect } from 'react';
 
 const NATIVE_DENOMS = ['uusd', 'uluna'] as NativeDenom[];

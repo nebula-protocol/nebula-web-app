@@ -1,4 +1,4 @@
-import { rs } from './common';
+import { rs } from '@libs/types';
 
 export namespace oracle {
   // ---------------------------------------------

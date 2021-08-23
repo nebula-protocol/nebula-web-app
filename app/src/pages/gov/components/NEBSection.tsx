@@ -1,7 +1,7 @@
-import { formatUTokenWithPostfixUnits } from '@nebula-js/notation';
+import { formatUTokenWithPostfixUnits } from '@libs/formatter';
+import { AnimateNumber } from '@libs/ui';
 import { NEB, u } from '@nebula-js/types';
 import {
-  AnimateNumber,
   Button,
   IconAndLabels,
   Section,

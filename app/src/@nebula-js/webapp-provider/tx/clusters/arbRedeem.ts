@@ -2,10 +2,7 @@ import { HumanAddr, terraswap, Token, u, UST } from '@nebula-js/types';
 import { clusterArbRedeemTx } from '@nebula-js/webapp-fns';
 import { NEBULA_TX_KEYS } from '@nebula-js/webapp-provider/env';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import {
-  useRefetchQueries,
-  useTerraWebapp,
-} from '@terra-money/webapp-provider';
+import { useRefetchQueries, useTerraWebapp } from '@libs/webapp-provider';
 import { useCallback } from 'react';
 import { useNebulaWebapp } from '../../contexts/webapp';
 

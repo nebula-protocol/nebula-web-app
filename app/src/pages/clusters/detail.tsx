@@ -1,4 +1,4 @@
-import { formatRate, formatUTokenDecimal2 } from '@nebula-js/notation';
+import { formatRate, formatUTokenDecimal2 } from '@libs/formatter';
 import { HumanAddr, JSDateTime, Rate, u, UST } from '@nebula-js/types';
 import {
   BarGraph,
@@ -28,7 +28,7 @@ import {
   Switch,
   useRouteMatch,
 } from 'react-router-dom';
-import { useStyle } from 'style-router';
+import { useStyle } from '@libs/style-router';
 import styled from 'styled-components';
 import useResizeObserver from 'use-resize-observer/polyfilled';
 import { ClusterBurn } from './components/Burn';

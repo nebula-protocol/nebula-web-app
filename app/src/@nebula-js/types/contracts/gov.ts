@@ -1,6 +1,5 @@
-import { NEB, u } from '@nebula-js/types/tokens';
-import { Rate } from '@nebula-js/types/units';
-import { HumanAddr, OrderBy, rs } from './common';
+import { HumanAddr, OrderBy, Rate, rs, u } from '@libs/types';
+import { NEB } from '../tokens';
 
 export namespace gov {
   export enum VoteOption {

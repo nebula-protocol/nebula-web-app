@@ -1,6 +1,6 @@
 import { Add } from '@material-ui/icons';
 import { WalletIcon } from '@nebula-js/icons';
-import { formatUInput, formatUToken, microfy } from '@nebula-js/notation';
+import { formatUInput, formatUToken, microfy } from '@libs/formatter';
 import { HumanAddr, terraswap, Token, u, UST } from '@nebula-js/types';
 import {
   breakpoints,

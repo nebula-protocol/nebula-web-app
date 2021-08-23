@@ -2,7 +2,7 @@ import { SendIcon } from '@nebula-js/icons';
 import {
   formatTokenWithPostfixUnits,
   formatUTokenWithPostfixUnits,
-} from '@nebula-js/notation';
+} from '@libs/formatter';
 import { u, UST } from '@nebula-js/types';
 import {
   Button,
@@ -17,7 +17,7 @@ import {
   useMypageHoldingsQuery,
   useNebulaWebapp,
 } from '@nebula-js/webapp-provider';
-import { sum } from '@terra-dev/big-math';
+import { sum } from '@libs/big-math';
 import big, { Big } from 'big.js';
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';

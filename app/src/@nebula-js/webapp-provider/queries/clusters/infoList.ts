@@ -1,7 +1,7 @@
 import { ClustersInfoList, clustersInfoListQuery } from '@nebula-js/webapp-fns';
-import { createQueryFn } from '@terra-dev/react-query-utils';
-import { useBrowserInactive } from '@terra-dev/use-browser-inactive';
-import { useTerraWebapp } from '@terra-money/webapp-provider';
+import { createQueryFn } from '@libs/react-query-utils';
+import { useBrowserInactive } from '@libs/use-browser-inactive';
+import { useTerraWebapp } from '@libs/webapp-provider';
 import { useQuery, UseQueryResult } from 'react-query';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { NEBULA_QUERY_KEYS } from '../../env';

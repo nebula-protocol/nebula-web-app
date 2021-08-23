@@ -5,7 +5,7 @@ import {
   MantleFetch,
   WasmQuery,
   WasmQueryData,
-} from '@terra-dev/mantle';
+} from '@libs/mantle';
 
 interface StakingRewardInfoWasmQuery {
   rewardInfo: WasmQuery<staking.RewardInfo, staking.RewardInfoResponse>;

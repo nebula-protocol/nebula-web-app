@@ -1,4 +1,4 @@
-import { microfy } from '@nebula-js/notation';
+import { microfy } from '@libs/formatter';
 import { cluster, CT, penalty, u } from '@nebula-js/types';
 import {
   defaultMantleFetch,
@@ -6,7 +6,7 @@ import {
   MantleFetch,
   WasmQuery,
   WasmQueryData,
-} from '@terra-dev/mantle';
+} from '@libs/mantle';
 
 interface ClusterRedeemWasmQuery {
   redeem: WasmQuery<penalty.Redeem, penalty.RedeemResponse>;

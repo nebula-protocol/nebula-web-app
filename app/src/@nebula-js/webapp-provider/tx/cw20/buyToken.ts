@@ -1,4 +1,4 @@
-import { formatExecuteMsgNumber } from '@nebula-js/notation';
+import { formatExecuteMsgNumber } from '@libs/formatter';
 import { CT, HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
 import {
   cw20BuyTokenTx,
@@ -10,7 +10,7 @@ import {
   useBank,
   useRefetchQueries,
   useTerraWebapp,
-} from '@terra-money/webapp-provider';
+} from '@libs/webapp-provider';
 import big from 'big.js';
 import { useCallback } from 'react';
 import { useNebulaWebapp } from '../../contexts/webapp';

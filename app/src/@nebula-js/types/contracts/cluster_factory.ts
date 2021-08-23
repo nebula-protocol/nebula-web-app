@@ -1,5 +1,4 @@
-import { DateTime } from '@nebula-js/types/units';
-import { HumanAddr, rs } from './common';
+import { DateTime, HumanAddr, rs } from '@libs/types';
 import { terraswap } from './terraswap';
 
 export namespace cluster_factory {

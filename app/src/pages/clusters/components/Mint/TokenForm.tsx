@@ -1,5 +1,5 @@
 import { WalletIcon } from '@nebula-js/icons';
-import { demicrofy, formatUTokenInteger } from '@nebula-js/notation';
+import { demicrofy, formatUTokenInteger } from '@libs/formatter';
 import { terraswap, Token, u, UST } from '@nebula-js/types';
 import {
   breakpoints,
@@ -15,7 +15,7 @@ import {
   ClusterMintAdvancedFormInput,
   ClusterMintAdvancedFormStates,
 } from '@nebula-js/webapp-fns';
-import { FormInput, FormStates } from '@terra-dev/use-form';
+import { FormInput, FormStates } from '@libs/use-form';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big from 'big.js';
 import { AddAssetBadges } from 'components/form/AddAssetBadges';

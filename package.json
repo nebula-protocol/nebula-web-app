@@ -24,12 +24,13 @@
     "@handbook/markdown-source-import": "^1.1.0",
     "@ssen/eslint-config": "^2.0.1",
     "@ssen/prettier-config": "^2.0.1",
-    "eslint": "^7.31.0",
+    "eslint": "^7.32.0",
     "husky": "^7.0.1",
-    "lint-staged": "^11.0.1",
+    "lint-staged": "^11.1.2",
     "prettier": "^2.3.2"
   },
   "resolutions": {
-    "jest": "26.6.3"
+    "jest": "26.6.3",
+    "@terra-money/terra.js": "2.0.2"
   }
 }

@@ -1,4 +1,4 @@
-import { formatUToken } from '@nebula-js/notation';
+import { formatUToken } from '@libs/formatter';
 import { Token, u } from '@nebula-js/types';
 import { TokenSpan } from '@nebula-js/ui';
 import { AssetTokenInfo } from '@nebula-js/webapp-fns';

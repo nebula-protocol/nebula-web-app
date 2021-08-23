@@ -5,7 +5,7 @@ import {
   MantleFetch,
   WasmQuery,
   WasmQueryData,
-} from '@terra-dev/mantle';
+} from '@libs/mantle';
 
 export interface GovStakerWasmQuery {
   govStaker: WasmQuery<gov.Staker, gov.StakerResponse>;

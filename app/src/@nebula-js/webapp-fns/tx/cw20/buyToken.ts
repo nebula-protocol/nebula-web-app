@@ -1,10 +1,10 @@
 import {
   formatTokenWithPostfixUnits,
   formatUTokenIntegerWithPostfixUnits,
-} from '@nebula-js/notation';
+} from '@libs/formatter';
 import { HumanAddr, NativeDenom, Rate, Token, u, UST } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
-import { floor, min } from '@terra-dev/big-math';
+import { floor, min } from '@libs/big-math';
 import { MsgExecuteContract, StdFee } from '@terra-money/terra.js';
 import {
   pickAttributeValueByKey,
@@ -12,7 +12,7 @@ import {
   pickRawLog,
   TxResultRendering,
   TxStreamPhase,
-} from '@terra-money/webapp-fns';
+} from '@libs/webapp-fns';
 import big, { Big } from 'big.js';
 import { Observable } from 'rxjs';
 import { NebulaTax } from '../../types';

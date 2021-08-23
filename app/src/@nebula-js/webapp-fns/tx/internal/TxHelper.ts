@@ -1,12 +1,8 @@
-import { formatUToken } from '@nebula-js/notation';
+import { formatUToken } from '@libs/formatter';
 import { u, UST } from '@nebula-js/types';
 import { NetworkInfo, TxResult } from '@terra-dev/wallet-types';
 import { CreateTxOptions } from '@terra-money/terra.js';
-import {
-  TxReceipt,
-  TxResultRendering,
-  TxStreamPhase,
-} from '@terra-money/webapp-fns';
+import { TxReceipt, TxResultRendering, TxStreamPhase } from '@libs/webapp-fns';
 import { BigSource } from 'big.js';
 
 export class TxHelper {

@@ -3,17 +3,14 @@ import {
   NebulaWebappProvider,
 } from '@nebula-js/webapp-provider';
 import { captureException } from '@sentry/react';
-import { patchReactQueryFocusRefetching } from '@terra-dev/patch-react-query-focus-refetching';
+import { patchReactQueryFocusRefetching } from '@libs/patch-react-query-focus-refetching';
 import { ReadonlyWalletSession } from '@terra-dev/readonly-wallet';
-import { BrowserInactiveProvider } from '@terra-dev/use-browser-inactive';
-import { GoogleAnalytics } from '@terra-dev/use-google-analytics';
-import { RouterScrollRestoration } from '@terra-dev/use-router-scroll-restoration';
+import { BrowserInactiveProvider } from '@libs/use-browser-inactive';
+import { GoogleAnalytics } from '@libs/use-google-analytics';
+import { RouterScrollRestoration } from '@libs/use-router-scroll-restoration';
 import { NetworkInfo } from '@terra-dev/wallet-types';
 import { WalletProvider } from '@terra-money/wallet-provider';
-import {
-  BankProvider,
-  TerraWebappProvider,
-} from '@terra-money/webapp-provider';
+import { BankProvider, TerraWebappProvider } from '@libs/webapp-provider';
 import { useReadonlyWalletDialog } from 'components/dialogs/useReadonlyWalletDialog';
 import { StyleProviders } from 'configurations/style';
 import { TxBroadcastProvider } from 'contexts/tx-broadcast';

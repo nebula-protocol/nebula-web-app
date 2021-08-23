@@ -1,7 +1,7 @@
 import { TabItem } from '@nebula-js/ui';
 import { SubTab } from '@nebula-js/ui/layout/SubTab';
 import { ClusterInfo } from '@nebula-js/webapp-fns';
-import { useLocalStorage } from '@terra-dev/use-local-storage';
+import { useLocalStorage } from '@libs/use-local-storage';
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { BurnAdvanced } from './Advanced';

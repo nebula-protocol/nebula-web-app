@@ -1,5 +1,5 @@
 import { ChevronRight } from '@material-ui/icons';
-import { formatRate, formatUTokenWithPostfixUnits } from '@nebula-js/notation';
+import { formatRate, formatUTokenWithPostfixUnits } from '@libs/formatter';
 import { Rate, u, UST } from '@nebula-js/types';
 import {
   Carousel,

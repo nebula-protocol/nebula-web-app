@@ -10,7 +10,7 @@ import {
 } from '@nebula-js/types';
 import { partitionColor } from '@nebula-js/ui';
 import { ClusterInfo, getAssetAmount } from '@nebula-js/webapp-fns';
-import { sum, vectorMultiply } from '@terra-dev/big-math';
+import { sum, vectorMultiply } from '@libs/big-math';
 import big, { Big } from 'big.js';
 
 export interface AssetView {

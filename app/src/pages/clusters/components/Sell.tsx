@@ -4,7 +4,7 @@ import {
   formatUInput,
   formatUToken,
   microfy,
-} from '@nebula-js/notation';
+} from '@libs/formatter';
 import { CT, u, UST } from '@nebula-js/types';
 import {
   breakpoints,

@@ -1,7 +1,7 @@
-import { microfy } from '@nebula-js/notation';
+import { microfy } from '@libs/formatter';
 import { gov, NEB, u, UST } from '@nebula-js/types';
-import { max } from '@terra-dev/big-math';
-import { FormReturn } from '@terra-dev/use-form';
+import { max } from '@libs/big-math';
+import { FormReturn } from '@libs/use-form';
 import big, { Big, BigSource } from 'big.js';
 import { computeUnstakableNebBalance } from '../../logics/gov/computeUnstakableNebBalance';
 

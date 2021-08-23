@@ -1,5 +1,5 @@
 import { WalletIcon } from '@nebula-js/icons';
-import { formatUToken, microfy } from '@nebula-js/notation';
+import { formatUToken, microfy } from '@libs/formatter';
 import { gov, NEB, u } from '@nebula-js/types';
 import {
   breakpoints,
@@ -12,7 +12,7 @@ import {
 import { NebulaTokenBalances } from '@nebula-js/webapp-fns';
 import { useGovVoteTx } from '@nebula-js/webapp-provider/tx/gov/vote';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useBank } from '@terra-money/webapp-provider';
+import { useBank } from '@libs/webapp-provider';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
 import React, { useCallback, useState } from 'react';

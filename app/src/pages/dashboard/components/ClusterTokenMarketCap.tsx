@@ -1,9 +1,10 @@
-import { formatUTokenIntegerWithPostfixUnits } from '@nebula-js/notation';
+import { sum } from '@libs/big-math';
+import { formatUTokenIntegerWithPostfixUnits } from '@libs/formatter';
+import { AnimateNumber } from '@libs/ui';
 import { u, UST } from '@nebula-js/types';
-import { AnimateNumber, Sub } from '@nebula-js/ui';
+import { Sub } from '@nebula-js/ui';
 import { computeMarketCap } from '@nebula-js/webapp-fns';
 import { useClustersInfoListQuery } from '@nebula-js/webapp-provider';
-import { sum } from '@terra-dev/big-math';
 import big, { Big } from 'big.js';
 import React, { useMemo } from 'react';
 import styled from 'styled-components';

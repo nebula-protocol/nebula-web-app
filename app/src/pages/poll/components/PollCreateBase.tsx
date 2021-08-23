@@ -1,5 +1,5 @@
 import { WalletIcon } from '@nebula-js/icons';
-import { formatUToken } from '@nebula-js/notation';
+import { formatUToken } from '@libs/formatter';
 import { gov, NEB, u } from '@nebula-js/types';
 import {
   Button,
@@ -18,9 +18,9 @@ import {
 import {
   BytesValid,
   useValidateStringBytes,
-} from '@terra-dev/use-string-bytes-length';
+} from '@libs/use-string-bytes-length';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useBank } from '@terra-money/webapp-provider';
+import { useBank } from '@libs/webapp-provider';
 import big from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { FormLayout } from 'components/layouts/FormLayout';

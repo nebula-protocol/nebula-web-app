@@ -1,5 +1,5 @@
 import { HumanAddr } from '@nebula-js/types';
-import { defaultMantleFetch, MantleFetch } from '@terra-dev/mantle';
+import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
 import { ClusterInfo, clusterInfoQuery } from './info';
 import { clustersListQuery } from './list';
 

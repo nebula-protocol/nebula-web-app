@@ -11,7 +11,7 @@ import React, {
   useContext,
   useMemo,
 } from 'react';
-import { useStyle } from 'style-router';
+import { useStyle } from '@libs/style-router';
 import type { DefaultTheme } from 'styled-components';
 
 export interface ThemeProviderProps {
