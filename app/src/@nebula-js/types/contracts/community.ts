@@ -1,5 +1,5 @@
-import { HumanAddr, rs } from '@libs/types';
-import { NEB, u } from '../tokens';
+import { HumanAddr, rs, u } from '@libs/types';
+import { NEB } from '../tokens';
 
 export namespace community {
   // ---------------------------------------------

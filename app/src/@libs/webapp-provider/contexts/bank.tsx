@@ -1,4 +1,4 @@
-import { CW20Addr } from '@nebula-js/types';
+import { CW20Addr } from '@libs/types';
 import { useBrowserInactive } from '@libs/use-browser-inactive';
 import { useLongtimeNoSee } from '@libs/use-longtime-no-see';
 import { useWallet, WalletStatus } from '@terra-money/wallet-provider';

@@ -1,5 +1,5 @@
-import { HumanAddr, OrderBy, Rate, rs } from '@libs/types';
-import { NEB, u } from '../tokens';
+import { HumanAddr, OrderBy, Rate, rs, u } from '@libs/types';
+import { NEB } from '../tokens';
 
 export namespace gov {
   export enum VoteOption {

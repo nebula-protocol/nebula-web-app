@@ -1,5 +1,5 @@
-import { CW20Addr, HumanAddr, rs } from '@libs/types';
-import { LP, NEB, Token, u } from '../tokens';
+import { CW20Addr, HumanAddr, LP, rs, Token, u } from '@libs/types';
+import { NEB } from '../tokens';
 import { terraswap } from './terraswap';
 
 export namespace staking {
