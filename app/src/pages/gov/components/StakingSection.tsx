@@ -1,12 +1,7 @@
 import { formatRate, formatUTokenWithPostfixUnits } from '@libs/formatter';
+import { AnimateNumber } from '@libs/ui';
 import { NEB, Rate, u } from '@nebula-js/types';
-import {
-  AnimateNumber,
-  breakpoints,
-  Section,
-  Sub,
-  TitledLabel,
-} from '@nebula-js/ui';
+import { breakpoints, Section, Sub, TitledLabel } from '@nebula-js/ui';
 import {
   useCW20BalanceQuery,
   useCW20TokenInfoQuery,
