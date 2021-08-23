@@ -1,4 +1,4 @@
-import { formatExecuteMsgNumber } from '@nebula-js/notation';
+import { formatExecuteMsgNumber } from '@libs/formatter';
 import { CT, CW20Addr, HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
 import {
   cw20SellTokenTx,

@@ -1,4 +1,4 @@
-import { microfy } from '@nebula-js/notation';
+import { microfy } from '@libs/formatter';
 import { cluster, CT, HumanAddr, Token, u, UST } from '@nebula-js/types';
 import { MantleFetch } from '@libs/mantle';
 import { FormReturn } from '@libs/use-form';

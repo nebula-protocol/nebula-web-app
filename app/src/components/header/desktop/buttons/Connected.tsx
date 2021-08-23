@@ -1,6 +1,6 @@
 import { ClickAwayListener, Grow, Popper } from '@material-ui/core';
 import { ChevronRightIcon, WalletIcon } from '@nebula-js/icons';
-import { demicrofy, formatTokenWithPostfixUnits } from '@nebula-js/notation';
+import { demicrofy, formatTokenWithPostfixUnits } from '@libs/formatter';
 import { EmptyButton, EmptyButtonProps, EmptyIconHolder } from '@nebula-js/ui';
 import { NebulaTokenBalances } from '@nebula-js/webapp-fns';
 import { useConnectedWallet } from '@terra-money/wallet-provider';

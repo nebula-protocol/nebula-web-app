@@ -1,4 +1,4 @@
-import { NoMicro, Token, u } from '@nebula-js/types';
+import { NoMicro, Token, u } from '@libs/types';
 import big, { BigSource } from 'big.js';
 import { demicrofy, MICRO } from './currency';
 import { formatDemimal, formatInteger } from './unit.format';
@@ -67,11 +67,13 @@ export function formatUTokenWithPostfixUnits(n: u<Token<BigSource>>): string {
 // ---------------------------------------------
 // unspecific format functions
 // ---------------------------------------------
+// print decimal points
 export function formatUTokenDecimal2(n: u<Token<BigSource>>): string {
   const bn = big(n).div(MICRO);
   return bn.gte(M) ? d2Formatter(bn.div(M)) + 'M' : d2Formatter(bn);
 }
 
+// print only integers
 export function formatTokenIntegerWithPostfixUnits(
   n: Token<BigSource>,
 ): string {

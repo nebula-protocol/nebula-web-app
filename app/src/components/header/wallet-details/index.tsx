@@ -1,5 +1,5 @@
 import { CallMade, Check } from '@material-ui/icons';
-import { formatUTokenWithPostfixUnits, truncate } from '@nebula-js/notation';
+import { formatUTokenWithPostfixUnits, truncate } from '@libs/formatter';
 import { Button, Tooltip } from '@nebula-js/ui';
 import { NebulaTokenBalances } from '@nebula-js/webapp-fns';
 import { useConnectedWallet, useWallet } from '@terra-money/wallet-provider';

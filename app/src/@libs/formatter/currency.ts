@@ -1,5 +1,4 @@
-import { NominalType } from '@libs/types';
-import { Token, u } from '@nebula-js/types';
+import { NominalType, Token, u } from '@libs/types';
 import big, { Big, BigSource } from 'big.js';
 
 // ---------------------------------------------

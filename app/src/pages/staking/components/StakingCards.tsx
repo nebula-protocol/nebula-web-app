@@ -1,4 +1,4 @@
-import { formatUTokenWithPostfixUnits } from '@nebula-js/notation';
+import { formatUTokenWithPostfixUnits } from '@libs/formatter';
 import {
   AnimateNumber,
   breakpoints,

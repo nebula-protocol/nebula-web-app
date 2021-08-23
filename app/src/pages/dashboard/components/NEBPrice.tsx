@@ -1,4 +1,4 @@
-import { formatToken } from '@nebula-js/notation';
+import { formatToken } from '@libs/formatter';
 import { NEB } from '@nebula-js/types';
 import { AnimateNumber, DiffSpan, Sub } from '@nebula-js/ui';
 import {

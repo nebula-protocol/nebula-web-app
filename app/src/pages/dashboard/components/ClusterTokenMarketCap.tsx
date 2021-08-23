@@ -1,4 +1,4 @@
-import { formatUTokenIntegerWithPostfixUnits } from '@nebula-js/notation';
+import { formatUTokenIntegerWithPostfixUnits } from '@libs/formatter';
 import { u, UST } from '@nebula-js/types';
 import { AnimateNumber, Sub } from '@nebula-js/ui';
 import { computeMarketCap } from '@nebula-js/webapp-fns';

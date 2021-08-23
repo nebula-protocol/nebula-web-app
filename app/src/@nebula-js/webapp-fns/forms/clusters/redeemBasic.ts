@@ -1,4 +1,4 @@
-import { microfy } from '@nebula-js/notation';
+import { microfy } from '@libs/formatter';
 import { cluster, CT, NoMicro, Token, u, UST } from '@nebula-js/types';
 import { sum, vectorMultiply } from '@libs/big-math';
 import { MantleFetch } from '@libs/mantle';

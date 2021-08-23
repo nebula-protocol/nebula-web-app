@@ -1,4 +1,4 @@
-import { Luna, u, UST } from '@nebula-js/types';
+import { Luna, u, UST } from '@libs/types';
 
 export function stripUUSD(uusd: string): u<UST> {
   return uusd.substring(0, uusd.length - 4) as u<UST>;

@@ -2,7 +2,7 @@ import { SendIcon } from '@nebula-js/icons';
 import {
   formatTokenWithPostfixUnits,
   formatUTokenWithPostfixUnits,
-} from '@nebula-js/notation';
+} from '@libs/formatter';
 import { u, UST } from '@nebula-js/types';
 import {
   Button,

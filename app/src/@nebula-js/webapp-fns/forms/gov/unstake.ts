@@ -1,4 +1,4 @@
-import { microfy } from '@nebula-js/notation';
+import { microfy } from '@libs/formatter';
 import { gov, NEB, u, UST } from '@nebula-js/types';
 import { max } from '@libs/big-math';
 import { FormReturn } from '@libs/use-form';

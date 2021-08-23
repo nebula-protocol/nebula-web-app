@@ -1,4 +1,4 @@
-import { truncate } from '@nebula-js/notation';
+import { truncate } from '@libs/formatter';
 import { Meta } from '@storybook/react';
 import { Timeout, UserDenied } from '@terra-dev/wallet-types';
 import {

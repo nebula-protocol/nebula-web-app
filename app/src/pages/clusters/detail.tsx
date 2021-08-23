@@ -1,4 +1,4 @@
-import { formatRate, formatUTokenDecimal2 } from '@nebula-js/notation';
+import { formatRate, formatUTokenDecimal2 } from '@libs/formatter';
 import { HumanAddr, JSDateTime, Rate, u, UST } from '@nebula-js/types';
 import {
   BarGraph,

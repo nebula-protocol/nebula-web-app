@@ -1,4 +1,4 @@
-import { formatToken } from '@nebula-js/notation';
+import { formatToken } from '@libs/formatter';
 import { JSDateTime, UST, u } from '@nebula-js/types';
 import { DiffSpan, Sub } from '@nebula-js/ui';
 import { Chart } from 'chart.js';

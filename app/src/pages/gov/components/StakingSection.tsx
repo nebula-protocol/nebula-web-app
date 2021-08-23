@@ -1,4 +1,4 @@
-import { formatRate, formatUTokenWithPostfixUnits } from '@nebula-js/notation';
+import { formatRate, formatUTokenWithPostfixUnits } from '@libs/formatter';
 import { NEB, Rate, u } from '@nebula-js/types';
 import {
   AnimateNumber,

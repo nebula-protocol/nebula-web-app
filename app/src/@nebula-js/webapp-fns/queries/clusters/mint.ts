@@ -1,4 +1,4 @@
-import { microfy } from '@nebula-js/notation';
+import { microfy } from '@libs/formatter';
 import { cluster, penalty, Token, u } from '@nebula-js/types';
 import {
   defaultMantleFetch,

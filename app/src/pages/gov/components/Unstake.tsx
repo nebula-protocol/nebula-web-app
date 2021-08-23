@@ -1,5 +1,5 @@
 import { WalletIcon } from '@nebula-js/icons';
-import { formatUInput, formatUToken, microfy } from '@nebula-js/notation';
+import { formatUInput, formatUToken, microfy } from '@libs/formatter';
 import { NEB, u, UST } from '@nebula-js/types';
 import {
   breakpoints,

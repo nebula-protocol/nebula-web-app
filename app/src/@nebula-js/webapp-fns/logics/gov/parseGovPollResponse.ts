@@ -1,4 +1,4 @@
-import { formatRate } from '@nebula-js/notation';
+import { formatRate } from '@libs/formatter';
 import { cw20, gov, NEB, Rate, u } from '@nebula-js/types';
 import big from 'big.js';
 

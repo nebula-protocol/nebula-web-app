@@ -1,4 +1,4 @@
-import { formatUInput, microfy } from '@nebula-js/notation';
+import { formatUInput, microfy } from '@libs/formatter';
 import { CT, LP, Token, u, UST } from '@nebula-js/types';
 import { NebulaTax } from '@nebula-js/webapp-fns/types';
 import { min } from '@libs/big-math';

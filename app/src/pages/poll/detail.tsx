@@ -2,7 +2,7 @@ import {
   formatRate,
   formatUTokenWithPostfixUnits,
   truncate,
-} from '@nebula-js/notation';
+} from '@libs/formatter';
 import { gov } from '@nebula-js/types';
 import {
   breakpoints,

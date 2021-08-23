@@ -1,5 +1,5 @@
 import { SendIcon } from '@nebula-js/icons';
-import { formatUTokenWithPostfixUnits } from '@nebula-js/notation';
+import { formatUTokenWithPostfixUnits } from '@libs/formatter';
 import {
   Button,
   Descriptions,

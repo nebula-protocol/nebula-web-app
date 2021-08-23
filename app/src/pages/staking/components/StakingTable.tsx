@@ -1,4 +1,4 @@
-import { formatTokenWithPostfixUnits } from '@nebula-js/notation';
+import { formatTokenWithPostfixUnits } from '@libs/formatter';
 import {
   Button,
   CoupledIconsHolder,

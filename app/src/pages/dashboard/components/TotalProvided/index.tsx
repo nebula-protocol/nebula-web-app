@@ -1,4 +1,4 @@
-import { formatUTokenWithPostfixUnits } from '@nebula-js/notation';
+import { formatUTokenWithPostfixUnits } from '@libs/formatter';
 import { JSDateTime, u, UST } from '@nebula-js/types';
 import { AnimateNumber, DiffSpan, Sub } from '@nebula-js/ui';
 import { computeProvided } from '@nebula-js/webapp-fns';

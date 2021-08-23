@@ -1,5 +1,5 @@
 import { ExpandMore } from '@material-ui/icons';
-import { formatRate } from '@nebula-js/notation';
+import { formatRate } from '@libs/formatter';
 import { gov } from '@nebula-js/types';
 import {
   Button,

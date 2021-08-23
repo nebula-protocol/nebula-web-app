@@ -2,7 +2,7 @@ import {
   formatTokenIntegerWithPostfixUnits,
   formatUTokenIntegerWithPostfixUnits,
   stripUUSD,
-} from '@nebula-js/notation';
+} from '@libs/formatter';
 import { CW20Addr, HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
 import { floor } from '@libs/big-math';
 import {

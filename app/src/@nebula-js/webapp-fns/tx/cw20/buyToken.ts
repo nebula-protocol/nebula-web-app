@@ -1,7 +1,7 @@
 import {
   formatTokenWithPostfixUnits,
   formatUTokenIntegerWithPostfixUnits,
-} from '@nebula-js/notation';
+} from '@libs/formatter';
 import { HumanAddr, NativeDenom, Rate, Token, u, UST } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
 import { floor, min } from '@libs/big-math';

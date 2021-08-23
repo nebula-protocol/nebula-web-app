@@ -1,5 +1,5 @@
 import { InputAdornment } from '@material-ui/core';
-import { microfy } from '@nebula-js/notation';
+import { microfy } from '@libs/formatter';
 import { gov, NEB, Num, rs, u } from '@nebula-js/types';
 import { FormLabel, NumberInput } from '@nebula-js/ui';
 import { useNebulaWebapp } from '@nebula-js/webapp-provider';

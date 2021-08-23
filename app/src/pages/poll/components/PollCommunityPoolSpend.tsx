@@ -1,6 +1,6 @@
 import { InputAdornment } from '@material-ui/core';
 import { WalletIcon } from '@nebula-js/icons';
-import { formatUInput, formatUToken, microfy } from '@nebula-js/notation';
+import { formatUInput, formatUToken, microfy } from '@libs/formatter';
 import { community, gov, HumanAddr, NEB, u } from '@nebula-js/types';
 import {
   FormLabel,
