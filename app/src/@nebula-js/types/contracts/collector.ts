@@ -1,4 +1,4 @@
-import { HumanAddr } from './common';
+import { HumanAddr } from '@libs/types';
 
 export namespace collector {
   // ---------------------------------------------

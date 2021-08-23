@@ -1,6 +1,5 @@
-import { Num } from '@nebula-js/types/units';
+import { Num, rs } from '@libs/types';
 import { CT, Token, u } from '../tokens';
-import { rs } from './common';
 
 export namespace penalty {
   // ---------------------------------------------

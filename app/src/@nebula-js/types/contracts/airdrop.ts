@@ -1,5 +1,5 @@
-import { u, NEB } from '../tokens';
-import { CW20Addr, HumanAddr, rs } from './common';
+import { CW20Addr, HumanAddr, rs } from '@libs/types';
+import { NEB, u } from '../tokens';
 
 export namespace airdrop {
   // ---------------------------------------------

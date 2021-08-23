@@ -1,5 +1,5 @@
+import { CW20Addr, HumanAddr, LPAddr, NativeDenom, rs } from '@libs/types';
 import { LP, Token, u } from '../tokens';
-import { CW20Addr, HumanAddr, LPAddr, NativeDenom, rs } from './common';
 
 export namespace terraswap {
   export type CW20AssetInfo = { token: { contract_addr: CW20Addr } };

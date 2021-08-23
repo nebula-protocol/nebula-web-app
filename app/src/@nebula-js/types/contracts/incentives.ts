@@ -1,5 +1,5 @@
+import { HumanAddr, rs } from '@libs/types';
 import { Token } from '../tokens';
-import { HumanAddr, rs } from './common';
 import { terraswap } from './terraswap';
 
 export namespace incentives {
