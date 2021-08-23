@@ -6,7 +6,7 @@ import {
   u,
   UST,
 } from '@nebula-js/types';
-import { defaultMantleFetch, MantleFetch } from '@packages/mantle';
+import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
 import big, { Big, BigSource } from 'big.js';
 import { terraswapPairQuery } from '../../../queries/terraswap/pair';
 import { ClusterSimulatorWithPenalty } from './ClusterSimulatorWithPenalty';

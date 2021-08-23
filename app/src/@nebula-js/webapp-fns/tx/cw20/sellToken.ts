@@ -4,14 +4,14 @@ import {
   stripUUSD,
 } from '@nebula-js/notation';
 import { CW20Addr, HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
-import { floor } from '@packages/big-math';
+import { floor } from '@libs/big-math';
 import {
   pickAttributeValueByKey,
   pickEvent,
   pickRawLog,
   TxResultRendering,
   TxStreamPhase,
-} from '@packages/webapp-fns';
+} from '@libs/webapp-fns';
 import { pipe } from '@rx-stream/pipe';
 import { MsgExecuteContract, StdFee } from '@terra-money/terra.js';
 import big, { Big } from 'big.js';

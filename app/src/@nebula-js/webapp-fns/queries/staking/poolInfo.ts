@@ -13,7 +13,7 @@ import {
   MantleFetch,
   WasmQuery,
   WasmQueryData,
-} from '@packages/mantle';
+} from '@libs/mantle';
 import { cw20PoolInfoQuery } from '../cw20/poolInfo';
 import { TerraswapPoolInfo } from '../terraswap/pool';
 

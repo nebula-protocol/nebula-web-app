@@ -4,7 +4,7 @@ import {
   mantle,
   MantleFetch,
   WasmQuery,
-} from '@packages/mantle';
+} from '@libs/mantle';
 import { clustersListQuery } from './list';
 
 interface ClusterTokenListWasmQuery {

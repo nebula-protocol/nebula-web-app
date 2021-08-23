@@ -1,7 +1,7 @@
 import { microfy } from '@nebula-js/notation';
 import { cluster, CT, HumanAddr, Token, u, UST } from '@nebula-js/types';
-import { MantleFetch } from '@packages/mantle';
-import { FormReturn } from '@packages/use-form';
+import { MantleFetch } from '@libs/mantle';
+import { FormReturn } from '@libs/use-form';
 import { BigSource } from 'big.js';
 import { EasyMintOptimizer } from '../../logics/clusters/easyMint/EasyMintOptimizer';
 import { computeMaxUstBalanceForUstTransfer } from '../../logics/computeMaxUstBalanceForUstTransfer';

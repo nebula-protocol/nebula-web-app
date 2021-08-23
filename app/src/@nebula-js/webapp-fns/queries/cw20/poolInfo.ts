@@ -9,7 +9,7 @@ import {
 } from '@nebula-js/types';
 import { cw20TokenInfoQuery } from '@nebula-js/webapp-fns/queries/cw20/tokenInfo';
 import { terraswapPairQuery } from '@nebula-js/webapp-fns/queries/terraswap/pair';
-import { defaultMantleFetch, MantleFetch } from '@packages/mantle';
+import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
 import { TerraswapPoolInfo, terraswapPoolQuery } from '../terraswap/pool';
 
 export type CW20PoolInfo<T extends Token> = {

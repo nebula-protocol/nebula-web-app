@@ -3,10 +3,10 @@ import {
   StakingRewardInfo,
   stakingRewardInfoQuery,
 } from '@nebula-js/webapp-fns';
-import { createQueryFn } from '@packages/react-query-utils';
-import { useBrowserInactive } from '@packages/use-browser-inactive';
+import { createQueryFn } from '@libs/react-query-utils';
+import { useBrowserInactive } from '@libs/use-browser-inactive';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useTerraWebapp } from '@packages/webapp-provider';
+import { useTerraWebapp } from '@libs/webapp-provider';
 import { useQuery, UseQueryResult } from 'react-query';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { NEBULA_QUERY_KEYS } from '../../env';

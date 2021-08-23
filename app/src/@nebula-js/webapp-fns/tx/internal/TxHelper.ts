@@ -2,11 +2,7 @@ import { formatUToken } from '@nebula-js/notation';
 import { u, UST } from '@nebula-js/types';
 import { NetworkInfo, TxResult } from '@terra-dev/wallet-types';
 import { CreateTxOptions } from '@terra-money/terra.js';
-import {
-  TxReceipt,
-  TxResultRendering,
-  TxStreamPhase,
-} from '@packages/webapp-fns';
+import { TxReceipt, TxResultRendering, TxStreamPhase } from '@libs/webapp-fns';
 import { BigSource } from 'big.js';
 
 export class TxHelper {

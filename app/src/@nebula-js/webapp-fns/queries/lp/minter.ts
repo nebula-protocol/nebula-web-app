@@ -5,7 +5,7 @@ import {
   MantleFetch,
   WasmQuery,
   WasmQueryData,
-} from '@packages/mantle';
+} from '@libs/mantle';
 
 interface LpMinterWasmQuery {
   minter: WasmQuery<lp.Minter, lp.MinterResponse>;

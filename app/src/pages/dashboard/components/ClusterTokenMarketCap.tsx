@@ -3,7 +3,7 @@ import { u, UST } from '@nebula-js/types';
 import { AnimateNumber, Sub } from '@nebula-js/ui';
 import { computeMarketCap } from '@nebula-js/webapp-fns';
 import { useClustersInfoListQuery } from '@nebula-js/webapp-provider';
-import { sum } from '@packages/big-math';
+import { sum } from '@libs/big-math';
 import big, { Big } from 'big.js';
 import React, { useMemo } from 'react';
 import styled from 'styled-components';

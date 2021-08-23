@@ -1,8 +1,8 @@
 import { CW20Addr, Token } from '@nebula-js/types';
 import { CW20TokenInfo, cw20TokenInfoQuery } from '@nebula-js/webapp-fns';
-import { createQueryFn } from '@packages/react-query-utils';
-import { useBrowserInactive } from '@packages/use-browser-inactive';
-import { useTerraWebapp } from '@packages/webapp-provider';
+import { createQueryFn } from '@libs/react-query-utils';
+import { useBrowserInactive } from '@libs/use-browser-inactive';
+import { useTerraWebapp } from '@libs/webapp-provider';
 import { useQuery, UseQueryResult } from 'react-query';
 import { NEBULA_QUERY_KEYS } from '../../env';
 

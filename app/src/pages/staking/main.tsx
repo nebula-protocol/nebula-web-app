@@ -4,8 +4,8 @@ import {
   useNEBPoolQuery,
   useStakingPoolInfoListQuery,
 } from '@nebula-js/webapp-provider';
-import { useLocalStorage } from '@packages/use-local-storage';
-import { useQueryBoundInput } from '@packages/use-query-bound-input';
+import { useLocalStorage } from '@libs/use-local-storage';
+import { useQueryBoundInput } from '@libs/use-query-bound-input';
 import { MainLayout } from 'components/layouts/MainLayout';
 import { fixHMR } from 'fix-hmr';
 import { StakingCards } from 'pages/staking/components/StakingCards';

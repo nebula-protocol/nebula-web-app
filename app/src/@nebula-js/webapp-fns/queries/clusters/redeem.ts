@@ -6,7 +6,7 @@ import {
   MantleFetch,
   WasmQuery,
   WasmQueryData,
-} from '@packages/mantle';
+} from '@libs/mantle';
 
 interface ClusterRedeemWasmQuery {
   redeem: WasmQuery<penalty.Redeem, penalty.RedeemResponse>;

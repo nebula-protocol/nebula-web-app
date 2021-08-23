@@ -1,4 +1,4 @@
-import { useRestrictedNumberInput } from '@packages/use-restricted-input';
+import { useRestrictedNumberInput } from '@libs/use-restricted-input';
 import React, {
   ChangeEvent,
   DetailedHTMLProps,

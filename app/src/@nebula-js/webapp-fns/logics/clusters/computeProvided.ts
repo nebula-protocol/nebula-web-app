@@ -1,5 +1,5 @@
 import { cluster, u, UST } from '@nebula-js/types';
-import { sum, vectorMultiply } from '@packages/big-math';
+import { sum, vectorMultiply } from '@libs/big-math';
 import { Big } from 'big.js';
 
 export function computeProvided(

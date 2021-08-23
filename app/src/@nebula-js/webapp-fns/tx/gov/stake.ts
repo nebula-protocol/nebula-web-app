@@ -1,13 +1,13 @@
 import { cw20, CW20Addr, gov, HumanAddr, NEB, u } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
-import { floor } from '@packages/big-math';
+import { floor } from '@libs/big-math';
 import { MsgExecuteContract, StdFee } from '@terra-money/terra.js';
 import {
   pickEvent,
   pickRawLog,
   TxResultRendering,
   TxStreamPhase,
-} from '@packages/webapp-fns';
+} from '@libs/webapp-fns';
 import { Observable } from 'rxjs';
 import { govStakerQuery } from '../../queries/gov/staker';
 import { _catchTxError } from '../internal/_catchTxError';

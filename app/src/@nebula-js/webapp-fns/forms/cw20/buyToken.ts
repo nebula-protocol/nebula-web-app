@@ -8,9 +8,9 @@ import {
   u,
   UST,
 } from '@nebula-js/types';
-import { min } from '@packages/big-math';
-import { MantleFetch } from '@packages/mantle';
-import { FormFunction, FormReturn } from '@packages/use-form';
+import { min } from '@libs/big-math';
+import { MantleFetch } from '@libs/mantle';
+import { FormFunction, FormReturn } from '@libs/use-form';
 import big, { Big, BigSource } from 'big.js';
 import { computeMaxUstBalanceForUstTransfer } from '../../logics/computeMaxUstBalanceForUstTransfer';
 import { terraswapSimulationQuery } from '../../queries/terraswap/simulation';

@@ -5,7 +5,7 @@ import {
   MantleFetch,
   WasmQuery,
   WasmQueryData,
-} from '@packages/mantle';
+} from '@libs/mantle';
 
 interface ClusterStateWasmQuery {
   clusterState: WasmQuery<cluster.ClusterState, cluster.ClusterStateResponse>;

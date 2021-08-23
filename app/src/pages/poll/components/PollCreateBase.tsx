@@ -18,9 +18,9 @@ import {
 import {
   BytesValid,
   useValidateStringBytes,
-} from '@packages/use-string-bytes-length';
+} from '@libs/use-string-bytes-length';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useBank } from '@packages/webapp-provider';
+import { useBank } from '@libs/webapp-provider';
 import big from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { FormLayout } from 'components/layouts/FormLayout';

@@ -6,8 +6,8 @@ import {
   Token,
   u,
 } from '@nebula-js/types';
-import { defaultMantleFetch, MantleFetch } from '@packages/mantle';
-import { mantle } from '@packages/webapp-fns';
+import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
+import { mantle } from '@libs/webapp-fns';
 
 // language=graphql
 const TERRA_BALANCES_QUERY = `

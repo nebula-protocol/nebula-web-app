@@ -1,7 +1,7 @@
 import { JSDateTime, u, UST } from '@nebula-js/types';
 import { DiffSpan, Sub } from '@nebula-js/ui';
 import React from 'react';
-import { useStyle } from '@packages/style-router';
+import { useStyle } from '@libs/style-router';
 import styled from 'styled-components';
 import { BarChart } from './BarChart';
 

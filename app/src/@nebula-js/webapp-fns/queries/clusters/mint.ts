@@ -6,7 +6,7 @@ import {
   MantleFetch,
   WasmQuery,
   WasmQueryData,
-} from '@packages/mantle';
+} from '@libs/mantle';
 
 interface ClusterMintWasmQuery {
   mint: WasmQuery<penalty.Mint, penalty.MintResponse>;

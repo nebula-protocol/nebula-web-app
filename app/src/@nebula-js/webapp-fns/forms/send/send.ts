@@ -1,7 +1,7 @@
 import { microfy } from '@nebula-js/notation';
 import { Token, u, UST } from '@nebula-js/types';
-import { min } from '@packages/big-math';
-import { FormFunction, FormReturn } from '@packages/use-form';
+import { min } from '@libs/big-math';
+import { FormFunction, FormReturn } from '@libs/use-form';
 import { AccAddress } from '@terra-money/terra.js';
 import big, { BigSource } from 'big.js';
 import { computeMaxUstBalanceForUstTransfer } from '../../logics/computeMaxUstBalanceForUstTransfer';

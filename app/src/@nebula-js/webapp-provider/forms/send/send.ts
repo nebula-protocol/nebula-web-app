@@ -7,9 +7,9 @@ import {
   SendFormInput,
   SendTokenInfo,
 } from '@nebula-js/webapp-fns';
-import { useForm } from '@packages/use-form';
+import { useForm } from '@libs/use-form';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useBank, useTerraWebapp } from '@packages/webapp-provider';
+import { useBank, useTerraWebapp } from '@libs/webapp-provider';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { useSendBalanceQuery } from '../../queries/send/balance';
 

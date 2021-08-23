@@ -3,7 +3,7 @@ import { EmptyButton } from '@nebula-js/ui';
 import logoImage from 'components/assets/nebula-wide.svg';
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { useStyle } from '@packages/style-router';
+import { useStyle } from '@libs/style-router';
 import styled from 'styled-components';
 import { Wallet } from './Wallet';
 

@@ -1,5 +1,5 @@
 import { Rate, u, UST } from '@nebula-js/types';
-import { MantleFetch } from '@packages/mantle';
+import { MantleFetch } from '@libs/mantle';
 import { NetworkInfo, TxResult } from '@terra-dev/wallet-types';
 import { CreateTxOptions } from '@terra-money/terra.js';
 

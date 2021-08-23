@@ -4,7 +4,7 @@ import {
 } from '@nebula-js/notation';
 import { HumanAddr, NativeDenom, Rate, Token, u, UST } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
-import { floor, min } from '@packages/big-math';
+import { floor, min } from '@libs/big-math';
 import { MsgExecuteContract, StdFee } from '@terra-money/terra.js';
 import {
   pickAttributeValueByKey,
@@ -12,7 +12,7 @@ import {
   pickRawLog,
   TxResultRendering,
   TxStreamPhase,
-} from '@packages/webapp-fns';
+} from '@libs/webapp-fns';
 import big, { Big } from 'big.js';
 import { Observable } from 'rxjs';
 import { NebulaTax } from '../../types';

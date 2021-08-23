@@ -1,5 +1,5 @@
 import { CW20Addr, HumanAddr } from '@nebula-js/types';
-import { defaultMantleFetch, MantleFetch } from '@packages/mantle';
+import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
 import { clusterStateListQuery } from '../clusters/stateList';
 import { StakingPoolInfo, stakingPoolInfoQuery } from './poolInfo';
 

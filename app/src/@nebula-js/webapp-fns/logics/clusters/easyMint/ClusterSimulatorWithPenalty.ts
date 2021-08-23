@@ -18,8 +18,8 @@ import {
   vectorMinus,
   vectorMultiply,
   vectorPlus,
-} from '@packages/big-math';
-import { defaultMantleFetch, MantleFetch } from '@packages/mantle';
+} from '@libs/big-math';
+import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
 import big, { Big, BigSource } from 'big.js';
 import { clusterPenaltyParamsQuery } from '../../../queries/clusters/penaltyParams';
 import { clusterStateQuery } from '../../../queries/clusters/state';

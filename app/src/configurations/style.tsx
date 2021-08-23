@@ -1,7 +1,7 @@
 import { GlobalStyle } from '@nebula-js/ui';
 import { ThemeProvider } from 'contexts/theme';
 import React, { ReactNode } from 'react';
-import { Breakpoint, CssRoute, StyleRouter } from '@packages/style-router';
+import { Breakpoint, CssRoute, StyleRouter } from '@libs/style-router';
 
 const breakpoints: Breakpoint[] = [
   ['small', '<=530'],

@@ -3,7 +3,7 @@ import {
   TEST_CONTRACT_ADDRESS,
   TEST_MANTLE_ENDPOINT,
 } from '@nebula-js/webapp-fns/test-env';
-import { defaultMantleFetch } from '@packages/mantle';
+import { defaultMantleFetch } from '@libs/mantle';
 
 describe('clusters/infoList', () => {
   test('should get result data', async () => {

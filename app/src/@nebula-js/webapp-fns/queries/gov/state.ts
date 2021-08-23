@@ -5,7 +5,7 @@ import {
   MantleFetch,
   WasmQuery,
   WasmQueryData,
-} from '@packages/mantle';
+} from '@libs/mantle';
 
 interface GovStateWasmQuery {
   govState: WasmQuery<gov.State, gov.StateResponse>;

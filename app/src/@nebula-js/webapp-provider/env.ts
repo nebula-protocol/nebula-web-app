@@ -1,4 +1,4 @@
-import { TERRA_QUERY_KEY } from '@packages/webapp-provider';
+import { TERRA_QUERY_KEY } from '@libs/webapp-provider';
 
 export enum NEBULA_TX_KEYS {
   CW20_BUY = 'NEBULA_TX_CW20_BUY',

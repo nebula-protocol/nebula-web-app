@@ -4,8 +4,8 @@ import {
   NebulaTax,
   NebulaTokenBalances,
 } from '@nebula-js/webapp-fns';
-import { useForm } from '@packages/use-form';
-import { useBank, useTerraWebapp } from '@packages/webapp-provider';
+import { useForm } from '@libs/use-form';
+import { useBank, useTerraWebapp } from '@libs/webapp-provider';
 import { useNebulaWebapp } from '../../contexts/webapp';
 
 export interface ClusterMintBasicFormParams {

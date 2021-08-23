@@ -5,9 +5,9 @@ import {
   stakingStakeForm,
   StakingStakeFormInput,
 } from '@nebula-js/webapp-fns';
-import { useForm } from '@packages/use-form';
+import { useForm } from '@libs/use-form';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useBank } from '@packages/webapp-provider';
+import { useBank } from '@libs/webapp-provider';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { useCW20BalanceQuery } from '../../queries/cw20/balance';
 import { useTerraswapPoolQuery } from '../../queries/terraswap/pool';

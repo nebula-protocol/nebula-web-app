@@ -3,7 +3,7 @@ import { Clear } from '@material-ui/icons';
 import { terraswap, Token } from '@nebula-js/types';
 import { Dialog, EmptyButton, IconAndLabels, Search } from '@nebula-js/ui';
 import { findAssetTokenInfo, AssetTokenInfo } from '@nebula-js/webapp-fns';
-import { DialogProps, OpenDialog, useDialog } from '@packages/use-dialog';
+import { DialogProps, OpenDialog, useDialog } from '@libs/use-dialog';
 import React, { ReactNode, useMemo, useState } from 'react';
 import styled from 'styled-components';
 

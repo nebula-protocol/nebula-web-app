@@ -1,8 +1,8 @@
 import { microfy } from '@nebula-js/notation';
 import { LP, Token, u, UST } from '@nebula-js/types';
 import { NebulaTax } from '@nebula-js/webapp-fns/types';
-import { min } from '@packages/big-math';
-import { FormFunction, FormReturn } from '@packages/use-form';
+import { min } from '@libs/big-math';
+import { FormFunction, FormReturn } from '@libs/use-form';
 import big, { Big, BigSource } from 'big.js';
 import { TerraswapPoolInfo } from '../../queries/terraswap/pool';
 

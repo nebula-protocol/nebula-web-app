@@ -5,7 +5,7 @@ import { Chart } from 'chart.js';
 import c from 'color';
 import { format } from 'date-fns';
 import React, { Component, createRef } from 'react';
-import { getCssVariable } from '@packages/style-router';
+import { getCssVariable } from '@libs/style-router';
 import styled from 'styled-components';
 
 interface ChartData {

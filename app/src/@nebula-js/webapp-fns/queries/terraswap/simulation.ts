@@ -1,6 +1,6 @@
 import { HumanAddr, terraswap, Token } from '@nebula-js/types';
-import { defaultMantleFetch, MantleFetch } from '@packages/mantle';
-import { mantle, WasmQuery, WasmQueryData } from '@packages/webapp-fns';
+import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
+import { mantle, WasmQuery, WasmQueryData } from '@libs/webapp-fns';
 
 export interface TerraswapSimulationWasmQuery {
   simulation: WasmQuery<

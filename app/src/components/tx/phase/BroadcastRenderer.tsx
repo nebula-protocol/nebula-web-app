@@ -1,4 +1,4 @@
-import { TxReceipt } from '@packages/webapp-fns';
+import { TxReceipt } from '@libs/webapp-fns';
 import { fixHMR } from 'fix-hmr';
 import React from 'react';
 import { GuardSpinner } from 'react-spinners-kit';
