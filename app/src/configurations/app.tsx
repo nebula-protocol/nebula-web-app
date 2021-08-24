@@ -1,16 +1,16 @@
+import { patchReactQueryFocusRefetching } from '@libs/patch-react-query-focus-refetching';
+import { BrowserInactiveProvider } from '@libs/use-browser-inactive';
+import { GoogleAnalytics } from '@libs/use-google-analytics';
+import { RouterScrollRestoration } from '@libs/use-router-scroll-restoration';
+import { BankProvider, TerraWebappProvider } from '@libs/webapp-provider';
 import {
   NEBULA_TX_REFETCH_MAP,
   NebulaWebappProvider,
 } from '@nebula-js/webapp-provider';
 import { captureException } from '@sentry/react';
-import { patchReactQueryFocusRefetching } from '@libs/patch-react-query-focus-refetching';
 import { ReadonlyWalletSession } from '@terra-dev/readonly-wallet';
-import { BrowserInactiveProvider } from '@libs/use-browser-inactive';
-import { GoogleAnalytics } from '@libs/use-google-analytics';
-import { RouterScrollRestoration } from '@libs/use-router-scroll-restoration';
 import { NetworkInfo } from '@terra-dev/wallet-types';
 import { WalletProvider } from '@terra-money/wallet-provider';
-import { BankProvider, TerraWebappProvider } from '@libs/webapp-provider';
 import { useReadonlyWalletDialog } from 'components/dialogs/useReadonlyWalletDialog';
 import { StyleProviders } from 'configurations/style';
 import { TxBroadcastProvider } from 'contexts/tx-broadcast';
@@ -71,7 +71,9 @@ export function AppProviders({ children }: { children: ReactNode }) {
                 maxCapTokenDenoms={MAX_CAP_TOKEN_DENOMS}
               >
                 <NebulaWebappProvider>
-                  <GoogleAnalytics trackingId={GA_TRACKING_ID} />
+                  {GA_TRACKING_ID && (
+                    <GoogleAnalytics trackingId={GA_TRACKING_ID} />
+                  )}
                   <RouterScrollRestoration />
                   <StyleProviders>
                     <TxBroadcastProvider>{children}</TxBroadcastProvider>

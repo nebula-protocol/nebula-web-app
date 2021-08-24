@@ -49,5 +49,5 @@ export const ON_PRODUCTION =
   global.location.host === 'anchor.money' ||
   global.location.host === 'anchor.market';
 
-// TODO: change this google analytics tracking id - currently this id is anchor's
-export const GA_TRACKING_ID = 'G-H42LRVHR5Y';
+// TODO: set ga tracking id
+export const GA_TRACKING_ID = process.env.GA_TRACKING_ID;
