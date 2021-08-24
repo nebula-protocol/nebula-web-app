@@ -1,12 +1,12 @@
+import { useForm } from '@libs/use-form';
+import { useBank, useTerraWebapp } from '@libs/webapp-provider';
 import { cluster, CT, u } from '@nebula-js/types';
 import {
   clusterRedeemBasicForm,
   NebulaTax,
   NebulaTokenBalances,
 } from '@nebula-js/webapp-fns';
-import { useForm } from '@libs/use-form';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useBank, useTerraWebapp } from '@libs/webapp-provider';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { useCW20BalanceQuery } from '../../queries/cw20/balance';
 
@@ -19,7 +19,8 @@ export function useClusterRedeemBasicForm({
 }: ClusterRedeemBasicFormParams) {
   const connectedWallet = useConnectedWallet();
 
-  const { mantleFetch, mantleEndpoint, lastSyncedHeight } = useTerraWebapp();
+  const { mantleFetch, mantleEndpoint, lastSyncedHeight, gasPrice } =
+    useTerraWebapp();
 
   const { constants } = useNebulaWebapp();
 
@@ -41,7 +42,7 @@ export function useClusterRedeemBasicForm({
       clusterState,
       fixedGas: constants.fixedGas,
       clusterFee: constants.clusterFee,
-      gasPriceEndpoint: constants.gasPriceEndpoint,
+      gasPrice,
     },
     () => {
       return {

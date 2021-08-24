@@ -1,12 +1,11 @@
 import {
   ContractAddress,
   CW20Addr,
+  Gas,
   HumanAddr,
   Rate,
-  u,
-  UST,
 } from '@nebula-js/types';
-import { NebulaContants } from './types';
+import { NebulaContantsInput } from './types';
 
 export const DEFAULT_CONTRACT_ADDRESS: Record<string, ContractAddress> = {
   testnet: {
@@ -29,29 +28,29 @@ export const DEFAULT_CONTRACT_ADDRESS: Record<string, ContractAddress> = {
   },
 };
 
-export const DEFAULT_CONSTANTS: Record<string, NebulaContants> = {
+export const DEFAULT_CONSTANTS: Record<string, NebulaContantsInput> = {
   mainnet: {
-    gasFee: 1_000_000 as u<UST<number>>,
-    fixedGas: 635_000 as u<UST<number>>,
+    gasFee: 1_000_000 as Gas,
+    fixedGasGas: 1_671_053 as Gas,
+    //fixedGas: 635_000 as u<UST<number>>,
     blocksPerYear: 4_656_810,
     gasAdjustment: 1.6 as Rate<number>,
-    gasPriceEndpoint: 'https://fcd.terra.dev/v1/txs/gas_prices',
     clusterFee: {
-      base: 12_700_000,
-      perAsset: 762_000,
-      gasLimitPerAsset: 10_000,
+      base: 12_700_000 as Gas,
+      perAsset: 762_000 as Gas,
+      gasLimitPerAsset: 10_000 as Gas,
     },
   },
   testnet: {
-    gasFee: 1_000_000 as u<UST<number>>,
-    fixedGas: 635_000 as u<UST<number>>,
+    gasFee: 1_000_000 as Gas,
+    fixedGasGas: 1_671_053 as Gas,
+    //fixedGas: 635_000 as u<UST<number>>,
     blocksPerYear: 4_656_810,
     gasAdjustment: 1.6 as Rate<number>,
-    gasPriceEndpoint: 'https://tequila-fcd.terra.dev/v1/txs/gas_prices',
     clusterFee: {
-      base: 12_700_000,
-      perAsset: 762_000,
-      gasLimitPerAsset: 20_000,
+      base: 12_700_000 as Gas,
+      perAsset: 762_000 as Gas,
+      gasLimitPerAsset: 10_000 as Gas,
     },
   },
 };

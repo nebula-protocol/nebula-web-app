@@ -1,7 +1,7 @@
-import { HumanAddr, terraswap, Token, u, UST } from '@nebula-js/types';
+import { useRefetchQueries, useTerraWebapp } from '@libs/webapp-provider';
+import { Gas, HumanAddr, terraswap, Token, u, UST } from '@nebula-js/types';
 import { clusterArbMintTx } from '@nebula-js/webapp-fns';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useRefetchQueries, useTerraWebapp } from '@libs/webapp-provider';
 import { useCallback } from 'react';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { NEBULA_TX_KEYS } from '../../env';
@@ -44,7 +44,7 @@ export function useClusterArbMintTx(
         assets,
         amounts,
         fixedGas,
-        gasFee: gasFee + clusterFee.gasLimitPerAsset * assets.length,
+        gasFee: (gasFee + clusterFee.gasLimitPerAsset * assets.length) as Gas,
         gasAdjustment,
         mantleEndpoint,
         mantleFetch,

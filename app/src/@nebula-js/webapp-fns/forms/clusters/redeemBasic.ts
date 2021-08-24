@@ -1,12 +1,13 @@
-import { microfy } from '@libs/formatter';
-import { cluster, CT, NoMicro, Token, u, UST } from '@nebula-js/types';
 import { sum, vectorMultiply } from '@libs/big-math';
+import { microfy } from '@libs/formatter';
 import { MantleFetch } from '@libs/mantle';
 import { FormReturn } from '@libs/use-form';
+import { GasPrice } from '@libs/webapp-fns';
+import { cluster, CT, NoMicro, Token, u, UST } from '@nebula-js/types';
 import big, { BigSource } from 'big.js';
-import { clusterTxFeeQuery } from '../../queries/clusters/clusterTxFee';
+import { computeClusterTxFee } from '../../logics/clusters/computeClusterTxFee';
 import { clusterRedeemQuery } from '../../queries/clusters/redeem';
-import { ClusterFee, NebulaTax } from '../../types';
+import { ClusterFeeInput, NebulaTax } from '../../types';
 
 export interface ClusterRedeemBasicFormInput {
   tokenAmount: CT & NoMicro;
@@ -23,8 +24,8 @@ export interface ClusterRedeemBasicFormDependency {
   tokenBalance: u<CT>;
   tax: NebulaTax;
   fixedGas: u<UST<BigSource>>;
-  gasPriceEndpoint: string;
-  clusterFee: ClusterFee;
+  gasPrice: GasPrice;
+  clusterFee: ClusterFeeInput;
 }
 
 export interface ClusterRedeemBasicFormStates
@@ -84,24 +85,23 @@ export const clusterRedeemBasicForm = (
       dependency.lastSyncedHeight !== prevDependency?.lastSyncedHeight ||
       dependency.clusterState !== prevDependency?.clusterState ||
       dependency.clusterFee !== prevDependency?.clusterFee ||
+      dependency.gasPrice !== prevDependency?.gasPrice ||
       input.tokenAmount !== prevInput?.tokenAmount
     ) {
-      asyncStates = Promise.all([
-        clusterRedeemQuery(
-          input.tokenAmount,
-          dependency.clusterState,
-          dependency.lastSyncedHeight,
-          dependency.mantleEndpoint,
-          dependency.mantleFetch,
-          dependency.requestInit,
-        ),
-        clusterTxFeeQuery(
-          dependency.gasPriceEndpoint,
+      asyncStates = clusterRedeemQuery(
+        input.tokenAmount,
+        dependency.clusterState,
+        dependency.lastSyncedHeight,
+        dependency.mantleEndpoint,
+        dependency.mantleFetch,
+        dependency.requestInit,
+      ).then(({ redeem }) => {
+        const clusterTxFee = computeClusterTxFee(
+          dependency.gasPrice,
           dependency.clusterFee,
           dependency.clusterState.target.length,
-          dependency.requestInit,
-        ),
-      ]).then(([{ redeem }, clusterTxFee]) => {
+        );
+
         return {
           burntTokenAmount: redeem.token_cost,
           redeemTokenAmounts: redeem.redeem_assets,

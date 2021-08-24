@@ -1,12 +1,13 @@
 import { microfy } from '@libs/formatter';
-import { cluster, CT, HumanAddr, Token, u, UST } from '@nebula-js/types';
 import { MantleFetch } from '@libs/mantle';
 import { FormReturn } from '@libs/use-form';
+import { GasPrice } from '@libs/webapp-fns';
+import { cluster, CT, HumanAddr, Token, u, UST } from '@nebula-js/types';
 import { BigSource } from 'big.js';
+import { computeClusterTxFee } from '../../logics/clusters/computeClusterTxFee';
 import { EasyMintOptimizer } from '../../logics/clusters/easyMint/EasyMintOptimizer';
 import { computeMaxUstBalanceForUstTransfer } from '../../logics/computeMaxUstBalanceForUstTransfer';
-import { clusterTxFeeQuery } from '../../queries/clusters/clusterTxFee';
-import { ClusterFee, NebulaTax } from '../../types';
+import { ClusterFeeInput, NebulaTax } from '../../types';
 
 export interface ClusterMintBasicFormInput {
   ustAmount: UST;
@@ -23,8 +24,8 @@ export interface ClusterMintBaicFormDependency {
   ustBalance: u<UST>;
   tax: NebulaTax;
   fixedGas: u<UST<BigSource>>;
-  gasPriceEndpoint: string;
-  clusterFee: ClusterFee;
+  gasPrice: GasPrice;
+  clusterFee: ClusterFeeInput;
 }
 
 export interface ClusterMintBasicFormStates extends ClusterMintBasicFormInput {
@@ -46,7 +47,7 @@ export const clusterMintBasicForm = ({
   terraswapFactoryAddr,
   tax,
   fixedGas,
-  gasPriceEndpoint,
+  gasPrice,
   clusterFee,
 }: ClusterMintBaicFormDependency) => {
   const maxUstAmount = computeMaxUstBalanceForUstTransfer(
@@ -71,7 +72,13 @@ export const clusterMintBasicForm = ({
     ClusterMintBasicFormStates,
     ClusterMintBasicFormAsyncStates
   > => {
-    const asyncStates = Promise.all([
+    const clusterTxFee = computeClusterTxFee(
+      gasPrice,
+      clusterFee,
+      clusterState.target.length,
+    );
+
+    const asyncStates =
       ustAmount.length > 0
         ? optimizer
             .resetInitialState()
@@ -97,19 +104,13 @@ export const clusterMintBasicForm = ({
                 mintedAmount: result.expectedClusterTokens.toFixed() as u<CT>,
               };
             })
-        : Promise.resolve({}),
-      clusterTxFeeQuery(
-        gasPriceEndpoint,
-        clusterFee,
-        clusterState.target.length,
-        requestInit,
-      ),
-    ]).then(([mintSimulation, clusterTxFee]) => {
-      return {
-        ...mintSimulation,
-        txFee: clusterTxFee.toFixed() as u<UST>,
-      };
-    });
+            .then((mintSimulation) => {
+              return {
+                ...mintSimulation,
+                txFee: clusterTxFee.toFixed() as u<UST>,
+              };
+            })
+        : Promise.resolve({});
 
     return [{ ustAmount, maxUstAmount, txFee: null }, asyncStates];
   };

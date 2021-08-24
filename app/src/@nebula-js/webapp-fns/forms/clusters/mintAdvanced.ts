@@ -1,13 +1,14 @@
-import { microfy } from '@libs/formatter';
-import { cluster, CT, terraswap, Token, u, UST } from '@nebula-js/types';
-import { clusterTxFeeQuery } from '@nebula-js/webapp-fns/queries/clusters/clusterTxFee';
 import { max, min } from '@libs/big-math';
+import { microfy } from '@libs/formatter';
 import { MantleFetch } from '@libs/mantle';
 import { FormReturn } from '@libs/use-form';
+import { GasPrice } from '@libs/webapp-fns';
+import { cluster, CT, terraswap, Token, u, UST } from '@nebula-js/types';
 import big, { Big, BigSource } from 'big.js';
+import { computeClusterTxFee } from '../../logics/clusters/computeClusterTxFee';
 import { clusterMintQuery } from '../../queries/clusters/mint';
 import { TerraBalances } from '../../queries/terra/balances';
-import { ClusterFee, NebulaTax } from '../../types';
+import { ClusterFeeInput, NebulaTax } from '../../types';
 
 export interface ClusterMintAdvancedFormInput {
   addedAssets: Set<terraswap.Asset<Token>>;
@@ -21,8 +22,8 @@ export interface ClusterMintAdvancedFormDependency {
   balances: TerraBalances | undefined;
   lastSyncedHeight: () => Promise<number>;
   clusterState: cluster.ClusterStateResponse;
-  gasPriceEndpoint: string;
-  clusterFee: ClusterFee;
+  gasPrice: GasPrice;
+  clusterFee: ClusterFeeInput;
   fixedGas: u<UST<BigSource>>;
   tax: NebulaTax;
 }
@@ -122,27 +123,26 @@ export const clusterMintAdvancedForm = (
       dependency.lastSyncedHeight !== prevDependency?.lastSyncedHeight ||
       dependency.clusterState !== prevDependency?.clusterState ||
       dependency.clusterFee !== prevDependency?.clusterFee ||
+      dependency.gasPrice !== prevDependency?.gasPrice ||
       input.amounts !== prevInput?.amounts
     ) {
       const hasAmounts = input.amounts.some((amount) => amount.length > 0);
 
       asyncStates = hasAmounts
-        ? Promise.all([
-            clusterMintQuery(
-              input.amounts,
-              dependency.clusterState,
-              dependency.lastSyncedHeight,
-              dependency.mantleEndpoint,
-              dependency.mantleFetch,
-              dependency.requestInit,
-            ),
-            clusterTxFeeQuery(
-              dependency.gasPriceEndpoint,
+        ? clusterMintQuery(
+            input.amounts,
+            dependency.clusterState,
+            dependency.lastSyncedHeight,
+            dependency.mantleEndpoint,
+            dependency.mantleFetch,
+            dependency.requestInit,
+          ).then(({ mint }) => {
+            const clusterTxFee = computeClusterTxFee(
+              dependency.gasPrice,
               dependency.clusterFee,
               dependency.clusterState.target.length,
-              dependency.requestInit,
-            ),
-          ]).then(([{ mint }, clusterTxFee]) => {
+            );
+
             let txFee: u<UST> | null;
 
             if (input.addedAssets.size > 0) {

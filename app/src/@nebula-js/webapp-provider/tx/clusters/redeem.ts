@@ -1,6 +1,8 @@
+import { useRefetchQueries, useTerraWebapp } from '@libs/webapp-provider';
 import {
   CT,
   CW20Addr,
+  Gas,
   HumanAddr,
   terraswap,
   Token,
@@ -10,7 +12,6 @@ import {
 import { clusterRedeemTx } from '@nebula-js/webapp-fns';
 import { NEBULA_TX_KEYS } from '@nebula-js/webapp-provider/env';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useRefetchQueries, useTerraWebapp } from '@libs/webapp-provider';
 import { useCallback } from 'react';
 import { useNebulaWebapp } from '../../contexts/webapp';
 
@@ -51,7 +52,7 @@ export function useClusterRedeemTx(
         clusterTokenAddr,
         amount,
         fixedGas,
-        gasFee: gasFee + clusterFee.gasLimitPerAsset * assets.length,
+        gasFee: (gasFee + clusterFee.gasLimitPerAsset * assets.length) as Gas,
         gasAdjustment,
         mantleEndpoint,
         mantleFetch,

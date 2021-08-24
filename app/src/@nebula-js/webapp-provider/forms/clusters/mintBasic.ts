@@ -1,11 +1,11 @@
+import { useForm } from '@libs/use-form';
+import { useBank, useTerraWebapp } from '@libs/webapp-provider';
 import { cluster, UST } from '@nebula-js/types';
 import {
   clusterMintBasicForm,
   NebulaTax,
   NebulaTokenBalances,
 } from '@nebula-js/webapp-fns';
-import { useForm } from '@libs/use-form';
-import { useBank, useTerraWebapp } from '@libs/webapp-provider';
 import { useNebulaWebapp } from '../../contexts/webapp';
 
 export interface ClusterMintBasicFormParams {
@@ -15,7 +15,7 @@ export interface ClusterMintBasicFormParams {
 export function useClusterMintBasicForm({
   clusterState,
 }: ClusterMintBasicFormParams) {
-  const { mantleFetch, mantleEndpoint } = useTerraWebapp();
+  const { mantleFetch, mantleEndpoint, gasPrice } = useTerraWebapp();
 
   const { constants, contractAddress } = useNebulaWebapp();
 
@@ -32,7 +32,7 @@ export function useClusterMintBasicForm({
       terraswapFactoryAddr: contractAddress.terraswap.factory,
       fixedGas: constants.fixedGas,
       clusterFee: constants.clusterFee,
-      gasPriceEndpoint: constants.gasPriceEndpoint,
+      gasPrice,
     },
     () => {
       return {

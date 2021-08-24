@@ -1,10 +1,13 @@
-import { ContractAddress } from '@nebula-js/types';
+import { useTerraWebapp } from '@libs/webapp-provider';
+import { ContractAddress, u, UST } from '@nebula-js/types';
 import {
   DEFAULT_CONSTANTS,
   DEFAULT_CONTRACT_ADDRESS,
   NebulaContants,
+  NebulaContantsInput,
 } from '@nebula-js/webapp-fns';
 import { useWallet } from '@terra-money/wallet-provider';
+import big from 'big.js';
 import React, {
   Consumer,
   Context,
@@ -17,7 +20,7 @@ import React, {
 export interface NebulaWebappProviderProps {
   children: ReactNode;
   contractAddress?: Record<string, ContractAddress>;
-  constants?: Record<string, NebulaContants>;
+  constants?: Record<string, NebulaContantsInput>;
 }
 
 export interface NebulaWebapp {
@@ -40,14 +43,23 @@ export function NebulaWebappProvider({
     alert(`Now only support "testnet". please change your network.`);
   }
 
-  const states = useMemo<NebulaWebapp>(
-    () => ({
+  const { gasPrice } = useTerraWebapp();
+
+  const states = useMemo<NebulaWebapp>(() => {
+    const constantsInput = constants[network.name] ?? constants['mainnet'];
+    const calculateGasCalculated = {
+      ...constantsInput,
+      fixedGas: Math.floor(
+        big(constantsInput.fixedGasGas).mul(gasPrice.uusd).toNumber(),
+      ) as u<UST<number>>,
+    };
+
+    return {
       contractAddress:
         contractAddress[network.name] ?? contractAddress['mainnet'],
-      constants: constants[network.name] ?? constants['mainnet'],
-    }),
-    [contractAddress, network.name, constants],
-  );
+      constants: calculateGasCalculated,
+    };
+  }, [constants, network.name, gasPrice.uusd, contractAddress]);
 
   return (
     <NebulaWebappContext.Provider value={states}>

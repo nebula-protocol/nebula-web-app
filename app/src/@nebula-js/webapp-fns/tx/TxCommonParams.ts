@@ -1,12 +1,12 @@
-import { Rate, u, UST } from '@nebula-js/types';
 import { MantleFetch } from '@libs/mantle';
+import { Gas, Rate, u, UST } from '@nebula-js/types';
 import { NetworkInfo, TxResult } from '@terra-dev/wallet-types';
 import { CreateTxOptions } from '@terra-money/terra.js';
 
 export interface TxCommonParams {
   // tx
   txFee: u<UST>;
-  gasFee: number;
+  gasFee: Gas;
   gasAdjustment: Rate<number>;
   fixedGas: u<UST<number>>;
   // network
