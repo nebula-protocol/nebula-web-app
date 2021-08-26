@@ -46,12 +46,12 @@ export const decorators = [
     >
       <CssRoute
         href={({ color }) =>
-          `https://terra-ux.vercel.app/styles/colors/${color}.css`
+          `/styles/colors/${color}.css`
         }
       />
       <CssRoute
         href={({ breakpoint }) =>
-          `https://terra-ux.vercel.app/styles/layouts/${breakpoint}.css`
+          `/styles/layouts/${breakpoint}.css`
         }
       />
 
