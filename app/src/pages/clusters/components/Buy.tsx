@@ -1,14 +1,16 @@
-import { ArrowSouthIcon, WalletIcon } from '@nebula-js/icons';
 import {
   formatFluidDecimalPoints,
   formatUInput,
   formatUToken,
   microfy,
 } from '@libs/formatter';
-import { CT, u, UST } from '@nebula-js/types';
+import { ArrowSouthIcon, WalletIcon } from '@nebula-js/icons';
+import { CT, Rate, u, UST } from '@nebula-js/types';
 import {
   Button,
+  Disclosure,
   EmptyButton,
+  FormLabel,
   IconSeparator,
   TokenInput,
   TokenSpan,
@@ -24,9 +26,10 @@ import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
+import { SlippageToleranceInput } from 'components/form/SlippageToleranceInput';
 import { ExchangeRateAB } from 'components/text/ExchangeRateAB';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 
 export interface ClusterBuyProps {
@@ -43,6 +46,8 @@ function ClusterBuyBase({
   const { broadcast } = useTxBroadcast();
 
   const [openConfirm, confirmElement] = useConfirm();
+
+  const [openMoreOptions, setOpenMoreOptions] = useState<boolean>(false);
 
   const postTx = useCW20BuyTokenTx(
     terraswapPair.contract_addr,
@@ -65,6 +70,7 @@ function ClusterBuyBase({
     async (
       ustAmount: UST,
       txFee: u<UST<BigSource>>,
+      maxSpread: Rate,
       warning: string | null,
     ) => {
       if (warning) {
@@ -82,6 +88,7 @@ function ClusterBuyBase({
       const stream = postTx?.({
         buyAmount: microfy(ustAmount).toFixed() as u<UST>,
         txFee: big(txFee).toFixed() as u<UST>,
+        maxSpread,
         onTxSucceed: initForm,
       });
 
@@ -148,6 +155,23 @@ function ClusterBuyBase({
         token={<TokenSpan>{clusterTokenInfo.symbol}</TokenSpan>}
       />
 
+      <Disclosure
+        className="more-options"
+        title="More Options"
+        open={openMoreOptions}
+        onChange={setOpenMoreOptions}
+      >
+        <FormLabel label="Max Spread">
+          <SlippageToleranceInput
+            initialCustomValue={'5' as Rate}
+            value={states.maxSpread}
+            onChange={(nextMaxSpread) =>
+              updateInput({ maxSpread: nextMaxSpread })
+            }
+          />
+        </FormLabel>
+      </Disclosure>
+
       <FeeBox className="feebox">
         {'beliefPrice' in states && (
           <li>
@@ -209,7 +233,12 @@ function ClusterBuyBase({
         onClick={() =>
           states.ustAmount &&
           'txFee' in states &&
-          proceed(states.ustAmount, states.txFee, states.warningNextTxFee)
+          proceed(
+            states.ustAmount,
+            states.txFee,
+            states.maxSpread,
+            states.warningNextTxFee,
+          )
         }
       >
         Buy
@@ -222,6 +251,10 @@ function ClusterBuyBase({
 
 export const ClusterBuy = styled(ClusterBuyBase)`
   font-size: 1rem;
+
+  .more-options {
+    margin-top: 2.14285714em;
+  }
 
   .feebox {
     margin-top: 2.14285714em;

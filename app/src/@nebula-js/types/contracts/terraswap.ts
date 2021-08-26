@@ -4,9 +4,11 @@ import {
   LP,
   LPAddr,
   NativeDenom,
+  Rate,
   rs,
   Token,
   u,
+  UST,
 } from '@libs/types';
 
 export namespace terraswap {
@@ -45,6 +47,40 @@ export namespace terraswap {
   }
 
   export namespace pair {
+    // ---------------------------------------------
+    // HandleMsg
+    // ---------------------------------------------
+    export interface ProvideLiquidity<A extends Token, B extends Token> {
+      provide_liquidity: {
+        assets: [Asset<A>, Asset<B>];
+        slippage_tolerance?: Rate<rs.Decimal>;
+        receiver?: HumanAddr;
+      };
+    }
+
+    export interface Swap<T extends Token> {
+      swap: {
+        offer_asset: Asset<T>;
+        belief_price?: UST<rs.Decimal>;
+        max_spread?: Rate<rs.Decimal>;
+        to?: HumanAddr;
+      };
+    }
+
+    // ---------------------------------------------
+    // CW20HookMsg
+    // ---------------------------------------------
+    export interface SwapHook {
+      swap: {
+        belief_price?: UST<rs.Decimal>;
+        max_spread?: Rate<rs.Decimal>;
+        to?: HumanAddr;
+      };
+    }
+
+    // ---------------------------------------------
+    // QueryMsg
+    // ---------------------------------------------
     export interface Pool {
       pool: {};
     }

@@ -3,6 +3,7 @@ import {
   CW20Addr,
   HumanAddr,
   NativeDenom,
+  Rate,
   staking,
   Token,
   u,
@@ -32,6 +33,7 @@ export function stakingStakeTx(
     tokenAmount: u<Token>;
     stakingAddr: HumanAddr;
     tokenAddr: CW20Addr;
+    slippageTolerance: Rate;
     tokenUstPairAddr: HumanAddr;
     onTxSucceed?: () => void;
   } & TxCommonParams,
@@ -70,7 +72,7 @@ export function stakingStakeTx(
                   amount: $.ustAmount,
                 },
               ],
-              slippage_tolerance: '0.01',
+              slippage_tolerance: $.slippageTolerance,
             },
           } as staking.AutoStake<UST, Token>,
           new Coins([new Coin('uusd', $.ustAmount)]),

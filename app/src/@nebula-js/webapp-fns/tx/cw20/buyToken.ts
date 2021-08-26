@@ -1,11 +1,8 @@
+import { floor, min } from '@libs/big-math';
 import {
   formatTokenWithPostfixUnits,
   formatUTokenIntegerWithPostfixUnits,
 } from '@libs/formatter';
-import { HumanAddr, NativeDenom, Rate, Token, u, UST } from '@nebula-js/types';
-import { pipe } from '@rx-stream/pipe';
-import { floor, min } from '@libs/big-math';
-import { MsgExecuteContract, StdFee } from '@terra-money/terra.js';
 import {
   pickAttributeValueByKey,
   pickEvent,
@@ -13,6 +10,17 @@ import {
   TxResultRendering,
   TxStreamPhase,
 } from '@libs/webapp-fns';
+import {
+  HumanAddr,
+  NativeDenom,
+  Rate,
+  terraswap,
+  Token,
+  u,
+  UST,
+} from '@nebula-js/types';
+import { pipe } from '@rx-stream/pipe';
+import { MsgExecuteContract, StdFee } from '@terra-money/terra.js';
 import big, { Big } from 'big.js';
 import { Observable } from 'rxjs';
 import { NebulaTax } from '../../types';
@@ -30,6 +38,7 @@ export function cw20BuyTokenTx(
     tokenUstPairAddr: HumanAddr;
     tokenSymbol: string;
     beliefPrice: UST;
+    /** = slippage_tolerance */
     maxSpread: Rate;
     tax: NebulaTax;
     onTxSucceed?: () => void;
@@ -54,10 +63,9 @@ export function cw20BuyTokenTx(
                 },
               },
               belief_price: $.beliefPrice,
-              // TODO restore max_spread
-              //max_spread: $.maxSpread,
+              max_spread: $.maxSpread,
             },
-          },
+          } as terraswap.pair.Swap<UST>,
           $.buyAmount + 'uusd',
         ),
       ],

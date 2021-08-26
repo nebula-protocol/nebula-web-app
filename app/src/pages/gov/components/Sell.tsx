@@ -5,11 +5,13 @@ import {
   formatUToken,
   microfy,
 } from '@libs/formatter';
-import { NEB, u, UST } from '@nebula-js/types';
+import { NEB, Rate, u, UST } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
+  Disclosure,
   EmptyButton,
+  FormLabel,
   IconSeparator,
   TokenInput,
   TokenSpan,
@@ -24,10 +26,11 @@ import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
+import { SlippageToleranceInput } from 'components/form/SlippageToleranceInput';
 import { ExchangeRateAB } from 'components/text/ExchangeRateAB';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 
 export interface SellProps {
@@ -40,6 +43,8 @@ function SellBase({ className }: SellProps) {
   const { broadcast } = useTxBroadcast();
 
   const { contractAddress } = useNebulaWebapp();
+
+  const [openMoreOptions, setOpenMoreOptions] = useState<boolean>(false);
 
   const postTx = useCW20SellTokenTx(
     contractAddress.cw20.NEB,
@@ -60,10 +65,11 @@ function SellBase({ className }: SellProps) {
   }, [updateInput]);
 
   const proceed = useCallback(
-    (tokenAmount: NEB, txFee: u<UST<BigSource>>) => {
+    (tokenAmount: NEB, txFee: u<UST<BigSource>>, maxSpread: Rate) => {
       const stream = postTx?.({
         sellAmount: microfy(tokenAmount).toFixed() as u<UST>,
         txFee: big(txFee).toFixed() as u<UST>,
+        maxSpread,
         onTxSucceed: initForm,
       });
 
@@ -130,6 +136,23 @@ function SellBase({ className }: SellProps) {
         token={<TokenSpan>UST</TokenSpan>}
       />
 
+      <Disclosure
+        className="more-options"
+        title="More Options"
+        open={openMoreOptions}
+        onChange={setOpenMoreOptions}
+      >
+        <FormLabel label="Max Spread">
+          <SlippageToleranceInput
+            initialCustomValue={'5' as Rate}
+            value={states.maxSpread}
+            onChange={(nextMaxSpread) =>
+              updateInput({ maxSpread: nextMaxSpread })
+            }
+          />
+        </FormLabel>
+      </Disclosure>
+
       <FeeBox className="feebox">
         {'beliefPrice' in states && (
           <li>
@@ -183,7 +206,7 @@ function SellBase({ className }: SellProps) {
         onClick={() =>
           states.tokenAmount &&
           'txFee' in states &&
-          proceed(states.tokenAmount, states.txFee)
+          proceed(states.tokenAmount, states.txFee, states.maxSpread)
         }
       >
         Sell
@@ -194,6 +217,10 @@ function SellBase({ className }: SellProps) {
 
 export const StyledSell = styled(SellBase)`
   font-size: 1rem;
+
+  .more-options {
+    margin-top: 2.14285714em;
+  }
 
   .feebox {
     margin-top: 2.8em;

@@ -12,9 +12,11 @@ export namespace cw20 {
   }
 
   export interface Send<T extends Token> {
-    amount: u<T>;
-    contract: HumanAddr;
-    msg: string;
+    send: {
+      amount: u<T>;
+      contract: HumanAddr;
+      msg: string;
+    };
   }
 
   // ---------------------------------------------

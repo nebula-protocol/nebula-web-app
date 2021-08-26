@@ -1,10 +1,9 @@
+import { floor } from '@libs/big-math';
 import {
   formatTokenIntegerWithPostfixUnits,
   formatUTokenIntegerWithPostfixUnits,
   stripUUSD,
 } from '@libs/formatter';
-import { CW20Addr, HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
-import { floor } from '@libs/big-math';
 import {
   pickAttributeValueByKey,
   pickEvent,
@@ -12,6 +11,16 @@ import {
   TxResultRendering,
   TxStreamPhase,
 } from '@libs/webapp-fns';
+import {
+  cw20,
+  CW20Addr,
+  HumanAddr,
+  Rate,
+  terraswap,
+  Token,
+  u,
+  UST,
+} from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
 import { MsgExecuteContract, StdFee } from '@terra-money/terra.js';
 import big, { Big } from 'big.js';
@@ -32,6 +41,7 @@ export function cw20SellTokenTx<T extends Token>(
     tokenUstPairAddr: HumanAddr;
     tokenSymbol: string;
     beliefPrice: T;
+    /** = slippage_tolerance */
     maxSpread: Rate;
     tax: NebulaTax;
     onTxSucceed?: () => void;
@@ -52,10 +62,10 @@ export function cw20SellTokenTx<T extends Token>(
                   belief_price: $.beliefPrice,
                   max_spread: $.maxSpread,
                 },
-              }),
-            ),
+              } as terraswap.pair.SwapHook),
+            ).toString('base64'),
           },
-        }),
+        } as cw20.Send<T>),
       ],
       fee: new StdFee($.gasFee, floor($.txFee) + 'uusd'),
       gasAdjustment: $.gasAdjustment,

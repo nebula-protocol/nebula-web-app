@@ -7,6 +7,7 @@ import React, {
   useState,
 } from 'react';
 import styled from 'styled-components';
+import { breakpoints } from '../env';
 
 export interface SwitchItem<T extends string> {
   label: ReactNode;
@@ -148,6 +149,31 @@ const StyledUL = styled.ul`
 
     &[aria-checked='true'] {
       background-color: var(--color-paleblue);
+    }
+  }
+
+  @media (max-width: ${breakpoints.mobile.max}px) {
+    display: flex;
+
+    height: 45px;
+
+    li {
+      min-width: 0;
+      padding: 0 calc(var(--item-padding) / 2);
+
+      &:not(:last-child) {
+        flex: 1;
+      }
+
+      &:last-child {
+        > div {
+          margin-left: 0.5em;
+
+          input {
+            max-width: 40px;
+          }
+        }
+      }
     }
   }
 `;

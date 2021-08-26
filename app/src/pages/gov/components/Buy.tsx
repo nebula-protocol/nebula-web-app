@@ -1,15 +1,17 @@
-import { ArrowSouthIcon, WalletIcon } from '@nebula-js/icons';
 import {
   formatFluidDecimalPoints,
   formatUInput,
   formatUToken,
   microfy,
 } from '@libs/formatter';
-import { NEB, u, UST } from '@nebula-js/types';
+import { ArrowSouthIcon, WalletIcon } from '@nebula-js/icons';
+import { NEB, Rate, u, UST } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
+  Disclosure,
   EmptyButton,
+  FormLabel,
   IconSeparator,
   TokenInput,
   TokenSpan,
@@ -25,10 +27,11 @@ import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
+import { SlippageToleranceInput } from 'components/form/SlippageToleranceInput';
 import { ExchangeRateAB } from 'components/text/ExchangeRateAB';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 
 export interface BuyProps {
@@ -41,6 +44,8 @@ function BuyBase({ className }: BuyProps) {
   const { broadcast } = useTxBroadcast();
 
   const [openConfirm, confirmElement] = useConfirm();
+
+  const [openMoreOptions, setOpenMoreOptions] = useState<boolean>(false);
 
   const { contractAddress } = useNebulaWebapp();
 
@@ -62,6 +67,7 @@ function BuyBase({ className }: BuyProps) {
     async (
       ustAmount: UST,
       txFee: u<UST<BigSource>>,
+      maxSpread: Rate,
       warning: string | null,
     ) => {
       if (warning) {
@@ -79,6 +85,7 @@ function BuyBase({ className }: BuyProps) {
       const stream = postTx?.({
         buyAmount: microfy(ustAmount).toFixed() as u<UST>,
         txFee: big(txFee).toFixed() as u<UST>,
+        maxSpread,
         onTxSucceed: initForm,
       });
 
@@ -145,6 +152,23 @@ function BuyBase({ className }: BuyProps) {
         token={<TokenSpan>NEB</TokenSpan>}
       />
 
+      <Disclosure
+        className="more-options"
+        title="More Options"
+        open={openMoreOptions}
+        onChange={setOpenMoreOptions}
+      >
+        <FormLabel label="Max Spread">
+          <SlippageToleranceInput
+            initialCustomValue={'5' as Rate}
+            value={states.maxSpread}
+            onChange={(nextMaxSpread) =>
+              updateInput({ maxSpread: nextMaxSpread })
+            }
+          />
+        </FormLabel>
+      </Disclosure>
+
       <FeeBox className="feebox">
         {'beliefPrice' in states && (
           <li>
@@ -202,7 +226,12 @@ function BuyBase({ className }: BuyProps) {
         onClick={() =>
           states.ustAmount &&
           'txFee' in states &&
-          proceed(states.ustAmount, states.txFee, states.warningNextTxFee)
+          proceed(
+            states.ustAmount,
+            states.txFee,
+            states.maxSpread,
+            states.warningNextTxFee,
+          )
         }
       >
         Buy
@@ -215,6 +244,10 @@ function BuyBase({ className }: BuyProps) {
 
 export const StyledBuy = styled(BuyBase)`
   font-size: 1rem;
+
+  .more-options {
+    margin-top: 2.14285714em;
+  }
 
   .feebox {
     margin-top: 2.8em;

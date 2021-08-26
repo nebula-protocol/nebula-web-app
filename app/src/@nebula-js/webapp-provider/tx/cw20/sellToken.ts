@@ -20,6 +20,7 @@ import { useTerraswapPoolQuery } from '../../queries/terraswap/pool';
 export interface CW20SellTokenTxParams<T extends Token> {
   sellAmount: u<T>;
   txFee: u<UST>;
+  maxSpread: Rate;
 
   onTxSucceed?: () => void;
 }
@@ -45,7 +46,12 @@ export function useCW20SellTokenTx<T extends Token>(
     useTerraswapPoolQuery<CT>(tokenUstPairAddr);
 
   const stream = useCallback(
-    ({ sellAmount, txFee, onTxSucceed }: CW20SellTokenTxParams<T>) => {
+    ({
+      sellAmount,
+      txFee,
+      maxSpread,
+      onTxSucceed,
+    }: CW20SellTokenTxParams<T>) => {
       if (
         !connectedWallet ||
         !connectedWallet.availablePost ||
@@ -67,7 +73,7 @@ export function useCW20SellTokenTx<T extends Token>(
         tokenUstPairAddr,
         tokenSymbol,
         tax,
-        maxSpread: '0.1' as Rate,
+        maxSpread,
         sellerAddr: connectedWallet.walletAddress,
         fixedGas,
         gasFee,

@@ -1,5 +1,5 @@
 import { formatUInput, microfy } from '@libs/formatter';
-import { CT, LP, Token, u, UST } from '@nebula-js/types';
+import { CT, LP, Rate, Token, u, UST } from '@nebula-js/types';
 import { NebulaTax } from '@nebula-js/webapp-fns/types';
 import { min } from '@libs/big-math';
 import { FormReturn } from '@libs/use-form';
@@ -10,6 +10,7 @@ import { TerraswapPoolInfo } from '../../queries/terraswap/pool';
 export interface StakingStakeFormInput {
   ustAmount?: UST;
   tokenAmount?: CT;
+  slippageTolerance: Rate;
 }
 
 export interface StakingStakeFormDependency {
@@ -25,6 +26,7 @@ export interface StakingStakeFormDependency {
 export interface StakingStakeFormStates extends StakingStakeFormInput {
   maxUstAmount: u<UST<BigSource>>;
   maxTokenAmount: u<CT>;
+  invalidSlippageTolerance: string | null;
   invalidTxFee: string | null;
   invalidUstAmount: string | null;
   invalidTokenAmount: string | null;
@@ -57,6 +59,7 @@ export const stakingStakeForm = ({
   return ({
     tokenAmount,
     ustAmount,
+    slippageTolerance,
   }: StakingStakeFormInput): FormReturn<
     StakingStakeFormStates,
     StakingStakeFormAsyncStates
@@ -66,16 +69,21 @@ export const stakingStakeForm = ({
     const tokenAmountExists: boolean =
       !!tokenAmount && tokenAmount.length > 0 && big(tokenAmount).gt(0);
 
+    const invalidSlippageTolerance =
+      slippageTolerance.length === 0 ? 'Slippage Tolerance is required' : null;
+
     if ((!ustAmountExists && !tokenAmountExists) || !poolInfo) {
       return [
         {
           ustAmount,
           tokenAmount,
+          slippageTolerance,
           maxUstAmount,
           maxTokenAmount,
           poolPrice: null,
           txFee: null,
           lpStakedFromTx: null,
+          invalidSlippageTolerance,
           invalidTxFee: null,
           invalidUstAmount: null,
           invalidTokenAmount: null,
@@ -133,11 +141,13 @@ export const stakingStakeForm = ({
       {
         ustAmount: returnedUstAmount ?? ustAmount,
         tokenAmount: returnedTokenAmount ?? tokenAmount,
+        slippageTolerance,
         maxUstAmount,
         maxTokenAmount,
         txFee,
         poolPrice: poolInfo.tokenPrice,
         lpStakedFromTx: lpFromTx,
+        invalidSlippageTolerance,
         invalidTxFee,
         invalidUstAmount,
         invalidTokenAmount,

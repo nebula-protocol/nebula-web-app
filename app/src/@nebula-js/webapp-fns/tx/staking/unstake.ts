@@ -1,4 +1,12 @@
-import { CW20Addr, HumanAddr, LP, LPAddr, staking, u } from '@nebula-js/types';
+import {
+  cw20,
+  CW20Addr,
+  HumanAddr,
+  LP,
+  LPAddr,
+  staking,
+  u,
+} from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
 import { floor } from '@libs/big-math';
 import { MsgExecuteContract, StdFee } from '@terra-money/terra.js';
@@ -48,7 +56,7 @@ export function stakingUnstakeTx(
               }),
             ).toString('base64'),
           },
-        }),
+        } as cw20.Send<LP>),
       ],
       fee: new StdFee($.gasFee, floor($.txFee) + 'uusd'),
       gasAdjustment: $.gasAdjustment,

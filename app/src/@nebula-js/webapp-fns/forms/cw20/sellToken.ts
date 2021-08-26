@@ -1,4 +1,7 @@
+import { min } from '@libs/big-math';
 import { demicrofy, microfy } from '@libs/formatter';
+import { MantleFetch } from '@libs/mantle';
+import { FormFunction, FormReturn } from '@libs/use-form';
 import {
   CW20Addr,
   HumanAddr,
@@ -8,9 +11,6 @@ import {
   u,
   UST,
 } from '@nebula-js/types';
-import { min } from '@libs/big-math';
-import { MantleFetch } from '@libs/mantle';
-import { FormFunction, FormReturn } from '@libs/use-form';
 import big, { Big, BigSource } from 'big.js';
 import { terraswapSimulationQuery } from '../../queries/terraswap/simulation';
 import { NebulaTax } from '../../types';
@@ -18,6 +18,7 @@ import { NebulaTax } from '../../types';
 export interface CW20SellTokenFormInput<T extends Token> {
   ustAmount?: UST;
   tokenAmount?: T;
+  maxSpread: Rate;
 }
 
 export interface CW20SellTokenFormDependency<T extends Token> {
@@ -33,13 +34,13 @@ export interface CW20SellTokenFormDependency<T extends Token> {
   tax: NebulaTax;
   fixedGas: u<UST<BigSource>>;
   //
-  maxSpread?: number;
   connected: boolean;
 }
 
 export interface CW20SellTokenFormStates<T extends Token>
   extends CW20SellTokenFormInput<T> {
   tokenBalance: u<T>;
+  invalidMaxSpread: string | null;
   invalidTxFee: string | null;
   invalidTokenAmount: string | null;
   availableTx: boolean;
@@ -72,12 +73,12 @@ export const cw20SellTokenForm = <T extends Token>({
   tokenBalance,
   tax,
   fixedGas,
-  maxSpread = 0.1,
   connected,
 }: CW20SellTokenFormDependency<T>) => {
   return ({
     ustAmount,
     tokenAmount,
+    maxSpread,
   }: CW20SellTokenFormInput<T>): FormReturn<
     CW20SellTokenFormStates<T>,
     CW20SellTokenFormAsyncStates<T>
@@ -87,12 +88,17 @@ export const cw20SellTokenForm = <T extends Token>({
     const ctAmountExists: boolean =
       !!tokenAmount && tokenAmount.length > 0 && big(tokenAmount).gt(0);
 
+    const invalidMaxSpread: string | null =
+      maxSpread.length === 0 ? 'Max Spread is required' : null;
+
     if (!ustAmountExists && !ctAmountExists) {
       return [
         {
           ustAmount,
           tokenAmount: tokenAmount,
+          maxSpread,
           tokenBalance,
+          invalidMaxSpread,
           invalidTxFee: null,
           invalidTokenAmount: null,
           availableTx: false,
@@ -106,6 +112,8 @@ export const cw20SellTokenForm = <T extends Token>({
         {
           tokenAmount: tokenAmount,
           tokenBalance,
+          maxSpread,
+          invalidMaxSpread,
           invalidTxFee: null,
           invalidTokenAmount: null,
           availableTx: false,
@@ -168,6 +176,7 @@ export const cw20SellTokenForm = <T extends Token>({
               connected &&
               !invalidTxFee &&
               !invalidTokenAmount &&
+              !invalidMaxSpread &&
               !big(tradingFee).lte(0);
 
             return {
@@ -188,6 +197,8 @@ export const cw20SellTokenForm = <T extends Token>({
         {
           ustAmount,
           tokenBalance,
+          maxSpread,
+          invalidMaxSpread,
           invalidTxFee: null,
           invalidTokenAmount: null,
           availableTx: false,
@@ -252,6 +263,7 @@ export const cw20SellTokenForm = <T extends Token>({
               connected &&
               !invalidTxFee &&
               !invalidTokenAmount &&
+              !invalidMaxSpread &&
               !big(tradingFee).lte(0);
 
             return {
@@ -273,7 +285,9 @@ export const cw20SellTokenForm = <T extends Token>({
       {
         ustAmount,
         tokenAmount: tokenAmount,
+        maxSpread,
         tokenBalance,
+        invalidMaxSpread,
         invalidTxFee: null,
         invalidTokenAmount: null,
         availableTx: false,

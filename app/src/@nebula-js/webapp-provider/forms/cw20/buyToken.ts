@@ -1,4 +1,6 @@
-import { CW20Addr, HumanAddr, Token, UST } from '@nebula-js/types';
+import { useForm } from '@libs/use-form';
+import { useBank, useTerraWebapp } from '@libs/webapp-provider';
+import { CW20Addr, HumanAddr, Rate, Token, UST } from '@nebula-js/types';
 import {
   CW20BuyTokenForm,
   cw20BuyTokenForm,
@@ -6,9 +8,7 @@ import {
   NebulaTax,
   NebulaTokenBalances,
 } from '@nebula-js/webapp-fns';
-import { useForm } from '@libs/use-form';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useBank, useTerraWebapp } from '@libs/webapp-provider';
 import { useNebulaWebapp } from '../../contexts/webapp';
 
 export interface CW20BuyTokenFormParams {
@@ -42,9 +42,12 @@ export function useCW20BuyTokenForm<T extends Token>({
       ustBalance: tokenBalances.uUST,
       tax,
       fixedGas,
-      maxSpread: 0.1,
       connected: !!connectedWallet,
     },
-    () => ({ ustAmount: '' as UST } as CW20BuyTokenFormInput<T>),
+    () =>
+      ({
+        ustAmount: '' as UST,
+        maxSpread: '1' as Rate,
+      } as CW20BuyTokenFormInput<T>),
   );
 }

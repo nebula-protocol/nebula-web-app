@@ -1,15 +1,17 @@
-import { ArrowSouthIcon, WalletIcon } from '@nebula-js/icons';
 import {
   formatFluidDecimalPoints,
   formatUInput,
   formatUToken,
   microfy,
 } from '@libs/formatter';
-import { CT, u, UST } from '@nebula-js/types';
+import { ArrowSouthIcon, WalletIcon } from '@nebula-js/icons';
+import { CT, Rate, u, UST } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
+  Disclosure,
   EmptyButton,
+  FormLabel,
   IconSeparator,
   TokenInput,
   TokenSpan,
@@ -24,9 +26,10 @@ import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
+import { SlippageToleranceInput } from 'components/form/SlippageToleranceInput';
 import { ExchangeRateAB } from 'components/text/ExchangeRateAB';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 
 export interface ClusterSellProps {
@@ -41,6 +44,8 @@ function ClusterSellBase({
   const connectedWallet = useConnectedWallet();
 
   const { broadcast } = useTxBroadcast();
+
+  const [openMoreOptions, setOpenMoreOptions] = useState<boolean>(false);
 
   const postTx = useCW20SellTokenTx(
     clusterState.cluster_token,
@@ -61,10 +66,11 @@ function ClusterSellBase({
   }, [updateInput]);
 
   const proceed = useCallback(
-    (tokenAmount: CT, txFee: u<UST<BigSource>>) => {
+    (tokenAmount: CT, txFee: u<UST<BigSource>>, maxSpread: Rate) => {
       const stream = postTx?.({
         sellAmount: microfy(tokenAmount).toFixed() as u<UST>,
         txFee: big(txFee).toFixed() as u<UST>,
+        maxSpread,
         onTxSucceed: initForm,
       });
 
@@ -131,6 +137,23 @@ function ClusterSellBase({
         token={<TokenSpan>UST</TokenSpan>}
       />
 
+      <Disclosure
+        className="more-options"
+        title="More Options"
+        open={openMoreOptions}
+        onChange={setOpenMoreOptions}
+      >
+        <FormLabel label="Max Spread">
+          <SlippageToleranceInput
+            initialCustomValue={'5' as Rate}
+            value={states.maxSpread}
+            onChange={(nextMaxSpread) =>
+              updateInput({ maxSpread: nextMaxSpread })
+            }
+          />
+        </FormLabel>
+      </Disclosure>
+
       <FeeBox className="feebox">
         {'beliefPrice' in states && (
           <li>
@@ -184,7 +207,7 @@ function ClusterSellBase({
         onClick={() =>
           states.tokenAmount &&
           'txFee' in states &&
-          proceed(states.tokenAmount, states.txFee)
+          proceed(states.tokenAmount, states.txFee, states.maxSpread)
         }
       >
         Sell
@@ -195,6 +218,10 @@ function ClusterSellBase({
 
 export const ClusterSell = styled(ClusterSellBase)`
   font-size: 1rem;
+
+  .more-options {
+    margin-top: 2.14285714em;
+  }
 
   .feebox {
     margin-top: 2.8em;

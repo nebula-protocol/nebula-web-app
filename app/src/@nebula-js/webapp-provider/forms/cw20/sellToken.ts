@@ -1,3 +1,5 @@
+import { useForm } from '@libs/use-form';
+import { useBank, useTerraWebapp } from '@libs/webapp-provider';
 import { CW20Addr, HumanAddr, Token, u } from '@nebula-js/types';
 import {
   CW20SellTokenForm,
@@ -6,9 +8,7 @@ import {
   NebulaTax,
   NebulaTokenBalances,
 } from '@nebula-js/webapp-fns';
-import { useForm } from '@libs/use-form';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useBank, useTerraWebapp } from '@libs/webapp-provider';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { useCW20BalanceQuery } from '../../queries/cw20/balance';
 
@@ -49,9 +49,9 @@ export function useCW20SellTokenForm<T extends Token>({
       tokenBalance: tokenBalance?.balance ?? ('0' as u<T>),
       tax,
       fixedGas,
-      maxSpread: 0.1,
       connected: !!connectedWallet,
     },
-    () => ({ tokenAmount: '' as T } as CW20SellTokenFormInput<T>),
+    () =>
+      ({ tokenAmount: '' as T, maxSpread: '1' } as CW20SellTokenFormInput<T>),
   );
 }

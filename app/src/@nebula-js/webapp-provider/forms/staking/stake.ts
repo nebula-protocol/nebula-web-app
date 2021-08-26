@@ -1,13 +1,13 @@
-import { CT, CW20Addr, HumanAddr, u, UST } from '@nebula-js/types';
+import { useForm } from '@libs/use-form';
+import { useBank } from '@libs/webapp-provider';
+import { CT, CW20Addr, HumanAddr, Rate, u, UST } from '@nebula-js/types';
 import {
   NebulaTax,
   NebulaTokenBalances,
   stakingStakeForm,
   StakingStakeFormInput,
 } from '@nebula-js/webapp-fns';
-import { useForm } from '@libs/use-form';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useBank } from '@libs/webapp-provider';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { useCW20BalanceQuery } from '../../queries/cw20/balance';
 import { useTerraswapPoolQuery } from '../../queries/terraswap/pool';
@@ -47,6 +47,10 @@ export function useStakingStakeForm({
       fixedGas,
       connected: !!connectedWallet,
     },
-    () => ({ ustAmount: '' as UST } as StakingStakeFormInput),
+    () =>
+      ({
+        ustAmount: '' as UST,
+        slippageTolerance: '1' as Rate,
+      } as StakingStakeFormInput),
   );
 }

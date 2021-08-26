@@ -20,6 +20,7 @@ import { useTerraswapPoolQuery } from '../../queries/terraswap/pool';
 export interface CW20BuyTokenTxParams {
   buyAmount: u<UST>;
   txFee: u<UST>;
+  maxSpread: Rate;
 
   onTxSucceed?: () => void;
 }
@@ -44,7 +45,7 @@ export function useCW20BuyTokenTx(
     useTerraswapPoolQuery<CT>(tokenUstPairAddr);
 
   const stream = useCallback(
-    ({ buyAmount, txFee, onTxSucceed }: CW20BuyTokenTxParams) => {
+    ({ buyAmount, txFee, maxSpread, onTxSucceed }: CW20BuyTokenTxParams) => {
       if (
         !connectedWallet ||
         !connectedWallet.availablePost ||
@@ -65,7 +66,7 @@ export function useCW20BuyTokenTx(
         tokenUstPairAddr,
         tokenSymbol,
         tax,
-        maxSpread: '0.1' as Rate,
+        maxSpread,
         buyerAddr: connectedWallet.walletAddress,
         fixedGas,
         gasFee,

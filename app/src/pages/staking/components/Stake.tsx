@@ -5,11 +5,13 @@ import {
   formatUToken,
   microfy,
 } from '@libs/formatter';
-import { CT, u, UST } from '@nebula-js/types';
+import { CT, Rate, u, UST } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
+  Disclosure,
   EmptyButton,
+  FormLabel,
   IconSeparator,
   TokenInput,
   TokenSpan,
@@ -25,9 +27,10 @@ import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
+import { SlippageToleranceInput } from 'components/form/SlippageToleranceInput';
 import { ExchangeRateAB } from 'components/text/ExchangeRateAB';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 
 export interface StakingStakeProps {
@@ -44,6 +47,8 @@ function StakingStakeBase({
   const { broadcast } = useTxBroadcast();
 
   const [openConfirm, confirmElement] = useConfirm();
+
+  const [openMoreOptions, setOpenMoreOptions] = useState<boolean>(false);
 
   const postTx = useStakingStakeTx(tokenAddr, terraswapPair.contract_addr);
 
@@ -63,6 +68,7 @@ function StakingStakeBase({
       ustAmount: UST,
       tokenAmount: CT,
       txFee: u<UST<BigSource>>,
+      slippageTolerance: Rate,
       warning: string | null,
     ) => {
       if (warning) {
@@ -81,6 +87,7 @@ function StakingStakeBase({
         ustAmount: microfy(ustAmount).toFixed() as u<UST>,
         tokenAmount: microfy(tokenAmount).toFixed() as u<CT>,
         txFee: big(txFee).toFixed() as u<UST>,
+        slippageTolerance,
         onTxSucceed: initForm,
       });
 
@@ -165,6 +172,23 @@ function StakingStakeBase({
         error={states.invalidTokenAmount}
       />
 
+      <Disclosure
+        className="more-options"
+        title="More Options"
+        open={openMoreOptions}
+        onChange={setOpenMoreOptions}
+      >
+        <FormLabel label="Slippage Tolerance">
+          <SlippageToleranceInput
+            initialCustomValue={'5' as Rate}
+            value={states.slippageTolerance}
+            onChange={(nextSlippageTolerance) =>
+              updateInput({ slippageTolerance: nextSlippageTolerance })
+            }
+          />
+        </FormLabel>
+      </Disclosure>
+
       <FeeBox className="feebox">
         {states.poolPrice && (
           <li>
@@ -221,6 +245,7 @@ function StakingStakeBase({
             states.ustAmount,
             states.tokenAmount,
             states.txFee,
+            states.slippageTolerance,
             states.warningNextTxFee,
           )
         }
@@ -235,6 +260,10 @@ function StakingStakeBase({
 
 export const StakingStake = styled(StakingStakeBase)`
   font-size: 1rem;
+
+  .more-options {
+    margin-top: 2.14285714em;
+  }
 
   .feebox {
     margin-top: 2.8em;

@@ -1,7 +1,7 @@
-import { CW20Addr, HumanAddr, Token, u, UST } from '@nebula-js/types';
+import { useRefetchQueries, useTerraWebapp } from '@libs/webapp-provider';
+import { CW20Addr, HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
 import { stakingStakeTx } from '@nebula-js/webapp-fns';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useRefetchQueries, useTerraWebapp } from '@libs/webapp-provider';
 import { useCallback } from 'react';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { NEBULA_TX_KEYS } from '../../env';
@@ -10,6 +10,7 @@ export interface StakingStakeTxParams {
   ustAmount: u<UST>;
   tokenAmount: u<Token>;
   txFee: u<UST>;
+  slippageTolerance: Rate;
 
   onTxSucceed?: () => void;
 }
@@ -30,7 +31,13 @@ export function useStakingStakeTx(
   } = useNebulaWebapp();
 
   const stream = useCallback(
-    ({ ustAmount, tokenAmount, txFee, onTxSucceed }: StakingStakeTxParams) => {
+    ({
+      ustAmount,
+      tokenAmount,
+      txFee,
+      slippageTolerance,
+      onTxSucceed,
+    }: StakingStakeTxParams) => {
       if (!connectedWallet || !connectedWallet.availablePost) {
         throw new Error(`Can't post!`);
       }
@@ -45,6 +52,7 @@ export function useStakingStakeTx(
         tokenUstPairAddr,
         fixedGas,
         gasFee,
+        slippageTolerance,
         gasAdjustment,
         mantleEndpoint,
         mantleFetch,
