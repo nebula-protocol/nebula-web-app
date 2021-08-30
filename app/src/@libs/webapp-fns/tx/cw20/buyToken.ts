@@ -24,11 +24,13 @@ import { MsgExecuteContract, StdFee } from '@terra-money/terra.js';
 import big, { Big } from 'big.js';
 import { Observable } from 'rxjs';
 import { Tax } from '../../types';
-import { _catchTxError } from '../internal/_catchTxError';
-import { _createTxOptions } from '../internal/_createTxOptions';
-import { _pollTxInfo } from '../internal/_pollTxInfo';
-import { _postTx } from '../internal/_postTx';
-import { TxHelper } from '../internal/TxHelper';
+import {
+  _catchTxError,
+  _createTxOptions,
+  _pollTxInfo,
+  _postTx,
+  TxHelper,
+} from '../internal';
 import { TxCommonParams } from '../TxCommonParams';
 
 export function cw20BuyTokenTx(
