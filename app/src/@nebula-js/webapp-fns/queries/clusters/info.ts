@@ -1,4 +1,17 @@
 import {
+  defaultMantleFetch,
+  mantle,
+  MantleFetch,
+  WasmQuery,
+  WasmQueryData,
+} from '@libs/mantle';
+import {
+  cw20PoolInfoQuery,
+  cw20TokenInfoQuery,
+  nativeTokenInfoQuery,
+  TerraswapPoolInfo,
+} from '@libs/webapp-fns';
+import {
   cluster,
   CT,
   cw20,
@@ -7,17 +20,6 @@ import {
   Token,
   UST,
 } from '@nebula-js/types';
-import {
-  defaultMantleFetch,
-  mantle,
-  MantleFetch,
-  WasmQuery,
-  WasmQueryData,
-} from '@libs/mantle';
-import { nativeTokenInfoQuery } from '../cw20/nativeTokenInfo';
-import { cw20PoolInfoQuery } from '../cw20/poolInfo';
-import { cw20TokenInfoQuery } from '../cw20/tokenInfo';
-import { TerraswapPoolInfo } from '../terraswap/pool';
 
 interface ClusterStateWasmQuery {
   clusterConfig: WasmQuery<cluster.Config, cluster.ConfigResponse>;

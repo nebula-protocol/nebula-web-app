@@ -4,6 +4,7 @@ import {
   formatUToken,
   microfy,
 } from '@libs/formatter';
+import { useCW20BuyTokenForm, useCW20BuyTokenTx } from '@libs/webapp-provider';
 import { ArrowSouthIcon, WalletIcon } from '@nebula-js/icons';
 import { CT, Rate, u, UST } from '@nebula-js/types';
 import {
@@ -18,10 +19,6 @@ import {
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { ClusterInfo } from '@nebula-js/webapp-fns';
-import {
-  useCW20BuyTokenForm,
-  useCW20BuyTokenTx,
-} from '@nebula-js/webapp-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';

@@ -1,5 +1,6 @@
 import { formatUTokenWithPostfixUnits } from '@libs/formatter';
 import { AnimateNumber } from '@libs/ui';
+import { useCW20BalanceQuery } from '@libs/webapp-provider';
 import { NEB, u } from '@nebula-js/types';
 import {
   Button,
@@ -8,11 +9,7 @@ import {
   Sub,
   TitledLabel,
 } from '@nebula-js/ui';
-import {
-  useCW20BalanceQuery,
-  useGovStakerQuery,
-  useNebulaWebapp,
-} from '@nebula-js/webapp-provider';
+import { useGovStakerQuery, useNebulaWebapp } from '@nebula-js/webapp-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { fixHMR } from 'fix-hmr';
 import React from 'react';

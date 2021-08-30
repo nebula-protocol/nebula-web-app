@@ -1,4 +1,3 @@
-import { CW20Addr, gov, HumanAddr, NEB } from '@nebula-js/types';
 import {
   defaultMantleFetch,
   mantle,
@@ -6,11 +5,12 @@ import {
   WasmQuery,
   WasmQueryData,
 } from '@libs/mantle';
+import { cw20BalanceQuery } from '@libs/webapp-fns';
+import { CW20Addr, gov, HumanAddr, NEB } from '@nebula-js/types';
 import {
   ParsedPoll,
   parseGovPollResponse,
 } from '../../logics/gov/parseGovPollResponse';
-import { cw20BalanceQuery } from '../cw20/balance';
 import { govConfigQuery } from './config';
 import { govStateQuery } from './state';
 

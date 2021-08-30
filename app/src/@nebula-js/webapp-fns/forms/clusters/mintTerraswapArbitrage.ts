@@ -1,6 +1,6 @@
-import { terraswap, u, UST } from '@nebula-js/types';
 import { FormReturn } from '@libs/use-form';
-import { terraswapSimulationQuery } from '../../queries/terraswap/simulation';
+import { terraswapSimulationQuery } from '@libs/webapp-fns';
+import { terraswap, u, UST } from '@nebula-js/types';
 import {
   clusterMintAdvancedForm,
   ClusterMintAdvancedFormAsyncStates,

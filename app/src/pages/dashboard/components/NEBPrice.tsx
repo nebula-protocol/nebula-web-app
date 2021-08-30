@@ -1,11 +1,9 @@
 import { formatToken } from '@libs/formatter';
 import { AnimateNumber } from '@libs/ui';
+import { useTerraswapPoolQuery } from '@libs/webapp-provider';
 import { NEB } from '@nebula-js/types';
 import { DiffSpan, Sub } from '@nebula-js/ui';
-import {
-  useNebulaWebapp,
-  useTerraswapPoolQuery,
-} from '@nebula-js/webapp-provider';
+import { useNebulaWebapp } from '@nebula-js/webapp-provider';
 import React from 'react';
 import styled from 'styled-components';
 

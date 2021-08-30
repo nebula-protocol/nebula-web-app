@@ -1,28 +1,20 @@
 // THIS FILE IS AUTO CREATED
-// @see ~/scripts/create-index.webapp-provider.ts
+// @see ~/scripts/create-index.ts
 export * from './env';
-
 export * from './contexts/webapp';
 export * from './forms/clusters/mintAdvanced';
 export * from './forms/clusters/mintBasic';
 export * from './forms/clusters/mintTerraswapArbitrage';
 export * from './forms/clusters/redeemBasic';
 export * from './forms/clusters/redeemTerraswapArbitrage';
-export * from './forms/cw20/buyToken';
-export * from './forms/cw20/sellToken';
 export * from './forms/gov/stake';
 export * from './forms/gov/unstake';
-export * from './forms/send/send';
-export * from './forms/send/tokens';
 export * from './forms/staking/stake';
 export * from './forms/staking/unstake';
 export * from './queries/clusters/info';
 export * from './queries/clusters/infoList';
 export * from './queries/clusters/list';
 export * from './queries/clusters/stateList';
-export * from './queries/cw20/balance';
-export * from './queries/cw20/poolInfo';
-export * from './queries/cw20/tokenInfo';
 export * from './queries/gov/config';
 export * from './queries/gov/myPolls';
 export * from './queries/gov/poll';
@@ -33,23 +25,16 @@ export * from './queries/gov/voters';
 export * from './queries/mypage/holdings';
 export * from './queries/mypage/staking';
 export * from './queries/neb/nebPool';
-export * from './queries/send/balance';
 export * from './queries/staking/poolInfo';
 export * from './queries/staking/poolInfoList';
 export * from './queries/staking/rewardInfo';
-export * from './queries/terra/balances';
-export * from './queries/terraswap/pair';
-export * from './queries/terraswap/pool';
 export * from './tx/clusters/arbMint';
 export * from './tx/clusters/arbRedeem';
 export * from './tx/clusters/mint';
 export * from './tx/clusters/redeem';
-export * from './tx/cw20/buyToken';
-export * from './tx/cw20/sellToken';
 export * from './tx/gov/createPoll';
 export * from './tx/gov/stake';
 export * from './tx/gov/unstake';
 export * from './tx/gov/vote';
-export * from './tx/send/send';
 export * from './tx/staking/stake';
 export * from './tx/staking/unstake';

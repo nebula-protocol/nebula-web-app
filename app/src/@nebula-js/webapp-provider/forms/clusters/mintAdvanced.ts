@@ -1,5 +1,9 @@
 import { useForm } from '@libs/use-form';
-import { useBank, useTerraWebapp } from '@libs/webapp-provider';
+import {
+  useBank,
+  useTerraBalancesQuery,
+  useTerraWebapp,
+} from '@libs/webapp-provider';
 import { cluster, terraswap, Token } from '@nebula-js/types';
 import {
   clusterMintAdvancedForm,
@@ -8,7 +12,6 @@ import {
 } from '@nebula-js/webapp-fns';
 import { useMemo } from 'react';
 import { useNebulaWebapp } from '../../contexts/webapp';
-import { useTerraBalancesQuery } from '../../queries/terra/balances';
 
 export interface ClusterMintAdvancedFormParams {
   clusterState: cluster.ClusterStateResponse;

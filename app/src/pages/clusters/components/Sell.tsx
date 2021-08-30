@@ -21,7 +21,7 @@ import { ClusterInfo } from '@nebula-js/webapp-fns';
 import {
   useCW20SellTokenForm,
   useCW20SellTokenTx,
-} from '@nebula-js/webapp-provider';
+} from '@libs/webapp-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';

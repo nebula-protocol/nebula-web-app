@@ -1,6 +1,6 @@
-import { HumanAddr, staking, Token } from '@nebula-js/types';
-import { CW20PoolInfo, cw20PoolInfoQuery } from '../cw20/poolInfo';
 import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
+import { CW20PoolInfo, cw20PoolInfoQuery } from '@libs/webapp-fns';
+import { HumanAddr, staking, Token } from '@nebula-js/types';
 import { stakingRewardInfoQuery } from '../staking/rewardInfo';
 
 export type MypageStaking = Array<

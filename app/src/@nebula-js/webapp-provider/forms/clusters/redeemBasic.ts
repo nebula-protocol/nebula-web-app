@@ -1,5 +1,9 @@
 import { useForm } from '@libs/use-form';
-import { useBank, useTerraWebapp } from '@libs/webapp-provider';
+import {
+  useBank,
+  useCW20BalanceQuery,
+  useTerraWebapp,
+} from '@libs/webapp-provider';
 import { cluster, CT, u } from '@nebula-js/types';
 import {
   clusterRedeemBasicForm,
@@ -8,7 +12,6 @@ import {
 } from '@nebula-js/webapp-fns';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useNebulaWebapp } from '../../contexts/webapp';
-import { useCW20BalanceQuery } from '../../queries/cw20/balance';
 
 export interface ClusterRedeemBasicFormParams {
   clusterState: cluster.ClusterStateResponse;

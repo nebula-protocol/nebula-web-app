@@ -1,0 +1,54 @@
+import { useForm } from '@libs/use-form';
+import {
+  CW20BuyTokenForm,
+  cw20BuyTokenForm,
+  CW20BuyTokenFormInput,
+  Tax,
+  TokenBalances,
+} from '@libs/webapp-fns';
+import { useBank, useTerraWebapp } from '@libs/webapp-provider';
+import { CW20Addr, HumanAddr, Rate, Token, UST } from '@libs/types';
+import { useConnectedWallet } from '@terra-money/wallet-provider';
+// TODO separate
+import { useNebulaWebapp } from '@nebula-js/webapp-provider';
+
+export interface CW20BuyTokenFormParams {
+  ustTokenPairAddr: HumanAddr;
+  tokenAddr: CW20Addr;
+}
+
+export function useCW20BuyTokenForm<T extends Token>({
+  ustTokenPairAddr,
+  tokenAddr,
+}: CW20BuyTokenFormParams) {
+  const connectedWallet = useConnectedWallet();
+
+  const { mantleFetch, mantleEndpoint } = useTerraWebapp();
+
+  const {
+    constants: { fixedGas },
+  } = useNebulaWebapp();
+
+  const { tax, tokenBalances } = useBank<TokenBalances, Tax>();
+
+  const form: CW20BuyTokenForm<T> = cw20BuyTokenForm;
+
+  return useForm(
+    form,
+    {
+      ustTokenPairAddr,
+      tokenAddr,
+      mantleEndpoint,
+      mantleFetch,
+      ustBalance: tokenBalances.uUST,
+      tax,
+      fixedGas,
+      connected: !!connectedWallet,
+    },
+    () =>
+      ({
+        ustAmount: '' as UST,
+        maxSpread: '1' as Rate,
+      } as CW20BuyTokenFormInput<T>),
+  );
+}

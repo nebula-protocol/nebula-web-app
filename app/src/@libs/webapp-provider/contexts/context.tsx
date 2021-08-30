@@ -1,10 +1,9 @@
+import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
 import {
   DEFAULT_GAS_PRICE_ENDPOINT,
-  defaultMantleFetch,
   FALLBACK_GAS_PRICE,
   GasPrice,
   lastSyncedHeightQuery,
-  MantleFetch,
 } from '@libs/webapp-fns';
 import { useWallet } from '@terra-money/wallet-provider';
 import React, {

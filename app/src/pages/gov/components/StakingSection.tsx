@@ -1,13 +1,12 @@
 import { formatRate, formatUTokenWithPostfixUnits } from '@libs/formatter';
 import { AnimateNumber } from '@libs/ui';
-import { NEB, Rate, u } from '@nebula-js/types';
-import { breakpoints, Section, Sub, TitledLabel } from '@nebula-js/ui';
 import {
   useCW20BalanceQuery,
   useCW20TokenInfoQuery,
-  useGovStateQuery,
-  useNebulaWebapp,
-} from '@nebula-js/webapp-provider';
+} from '@libs/webapp-provider';
+import { NEB, Rate, u } from '@nebula-js/types';
+import { breakpoints, Section, Sub, TitledLabel } from '@nebula-js/ui';
+import { useGovStateQuery, useNebulaWebapp } from '@nebula-js/webapp-provider';
 import big, { Big } from 'big.js';
 import React, { useMemo } from 'react';
 import styled from 'styled-components';

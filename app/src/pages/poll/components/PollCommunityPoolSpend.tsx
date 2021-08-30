@@ -1,6 +1,7 @@
+import { formatUInput, formatUToken, microfy } from '@libs/formatter';
+import { useCW20BalanceQuery } from '@libs/webapp-provider';
 import { InputAdornment } from '@material-ui/core';
 import { WalletIcon } from '@nebula-js/icons';
-import { formatUInput, formatUToken, microfy } from '@libs/formatter';
 import { community, gov, HumanAddr, NEB, u } from '@nebula-js/types';
 import {
   FormLabel,
@@ -8,10 +9,7 @@ import {
   NumberInput,
   TextInput,
 } from '@nebula-js/ui';
-import {
-  useCW20BalanceQuery,
-  useNebulaWebapp,
-} from '@nebula-js/webapp-provider';
+import { useNebulaWebapp } from '@nebula-js/webapp-provider';
 import { AccAddress } from '@terra-money/terra.js';
 import React, { useCallback, useMemo, useState } from 'react';
 import { PollCreateBase } from './PollCreateBase';

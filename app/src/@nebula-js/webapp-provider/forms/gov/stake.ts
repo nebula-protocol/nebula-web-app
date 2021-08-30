@@ -1,3 +1,5 @@
+import { useForm } from '@libs/use-form';
+import { useBank } from '@libs/webapp-provider';
 import { NEB } from '@nebula-js/types';
 import {
   govStakeForm,
@@ -5,12 +7,10 @@ import {
   NebulaTax,
   NebulaTokenBalances,
 } from '@nebula-js/webapp-fns';
-import { useGovStakerQuery } from '@nebula-js/webapp-provider/queries/gov/staker';
-import { useForm } from '@libs/use-form';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useBank } from '@libs/webapp-provider';
 import { useMemo } from 'react';
 import { useNebulaWebapp } from '../../contexts/webapp';
+import { useGovStakerQuery } from '../../queries/gov/staker';
 
 export function useGovStakeForm() {
   const connectedWallet = useConnectedWallet();

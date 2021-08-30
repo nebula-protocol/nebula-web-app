@@ -1,5 +1,9 @@
 import { useForm } from '@libs/use-form';
-import { useBank } from '@libs/webapp-provider';
+import {
+  useBank,
+  useCW20BalanceQuery,
+  useTerraswapPoolQuery,
+} from '@libs/webapp-provider';
 import { CT, CW20Addr, HumanAddr, Rate, u, UST } from '@nebula-js/types';
 import {
   NebulaTax,
@@ -9,8 +13,6 @@ import {
 } from '@nebula-js/webapp-fns';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useNebulaWebapp } from '../../contexts/webapp';
-import { useCW20BalanceQuery } from '../../queries/cw20/balance';
-import { useTerraswapPoolQuery } from '../../queries/terraswap/pool';
 
 export interface StakingStakeFormParams {
   ustTokenPairAddr: HumanAddr;

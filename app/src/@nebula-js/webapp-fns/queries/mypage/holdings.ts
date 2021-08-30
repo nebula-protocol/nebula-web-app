@@ -1,8 +1,11 @@
-import { cluster, cw20, CW20Addr, HumanAddr, Token, u } from '@nebula-js/types';
 import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
+import {
+  cw20BalanceQuery,
+  CW20PoolInfo,
+  cw20PoolInfoQuery,
+} from '@libs/webapp-fns';
+import { cluster, cw20, CW20Addr, HumanAddr, Token, u } from '@nebula-js/types';
 import { clusterStateListQuery } from '../clusters/stateList';
-import { cw20BalanceQuery } from '../cw20/balance';
-import { CW20PoolInfo, cw20PoolInfoQuery } from '../cw20/poolInfo';
 
 export type MypageHoldings = Array<
   CW20PoolInfo<Token> & {

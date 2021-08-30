@@ -1,3 +1,5 @@
+import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
+import { terraswapPairQuery } from '@libs/webapp-fns';
 import {
   HumanAddr,
   NativeDenom,
@@ -6,9 +8,7 @@ import {
   u,
   UST,
 } from '@nebula-js/types';
-import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
 import big, { Big, BigSource } from 'big.js';
-import { terraswapPairQuery } from '../../../queries/terraswap/pair';
 import { ClusterSimulatorWithPenalty } from './ClusterSimulatorWithPenalty';
 import { TerraswapPoolSimulation } from './TerraswapPoolSimulation';
 

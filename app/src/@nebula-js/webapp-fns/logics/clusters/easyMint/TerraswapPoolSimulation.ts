@@ -1,10 +1,7 @@
-import { HumanAddr, terraswap, Token, u } from '@nebula-js/types';
 import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
+import { TerraswapPoolInfo, terraswapPoolQuery } from '@libs/webapp-fns';
+import { HumanAddr, terraswap, Token, u } from '@nebula-js/types';
 import big, { Big } from 'big.js';
-import {
-  TerraswapPoolInfo,
-  terraswapPoolQuery,
-} from '../../../queries/terraswap/pool';
 
 export class TerraswapPoolSimulation {
   public pool!: terraswap.pair.PoolResponse<Token, Token>;

@@ -1,11 +1,11 @@
-import { CW20Addr } from '@nebula-js/types';
-import { StakingPoolInfo, stakingPoolInfoQuery } from '@nebula-js/webapp-fns';
 import { createQueryFn } from '@libs/react-query-utils';
 import { useBrowserInactive } from '@libs/use-browser-inactive';
+import { TERRA_QUERY_KEY } from '@libs/webapp-fns';
 import { useTerraWebapp } from '@libs/webapp-provider';
+import { CW20Addr } from '@nebula-js/types';
+import { StakingPoolInfo, stakingPoolInfoQuery } from '@nebula-js/webapp-fns';
 import { useQuery, UseQueryResult } from 'react-query';
 import { useNebulaWebapp } from '../../contexts/webapp';
-import { NEBULA_QUERY_KEYS } from '../../env';
 
 const queryFn = createQueryFn(stakingPoolInfoQuery);
 
@@ -22,7 +22,7 @@ export function useStakingPoolInfoQuery(
 
   const result = useQuery(
     [
-      NEBULA_QUERY_KEYS.STAKING_POOL_INFO,
+      TERRA_QUERY_KEY.STAKING_POOL_INFO,
       tokenAddr,
       staking,
       terraswap.factory,

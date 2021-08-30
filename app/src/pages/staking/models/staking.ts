@@ -1,5 +1,6 @@
+import { TerraswapPool } from '@libs/webapp-fns';
 import { CW20Addr, NEB, Rate, u, UST } from '@nebula-js/types';
-import { StakingPoolInfoList, TerraswapPool } from '@nebula-js/webapp-fns';
+import { StakingPoolInfoList } from '@nebula-js/webapp-fns';
 import big, { Big } from 'big.js';
 
 export type StakingView = Array<{

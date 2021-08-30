@@ -1,12 +1,11 @@
 import { microfy } from '@libs/formatter';
 import { MantleFetch } from '@libs/mantle';
 import { FormReturn } from '@libs/use-form';
-import { GasPrice } from '@libs/webapp-fns';
+import { computeMaxUstBalanceForUstTransfer, GasPrice } from '@libs/webapp-fns';
 import { cluster, CT, HumanAddr, Token, u, UST } from '@nebula-js/types';
 import { BigSource } from 'big.js';
 import { computeClusterTxFee } from '../../logics/clusters/computeClusterTxFee';
 import { EasyMintOptimizer } from '../../logics/clusters/easyMint/EasyMintOptimizer';
-import { computeMaxUstBalanceForUstTransfer } from '../../logics/computeMaxUstBalanceForUstTransfer';
 import { ClusterFeeInput, NebulaTax } from '../../types';
 
 export interface ClusterMintBasicFormInput {

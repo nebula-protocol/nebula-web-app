@@ -1,6 +1,5 @@
-import { CW20Addr, HumanAddr, rs, Token, u, UST } from '@libs/types';
+import { CW20Addr, HumanAddr, rs, terraswap, Token, u, UST } from '@libs/types';
 import { CT } from '../tokens';
-import { terraswap } from './terraswap';
 
 export namespace cluster {
   // ---------------------------------------------

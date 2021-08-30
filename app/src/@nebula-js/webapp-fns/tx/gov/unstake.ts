@@ -9,12 +9,12 @@ import {
   TxStreamPhase,
 } from '@libs/webapp-fns';
 import { Observable } from 'rxjs';
-import { _catchTxError } from '../internal/_catchTxError';
-import { _createTxOptions } from '../internal/_createTxOptions';
-import { _pollTxInfo } from '../internal/_pollTxInfo';
-import { _postTx } from '../internal/_postTx';
-import { TxHelper } from '../internal/TxHelper';
-import { TxCommonParams } from '../TxCommonParams';
+import { _catchTxError } from '@libs/webapp-fns/tx/internal/_catchTxError';
+import { _createTxOptions } from '@libs/webapp-fns/tx/internal/_createTxOptions';
+import { _pollTxInfo } from '@libs/webapp-fns/tx/internal/_pollTxInfo';
+import { _postTx } from '@libs/webapp-fns/tx/internal/_postTx';
+import { TxHelper } from '@libs/webapp-fns/tx/internal/TxHelper';
+import { TxCommonParams } from '@libs/webapp-fns/tx/TxCommonParams';
 
 export function govUnstakeTx(
   $: {

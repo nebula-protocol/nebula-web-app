@@ -1,6 +1,6 @@
+import { CW20Contract } from '@libs/webapp-fns';
 import { DEFAULT_CONTRACT_ADDRESS } from '@nebula-js/webapp-fns';
 import { NetworkInfo } from '@terra-money/wallet-provider';
-import { CW20Contract } from '@libs/webapp-provider';
 
 export const CW20_TOKEN_CONTRACTS: Record<
   string,

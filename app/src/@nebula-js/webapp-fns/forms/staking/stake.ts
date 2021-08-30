@@ -1,11 +1,13 @@
-import { formatUInput, microfy } from '@libs/formatter';
-import { CT, LP, Rate, Token, u, UST } from '@nebula-js/types';
-import { NebulaTax } from '@nebula-js/webapp-fns/types';
 import { min } from '@libs/big-math';
+import { formatUInput, microfy } from '@libs/formatter';
 import { FormReturn } from '@libs/use-form';
+import {
+  computeMaxUstBalanceForUstTransfer,
+  TerraswapPoolInfo,
+} from '@libs/webapp-fns';
+import { CT, LP, Rate, Token, u, UST } from '@nebula-js/types';
 import big, { Big, BigSource } from 'big.js';
-import { computeMaxUstBalanceForUstTransfer } from '../../logics/computeMaxUstBalanceForUstTransfer';
-import { TerraswapPoolInfo } from '../../queries/terraswap/pool';
+import { NebulaTax } from '../../types';
 
 export interface StakingStakeFormInput {
   ustAmount?: UST;

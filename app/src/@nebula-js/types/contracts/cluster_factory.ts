@@ -1,5 +1,4 @@
-import { DateTime, HumanAddr, rs } from '@libs/types';
-import { terraswap } from './terraswap';
+import { DateTime, HumanAddr, rs, terraswap } from '@libs/types';
 
 export namespace cluster_factory {
   export interface Params {
