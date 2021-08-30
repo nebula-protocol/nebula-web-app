@@ -1,4 +1,5 @@
 import { createQueryFn } from '@libs/react-query-utils';
+import { terraswap } from '@libs/types';
 import { useBrowserInactive } from '@libs/use-browser-inactive';
 import {
   TERRA_QUERY_KEY,
@@ -6,8 +7,6 @@ import {
   terraBalancesQuery,
 } from '@libs/webapp-fns';
 import { useTerraWebapp } from '@libs/webapp-provider';
-// TODO separate
-import { terraswap } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useQuery, UseQueryResult } from 'react-query';
 

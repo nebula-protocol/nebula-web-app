@@ -1,25 +1,21 @@
-// TODO separate
-import { terraswap } from '@nebula-js/types';
+import { createQueryFn } from '@libs/react-query-utils';
+import { terraswap } from '@libs/types';
+import { useBrowserInactive } from '@libs/use-browser-inactive';
 import {
+  TERRA_QUERY_KEY,
   TerraswapPair,
   terraswapPairQuery,
-  TERRA_QUERY_KEY,
 } from '@libs/webapp-fns';
-import { createQueryFn } from '@libs/react-query-utils';
-import { useBrowserInactive } from '@libs/use-browser-inactive';
 import { useTerraWebapp } from '@libs/webapp-provider';
 import { useQuery, UseQueryResult } from 'react-query';
-// TODO separate
-import { useNebulaWebapp } from '@nebula-js/webapp-provider';
 
 const queryFn = createQueryFn(terraswapPairQuery);
 
 export function useTerraswapPairQuery(
   assetInfos: [terraswap.AssetInfo, terraswap.AssetInfo],
 ): UseQueryResult<TerraswapPair | undefined> {
-  const { mantleFetch, mantleEndpoint, queryErrorReporter } = useTerraWebapp();
-
-  const { contractAddress } = useNebulaWebapp();
+  const { mantleFetch, mantleEndpoint, queryErrorReporter, contractAddress } =
+    useTerraWebapp();
 
   const { browserInactive } = useBrowserInactive();
 

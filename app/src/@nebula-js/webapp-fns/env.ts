@@ -1,13 +1,17 @@
+import { DEFAULT_TERRA_CONTRACT_ADDRESS } from '@libs/webapp-fns';
 import {
-  ContractAddress,
   CW20Addr,
   Gas,
   HumanAddr,
+  NebulaContractAddress,
   Rate,
 } from '@nebula-js/types';
 import { NebulaContantsInput } from './types';
 
-export const DEFAULT_CONTRACT_ADDRESS: Record<string, ContractAddress> = {
+export const DEFAULT_NEBULA_CONTRACT_ADDRESS: Record<
+  string,
+  NebulaContractAddress
+> = {
   testnet: {
     airdrop: 'terra1z4zrm0fpuh6dq3fea3xhgf93lr30z98pzksftt' as HumanAddr,
     collector: 'terra14xwh27azy0dkp3yceh4chcaeay5ax260puxfl7' as HumanAddr,
@@ -19,7 +23,7 @@ export const DEFAULT_CONTRACT_ADDRESS: Record<string, ContractAddress> = {
       'terra16ju95fyez67xxqqlelf3wjz74kankq30z780tx' as HumanAddr,
     staking: 'terra1gt2h9zu6c753h5ufv9a0n8hwlnpwfr2a4wyrc3' as HumanAddr,
     terraswap: {
-      factory: 'terra18qpjm4zkvqnpjpw0zn0tdr8gdzvt8au35v45xf' as HumanAddr,
+      factory: DEFAULT_TERRA_CONTRACT_ADDRESS['testnet'].terraswap.factory,
       nebUstPair: 'terra1wlzgd4qa3w7ua9nhw454u7gfaxjkmlkuf3fk7f' as HumanAddr,
     },
     cw20: {
@@ -28,7 +32,7 @@ export const DEFAULT_CONTRACT_ADDRESS: Record<string, ContractAddress> = {
   },
 };
 
-export const DEFAULT_CONSTANTS: Record<string, NebulaContantsInput> = {
+export const DEFAULT_NEBULA_CONSTANTS: Record<string, NebulaContantsInput> = {
   mainnet: {
     gasFee: 1_000_000 as Gas,
     fixedGasGas: 1_671_053 as Gas,

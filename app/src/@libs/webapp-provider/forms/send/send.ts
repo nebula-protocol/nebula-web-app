@@ -1,4 +1,5 @@
 import { Token } from '@libs/types';
+import { useForm } from '@libs/use-form';
 import {
   sendForm,
   SendForm,
@@ -7,11 +8,8 @@ import {
   Tax,
   TokenBalances,
 } from '@libs/webapp-fns';
-import { useForm } from '@libs/use-form';
-import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useBank, useTerraWebapp } from '@libs/webapp-provider';
-// TODO separate
-import { useNebulaWebapp } from '@nebula-js/webapp-provider';
+import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useSendBalanceQuery } from '../../queries/send/balance';
 
 export interface SendFormParams {
@@ -21,17 +19,17 @@ export interface SendFormParams {
 export function useSendForm<T extends Token>({ tokenInfo }: SendFormParams) {
   const connectedWallet = useConnectedWallet();
 
-  const { mantleFetch, mantleEndpoint } = useTerraWebapp();
+  const {
+    mantleFetch,
+    mantleEndpoint,
+    constants: { fixedGas },
+  } = useTerraWebapp();
 
   const balance = useSendBalanceQuery<T>(
     'native_token' in tokenInfo.assetInfo
       ? tokenInfo.assetInfo.native_token.denom
       : tokenInfo.assetInfo.token.contract_addr,
   );
-
-  const {
-    constants: { fixedGas },
-  } = useNebulaWebapp();
 
   const { tax, tokenBalances } = useBank<TokenBalances, Tax>();
 

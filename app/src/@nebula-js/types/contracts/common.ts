@@ -1,6 +1,6 @@
 import { CW20Addr, HumanAddr } from '@libs/types';
 
-export interface ContractAddress {
+export interface NebulaContractAddress {
   airdrop: HumanAddr;
   clusterFactory: HumanAddr;
   collector: HumanAddr;

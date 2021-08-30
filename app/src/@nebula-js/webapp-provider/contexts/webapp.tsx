@@ -1,8 +1,8 @@
 import { useTerraWebapp } from '@libs/webapp-provider';
-import { ContractAddress, u, UST } from '@nebula-js/types';
+import { NebulaContractAddress, u, UST } from '@nebula-js/types';
 import {
-  DEFAULT_CONSTANTS,
-  DEFAULT_CONTRACT_ADDRESS,
+  DEFAULT_NEBULA_CONSTANTS,
+  DEFAULT_NEBULA_CONTRACT_ADDRESS,
   NebulaContants,
   NebulaContantsInput,
 } from '@nebula-js/webapp-fns';
@@ -19,12 +19,12 @@ import React, {
 
 export interface NebulaWebappProviderProps {
   children: ReactNode;
-  contractAddress?: Record<string, ContractAddress>;
+  contractAddress?: Record<string, NebulaContractAddress>;
   constants?: Record<string, NebulaContantsInput>;
 }
 
 export interface NebulaWebapp {
-  contractAddress: ContractAddress;
+  contractAddress: NebulaContractAddress;
   constants: NebulaContants;
 }
 
@@ -34,8 +34,8 @@ const NebulaWebappContext: Context<NebulaWebapp> =
 
 export function NebulaWebappProvider({
   children,
-  contractAddress = DEFAULT_CONTRACT_ADDRESS,
-  constants = DEFAULT_CONSTANTS,
+  contractAddress = DEFAULT_NEBULA_CONTRACT_ADDRESS,
+  constants = DEFAULT_NEBULA_CONSTANTS,
 }: NebulaWebappProviderProps) {
   const { network } = useWallet();
 

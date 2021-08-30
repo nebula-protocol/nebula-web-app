@@ -1,11 +1,17 @@
 import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
+import { TerraContractAddress, u, UST } from '@libs/types';
 import {
   DEFAULT_GAS_PRICE_ENDPOINT,
+  DEFAULT_TERRA_CONSTANTS,
+  DEFAULT_TERRA_CONTRACT_ADDRESS,
   FALLBACK_GAS_PRICE,
   GasPrice,
   lastSyncedHeightQuery,
+  TerraContants,
+  TerraContantsInput,
 } from '@libs/webapp-fns';
 import { useWallet } from '@terra-money/wallet-provider';
+import big from 'big.js';
 import React, {
   Consumer,
   Context,
@@ -20,6 +26,9 @@ import { TxRefetchMap } from '../types';
 
 export interface TerraWebappProviderProps {
   children: ReactNode;
+
+  contractAddress?: Record<string, TerraContractAddress>;
+  constants?: Record<string, TerraContantsInput>;
 
   // mantle
   mantleEndpoints?: Record<string, string>;
@@ -40,6 +49,9 @@ export interface TerraWebappProviderProps {
 }
 
 export interface TerraWebapp {
+  contractAddress: TerraContractAddress;
+  constants: TerraContants;
+
   // functions
   lastSyncedHeight: () => Promise<number>;
 
@@ -72,6 +84,8 @@ export function TerraWebappProvider({
   txRefetchMap = {},
   txErrorReporter,
   queryErrorReporter,
+  contractAddress = DEFAULT_TERRA_CONTRACT_ADDRESS,
+  constants = DEFAULT_TERRA_CONSTANTS,
 }: TerraWebappProviderProps) {
   const { network } = useWallet();
 
@@ -95,8 +109,16 @@ export function TerraWebappProvider({
     queryErrorReporter,
   );
 
-  const states = useMemo<TerraWebapp>(
-    () => ({
+  const states = useMemo<TerraWebapp>(() => {
+    const constantsInput = constants[network.name] ?? constants['mainnet'];
+    const calculateGasCalculated = {
+      ...constantsInput,
+      fixedGas: Math.floor(
+        big(constantsInput.fixedGasGas).mul(gasPrice.uusd).toNumber(),
+      ) as u<UST<number>>,
+    };
+
+    return {
       lastSyncedHeight,
       mantleEndpoint,
       mantleFetch,
@@ -104,17 +126,22 @@ export function TerraWebappProvider({
       txErrorReporter,
       txRefetchMap,
       queryErrorReporter,
-    }),
-    [
-      lastSyncedHeight,
-      mantleEndpoint,
-      mantleFetch,
-      gasPrice,
-      txErrorReporter,
-      txRefetchMap,
-      queryErrorReporter,
-    ],
-  );
+      contractAddress:
+        contractAddress[network.name] ?? contractAddress['mainnet'],
+      constants: calculateGasCalculated,
+    };
+  }, [
+    constants,
+    network.name,
+    gasPrice,
+    lastSyncedHeight,
+    mantleEndpoint,
+    mantleFetch,
+    txErrorReporter,
+    txRefetchMap,
+    queryErrorReporter,
+    contractAddress,
+  ]);
 
   return (
     <TerraWebappContext.Provider value={states}>

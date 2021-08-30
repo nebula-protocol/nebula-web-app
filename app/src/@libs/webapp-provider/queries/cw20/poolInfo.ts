@@ -1,22 +1,21 @@
-import { CW20Addr, Token } from '@libs/types';
-import { CW20PoolInfo, cw20PoolInfoQuery } from '@libs/webapp-fns';
 import { createQueryFn } from '@libs/react-query-utils';
+import { CW20Addr, Token } from '@libs/types';
 import { useBrowserInactive } from '@libs/use-browser-inactive';
+import {
+  CW20PoolInfo,
+  cw20PoolInfoQuery,
+  TERRA_QUERY_KEY,
+} from '@libs/webapp-fns';
 import { useTerraWebapp } from '@libs/webapp-provider';
 import { useQuery, UseQueryResult } from 'react-query';
-import { useNebulaWebapp } from '@nebula-js/webapp-provider';
-import { TERRA_QUERY_KEY } from '@libs/webapp-fns';
 
 const queryFn = createQueryFn(cw20PoolInfoQuery);
 
 export function useCW20PoolInfoQuery<T extends Token>(
   tokenAddr: CW20Addr,
 ): UseQueryResult<CW20PoolInfo<T> | undefined> {
-  const { mantleFetch, mantleEndpoint, queryErrorReporter } = useTerraWebapp();
-
-  const {
-    contractAddress: { terraswap },
-  } = useNebulaWebapp();
+  const { mantleFetch, mantleEndpoint, queryErrorReporter, contractAddress } =
+    useTerraWebapp();
 
   const { browserInactive } = useBrowserInactive();
 
@@ -24,7 +23,7 @@ export function useCW20PoolInfoQuery<T extends Token>(
     [
       TERRA_QUERY_KEY.STAKING_POOL_INFO,
       tokenAddr,
-      terraswap.factory,
+      contractAddress.terraswap.factory,
       mantleEndpoint,
       mantleFetch,
     ],

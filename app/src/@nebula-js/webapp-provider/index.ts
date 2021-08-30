@@ -9,6 +9,7 @@ export * from './forms/clusters/redeemBasic';
 export * from './forms/clusters/redeemTerraswapArbitrage';
 export * from './forms/gov/stake';
 export * from './forms/gov/unstake';
+export * from './forms/send/tokens';
 export * from './forms/staking/stake';
 export * from './forms/staking/unstake';
 export * from './queries/clusters/info';

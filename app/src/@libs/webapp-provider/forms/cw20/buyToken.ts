@@ -1,3 +1,4 @@
+import { CW20Addr, HumanAddr, Rate, Token, UST } from '@libs/types';
 import { useForm } from '@libs/use-form';
 import {
   CW20BuyTokenForm,
@@ -7,10 +8,7 @@ import {
   TokenBalances,
 } from '@libs/webapp-fns';
 import { useBank, useTerraWebapp } from '@libs/webapp-provider';
-import { CW20Addr, HumanAddr, Rate, Token, UST } from '@libs/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-// TODO separate
-import { useNebulaWebapp } from '@nebula-js/webapp-provider';
 
 export interface CW20BuyTokenFormParams {
   ustTokenPairAddr: HumanAddr;
@@ -23,11 +21,11 @@ export function useCW20BuyTokenForm<T extends Token>({
 }: CW20BuyTokenFormParams) {
   const connectedWallet = useConnectedWallet();
 
-  const { mantleFetch, mantleEndpoint } = useTerraWebapp();
-
   const {
+    mantleFetch,
+    mantleEndpoint,
     constants: { fixedGas },
-  } = useNebulaWebapp();
+  } = useTerraWebapp();
 
   const { tax, tokenBalances } = useBank<TokenBalances, Tax>();
 

@@ -8,8 +8,6 @@ import {
   TokenBalances,
 } from '@libs/webapp-fns';
 import { useBank, useTerraWebapp } from '@libs/webapp-provider';
-// TODO separate
-import { useNebulaWebapp } from '@nebula-js/webapp-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCW20BalanceQuery } from '../../queries/cw20/balance';
 
@@ -24,11 +22,11 @@ export function useCW20SellTokenForm<T extends Token>({
 }: CW20SellTokenFormParams) {
   const connectedWallet = useConnectedWallet();
 
-  const { mantleFetch, mantleEndpoint } = useTerraWebapp();
-
   const {
+    mantleFetch,
+    mantleEndpoint,
     constants: { fixedGas },
-  } = useNebulaWebapp();
+  } = useTerraWebapp();
 
   const { tax, tokenBalances } = useBank<TokenBalances, Tax>();
 

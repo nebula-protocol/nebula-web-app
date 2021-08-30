@@ -1,5 +1,5 @@
 import { CW20Contract } from '@libs/webapp-fns';
-import { DEFAULT_CONTRACT_ADDRESS } from '@nebula-js/webapp-fns';
+import { DEFAULT_NEBULA_CONTRACT_ADDRESS } from '@nebula-js/webapp-fns';
 import { NetworkInfo } from '@terra-money/wallet-provider';
 
 export const CW20_TOKEN_CONTRACTS: Record<
@@ -13,7 +13,7 @@ export const CW20_TOKEN_CONTRACTS: Record<
   //},
   testnet: {
     uNEB: {
-      contractAddress: DEFAULT_CONTRACT_ADDRESS['testnet'].cw20.NEB,
+      contractAddress: DEFAULT_NEBULA_CONTRACT_ADDRESS['testnet'].cw20.NEB,
     },
   },
 };

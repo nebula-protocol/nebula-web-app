@@ -1,9 +1,5 @@
 import { formatUInput, formatUToken, microfy } from '@libs/formatter';
-import {
-  useSendForm,
-  useSendTokensForm,
-  useSendTx,
-} from '@libs/webapp-provider';
+import { useSendForm, useSendTx } from '@libs/webapp-provider';
 import { Add } from '@material-ui/icons';
 import { WalletIcon } from '@nebula-js/icons';
 import { HumanAddr, terraswap, Token, u, UST } from '@nebula-js/types';
@@ -19,6 +15,7 @@ import {
   useConfirm,
   useScreenSizeValue,
 } from '@nebula-js/ui';
+import { useSendTokensForm } from '@nebula-js/webapp-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
 import { WarningMessageBox } from 'components/boxes/WarningMessageBox';

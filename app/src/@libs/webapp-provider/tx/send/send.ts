@@ -1,14 +1,12 @@
-import { sendTx, Tax, TERRA_TX_KEYS, TokenBalances } from '@libs/webapp-fns';
 import { HumanAddr, terraswap, Token, u, UST } from '@libs/types';
-import { useConnectedWallet } from '@terra-money/wallet-provider';
+import { sendTx, Tax, TERRA_TX_KEYS, TokenBalances } from '@libs/webapp-fns';
 import {
   useBank,
   useRefetchQueries,
   useTerraWebapp,
 } from '@libs/webapp-provider';
+import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
-// TODO separate
-import { useNebulaWebapp } from '@nebula-js/webapp-provider';
 
 export interface SendTxParams {
   amount: u<Token>;
@@ -23,15 +21,12 @@ export interface SendTxParams {
 export function useSendTx() {
   const connectedWallet = useConnectedWallet();
 
-  const { mantleFetch, mantleEndpoint, txErrorReporter } = useTerraWebapp();
+  const { mantleFetch, mantleEndpoint, txErrorReporter, constants } =
+    useTerraWebapp();
 
   const refetchQueries = useRefetchQueries();
 
   const { tax } = useBank<TokenBalances, Tax>();
-
-  const {
-    constants: { fixedGas, gasFee, gasAdjustment },
-  } = useNebulaWebapp();
 
   const stream = useCallback(
     ({ asset, memo, toAddr, amount, txFee, onTxSucceed }: SendTxParams) => {
@@ -47,9 +42,9 @@ export function useSendTx() {
         amount,
         walletAddr: connectedWallet.walletAddress,
         tax,
-        fixedGas,
-        gasFee,
-        gasAdjustment,
+        fixedGas: constants.fixedGas,
+        gasFee: constants.gasFee,
+        gasAdjustment: constants.gasAdjustment,
         mantleEndpoint,
         mantleFetch,
         txErrorReporter,
@@ -63,9 +58,9 @@ export function useSendTx() {
     },
     [
       connectedWallet,
-      fixedGas,
-      gasAdjustment,
-      gasFee,
+      constants.fixedGas,
+      constants.gasAdjustment,
+      constants.gasFee,
       mantleEndpoint,
       mantleFetch,
       refetchQueries,

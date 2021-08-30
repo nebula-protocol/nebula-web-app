@@ -11,8 +11,6 @@ import {
   useRefetchQueries,
   useTerraWebapp,
 } from '@libs/webapp-provider';
-// TODO separate
-import { useNebulaWebapp } from '@nebula-js/webapp-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big from 'big.js';
 import { useCallback } from 'react';
@@ -32,15 +30,12 @@ export function useCW20BuyTokenTx(
 ) {
   const connectedWallet = useConnectedWallet();
 
-  const { mantleFetch, mantleEndpoint, txErrorReporter } = useTerraWebapp();
+  const { mantleFetch, mantleEndpoint, txErrorReporter, constants } =
+    useTerraWebapp();
 
   const refetchQueries = useRefetchQueries();
 
   const { tax } = useBank<TokenBalances, Tax>();
-
-  const {
-    constants: { fixedGas, gasFee, gasAdjustment },
-  } = useNebulaWebapp();
 
   const { data: { terraswapPool } = {} } =
     useTerraswapPoolQuery<Token>(tokenUstPairAddr);
@@ -69,9 +64,9 @@ export function useCW20BuyTokenTx(
         tax,
         maxSpread,
         buyerAddr: connectedWallet.walletAddress,
-        fixedGas,
-        gasFee,
-        gasAdjustment,
+        fixedGas: constants.fixedGas,
+        gasFee: constants.gasFee,
+        gasAdjustment: constants.gasAdjustment,
         mantleEndpoint,
         mantleFetch,
         txErrorReporter,
@@ -85,9 +80,9 @@ export function useCW20BuyTokenTx(
     },
     [
       connectedWallet,
-      fixedGas,
-      gasAdjustment,
-      gasFee,
+      constants.fixedGas,
+      constants.gasAdjustment,
+      constants.gasFee,
       mantleEndpoint,
       mantleFetch,
       refetchQueries,

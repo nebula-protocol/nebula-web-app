@@ -5,6 +5,7 @@ import {
   CNY,
   DKK,
   EUR,
+  Gas,
   GBP,
   HKD,
   IDR,
@@ -70,4 +71,15 @@ export interface TokenBalances {
 export interface Tax {
   taxRate: Rate;
   maxTaxUUSD: u<UST>;
+}
+
+export interface TerraContantsInput {
+  gasFee: Gas;
+  fixedGasGas: Gas;
+  blocksPerYear: number;
+  gasAdjustment: Rate<number>;
+}
+
+export interface TerraContants extends TerraContantsInput {
+  fixedGas: u<UST<number>>;
 }

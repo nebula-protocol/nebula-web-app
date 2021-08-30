@@ -8,7 +8,6 @@ import {
   SendTokensFormInput,
 } from '@libs/webapp-fns';
 import { useTerraWebapp } from '@libs/webapp-provider';
-// TODO separate
 import { clusterStateListQuery } from '@nebula-js/webapp-fns';
 import { useNebulaWebapp } from '@nebula-js/webapp-provider';
 import { useCallback, useEffect } from 'react';
