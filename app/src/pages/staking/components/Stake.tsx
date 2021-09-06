@@ -180,7 +180,7 @@ function StakingStakeBase({
       >
         <FormLabel label="Slippage Tolerance">
           <SlippageToleranceInput
-            initialCustomValue={'0.05' as Rate}
+            initialCustomValue={'0.1' as Rate}
             value={states.slippageTolerance}
             onChange={(nextSlippageTolerance) =>
               updateInput({ slippageTolerance: nextSlippageTolerance })

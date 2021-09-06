@@ -145,7 +145,7 @@ function ClusterSellBase({
       >
         <FormLabel label="Max Spread">
           <SlippageToleranceInput
-            initialCustomValue={'0.05' as Rate}
+            initialCustomValue={'0.1' as Rate}
             value={states.maxSpread}
             onChange={(nextMaxSpread) =>
               updateInput({ maxSpread: nextMaxSpread })

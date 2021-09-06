@@ -19,6 +19,7 @@ const slippages: SwitchItem<Rate>[] = [
   { label: '0.1%', value: '0.001' as Rate },
   { label: '0.5%', value: '0.005' as Rate },
   { label: '1%', value: '0.01' as Rate },
+  { label: '5%', value: '0.05' as Rate },
 ];
 
 function SlippageToleranceInputBase(props: SlippageToleranceInputProps) {
