@@ -47,7 +47,7 @@ function TxRendererBase({
   }, [onClose, onMinify, result.phase]);
 
   return (
-    <Modal open onClose={onModalClose}>
+    <Modal open onClose={onModalClose} disableEnforceFocus>
       <Dialog {...dialogProps} onClose={onDialogClose}>
         {result.phase === TxStreamPhase.POST ? (
           <PostRenderer receipts={result.receipts} onClose={onClose} />

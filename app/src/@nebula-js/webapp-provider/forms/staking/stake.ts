@@ -52,7 +52,7 @@ export function useStakingStakeForm({
     () =>
       ({
         ustAmount: '' as UST,
-        slippageTolerance: '1' as Rate,
+        slippageTolerance: '0.01' as Rate,
       } as StakingStakeFormInput),
   );
 }

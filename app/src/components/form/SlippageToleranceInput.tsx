@@ -1,10 +1,11 @@
-import { Rate } from '@libs/types';
+import { Percent, Rate } from '@libs/types';
 import {
   EmptyNumberInput,
   SwitchInput,
   SwitchInputProps,
   SwitchItem,
 } from '@nebula-js/ui';
+import big from 'big.js';
 import { fixHMR } from 'fix-hmr';
 import React from 'react';
 import styled from 'styled-components';
@@ -15,21 +16,22 @@ export interface SlippageToleranceInputProps
 }
 
 const slippages: SwitchItem<Rate>[] = [
-  { label: '0.1%', value: '0.1' as Rate },
-  { label: '0.5%', value: '0.5' as Rate },
-  { label: '1%', value: '1' as Rate },
+  { label: '0.1%', value: '0.001' as Rate },
+  { label: '0.5%', value: '0.005' as Rate },
+  { label: '1%', value: '0.01' as Rate },
 ];
 
 function SlippageToleranceInputBase(props: SlippageToleranceInputProps) {
   return (
     <SwitchInput {...props} items={slippages}>
       {(input) => (
-        <EmptyNumberInput<Rate>
+        <EmptyNumberInput<Percent>
           autoFocus
-          value={input.value}
-          onChange={input.onChange}
-          type="decimal"
-          maxDecimalPoints={2}
+          value={big(input.value).mul(100).toFixed() as Percent}
+          onChange={(percent) =>
+            input.onChange(big(percent).div(100).toFixed() as Rate)
+          }
+          type="integer"
           maxIntegerPoints={1}
           placeholder="0.00"
         />

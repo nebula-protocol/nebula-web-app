@@ -50,7 +50,7 @@ export default function PollCommunityPoolSpend() {
     const communitySpend: community.Spend = {
       spend: {
         recipient: recipient as HumanAddr,
-        amount: microfy(amount) as u<NEB>,
+        amount: microfy(amount).toFixed() as u<NEB>,
       },
     };
 
