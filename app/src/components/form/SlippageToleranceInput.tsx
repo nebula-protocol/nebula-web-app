@@ -32,7 +32,7 @@ function SlippageToleranceInputBase(props: SlippageToleranceInputProps) {
             input.onChange(big(percent).div(100).toFixed() as Rate)
           }
           type="integer"
-          maxIntegerPoints={1}
+          maxIntegerPoints={2}
           placeholder="0.00"
         />
       )}
