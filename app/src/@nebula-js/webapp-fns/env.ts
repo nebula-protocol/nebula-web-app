@@ -54,7 +54,7 @@ export const DEFAULT_NEBULA_CONSTANTS: Record<string, NebulaContantsInput> = {
     clusterFee: {
       base: 12_700_000 as Gas,
       perAsset: 762_000 as Gas,
-      gasLimitPerAsset: 10_000 as Gas,
+      gasLimitPerAsset: 20_000 as Gas,
     },
   },
 };
