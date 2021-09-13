@@ -34,6 +34,7 @@ function createIndex(packageRoot: string, addedExports: string[]) {
 createIndex(path.resolve(__dirname, '../src/@libs/webapp-fns'), [
   './env',
   './types',
+  './errors',
 ]);
 createIndex(path.resolve(__dirname, '../src/@libs/webapp-provider'), [
   './env',
