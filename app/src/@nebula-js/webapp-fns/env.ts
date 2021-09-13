@@ -46,15 +46,15 @@ export const DEFAULT_NEBULA_CONSTANTS: Record<string, NebulaContantsInput> = {
     },
   },
   testnet: {
-    gasFee: 1_000_000 as Gas,
+    gasFee: 2_000_000 as Gas,
     fixedGasGas: 1_671_053 as Gas,
     //fixedGas: 635_000 as u<UST<number>>,
     blocksPerYear: 4_656_810,
     gasAdjustment: 1.6 as Rate<number>,
     clusterFee: {
       base: 12_700_000 as Gas,
-      perAsset: 762_000 as Gas,
-      gasLimitPerAsset: 20_000 as Gas,
+      perAsset: 1_100_000 as Gas,
+      gasLimitPerAsset: 600_000 as Gas,
     },
   },
 };
