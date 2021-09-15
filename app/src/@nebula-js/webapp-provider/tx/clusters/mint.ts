@@ -2,6 +2,7 @@ import { useRefetchQueries, useTerraWebapp } from '@libs/webapp-provider';
 import { HumanAddr, terraswap, Token, u, UST } from '@nebula-js/types';
 import { clusterMintTx, computeClusterGasWanted } from '@nebula-js/webapp-fns';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
+import big from 'big.js';
 import { useCallback } from 'react';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { NEBULA_TX_KEYS } from '../../env';
@@ -45,7 +46,7 @@ export function useClusterMintTx(
         gasWanted: computeClusterGasWanted(
           clusterFee.default,
           assets.length,
-          assets.length,
+          amounts.filter((amount) => big(amount).gt(0)).length,
         ),
         gasAdjustment,
         mantleEndpoint,

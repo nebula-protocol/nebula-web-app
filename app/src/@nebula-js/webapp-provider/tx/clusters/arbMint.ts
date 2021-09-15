@@ -39,6 +39,14 @@ export function useClusterArbMintTx(
         throw new Error(`Can't post!`);
       }
 
+      console.log(
+        'arbMint.ts..()',
+        amounts,
+        clusterFee.arbMint,
+        amounts.length,
+        amounts.filter((amount) => big(amount).gt(0)).length,
+      );
+
       return clusterArbMintTx({
         txFee,
         walletAddr: connectedWallet.walletAddress,
