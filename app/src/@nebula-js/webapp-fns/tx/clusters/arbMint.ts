@@ -121,7 +121,7 @@ export function clusterArbMintTx(
           //  },
           //} as incentives.SendAll),
         ],
-        fee: new StdFee($.gasFee, floor($.txFee) + 'uusd'),
+        fee: new StdFee($.gasWanted, floor($.txFee) + 'uusd'),
         gasAdjustment: $.gasAdjustment,
       })(),
     _postTx({ helper, ...$ }),

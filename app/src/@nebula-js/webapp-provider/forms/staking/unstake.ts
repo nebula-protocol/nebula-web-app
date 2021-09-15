@@ -24,7 +24,7 @@ export function useStakingUnstakeForm<T extends Token>({
   const connectedWallet = useConnectedWallet();
 
   const {
-    constants: { fixedGas },
+    constants: { fixedFee },
   } = useNebulaWebapp();
 
   const { tax, tokenBalances } = useBank<NebulaTokenBalances, NebulaTax>();
@@ -43,7 +43,7 @@ export function useStakingUnstakeForm<T extends Token>({
       ustBalance: tokenBalances.uUST,
       poolInfo: terraswapPoolInfo,
       tax,
-      fixedGas,
+      fixedGas: fixedFee,
       connected: !!connectedWallet,
     },
     () => ({ lpAmount: '' as LP } as StakingUnstakeFormInput),

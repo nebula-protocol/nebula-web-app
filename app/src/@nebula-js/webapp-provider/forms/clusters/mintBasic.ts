@@ -30,7 +30,7 @@ export function useClusterMintBasicForm({
       tax,
       clusterState,
       terraswapFactoryAddr: contractAddress.terraswap.factory,
-      fixedGas: constants.fixedGas,
+      fixedGas: constants.fixedFee,
       clusterFee: constants.clusterFee,
       gasPrice,
     },

@@ -21,7 +21,7 @@ export function useGovVoteTx(pollId: number) {
   const refetchQueries = useRefetchQueries();
 
   const {
-    constants: { fixedGas, gasFee, gasAdjustment },
+    constants: { fixedFee, gasWanted, gasAdjustment },
     contractAddress,
   } = useNebulaWebapp();
 
@@ -32,14 +32,14 @@ export function useGovVoteTx(pollId: number) {
       }
 
       return govVoteTx({
-        txFee: fixedGas.toString() as u<UST>,
+        txFee: fixedFee.toString() as u<UST>,
         walletAddr: connectedWallet.walletAddress,
         vote,
         amount,
         pollId,
         govAddr: contractAddress.gov,
-        fixedGas,
-        gasFee,
+        fixedGas: fixedFee,
+        gasWanted,
         gasAdjustment,
         mantleEndpoint,
         mantleFetch,
@@ -55,9 +55,9 @@ export function useGovVoteTx(pollId: number) {
     [
       connectedWallet,
       contractAddress.gov,
-      fixedGas,
+      fixedFee,
       gasAdjustment,
-      gasFee,
+      gasWanted,
       mantleEndpoint,
       mantleFetch,
       pollId,

@@ -15,7 +15,7 @@ export function useGovUnstakeForm() {
   const connectedWallet = useConnectedWallet();
 
   const {
-    constants: { fixedGas },
+    constants: { fixedFee },
   } = useNebulaWebapp();
 
   const { tokenBalances } = useBank<NebulaTokenBalances, NebulaTax>();
@@ -30,7 +30,7 @@ export function useGovUnstakeForm() {
       nebBalance: tokenBalances.uNEB,
       ustBalance: tokenBalances.uUST,
       govStaker,
-      fixedGas,
+      fixedGas: fixedFee,
       connected: !!connectedWallet,
     },
     () => ({ nebAmount: '' as NEB } as GovUnstakeFormInput),

@@ -129,7 +129,8 @@ export const clusterRedeemTerraswapArbitrageForm = (
         .then(({ simulation: { return_amount } }) => {
           const clusterTxFee = computeClusterTxFee(
             dependency.gasPrice,
-            dependency.clusterFee,
+            dependency.clusterFee.default,
+            dependency.clusterState.target.length,
             dependency.clusterState.target.length,
           );
 
@@ -139,7 +140,7 @@ export const clusterRedeemTerraswapArbitrageForm = (
           //) as u<UST<Big>>;
           //
           //txFee = _tax.plus(dependency.fixedGas).toFixed() as u<UST>;
-          txFee = clusterTxFee.toFixed() as u<UST>;
+          txFee = clusterTxFee;
 
           return clusterRedeemQuery(
             demicrofy(return_amount as u<CT>).toFixed() as CT,

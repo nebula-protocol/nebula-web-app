@@ -2,14 +2,16 @@ import { useRefetchQueries, useTerraWebapp } from '@libs/webapp-provider';
 import {
   CT,
   CW20Addr,
-  Gas,
   HumanAddr,
   terraswap,
   Token,
   u,
   UST,
 } from '@nebula-js/types';
-import { clusterRedeemTx } from '@nebula-js/webapp-fns';
+import {
+  clusterRedeemTx,
+  computeClusterGasWanted,
+} from '@nebula-js/webapp-fns';
 import { NEBULA_TX_KEYS } from '@nebula-js/webapp-provider/env';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
@@ -34,7 +36,7 @@ export function useClusterRedeemTx(
   const refetchQueries = useRefetchQueries();
 
   const {
-    constants: { fixedGas, gasFee, gasAdjustment, clusterFee },
+    constants: { fixedFee, gasAdjustment, clusterFee },
     contractAddress,
   } = useNebulaWebapp();
 
@@ -51,8 +53,12 @@ export function useClusterRedeemTx(
         clusterAddr,
         clusterTokenAddr,
         amount,
-        fixedGas,
-        gasFee: (gasFee + clusterFee.gasLimitPerAsset * assets.length) as Gas,
+        fixedGas: fixedFee,
+        gasWanted: computeClusterGasWanted(
+          clusterFee.default,
+          assets.length,
+          assets.length,
+        ),
         gasAdjustment,
         mantleEndpoint,
         mantleFetch,
@@ -68,13 +74,12 @@ export function useClusterRedeemTx(
     [
       assets.length,
       clusterAddr,
-      clusterFee.gasLimitPerAsset,
+      clusterFee.default,
       clusterTokenAddr,
       connectedWallet,
       contractAddress.incentives,
-      fixedGas,
+      fixedFee,
       gasAdjustment,
-      gasFee,
       mantleEndpoint,
       mantleFetch,
       refetchQueries,

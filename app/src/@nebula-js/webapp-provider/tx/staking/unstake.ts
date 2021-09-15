@@ -25,7 +25,7 @@ export function useStakingUnstakeTx(
   const refetchQueries = useRefetchQueries();
 
   const {
-    constants: { fixedGas, gasFee, gasAdjustment },
+    constants: { fixedFee, gasWanted, gasAdjustment },
     contractAddress,
   } = useNebulaWebapp();
 
@@ -43,8 +43,8 @@ export function useStakingUnstakeTx(
         stakingAddr: contractAddress.staking,
         tokenAddr,
         tokenUstPairAddr,
-        fixedGas,
-        gasFee,
+        fixedGas: fixedFee,
+        gasWanted,
         gasAdjustment,
         mantleEndpoint,
         mantleFetch,
@@ -61,9 +61,9 @@ export function useStakingUnstakeTx(
     [
       connectedWallet,
       contractAddress.staking,
-      fixedGas,
+      fixedFee,
       gasAdjustment,
-      gasFee,
+      gasWanted,
       lpAddr,
       mantleEndpoint,
       mantleFetch,

@@ -138,7 +138,8 @@ export const clusterMintAdvancedForm = (
           ).then(({ mint }) => {
             const clusterTxFee = computeClusterTxFee(
               dependency.gasPrice,
-              dependency.clusterFee,
+              dependency.clusterFee.default,
+              dependency.clusterState.target.length,
               dependency.clusterState.target.length,
             );
 
@@ -156,7 +157,7 @@ export const clusterMintAdvancedForm = (
               );
 
               if (ustIndex === -1 || input.amounts[ustIndex].length === 0) {
-                txFee = clusterTxFee.toFixed() as u<UST>;
+                txFee = clusterTxFee;
               } else {
                 const uust = microfy(input.amounts[ustIndex]) as u<UST<Big>>;
                 const ratioTxFee = big(uust.minus(dependency.fixedGas))

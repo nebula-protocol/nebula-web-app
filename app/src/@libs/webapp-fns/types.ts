@@ -74,12 +74,12 @@ export interface Tax {
 }
 
 export interface TerraContantsInput {
-  gasFee: Gas;
-  fixedGasGas: Gas;
+  gasWanted: Gas;
+  fixedGas: Gas;
   blocksPerYear: number;
   gasAdjustment: Rate<number>;
 }
 
 export interface TerraContants extends TerraContantsInput {
-  fixedGas: u<UST<number>>;
+  fixedFee: u<UST<number>>;
 }

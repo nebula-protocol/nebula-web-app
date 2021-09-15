@@ -58,7 +58,7 @@ function PollCreateBaseBase({
   const { data: { govConfig } = {} } = useGovConfigQuery();
   const { tokenBalances } = useBank<NebulaTokenBalances>();
   const {
-    constants: { fixedGas },
+    constants: { fixedFee },
   } = useNebulaWebapp();
 
   const [pollTitle, setPollTitle] = useState<string>('');
@@ -212,7 +212,7 @@ function PollCreateBaseBase({
         <FeeBox className="fee-box">
           <li>
             <span>Tx Fee</span>
-            <span>{formatUToken(fixedGas)} UST</span>
+            <span>{formatUToken(fixedFee)} UST</span>
           </li>
         </FeeBox>
 

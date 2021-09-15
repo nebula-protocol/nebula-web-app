@@ -47,16 +47,16 @@ export const DEFAULT_TERRA_CONTRACT_ADDRESS: Record<
 
 export const DEFAULT_TERRA_CONSTANTS: Record<string, TerraContantsInput> = {
   mainnet: {
-    gasFee: 1_000_000 as Gas,
-    fixedGasGas: 1_671_053 as Gas,
+    gasWanted: 1_000_000 as Gas,
+    fixedGas: 1_671_053 as Gas,
     //fixedGas: 635_000 as u<UST<number>>,
     blocksPerYear: 4_656_810,
     gasAdjustment: 1.6 as Rate<number>,
   },
 
   testnet: {
-    gasFee: 1_000_000 as Gas,
-    fixedGasGas: 1_671_053 as Gas,
+    gasWanted: 1_000_000 as Gas,
+    fixedGas: 1_671_053 as Gas,
     //fixedGas: 635_000 as u<UST<number>>,
     blocksPerYear: 4_656_810,
     gasAdjustment: 1.6 as Rate<number>,

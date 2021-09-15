@@ -1,14 +1,34 @@
-import { u, UST } from '@libs/types';
+import { Gas, u, UST } from '@libs/types';
 import { GasPrice } from '@libs/webapp-fns';
-import { ClusterFeeInput } from '@nebula-js/webapp-fns';
-import big, { Big } from 'big.js';
+import { ClusterFeeMultipliers } from '@nebula-js/webapp-fns';
+import big from 'big.js';
 
 export function computeClusterTxFee(
   gasPrice: GasPrice,
-  clusterFee: ClusterFeeInput,
-  assetLength: number,
-): u<UST<Big>> {
-  return big(big(clusterFee.base).mul(gasPrice.uusd)).plus(
-    big(assetLength).mul(big(clusterFee.perAsset).mul(gasPrice.uusd)),
-  ) as u<UST<Big>>;
+  multiplier: ClusterFeeMultipliers,
+  inventory: number,
+  assetCount: number,
+): u<UST> {
+  return big(multiplier.txFeeBase)
+    .plus(big(inventory).mul(multiplier.txFeePerInventory))
+    .plus(big(assetCount).mul(multiplier.txFeePerAsset))
+    .mul(gasPrice.uusd)
+    .toFixed() as u<UST>;
+}
+
+export function computeClusterGasWanted(
+  multiplier: ClusterFeeMultipliers,
+  inventory: number,
+  assetCount: number,
+): Gas {
+  console.log(
+    'computeClusterTxFee.ts..computeClusterGasWanted()',
+    multiplier,
+    inventory,
+    assetCount,
+  );
+  return big(multiplier.gasWantedBase)
+    .plus(big(inventory).mul(multiplier.gasWantedPerInventory))
+    .plus(big(assetCount).mul(multiplier.gasWantedPerAsset))
+    .toNumber() as Gas;
 }

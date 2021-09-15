@@ -41,7 +41,7 @@ export function govVoteTx(
           },
         } as gov.CastVote),
       ],
-      fee: new StdFee($.gasFee, floor($.txFee) + 'uusd'),
+      fee: new StdFee($.gasWanted, floor($.txFee) + 'uusd'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),

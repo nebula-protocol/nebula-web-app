@@ -34,7 +34,7 @@ export function useGovCreatePollTx() {
   const { tax } = useBank<NebulaTokenBalances, NebulaTax>();
 
   const {
-    constants: { fixedGas, gasFee, gasAdjustment },
+    constants: { fixedFee, gasWanted, gasAdjustment },
     contractAddress,
   } = useNebulaWebapp();
 
@@ -52,7 +52,7 @@ export function useGovCreatePollTx() {
       }
 
       return govCreatePollTx({
-        txFee: fixedGas.toString() as u<UST>,
+        txFee: fixedFee.toString() as u<UST>,
         depositAmount,
         title,
         description,
@@ -62,8 +62,8 @@ export function useGovCreatePollTx() {
         nebTokenAddr: contractAddress.cw20.NEB,
         walletAddr: connectedWallet.walletAddress,
         tax,
-        fixedGas,
-        gasFee,
+        fixedGas: fixedFee,
+        gasWanted,
         gasAdjustment,
         mantleEndpoint,
         mantleFetch,
@@ -80,9 +80,9 @@ export function useGovCreatePollTx() {
       connectedWallet,
       contractAddress.cw20.NEB,
       contractAddress.gov,
-      fixedGas,
+      fixedFee,
       gasAdjustment,
-      gasFee,
+      gasWanted,
       mantleEndpoint,
       mantleFetch,
       refetchQueries,

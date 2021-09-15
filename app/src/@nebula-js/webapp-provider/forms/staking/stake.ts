@@ -26,7 +26,7 @@ export function useStakingStakeForm({
   const connectedWallet = useConnectedWallet();
 
   const {
-    constants: { fixedGas },
+    constants: { fixedFee },
   } = useNebulaWebapp();
 
   const { tax, tokenBalances } = useBank<NebulaTokenBalances, NebulaTax>();
@@ -46,7 +46,7 @@ export function useStakingStakeForm({
       ustBalance: tokenBalances.uUST,
       poolInfo: terraswapPoolInfo,
       tax,
-      fixedGas,
+      fixedGas: fixedFee,
       connected: !!connectedWallet,
     },
     () =>

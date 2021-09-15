@@ -22,7 +22,7 @@ export function useSendForm<T extends Token>({ tokenInfo }: SendFormParams) {
   const {
     mantleFetch,
     mantleEndpoint,
-    constants: { fixedGas },
+    constants: { fixedFee },
   } = useTerraWebapp();
 
   const balance = useSendBalanceQuery<T>(
@@ -45,7 +45,7 @@ export function useSendForm<T extends Token>({ tokenInfo }: SendFormParams) {
       mantleFetch,
       ustBalance: tokenBalances.uUST,
       tax,
-      fixedGas,
+      fixedGas: fixedFee,
       maxSpread: 0.1,
       connected: !!connectedWallet,
     },

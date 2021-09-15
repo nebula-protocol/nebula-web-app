@@ -113,8 +113,8 @@ export function TerraWebappProvider({
     const constantsInput = constants[network.name] ?? constants['mainnet'];
     const calculateGasCalculated = {
       ...constantsInput,
-      fixedGas: Math.floor(
-        big(constantsInput.fixedGasGas).mul(gasPrice.uusd).toNumber(),
+      fixedFee: Math.floor(
+        big(constantsInput.fixedGas).mul(gasPrice.uusd).toNumber(),
       ) as u<UST<number>>,
     };
 

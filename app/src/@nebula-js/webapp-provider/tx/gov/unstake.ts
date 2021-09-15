@@ -21,7 +21,7 @@ export function useGovUnstakeTx() {
   const refetchQueries = useRefetchQueries();
 
   const {
-    constants: { fixedGas, gasFee, gasAdjustment },
+    constants: { fixedFee, gasWanted, gasAdjustment },
     contractAddress,
   } = useNebulaWebapp();
 
@@ -36,8 +36,8 @@ export function useGovUnstakeTx() {
         walletAddr: connectedWallet.walletAddress,
         nebAmount,
         govAddr: contractAddress.gov,
-        fixedGas,
-        gasFee,
+        fixedGas: fixedFee,
+        gasWanted,
         gasAdjustment,
         mantleEndpoint,
         mantleFetch,
@@ -53,9 +53,9 @@ export function useGovUnstakeTx() {
     [
       connectedWallet,
       contractAddress.gov,
-      fixedGas,
+      fixedFee,
       gasAdjustment,
-      gasFee,
+      gasWanted,
       mantleEndpoint,
       mantleFetch,
       refetchQueries,

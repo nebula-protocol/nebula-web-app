@@ -36,7 +36,7 @@ export function useClusterRedeemTerraswapArbitrageForm({
       ustBalance: tokenBalances.uUST,
       terraswapPair,
       tax,
-      fixedGas: constants.fixedGas,
+      fixedGas: constants.fixedFee,
       clusterFee: constants.clusterFee,
       gasPrice,
       clusterState,

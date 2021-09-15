@@ -43,7 +43,7 @@ export function useClusterRedeemBasicForm({
       tokenBalance: tokenBalance?.balance ?? ('0' as u<CT>),
       tax,
       clusterState,
-      fixedGas: constants.fixedGas,
+      fixedGas: constants.fixedFee,
       clusterFee: constants.clusterFee,
       gasPrice,
     },

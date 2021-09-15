@@ -25,7 +25,7 @@ export function useCW20SellTokenForm<T extends Token>({
   const {
     mantleFetch,
     mantleEndpoint,
-    constants: { fixedGas },
+    constants: { fixedFee },
   } = useTerraWebapp();
 
   const { tax, tokenBalances } = useBank<TokenBalances, Tax>();
@@ -47,7 +47,7 @@ export function useCW20SellTokenForm<T extends Token>({
       ustBalance: tokenBalances.uUST,
       tokenBalance: tokenBalance?.balance ?? ('0' as u<T>),
       tax,
-      fixedGas,
+      fixedGas: fixedFee,
       connected: !!connectedWallet,
     },
     () =>

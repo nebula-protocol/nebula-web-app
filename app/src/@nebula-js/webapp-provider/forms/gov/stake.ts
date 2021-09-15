@@ -16,7 +16,7 @@ export function useGovStakeForm() {
   const connectedWallet = useConnectedWallet();
 
   const {
-    constants: { fixedGas },
+    constants: { fixedFee },
   } = useNebulaWebapp();
 
   const { tokenBalances } = useBank<NebulaTokenBalances, NebulaTax>();
@@ -37,7 +37,7 @@ export function useGovStakeForm() {
     {
       nebBalance: tokenBalances.uNEB,
       ustBalance: tokenBalances.uUST,
-      fixedGas,
+      fixedGas: fixedFee,
       minLockForWeeks: lockEndWeeks ?? 0,
       connected: !!connectedWallet,
       govStaker,

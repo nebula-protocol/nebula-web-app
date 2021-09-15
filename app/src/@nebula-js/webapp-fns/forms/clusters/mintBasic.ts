@@ -73,7 +73,8 @@ export const clusterMintBasicForm = ({
   > => {
     const clusterTxFee = computeClusterTxFee(
       gasPrice,
-      clusterFee,
+      clusterFee.default,
+      clusterState.target.length,
       clusterState.target.length,
     );
 
@@ -106,7 +107,7 @@ export const clusterMintBasicForm = ({
             .then((mintSimulation) => {
               return {
                 ...mintSimulation,
-                txFee: clusterTxFee.toFixed() as u<UST>,
+                txFee: clusterTxFee,
               };
             })
         : Promise.resolve({});

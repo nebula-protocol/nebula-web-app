@@ -52,7 +52,7 @@ export function clusterArbRedeemTx(
             new Coins([new Coin('uusd', $.amount)]),
           ),
         ],
-        fee: new StdFee($.gasFee, floor($.txFee) + 'uusd'),
+        fee: new StdFee($.gasWanted, floor($.txFee) + 'uusd'),
         gasAdjustment: $.gasAdjustment,
       })();
     },

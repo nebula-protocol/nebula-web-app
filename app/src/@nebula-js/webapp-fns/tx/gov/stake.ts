@@ -90,7 +90,7 @@ export function govStakeTx(
             },
           } as cw20.Send<NEB>),
         ],
-        fee: new StdFee($.gasFee, floor($.txFee) + 'uusd'),
+        fee: new StdFee($.gasWanted, floor($.txFee) + 'uusd'),
         gasAdjustment: $.gasAdjustment,
       })();
     },

@@ -42,7 +42,7 @@ export function useClusterMintAdvancedForm({
       lastSyncedHeight,
       balances,
       tax,
-      fixedGas: constants.fixedGas,
+      fixedGas: constants.fixedFee,
       clusterFee: constants.clusterFee,
       gasPrice,
     },

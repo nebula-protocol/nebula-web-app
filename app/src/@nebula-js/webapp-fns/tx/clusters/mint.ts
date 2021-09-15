@@ -86,7 +86,7 @@ export function clusterMintTx(
           nativeCoins.length > 0 ? new Coins(nativeCoins) : undefined,
         ),
       ],
-      fee: new StdFee($.gasFee, floor($.txFee) + 'uusd'),
+      fee: new StdFee($.gasWanted, floor($.txFee) + 'uusd'),
       gasAdjustment: $.gasAdjustment + 0.1,
     }),
     _postTx({ helper, ...$ }),

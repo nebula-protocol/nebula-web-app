@@ -82,7 +82,7 @@ export function clusterRedeemAdvancedTx(
           nativeCoins.length > 0 ? new Coins(nativeCoins) : undefined,
         ),
       ],
-      fee: new StdFee($.gasFee, floor($.txFee) + 'uusd'),
+      fee: new StdFee($.gasWanted, floor($.txFee) + 'uusd'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),

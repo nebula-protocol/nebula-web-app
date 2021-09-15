@@ -98,7 +98,8 @@ export const clusterRedeemBasicForm = (
       ).then(({ redeem }) => {
         const clusterTxFee = computeClusterTxFee(
           dependency.gasPrice,
-          dependency.clusterFee,
+          dependency.clusterFee.default,
+          dependency.clusterState.target.length,
           dependency.clusterState.target.length,
         );
 
@@ -111,7 +112,7 @@ export const clusterRedeemBasicForm = (
               dependency.clusterState.prices,
             ),
           ).toFixed() as u<UST>,
-          txFee: clusterTxFee.toFixed() as u<UST>,
+          txFee: clusterTxFee as u<UST>,
         };
       });
     }

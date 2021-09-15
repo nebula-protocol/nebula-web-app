@@ -59,7 +59,7 @@ export function sendTx(
                 },
               ),
             ],
-      fee: new StdFee($.gasFee, floor($.txFee) + 'uusd'),
+      fee: new StdFee($.gasWanted, floor($.txFee) + 'uusd'),
       gasAdjustment: $.gasAdjustment,
       memo: $.memo,
     }),
