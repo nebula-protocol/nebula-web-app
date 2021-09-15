@@ -13,7 +13,7 @@ import {
   _postTx,
   TxHelper,
 } from '@libs/webapp-fns/tx/internal';
-import { HumanAddr, incentives, NativeDenom, u, UST } from '@nebula-js/types';
+import { HumanAddr, incentives, u, UST } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
 import { Coin, Coins, MsgExecuteContract, StdFee } from '@terra-money/terra.js';
 import { Observable } from 'rxjs';
@@ -42,7 +42,7 @@ export function clusterArbRedeemTx(
                 asset: {
                   info: {
                     native_token: {
-                      denom: 'uusd' as NativeDenom,
+                      denom: 'uusd',
                     },
                   },
                   amount: $.amount,

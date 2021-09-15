@@ -17,7 +17,6 @@ import {
   cw20,
   CW20Addr,
   HumanAddr,
-  NativeDenom,
   Rate,
   staking,
   Token,
@@ -68,7 +67,7 @@ export function stakingStakeTx(
                 {
                   info: {
                     native_token: {
-                      denom: 'uusd' as NativeDenom,
+                      denom: 'uusd',
                     },
                   },
                   amount: $.ustAmount,

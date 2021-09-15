@@ -1,15 +1,7 @@
 import { min } from '@libs/big-math';
 import { demicrofy, microfy } from '@libs/formatter';
 import { MantleFetch } from '@libs/mantle';
-import {
-  CW20Addr,
-  HumanAddr,
-  NativeDenom,
-  Rate,
-  Token,
-  u,
-  UST,
-} from '@libs/types';
+import { CW20Addr, HumanAddr, Rate, Token, u, UST } from '@libs/types';
 import { FormFunction, FormReturn } from '@libs/use-form';
 import big, { Big, BigSource } from 'big.js';
 import { computeMaxUstBalanceForUstTransfer } from '../../logics/computeMaxUstBalanceForUstTransfer';
@@ -132,7 +124,7 @@ export const cw20BuyTokenForm = <T extends Token>({
             amount: microfy(ustAmount!).toFixed() as u<UST>,
             info: {
               native_token: {
-                denom: 'uusd' as NativeDenom,
+                denom: 'uusd',
               },
             },
           },

@@ -1,13 +1,6 @@
 import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
 import { terraswapPairQuery } from '@libs/webapp-fns';
-import {
-  HumanAddr,
-  NativeDenom,
-  terraswap,
-  Token,
-  u,
-  UST,
-} from '@nebula-js/types';
+import { HumanAddr, terraswap, Token, u, UST } from '@nebula-js/types';
 import big, { Big, BigSource } from 'big.js';
 import { ClusterSimulatorWithPenalty } from './ClusterSimulatorWithPenalty';
 import { TerraswapPoolSimulation } from './TerraswapPoolSimulation';
@@ -60,7 +53,7 @@ export class EasyMintOptimizer {
             info,
             {
               native_token: {
-                denom: 'uusd' as NativeDenom,
+                denom: 'uusd',
               },
             },
           ],
@@ -123,7 +116,7 @@ export class EasyMintOptimizer {
         const offerAsset: terraswap.Asset<UST> = {
           info: {
             native_token: {
-              denom: 'uusd' as NativeDenom,
+              denom: 'uusd',
             },
           },
           amount: uusdPerChunk.toFixed() as u<UST>,
@@ -157,7 +150,7 @@ export class EasyMintOptimizer {
         amount: uusdPerChunk.toFixed() as u<UST>,
         info: {
           native_token: {
-            denom: 'uusd' as NativeDenom,
+            denom: 'uusd',
           },
         },
       };

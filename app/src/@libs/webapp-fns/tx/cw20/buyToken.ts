@@ -3,15 +3,7 @@ import {
   formatTokenWithPostfixUnits,
   formatUTokenIntegerWithPostfixUnits,
 } from '@libs/formatter';
-import {
-  HumanAddr,
-  NativeDenom,
-  Rate,
-  terraswap,
-  Token,
-  u,
-  UST,
-} from '@libs/types';
+import { HumanAddr, Rate, terraswap, Token, u, UST } from '@libs/types';
 import {
   pickAttributeValueByKey,
   pickEvent,
@@ -60,7 +52,7 @@ export function cw20BuyTokenTx(
                 amount: $.buyAmount,
                 info: {
                   native_token: {
-                    denom: 'uusd' as NativeDenom,
+                    denom: 'uusd',
                   },
                 },
               },

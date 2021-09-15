@@ -1,5 +1,5 @@
 import { defaultMantleFetch, mantle, WasmQuery } from '@libs/mantle';
-import { CW20Addr, HumanAddr, NativeDenom, terraswap } from '@libs/types';
+import { CW20Addr, HumanAddr, terraswap } from '@libs/types';
 import { TEST_MANTLE_ENDPOINT } from '@libs/webapp-fns/test-env';
 
 type AncWasmQuery = {
@@ -21,7 +21,7 @@ describe('queries/simulation', () => {
               asset_infos: [
                 {
                   native_token: {
-                    denom: 'uusd' as NativeDenom,
+                    denom: 'uusd',
                   },
                 },
                 {

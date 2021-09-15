@@ -16,10 +16,10 @@ const NATIVE_DENOMS = ['uusd', 'uluna'] as NativeDenom[];
 const FALLBACK = {
   assetInfo: {
     native_token: {
-      denom: 'uusd' as NativeDenom,
+      denom: 'uusd',
     },
   },
-  tokenInfo: nativeTokenInfoQuery('uusd' as NativeDenom)!,
+  tokenInfo: nativeTokenInfoQuery('uusd')!,
 } as SendTokenInfo;
 
 const cw20AddrCache = new PersistCache<CW20Addr[]>(

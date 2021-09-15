@@ -1,13 +1,5 @@
 import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
-import {
-  cw20,
-  CW20Addr,
-  HumanAddr,
-  NativeDenom,
-  terraswap,
-  Token,
-  UST,
-} from '@libs/types';
+import { cw20, CW20Addr, HumanAddr, terraswap, Token, UST } from '@libs/types';
 import { cw20TokenInfoQuery } from '../cw20/tokenInfo';
 import { terraswapPairQuery } from '../terraswap/pair';
 import { TerraswapPoolInfo, terraswapPoolQuery } from '../terraswap/pool';
@@ -37,7 +29,7 @@ export async function cw20PoolInfoQuery<T extends Token>(
       },
       {
         native_token: {
-          denom: 'uusd' as NativeDenom,
+          denom: 'uusd',
         },
       },
     ],
