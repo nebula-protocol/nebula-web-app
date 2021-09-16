@@ -1,5 +1,5 @@
 import { useForm } from '@libs/use-form';
-import { useBank, useTerraswapPoolQuery } from '@libs/webapp-provider';
+import { useBank, useTerraswapPoolQuery } from '@libs/app-provider';
 import { CW20Addr, HumanAddr, LP, Token, u } from '@nebula-js/types';
 import {
   NebulaTax,

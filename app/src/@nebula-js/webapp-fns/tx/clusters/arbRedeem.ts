@@ -5,14 +5,14 @@ import {
   TxCommonParams,
   TxResultRendering,
   TxStreamPhase,
-} from '@libs/webapp-fns';
+} from '@libs/app-fns';
 import {
   _catchTxError,
   _createTxOptions,
   _pollTxInfo,
   _postTx,
   TxHelper,
-} from '@libs/webapp-fns/tx/internal';
+} from '@libs/app-fns/tx/internal';
 import { HumanAddr, incentives, u, UST } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
 import { Coin, Coins, MsgExecuteContract, StdFee } from '@terra-money/terra.js';

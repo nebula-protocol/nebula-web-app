@@ -3,7 +3,7 @@ import {
   cw20BalanceQuery,
   CW20PoolInfo,
   cw20PoolInfoQuery,
-} from '@libs/webapp-fns';
+} from '@libs/app-fns';
 import { cluster, cw20, CW20Addr, HumanAddr, Token, u } from '@nebula-js/types';
 import { clusterStateListQuery } from '../clusters/stateList';
 

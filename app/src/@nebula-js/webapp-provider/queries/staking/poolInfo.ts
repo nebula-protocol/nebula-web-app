@@ -1,7 +1,7 @@
 import { createQueryFn } from '@libs/react-query-utils';
 import { useBrowserInactive } from '@libs/use-browser-inactive';
-import { TERRA_QUERY_KEY } from '@libs/webapp-fns';
-import { useTerraWebapp } from '@libs/webapp-provider';
+import { TERRA_QUERY_KEY } from '@libs/app-fns';
+import { useTerraWebapp } from '@libs/app-provider';
 import { CW20Addr } from '@nebula-js/types';
 import { StakingPoolInfo, stakingPoolInfoQuery } from '@nebula-js/webapp-fns';
 import { useQuery, UseQueryResult } from 'react-query';

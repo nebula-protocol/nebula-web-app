@@ -1,5 +1,5 @@
 import { useForm } from '@libs/use-form';
-import { useBank } from '@libs/webapp-provider';
+import { useBank } from '@libs/app-provider';
 import { NEB } from '@nebula-js/types';
 import {
   govStakeForm,

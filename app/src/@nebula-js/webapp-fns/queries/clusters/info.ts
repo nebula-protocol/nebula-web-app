@@ -10,7 +10,7 @@ import {
   cw20TokenInfoQuery,
   nativeTokenInfoQuery,
   TerraswapPoolInfo,
-} from '@libs/webapp-fns';
+} from '@libs/app-fns';
 import {
   cluster,
   CT,

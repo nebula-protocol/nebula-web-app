@@ -1,4 +1,4 @@
-import { TxResultRendering } from '@libs/webapp-fns';
+import { TxResultRendering } from '@libs/app-fns';
 import { TxMiniRenderer } from 'components/tx/TxMiniRenderer';
 import { TxRenderer } from 'components/tx/TxRenderer';
 import React, {

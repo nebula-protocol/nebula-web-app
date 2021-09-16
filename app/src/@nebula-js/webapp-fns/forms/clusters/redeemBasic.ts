@@ -2,7 +2,7 @@ import { sum, vectorMultiply } from '@libs/big-math';
 import { microfy } from '@libs/formatter';
 import { MantleFetch } from '@libs/mantle';
 import { FormReturn } from '@libs/use-form';
-import { GasPrice } from '@libs/webapp-fns';
+import { GasPrice } from '@libs/app-fns';
 import { cluster, CT, NoMicro, Token, u, UST } from '@nebula-js/types';
 import big, { BigSource } from 'big.js';
 import { computeClusterTxFee } from '../../logics/clusters/computeClusterTxFee';

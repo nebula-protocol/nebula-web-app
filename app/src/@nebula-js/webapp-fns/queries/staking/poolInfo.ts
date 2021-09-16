@@ -5,7 +5,7 @@ import {
   WasmQuery,
   WasmQueryData,
 } from '@libs/mantle';
-import { cw20PoolInfoQuery, TerraswapPoolInfo } from '@libs/webapp-fns';
+import { cw20PoolInfoQuery, TerraswapPoolInfo } from '@libs/app-fns';
 import {
   cw20,
   CW20Addr,

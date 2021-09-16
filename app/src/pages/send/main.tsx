@@ -1,5 +1,5 @@
 import { formatUInput, formatUToken, microfy } from '@libs/formatter';
-import { useSendForm, useSendTx } from '@libs/webapp-provider';
+import { useSendForm, useSendTx } from '@libs/app-provider';
 import { Add } from '@material-ui/icons';
 import { WalletIcon } from '@nebula-js/icons';
 import { HumanAddr, terraswap, Token, u, UST } from '@nebula-js/types';

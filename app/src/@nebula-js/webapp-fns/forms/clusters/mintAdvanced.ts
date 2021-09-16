@@ -2,7 +2,7 @@ import { max, min } from '@libs/big-math';
 import { microfy } from '@libs/formatter';
 import { MantleFetch } from '@libs/mantle';
 import { FormReturn } from '@libs/use-form';
-import { GasPrice, TerraBalances } from '@libs/webapp-fns';
+import { GasPrice, TerraBalances } from '@libs/app-fns';
 import { cluster, CT, terraswap, Token, u, UST } from '@nebula-js/types';
 import big, { Big, BigSource } from 'big.js';
 import { computeClusterTxFee } from '../../logics/clusters/computeClusterTxFee';

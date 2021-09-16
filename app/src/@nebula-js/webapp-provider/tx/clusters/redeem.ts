@@ -1,4 +1,4 @@
-import { useRefetchQueries, useTerraWebapp } from '@libs/webapp-provider';
+import { useRefetchQueries, useTerraWebapp } from '@libs/app-provider';
 import {
   CT,
   CW20Addr,

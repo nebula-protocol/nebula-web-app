@@ -4,7 +4,7 @@ import {
   formatUToken,
   microfy,
 } from '@libs/formatter';
-import { useCW20BuyTokenForm, useCW20BuyTokenTx } from '@libs/webapp-provider';
+import { useCW20BuyTokenForm, useCW20BuyTokenTx } from '@libs/app-provider';
 import { ArrowSouthIcon, WalletIcon } from '@nebula-js/icons';
 import { NEB, Rate, u, UST } from '@nebula-js/types';
 import {

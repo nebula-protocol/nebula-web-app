@@ -1,5 +1,5 @@
 import { useForm } from '@libs/use-form';
-import { useBank, useTerraWebapp } from '@libs/webapp-provider';
+import { useBank, useTerraWebapp } from '@libs/app-provider';
 import { cluster, terraswap, UST } from '@nebula-js/types';
 import {
   clusterRedeemTerraswapArbitrageForm,

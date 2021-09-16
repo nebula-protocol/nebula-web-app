@@ -5,7 +5,7 @@ import {
   WasmQuery,
   WasmQueryData,
 } from '@libs/mantle';
-import { cw20BalanceQuery } from '@libs/webapp-fns';
+import { cw20BalanceQuery } from '@libs/app-fns';
 import { CW20Addr, gov, HumanAddr, NEB } from '@nebula-js/types';
 import {
   ParsedPoll,

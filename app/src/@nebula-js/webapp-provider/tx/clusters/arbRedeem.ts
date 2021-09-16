@@ -1,4 +1,4 @@
-import { useRefetchQueries, useTerraWebapp } from '@libs/webapp-provider';
+import { useRefetchQueries, useTerraWebapp } from '@libs/app-provider';
 import { HumanAddr, terraswap, Token, u, UST } from '@nebula-js/types';
 import {
   clusterArbRedeemTx,

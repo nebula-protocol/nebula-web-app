@@ -1,5 +1,5 @@
 import { formatUInput, formatUToken, microfy } from '@libs/formatter';
-import { useCW20BalanceQuery } from '@libs/webapp-provider';
+import { useCW20BalanceQuery } from '@libs/app-provider';
 import { InputAdornment } from '@material-ui/core';
 import { WalletIcon } from '@nebula-js/icons';
 import { community, gov, HumanAddr, NEB, u } from '@nebula-js/types';

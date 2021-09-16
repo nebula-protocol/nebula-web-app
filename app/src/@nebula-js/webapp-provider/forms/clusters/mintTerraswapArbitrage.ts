@@ -3,7 +3,7 @@ import {
   useBank,
   useTerraBalancesQuery,
   useTerraWebapp,
-} from '@libs/webapp-provider';
+} from '@libs/app-provider';
 import { cluster, terraswap, Token } from '@nebula-js/types';
 import {
   clusterMintTerraswapArbitrageForm,

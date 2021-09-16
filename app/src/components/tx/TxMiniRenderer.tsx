@@ -1,5 +1,5 @@
 import { DoneAllRounded, ErrorOutlineRounded } from '@material-ui/icons';
-import { TxResultRendering, TxStreamPhase } from '@libs/webapp-fns';
+import { TxResultRendering, TxStreamPhase } from '@libs/app-fns';
 import { fixHMR } from 'fix-hmr';
 import React from 'react';
 import { GuardSpinner, RotateSpinner } from 'react-spinners-kit';

@@ -2,7 +2,7 @@ import { patchReactQueryFocusRefetching } from '@libs/patch-react-query-focus-re
 import { BrowserInactiveProvider } from '@libs/use-browser-inactive';
 import { GoogleAnalytics } from '@libs/use-google-analytics';
 import { RouterScrollRestoration } from '@libs/use-router-scroll-restoration';
-import { BankProvider, TerraWebappProvider } from '@libs/webapp-provider';
+import { BankProvider, TerraWebappProvider } from '@libs/app-provider';
 import {
   NEBULA_TX_REFETCH_MAP,
   NebulaWebappProvider,

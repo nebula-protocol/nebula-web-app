@@ -4,7 +4,7 @@ import { NebulaTax } from '@nebula-js/webapp-fns/types';
 import { min } from '@libs/big-math';
 import { FormFunction, FormReturn } from '@libs/use-form';
 import big, { Big, BigSource } from 'big.js';
-import { TerraswapPoolInfo } from '@libs/webapp-fns';
+import { TerraswapPoolInfo } from '@libs/app-fns';
 
 export interface StakingUnstakeFormInput {
   lpAmount: LP;

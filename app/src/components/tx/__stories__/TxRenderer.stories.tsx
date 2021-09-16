@@ -6,7 +6,7 @@ import {
   TxFailed,
   TxUnspecifiedError,
 } from '@terra-money/wallet-provider';
-import { TxResultRendering, TxStreamPhase } from '@libs/webapp-fns';
+import { TxResultRendering, TxStreamPhase } from '@libs/app-fns';
 import { TxMiniRenderer } from 'components/tx/TxMiniRenderer';
 import { TxRenderer } from 'components/tx/TxRenderer';
 import React, { useState } from 'react';

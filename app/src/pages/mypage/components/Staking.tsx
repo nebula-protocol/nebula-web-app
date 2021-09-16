@@ -1,5 +1,5 @@
 import { formatUTokenWithPostfixUnits } from '@libs/formatter';
-import { useCW20PoolInfoQuery } from '@libs/webapp-provider';
+import { useCW20PoolInfoQuery } from '@libs/app-provider';
 import { SendIcon } from '@nebula-js/icons';
 import { NEB, Token, u, UST } from '@nebula-js/types';
 import {

@@ -7,7 +7,7 @@ import {
   TxUnspecifiedError,
   UserDenied,
 } from '@terra-money/wallet-provider';
-import { TxErrorRendering, TxReceipt } from '@libs/webapp-fns';
+import { TxErrorRendering, TxReceipt } from '@libs/app-fns';
 import { MessageBox } from 'components/boxes/MessageBox';
 import { fixHMR } from 'fix-hmr';
 import React, { ReactNode } from 'react';

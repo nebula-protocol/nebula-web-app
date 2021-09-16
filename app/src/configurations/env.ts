@@ -1,4 +1,4 @@
-import { CW20Contract } from '@libs/webapp-fns';
+import { CW20Contract } from '@libs/app-fns';
 import { DEFAULT_NEBULA_CONTRACT_ADDRESS } from '@nebula-js/webapp-fns';
 import { NetworkInfo } from '@terra-money/wallet-provider';
 

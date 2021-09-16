@@ -1,6 +1,6 @@
 import { formatUTokenWithPostfixUnits } from '@libs/formatter';
 import { AnimateNumber } from '@libs/ui';
-import { useCW20BalanceQuery } from '@libs/webapp-provider';
+import { useCW20BalanceQuery } from '@libs/app-provider';
 import { NEB, u } from '@nebula-js/types';
 import {
   Button,

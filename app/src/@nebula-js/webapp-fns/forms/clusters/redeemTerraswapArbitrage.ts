@@ -6,7 +6,7 @@ import {
   computeMaxUstBalanceForUstTransfer,
   GasPrice,
   terraswapSimulationQuery,
-} from '@libs/webapp-fns';
+} from '@libs/app-fns';
 import {
   cluster,
   CT,

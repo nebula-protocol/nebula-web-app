@@ -1,4 +1,4 @@
-import { useTerraWebapp } from '@libs/webapp-provider';
+import { useTerraWebapp } from '@libs/app-provider';
 import { NebulaContractAddress, u, UST } from '@nebula-js/types';
 import {
   DEFAULT_NEBULA_CONSTANTS,

@@ -1,6 +1,6 @@
 import { GovVoters, govVotersQuery } from '@nebula-js/webapp-fns';
 import { useBrowserInactive } from '@libs/use-browser-inactive';
-import { useTerraWebapp } from '@libs/webapp-provider';
+import { useTerraWebapp } from '@libs/app-provider';
 import { useInfiniteQuery, UseInfiniteQueryResult } from 'react-query';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { NEBULA_QUERY_KEYS } from '../../env';

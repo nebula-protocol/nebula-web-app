@@ -1,5 +1,5 @@
 import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
-import { TerraswapPoolInfo, terraswapPoolQuery } from '@libs/webapp-fns';
+import { TerraswapPoolInfo, terraswapPoolQuery } from '@libs/app-fns';
 import { HumanAddr, terraswap, Token, u } from '@nebula-js/types';
 import big, { Big } from 'big.js';
 

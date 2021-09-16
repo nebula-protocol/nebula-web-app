@@ -1,5 +1,5 @@
 import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
-import { terraswapPairQuery } from '@libs/webapp-fns';
+import { terraswapPairQuery } from '@libs/app-fns';
 import { HumanAddr, terraswap, Token, u, UST } from '@nebula-js/types';
 import big, { Big, BigSource } from 'big.js';
 import { ClusterSimulatorWithPenalty } from './ClusterSimulatorWithPenalty';

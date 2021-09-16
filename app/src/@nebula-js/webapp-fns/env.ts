@@ -1,4 +1,4 @@
-import { DEFAULT_TERRA_CONTRACT_ADDRESS } from '@libs/webapp-fns';
+import { DEFAULT_TERRA_CONTRACT_ADDRESS } from '@libs/app-fns';
 import {
   CW20Addr,
   Gas,

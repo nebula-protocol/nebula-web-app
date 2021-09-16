@@ -20,7 +20,7 @@ import {
   useValidateStringBytes,
 } from '@libs/use-string-bytes-length';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useBank } from '@libs/webapp-provider';
+import { useBank } from '@libs/app-provider';
 import big from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { FormLayout } from 'components/layouts/FormLayout';

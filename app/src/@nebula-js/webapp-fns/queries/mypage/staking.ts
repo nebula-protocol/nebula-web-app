@@ -1,5 +1,5 @@
 import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
-import { CW20PoolInfo, cw20PoolInfoQuery } from '@libs/webapp-fns';
+import { CW20PoolInfo, cw20PoolInfoQuery } from '@libs/app-fns';
 import { HumanAddr, staking, Token } from '@nebula-js/types';
 import { stakingRewardInfoQuery } from '../staking/rewardInfo';
 

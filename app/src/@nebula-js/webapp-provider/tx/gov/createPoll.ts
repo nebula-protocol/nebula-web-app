@@ -5,11 +5,7 @@ import {
   NebulaTokenBalances,
 } from '@nebula-js/webapp-fns';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import {
-  useBank,
-  useRefetchQueries,
-  useTerraWebapp,
-} from '@libs/webapp-provider';
+import { useBank, useRefetchQueries, useTerraWebapp } from '@libs/app-provider';
 import { useCallback } from 'react';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { NEBULA_TX_KEYS } from '../../env';

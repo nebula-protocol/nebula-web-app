@@ -1,5 +1,5 @@
 import { Gas, u, UST } from '@libs/types';
-import { GasPrice } from '@libs/webapp-fns';
+import { GasPrice } from '@libs/app-fns';
 import { ClusterFeeMultipliers } from '@nebula-js/webapp-fns';
 import big from 'big.js';
 

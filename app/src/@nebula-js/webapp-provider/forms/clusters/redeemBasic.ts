@@ -3,7 +3,7 @@ import {
   useBank,
   useCW20BalanceQuery,
   useTerraWebapp,
-} from '@libs/webapp-provider';
+} from '@libs/app-provider';
 import { cluster, CT, u } from '@nebula-js/types';
 import {
   clusterRedeemBasicForm,

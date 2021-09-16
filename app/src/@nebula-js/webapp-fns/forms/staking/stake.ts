@@ -4,7 +4,7 @@ import { FormReturn } from '@libs/use-form';
 import {
   computeMaxUstBalanceForUstTransfer,
   TerraswapPoolInfo,
-} from '@libs/webapp-fns';
+} from '@libs/app-fns';
 import { CT, LP, Rate, Token, u, UST } from '@nebula-js/types';
 import big, { Big, BigSource } from 'big.js';
 import { NebulaTax } from '../../types';

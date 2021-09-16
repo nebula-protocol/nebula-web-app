@@ -2,7 +2,7 @@ import { ClustersList, clustersListQuery } from '@nebula-js/webapp-fns';
 import { NEBULA_QUERY_KEYS } from '@nebula-js/webapp-provider/env';
 import { createQueryFn } from '@libs/react-query-utils';
 import { useBrowserInactive } from '@libs/use-browser-inactive';
-import { useTerraWebapp } from '@libs/webapp-provider';
+import { useTerraWebapp } from '@libs/app-provider';
 import { useQuery, UseQueryResult } from 'react-query';
 import { useNebulaWebapp } from '../../contexts/webapp';
 

@@ -3,7 +3,7 @@ import {
   useBank,
   useCW20BalanceQuery,
   useTerraswapPoolQuery,
-} from '@libs/webapp-provider';
+} from '@libs/app-provider';
 import { CT, CW20Addr, HumanAddr, Rate, u, UST } from '@nebula-js/types';
 import {
   NebulaTax,

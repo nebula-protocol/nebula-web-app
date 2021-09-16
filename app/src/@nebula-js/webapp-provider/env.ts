@@ -1,4 +1,4 @@
-import { TERRA_TX_KEYS, TERRA_QUERY_KEY } from '@libs/webapp-fns';
+import { TERRA_TX_KEYS, TERRA_QUERY_KEY } from '@libs/app-fns';
 
 export enum NEBULA_TX_KEYS {
   CLUSTER_MINT = 'NEBULA_TX_CLUSTER_MINT',

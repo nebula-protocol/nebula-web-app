@@ -1,4 +1,4 @@
-import { useRefetchQueries, useTerraWebapp } from '@libs/webapp-provider';
+import { useRefetchQueries, useTerraWebapp } from '@libs/app-provider';
 import { CW20Addr, HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
 import { stakingStakeTx } from '@nebula-js/webapp-fns';
 import { useConnectedWallet } from '@terra-money/wallet-provider';

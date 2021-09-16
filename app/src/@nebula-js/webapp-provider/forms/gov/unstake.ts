@@ -7,7 +7,7 @@ import {
 } from '@nebula-js/webapp-fns';
 import { useForm } from '@libs/use-form';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useBank } from '@libs/webapp-provider';
+import { useBank } from '@libs/app-provider';
 import { useNebulaWebapp } from '../../contexts/webapp';
 import { useGovStakerQuery } from '../../queries/gov/staker';
 
