@@ -2,8 +2,7 @@
 // @see ~/scripts/create-index.ts
 export * from './env';
 export * from './types';
-export * from './contexts/bank';
-export * from './contexts/context';
+export * from './contexts/app';
 export * from './forms/cw20/buyToken';
 export * from './forms/cw20/sellToken';
 export * from './forms/send/send';
@@ -17,7 +16,11 @@ export * from './queries/gasPrice';
 export * from './queries/send/balance';
 export * from './queries/terra/balances';
 export * from './queries/terra/balancesWithTokenInfo';
+export * from './queries/terra/nativeBalances';
+export * from './queries/terra/tax';
 export * from './queries/terra/tokenInfo';
+export * from './queries/terra/treasuryTaxCap';
+export * from './queries/terra/treasuryTaxRate';
 export * from './queries/terraswap/pair';
 export * from './queries/terraswap/pool';
 export * from './tx/cw20/buyToken';

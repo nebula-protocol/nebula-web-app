@@ -1,12 +1,9 @@
+import { TerraswapPair, terraswapPairQuery } from '@libs/app-fns';
+import { useApp } from '@libs/app-provider/contexts/app';
+import { TERRA_QUERY_KEY } from '@libs/app-provider/env';
 import { createQueryFn } from '@libs/react-query-utils';
 import { terraswap } from '@libs/types';
 import { useBrowserInactive } from '@libs/use-browser-inactive';
-import {
-  TERRA_QUERY_KEY,
-  TerraswapPair,
-  terraswapPairQuery,
-} from '@libs/app-fns';
-import { useTerraWebapp } from '@libs/app-provider';
 import { useQuery, UseQueryResult } from 'react-query';
 
 const queryFn = createQueryFn(terraswapPairQuery);
@@ -15,7 +12,7 @@ export function useTerraswapPairQuery(
   assetInfos: [terraswap.AssetInfo, terraswap.AssetInfo],
 ): UseQueryResult<TerraswapPair | undefined> {
   const { mantleFetch, mantleEndpoint, queryErrorReporter, contractAddress } =
-    useTerraWebapp();
+    useApp();
 
   const { browserInactive } = useBrowserInactive();
 

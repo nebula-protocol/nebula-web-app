@@ -9,11 +9,11 @@ import {
   TokenSpan,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { ClusterInfo } from '@nebula-js/webapp-fns';
+import { ClusterInfo } from '@nebula-js/app-fns';
 import {
   useClusterArbRedeemTx,
   useClusterRedeemTerraswapArbitrageForm,
-} from '@nebula-js/webapp-provider';
+} from '@nebula-js/app-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { useTxBroadcast } from 'contexts/tx-broadcast';

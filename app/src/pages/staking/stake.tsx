@@ -1,6 +1,6 @@
 import { CW20Addr } from '@nebula-js/types';
 import { Section, Tab, TabItem } from '@nebula-js/ui';
-import { useStakingPoolInfoQuery } from '@nebula-js/webapp-provider';
+import { useStakingPoolInfoQuery } from '@nebula-js/app-provider';
 import { FormLayout } from 'components/layouts/FormLayout';
 import { fixHMR } from 'fix-hmr';
 import React, { useCallback, useMemo } from 'react';

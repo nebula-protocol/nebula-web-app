@@ -1,5 +1,5 @@
 import { terraswap, Token } from '@nebula-js/types';
-import { AssetTokenInfo, findAssetTokenInfo } from '@nebula-js/webapp-fns';
+import { AssetTokenInfo, findAssetTokenInfo } from '@nebula-js/app-fns';
 import { fixHMR } from 'fix-hmr';
 import React, { DetailedHTMLProps, HTMLAttributes, useMemo } from 'react';
 import styled from 'styled-components';

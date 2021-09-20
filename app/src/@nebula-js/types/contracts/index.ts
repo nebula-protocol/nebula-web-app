@@ -2,7 +2,6 @@ export * from './airdrop';
 export * from './cluster';
 export * from './cluster_factory';
 export * from './collector';
-export * from './common';
 export * from './community';
 export * from './gov';
 export * from './incentives';

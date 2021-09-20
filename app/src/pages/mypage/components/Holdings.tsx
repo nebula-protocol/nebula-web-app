@@ -1,8 +1,12 @@
-import { SendIcon } from '@nebula-js/icons';
+import { useApp } from '@libs/app-provider';
+import { sum } from '@libs/big-math';
 import {
   formatTokenWithPostfixUnits,
   formatUTokenWithPostfixUnits,
 } from '@libs/formatter';
+import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
+import { useMypageHoldingsQuery } from '@nebula-js/app-provider';
+import { SendIcon } from '@nebula-js/icons';
 import { u, UST } from '@nebula-js/types';
 import {
   Button,
@@ -13,11 +17,6 @@ import {
   TwoLine,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import {
-  useMypageHoldingsQuery,
-  useNebulaWebapp,
-} from '@nebula-js/webapp-provider';
-import { sum } from '@libs/big-math';
 import big, { Big } from 'big.js';
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
@@ -28,7 +27,7 @@ export interface HoldingsProps {
 }
 
 function HoldingsBase({ className }: HoldingsProps) {
-  const { contractAddress } = useNebulaWebapp();
+  const { contractAddress } = useApp<NebulaContractAddress, NebulaContants>();
 
   const { data = [] } = useMypageHoldingsQuery();
 

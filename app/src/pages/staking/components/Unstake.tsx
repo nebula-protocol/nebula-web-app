@@ -14,11 +14,11 @@ import {
   TokenSpan,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { StakingPoolInfo } from '@nebula-js/webapp-fns';
+import { StakingPoolInfo } from '@nebula-js/app-fns';
 import {
   useStakingUnstakeForm,
   useStakingUnstakeTx,
-} from '@nebula-js/webapp-provider';
+} from '@nebula-js/app-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';

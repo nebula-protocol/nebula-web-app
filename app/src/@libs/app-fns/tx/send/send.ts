@@ -1,11 +1,11 @@
-import { floor } from '@libs/big-math';
-import { HumanAddr, terraswap, Token, u, UST } from '@libs/types';
 import {
   pickEvent,
   pickRawLog,
   TxResultRendering,
   TxStreamPhase,
 } from '@libs/app-fns';
+import { floor } from '@libs/big-math';
+import { HumanAddr, Rate, terraswap, Token, u, UST } from '@libs/types';
 import { pipe } from '@rx-stream/pipe';
 import {
   Coin,
@@ -14,7 +14,6 @@ import {
   StdFee,
 } from '@terra-money/terra.js';
 import { Observable } from 'rxjs';
-import { Tax } from '../../types';
 import {
   _catchTxError,
   _createTxOptions,
@@ -32,7 +31,8 @@ export function sendTx(
     memo?: string;
     amount: u<Token>;
     txFee: u<UST>;
-    tax: Tax;
+    taxRate: Rate;
+    maxTaxUUSD: u<UST>;
     onTxSucceed?: () => void;
   } & TxCommonParams,
 ): Observable<TxResultRendering> {

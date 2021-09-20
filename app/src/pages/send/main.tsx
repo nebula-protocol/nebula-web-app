@@ -15,7 +15,7 @@ import {
   useConfirm,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { useSendTokensForm } from '@nebula-js/webapp-provider';
+import { useSendTokensForm } from '@nebula-js/app-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
 import { WarningMessageBox } from 'components/boxes/WarningMessageBox';

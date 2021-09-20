@@ -1,5 +1,12 @@
-import { WalletIcon } from '@nebula-js/icons';
+import { useApp, useCW20Balance, useGasPrice } from '@libs/app-provider';
 import { formatUToken } from '@libs/formatter';
+import {
+  BytesValid,
+  useValidateStringBytes,
+} from '@libs/use-string-bytes-length';
+import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
+import { useGovConfigQuery, useGovCreatePollTx } from '@nebula-js/app-provider';
+import { WalletIcon } from '@nebula-js/icons';
 import { gov, NEB, u } from '@nebula-js/types';
 import {
   Button,
@@ -9,18 +16,7 @@ import {
   TextInput,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { NebulaTokenBalances } from '@nebula-js/webapp-fns';
-import {
-  useGovConfigQuery,
-  useGovCreatePollTx,
-  useNebulaWebapp,
-} from '@nebula-js/webapp-provider';
-import {
-  BytesValid,
-  useValidateStringBytes,
-} from '@libs/use-string-bytes-length';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useBank } from '@libs/app-provider';
 import big from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { FormLayout } from 'components/layouts/FormLayout';
@@ -48,6 +44,11 @@ function PollCreateBaseBase({
   submitButtonStatus,
   children,
 }: PollCreateBaseProps) {
+  const { contractAddress, constants } = useApp<
+    NebulaContractAddress,
+    NebulaContants
+  >();
+
   const connectedWallet = useConnectedWallet();
   const history = useHistory();
 
@@ -56,10 +57,17 @@ function PollCreateBaseBase({
   const postTx = useGovCreatePollTx();
 
   const { data: { govConfig } = {} } = useGovConfigQuery();
-  const { tokenBalances } = useBank<NebulaTokenBalances>();
-  const {
-    constants: { fixedFee },
-  } = useNebulaWebapp();
+
+  const uNEB = useCW20Balance<NEB>(
+    contractAddress.cw20.NEB,
+    connectedWallet?.walletAddress,
+  );
+
+  const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
+  //const { tokenBalances } = useBank<NebulaTokenBalances>();
+  //const {
+  //  constants: { fixedFee },
+  //} = useNebulaWebapp();
 
   const [pollTitle, setPollTitle] = useState<string>('');
   const [pollDescription, setPollDescription] = useState<string>('');
@@ -70,10 +78,8 @@ function PollCreateBaseBase({
       return null;
     }
 
-    return big(tokenBalances.uNEB).lt(govConfig.proposal_deposit)
-      ? 'Not enough NEB'
-      : null;
-  }, [govConfig, tokenBalances.uNEB]);
+    return big(uNEB).lt(govConfig.proposal_deposit) ? 'Not enough NEB' : null;
+  }, [govConfig, uNEB]);
 
   const invalidPollTitleBytes = useValidateStringBytes(pollTitle, 4, 64);
 
@@ -197,7 +203,7 @@ function PollCreateBaseBase({
             label="Deposit"
             aside={
               <FormLabelAside>
-                <WalletIcon /> {formatUToken(tokenBalances.uNEB)}
+                <WalletIcon /> {formatUToken(uNEB)}
               </FormLabelAside>
             }
             className="form-label"

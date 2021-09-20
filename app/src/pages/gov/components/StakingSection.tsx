@@ -1,9 +1,14 @@
+import {
+  useApp,
+  useCW20Balance,
+  useCW20TokenInfoQuery,
+} from '@libs/app-provider';
 import { formatRate, formatUTokenWithPostfixUnits } from '@libs/formatter';
 import { AnimateNumber } from '@libs/ui';
-import { useCW20BalanceQuery, useCW20TokenInfoQuery } from '@libs/app-provider';
+import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
+import { useGovStateQuery } from '@nebula-js/app-provider';
 import { NEB, Rate, u } from '@nebula-js/types';
 import { breakpoints, Section, Sub, TitledLabel } from '@nebula-js/ui';
-import { useGovStateQuery, useNebulaWebapp } from '@nebula-js/webapp-provider';
 import big, { Big } from 'big.js';
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
@@ -13,16 +18,17 @@ export interface StakingSectionProps {
 }
 
 function StakingSectionBase({ className }: StakingSectionProps) {
-  const { contractAddress } = useNebulaWebapp();
+  const { contractAddress } = useApp<NebulaContractAddress, NebulaContants>();
 
-  const { data: { tokenBalance: govNebBalance } = {} } =
-    useCW20BalanceQuery<NEB>(contractAddress.cw20.NEB, contractAddress.gov);
+  const govNebBalance = useCW20Balance<NEB>(
+    contractAddress.cw20.NEB,
+    contractAddress.gov,
+  );
 
-  const { data: { tokenBalance: communityNebBalance } = {} } =
-    useCW20BalanceQuery<NEB>(
-      contractAddress.cw20.NEB,
-      contractAddress.community,
-    );
+  const communityNebBalance = useCW20Balance<NEB>(
+    contractAddress.cw20.NEB,
+    contractAddress.community,
+  );
 
   const { data: { govState } = {} } = useGovStateQuery();
 
@@ -39,9 +45,9 @@ function StakingSectionBase({ className }: StakingSectionProps) {
       };
     }
 
-    const _totalStaked = big(govNebBalance.balance).minus(
-      govState.total_deposit,
-    ) as u<NEB<Big>>;
+    const _totalStaked = big(govNebBalance).minus(govState.total_deposit) as u<
+      NEB<Big>
+    >;
 
     const _stakingRatio = _totalStaked.div(tokenInfo.total_supply) as Rate<Big>;
 
@@ -49,7 +55,7 @@ function StakingSectionBase({ className }: StakingSectionProps) {
       totalStaked: _totalStaked,
       stakingRatio: _stakingRatio,
     };
-  }, [govState, govNebBalance, tokenInfo]);
+  }, [govNebBalance, govState, tokenInfo]);
 
   return (
     <Section className={className}>
@@ -78,9 +84,7 @@ function StakingSectionBase({ className }: StakingSectionProps) {
         text={
           <>
             <AnimateNumber format={formatUTokenWithPostfixUnits}>
-              {communityNebBalance
-                ? communityNebBalance.balance
-                : (0 as u<NEB<number>>)}
+              {communityNebBalance}
             </AnimateNumber>{' '}
             <Sub>NEB</Sub>
           </>

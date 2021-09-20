@@ -1,12 +1,9 @@
+import { TerraswapPool, terraswapPoolQuery } from '@libs/app-fns';
+import { useApp } from '@libs/app-provider/contexts/app';
+import { TERRA_QUERY_KEY } from '@libs/app-provider/env';
 import { createQueryFn } from '@libs/react-query-utils';
-import { useBrowserInactive } from '@libs/use-browser-inactive';
-import {
-  TERRA_QUERY_KEY,
-  TerraswapPool,
-  terraswapPoolQuery,
-} from '@libs/app-fns';
-import { useTerraWebapp } from '@libs/app-provider';
 import { HumanAddr, Token } from '@libs/types';
+import { useBrowserInactive } from '@libs/use-browser-inactive';
 import { useQuery, UseQueryResult } from 'react-query';
 
 const queryFn = createQueryFn(terraswapPoolQuery);
@@ -14,7 +11,7 @@ const queryFn = createQueryFn(terraswapPoolQuery);
 export function useTerraswapPoolQuery<T extends Token>(
   terraswapPairAddr: HumanAddr | undefined,
 ): UseQueryResult<TerraswapPool<T> | undefined> {
-  const { mantleFetch, mantleEndpoint, queryErrorReporter } = useTerraWebapp();
+  const { mantleFetch, mantleEndpoint, queryErrorReporter } = useApp();
 
   const { browserInactive } = useBrowserInactive();
 

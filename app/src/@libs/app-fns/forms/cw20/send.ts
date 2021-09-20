@@ -1,11 +1,10 @@
 import { min } from '@libs/big-math';
 import { microfy } from '@libs/formatter';
-import { Token, u, UST } from '@libs/types';
+import { Rate, Token, u, UST } from '@libs/types';
 import { FormFunction, FormReturn } from '@libs/use-form';
 import { AccAddress } from '@terra-money/terra.js';
 import big, { BigSource } from 'big.js';
 import { computeMaxUstBalanceForUstTransfer } from '../../logics/computeMaxUstBalanceForUstTransfer';
-import { Tax } from '../../types';
 import { SendTokenInfo } from './tokens';
 
 export interface SendFormInput<T extends Token> {
@@ -19,7 +18,8 @@ export interface SendFormDependency<T extends Token> {
   balance: u<T>;
   ustBalance: u<UST>;
   //
-  tax: Tax;
+  taxRate: Rate;
+  maxTaxUUSD: u<UST>;
   fixedGas: u<UST<BigSource>>;
   //
   tokenInfo: SendTokenInfo;
@@ -53,7 +53,8 @@ export const sendForm = <T extends Token>({
   balance,
   ustBalance,
   tokenInfo,
-  tax,
+  taxRate,
+  maxTaxUUSD,
   fixedGas,
   connected,
 }: SendFormDependency<T>) => {
@@ -64,7 +65,8 @@ export const sendForm = <T extends Token>({
   const maxAmount: u<T> = isUst
     ? (computeMaxUstBalanceForUstTransfer(
         balance as u<UST>,
-        tax,
+        taxRate,
+        maxTaxUUSD,
         fixedGas,
       ).toFixed() as u<T>)
     : balance;
@@ -108,7 +110,7 @@ export const sendForm = <T extends Token>({
 
     const txFee = (
       isUst
-        ? min(microfy(amount!).mul(tax.taxRate), tax.maxTaxUUSD).plus(fixedGas)
+        ? min(microfy(amount!).mul(taxRate), maxTaxUUSD).plus(fixedGas)
         : fixedGas
     ) as u<UST<BigSource>>;
 

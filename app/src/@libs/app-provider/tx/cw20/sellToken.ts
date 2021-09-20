@@ -1,12 +1,13 @@
+import { cw20SellTokenTx } from '@libs/app-fns';
+import {
+  TERRA_TX_KEYS,
+  useGasPrice,
+  useRefetchQueries,
+} from '@libs/app-provider';
+import { useApp } from '@libs/app-provider/contexts/app';
+import { useTax } from '@libs/app-provider/queries/terra/tax';
 import { formatExecuteMsgNumber } from '@libs/formatter';
 import { CW20Addr, HumanAddr, Rate, Token, u, UST } from '@libs/types';
-import {
-  cw20SellTokenTx,
-  Tax,
-  TERRA_TX_KEYS,
-  TokenBalances,
-} from '@libs/app-fns';
-import { useBank, useRefetchQueries, useTerraWebapp } from '@libs/app-provider';
 import { useConnectedWallet } from '@terra-dev/use-wallet';
 import big from 'big.js';
 import { useCallback } from 'react';
@@ -27,12 +28,13 @@ export function useCW20SellTokenTx<T extends Token>(
 ) {
   const connectedWallet = useConnectedWallet();
 
-  const { mantleFetch, mantleEndpoint, txErrorReporter, constants } =
-    useTerraWebapp();
+  const { mantleFetch, mantleEndpoint, txErrorReporter, constants } = useApp();
+
+  const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
 
   const refetchQueries = useRefetchQueries();
 
-  const { tax } = useBank<TokenBalances, Tax>();
+  const { taxRate, maxTax } = useTax<UST>('uusd');
 
   const { data: { terraswapPool } = {} } =
     useTerraswapPoolQuery<Token>(tokenUstPairAddr);
@@ -64,10 +66,11 @@ export function useCW20SellTokenTx<T extends Token>(
         tokenAddr,
         tokenUstPairAddr,
         tokenSymbol,
-        tax,
+        taxRate,
+        maxTaxUUSD: maxTax,
         maxSpread,
         sellerAddr: connectedWallet.walletAddress,
-        fixedGas: constants.fixedFee,
+        fixedGas: fixedFee,
         gasWanted: constants.gasWanted,
         gasAdjustment: constants.gasAdjustment,
         mantleEndpoint,
@@ -83,13 +86,14 @@ export function useCW20SellTokenTx<T extends Token>(
     },
     [
       connectedWallet,
-      constants.fixedFee,
       constants.gasAdjustment,
       constants.gasWanted,
+      fixedFee,
       mantleEndpoint,
       mantleFetch,
+      maxTax,
       refetchQueries,
-      tax,
+      taxRate,
       terraswapPool,
       tokenAddr,
       tokenSymbol,

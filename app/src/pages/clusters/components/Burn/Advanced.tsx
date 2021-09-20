@@ -1,4 +1,4 @@
-import { ClusterInfo } from '@nebula-js/webapp-fns';
+import { ClusterInfo } from '@nebula-js/app-fns';
 import { fixHMR } from 'fix-hmr';
 import styled from 'styled-components';
 import React from 'react';

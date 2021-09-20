@@ -1,6 +1,12 @@
+import { sendTx } from '@libs/app-fns';
+import {
+  TERRA_TX_KEYS,
+  useGasPrice,
+  useRefetchQueries,
+} from '@libs/app-provider';
+import { useApp } from '@libs/app-provider/contexts/app';
+import { useTax } from '@libs/app-provider/queries/terra/tax';
 import { HumanAddr, terraswap, Token, u, UST } from '@libs/types';
-import { sendTx, Tax, TERRA_TX_KEYS, TokenBalances } from '@libs/app-fns';
-import { useBank, useRefetchQueries, useTerraWebapp } from '@libs/app-provider';
 import { useConnectedWallet } from '@terra-dev/use-wallet';
 import { useCallback } from 'react';
 
@@ -17,12 +23,13 @@ export interface SendTxParams {
 export function useSendTx() {
   const connectedWallet = useConnectedWallet();
 
-  const { mantleFetch, mantleEndpoint, txErrorReporter, constants } =
-    useTerraWebapp();
+  const { mantleFetch, mantleEndpoint, txErrorReporter, constants } = useApp();
+
+  const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
 
   const refetchQueries = useRefetchQueries();
 
-  const { tax } = useBank<TokenBalances, Tax>();
+  const { taxRate, maxTax } = useTax<UST>('uusd');
 
   const stream = useCallback(
     ({ asset, memo, toAddr, amount, txFee, onTxSucceed }: SendTxParams) => {
@@ -37,8 +44,9 @@ export function useSendTx() {
         toAddr,
         amount,
         walletAddr: connectedWallet.walletAddress,
-        tax,
-        fixedGas: constants.fixedFee,
+        taxRate,
+        maxTaxUUSD: maxTax,
+        fixedGas: fixedFee,
         gasWanted: constants.gasWanted,
         gasAdjustment: constants.gasAdjustment,
         mantleEndpoint,
@@ -54,13 +62,14 @@ export function useSendTx() {
     },
     [
       connectedWallet,
-      constants.fixedFee,
       constants.gasAdjustment,
       constants.gasWanted,
+      fixedFee,
       mantleEndpoint,
       mantleFetch,
+      maxTax,
       refetchQueries,
-      tax,
+      taxRate,
       txErrorReporter,
     ],
   );

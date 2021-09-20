@@ -16,7 +16,7 @@ import {
   TabSection,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { useClusterInfoQuery } from '@nebula-js/webapp-provider';
+import { useClusterInfoQuery } from '@nebula-js/app-provider';
 import { MainLayout } from 'components/layouts/MainLayout';
 import { fixHMR } from 'fix-hmr';
 import { toClusterView } from 'pages/clusters/models/clusters';

@@ -1,10 +1,10 @@
 import { formatUToken, microfy } from '@libs/formatter';
 import { CT, terraswap, Token, u, UST } from '@nebula-js/types';
-import { ClusterInfo } from '@nebula-js/webapp-fns';
+import { ClusterInfo } from '@nebula-js/app-fns';
 import {
   useClusterMintAdvancedForm,
   useClusterMintTx,
-} from '@nebula-js/webapp-provider';
+} from '@nebula-js/app-provider';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { TokenForm } from 'pages/clusters/components/Mint/TokenForm';

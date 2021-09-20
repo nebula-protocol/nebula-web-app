@@ -1,6 +1,8 @@
+import { useApp, useCW20Balance } from '@libs/app-provider';
 import { formatUTokenWithPostfixUnits } from '@libs/formatter';
 import { AnimateNumber } from '@libs/ui';
-import { useCW20BalanceQuery } from '@libs/app-provider';
+import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
+import { useGovStakerQuery } from '@nebula-js/app-provider';
 import { NEB, u } from '@nebula-js/types';
 import {
   Button,
@@ -9,7 +11,6 @@ import {
   Sub,
   TitledLabel,
 } from '@nebula-js/ui';
-import { useGovStakerQuery, useNebulaWebapp } from '@nebula-js/webapp-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { fixHMR } from 'fix-hmr';
 import React from 'react';
@@ -23,9 +24,9 @@ export interface NEBSectionProps {
 function NEBSectionBase({ className }: NEBSectionProps) {
   const connectedWallet = useConnectedWallet();
 
-  const { contractAddress } = useNebulaWebapp();
+  const { contractAddress } = useApp<NebulaContractAddress, NebulaContants>();
 
-  const { data: { tokenBalance: nebBalance } = {} } = useCW20BalanceQuery<NEB>(
+  const uNEB = useCW20Balance<NEB>(
     contractAddress.cw20.NEB,
     connectedWallet?.walletAddress,
   );
@@ -65,7 +66,7 @@ function NEBSectionBase({ className }: NEBSectionProps) {
           text={
             <>
               <AnimateNumber format={formatUTokenWithPostfixUnits}>
-                {nebBalance ? nebBalance.balance : (0 as u<NEB<number>>)}
+                {uNEB}
               </AnimateNumber>{' '}
               <Sub>NEB</Sub>
             </>

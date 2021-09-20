@@ -9,7 +9,7 @@ import {
   TokenSpan,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { useGovUnstakeForm, useGovUnstakeTx } from '@nebula-js/webapp-provider';
+import { useGovUnstakeForm, useGovUnstakeTx } from '@nebula-js/app-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';

@@ -6,7 +6,6 @@ import { FormFunction, FormReturn } from '@libs/use-form';
 import big, { Big, BigSource } from 'big.js';
 import { computeMaxUstBalanceForUstTransfer } from '../../logics/computeMaxUstBalanceForUstTransfer';
 import { terraswapSimulationQuery } from '../../queries/terraswap/simulation';
-import { Tax } from '../../types';
 
 export interface CW20BuyTokenFormInput<T extends Token> {
   ustAmount?: UST;
@@ -23,7 +22,8 @@ export interface CW20BuyTokenFormDependency {
   tokenAddr: CW20Addr;
   //
   ustBalance: u<UST>;
-  tax: Tax;
+  taxRate: Rate;
+  maxTaxUUSD: u<UST>;
   fixedGas: u<UST<BigSource>>;
   //
   connected: boolean;
@@ -63,13 +63,15 @@ export const cw20BuyTokenForm = <T extends Token>({
   mantleFetch,
   requestInit,
   ustBalance,
-  tax,
+  taxRate,
+  maxTaxUUSD,
   fixedGas,
   connected,
 }: CW20BuyTokenFormDependency) => {
   const maxUstAmount = computeMaxUstBalanceForUstTransfer(
     ustBalance,
-    tax,
+    taxRate,
+    maxTaxUUSD,
     fixedGas,
   );
 
@@ -135,10 +137,9 @@ export const cw20BuyTokenForm = <T extends Token>({
           ({
             simulation: { return_amount, commission_amount, spread_amount },
           }) => {
-            const _tax = min(
-              microfy(ustAmount!).mul(tax.taxRate),
-              tax.maxTaxUUSD,
-            ) as u<UST<Big>>;
+            const _tax = min(microfy(ustAmount!).mul(taxRate), maxTaxUUSD) as u<
+              UST<Big>
+            >;
 
             const beliefPrice = (
               big(return_amount).gt(0)
@@ -228,10 +229,9 @@ export const cw20BuyTokenForm = <T extends Token>({
           ({
             simulation: { return_amount, spread_amount, commission_amount },
           }) => {
-            const _tax = min(
-              big(return_amount).mul(tax.taxRate),
-              tax.maxTaxUUSD,
-            ) as u<UST<Big>>;
+            const _tax = min(big(return_amount).mul(taxRate), maxTaxUUSD) as u<
+              UST<Big>
+            >;
 
             const beliefPrice = big(return_amount)
               .div(microfy(tokenAmount!))

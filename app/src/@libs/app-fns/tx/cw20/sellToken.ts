@@ -1,3 +1,10 @@
+import {
+  pickAttributeValueByKey,
+  pickEvent,
+  pickRawLog,
+  TxResultRendering,
+  TxStreamPhase,
+} from '@libs/app-fns';
 import { floor } from '@libs/big-math';
 import {
   formatTokenIntegerWithPostfixUnits,
@@ -14,18 +21,10 @@ import {
   u,
   UST,
 } from '@libs/types';
-import {
-  pickAttributeValueByKey,
-  pickEvent,
-  pickRawLog,
-  TxResultRendering,
-  TxStreamPhase,
-} from '@libs/app-fns';
 import { pipe } from '@rx-stream/pipe';
 import { MsgExecuteContract, StdFee } from '@terra-money/terra.js';
 import big, { Big } from 'big.js';
 import { Observable } from 'rxjs';
-import { Tax } from '../../types';
 import {
   _catchTxError,
   _createTxOptions,
@@ -45,7 +44,8 @@ export function cw20SellTokenTx<T extends Token>(
     beliefPrice: T;
     /** = slippage_tolerance */
     maxSpread: Rate;
-    tax: Tax;
+    taxRate: Rate;
+    maxTaxUUSD: u<UST>;
     onTxSucceed?: () => void;
   } & TxCommonParams,
 ): Observable<TxResultRendering> {

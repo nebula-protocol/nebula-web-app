@@ -5,7 +5,6 @@ import { CW20Addr, HumanAddr, Rate, Token, u, UST } from '@libs/types';
 import { FormFunction, FormReturn } from '@libs/use-form';
 import big, { Big, BigSource } from 'big.js';
 import { terraswapSimulationQuery } from '../../queries/terraswap/simulation';
-import { Tax } from '../../types';
 
 export interface CW20SellTokenFormInput<T extends Token> {
   ustAmount?: UST;
@@ -23,7 +22,8 @@ export interface CW20SellTokenFormDependency<T extends Token> {
   //
   ustBalance: u<UST>;
   tokenBalance: u<T>;
-  tax: Tax;
+  taxRate: Rate;
+  maxTaxUUSD: u<UST>;
   fixedGas: u<UST<BigSource>>;
   //
   connected: boolean;
@@ -63,7 +63,8 @@ export const cw20SellTokenForm = <T extends Token>({
   requestInit,
   ustBalance,
   tokenBalance,
-  tax,
+  taxRate,
+  maxTaxUUSD,
   fixedGas,
   connected,
 }: CW20SellTokenFormDependency<T>) => {
@@ -129,9 +130,9 @@ export const cw20SellTokenForm = <T extends Token>({
           }) => {
             const _tax = min(
               big(return_amount).minus(
-                big(return_amount).div(big(1).plus(tax.taxRate)),
+                big(return_amount).div(big(1).plus(taxRate)),
               ),
-              tax.maxTaxUUSD,
+              maxTaxUUSD,
             ) as u<UST<Big>>;
 
             const beliefPrice = microfy(tokenAmount!)
@@ -214,9 +215,9 @@ export const cw20SellTokenForm = <T extends Token>({
           }) => {
             const _tax = min(
               microfy(ustAmount!).minus(
-                microfy(ustAmount!).div(big(1).plus(tax.taxRate)),
+                microfy(ustAmount!).div(big(1).plus(taxRate)),
               ),
-              tax.maxTaxUUSD,
+              maxTaxUUSD,
             ) as u<UST<Big>>;
 
             const beliefPrice = (

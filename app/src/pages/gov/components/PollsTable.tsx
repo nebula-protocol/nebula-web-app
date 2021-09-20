@@ -9,8 +9,8 @@ import {
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { EmptySelect } from '@nebula-js/ui/form/EmptySelect';
-import { GovPolls, ParsedPoll } from '@nebula-js/webapp-fns';
-import { useGovPollsQuery } from '@nebula-js/webapp-provider';
+import { GovPolls, ParsedPoll } from '@nebula-js/app-fns';
+import { useGovPollsQuery } from '@nebula-js/app-provider';
 import { fixHMR } from 'fix-hmr';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';

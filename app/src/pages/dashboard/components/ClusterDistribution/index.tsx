@@ -1,6 +1,6 @@
 import { Rate, u, UST } from '@nebula-js/types';
-import { computeMarketCap } from '@nebula-js/webapp-fns';
-import { useClustersInfoListQuery } from '@nebula-js/webapp-provider';
+import { computeMarketCap } from '@nebula-js/app-fns';
+import { useClustersInfoListQuery } from '@nebula-js/app-provider';
 import { sum } from '@libs/big-math';
 import big from 'big.js';
 import { fixHMR } from 'fix-hmr';

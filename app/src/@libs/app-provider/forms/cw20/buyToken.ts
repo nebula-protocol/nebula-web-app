@@ -1,13 +1,14 @@
-import { CW20Addr, HumanAddr, Rate, Token, UST } from '@libs/types';
-import { useForm } from '@libs/use-form';
 import {
   CW20BuyTokenForm,
   cw20BuyTokenForm,
   CW20BuyTokenFormInput,
-  Tax,
-  TokenBalances,
 } from '@libs/app-fns';
-import { useBank, useTerraWebapp } from '@libs/app-provider';
+import { useApp } from '@libs/app-provider/contexts/app';
+import { useGasPrice } from '@libs/app-provider/hooks/useGasPrice';
+import { useTerraNativeBalanceQuery } from '@libs/app-provider/queries/terra/nativeBalances';
+import { useTax } from '@libs/app-provider/queries/terra/tax';
+import { CW20Addr, HumanAddr, Rate, Token, UST } from '@libs/types';
+import { useForm } from '@libs/use-form';
 import { useConnectedWallet } from '@terra-dev/use-wallet';
 
 export interface CW20BuyTokenFormParams {
@@ -24,10 +25,17 @@ export function useCW20BuyTokenForm<T extends Token>({
   const {
     mantleFetch,
     mantleEndpoint,
-    constants: { fixedFee },
-  } = useTerraWebapp();
+    constants: { fixedGas },
+  } = useApp();
 
-  const { tax, tokenBalances } = useBank<TokenBalances, Tax>();
+  const fixedFee = useGasPrice(fixedGas, 'uusd');
+
+  const { taxRate, maxTax } = useTax<UST>('uusd');
+
+  const uUST = useTerraNativeBalanceQuery<UST>(
+    'uusd',
+    connectedWallet?.walletAddress,
+  );
 
   const form: CW20BuyTokenForm<T> = cw20BuyTokenForm;
 
@@ -38,8 +46,9 @@ export function useCW20BuyTokenForm<T extends Token>({
       tokenAddr,
       mantleEndpoint,
       mantleFetch,
-      ustBalance: tokenBalances.uUST,
-      tax,
+      ustBalance: uUST,
+      taxRate,
+      maxTaxUUSD: maxTax,
       fixedGas: fixedFee,
       connected: !!connectedWallet,
     },

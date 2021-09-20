@@ -1,12 +1,8 @@
+import { CW20PoolInfo, cw20PoolInfoQuery } from '@libs/app-fns';
+import { TERRA_QUERY_KEY } from '@libs/app-provider';
+import { useApp } from '@libs/app-provider/contexts/app';
 import { createQueryFn } from '@libs/react-query-utils';
 import { CW20Addr, Token } from '@libs/types';
-import { useBrowserInactive } from '@libs/use-browser-inactive';
-import {
-  CW20PoolInfo,
-  cw20PoolInfoQuery,
-  TERRA_QUERY_KEY,
-} from '@libs/app-fns';
-import { useTerraWebapp } from '@libs/app-provider';
 import { useQuery, UseQueryResult } from 'react-query';
 
 const queryFn = createQueryFn(cw20PoolInfoQuery);
@@ -15,9 +11,7 @@ export function useCW20PoolInfoQuery<T extends Token>(
   tokenAddr: CW20Addr,
 ): UseQueryResult<CW20PoolInfo<T> | undefined> {
   const { mantleFetch, mantleEndpoint, queryErrorReporter, contractAddress } =
-    useTerraWebapp();
-
-  const { browserInactive } = useBrowserInactive();
+    useApp();
 
   const result = useQuery(
     [
@@ -29,8 +23,7 @@ export function useCW20PoolInfoQuery<T extends Token>(
     ],
     queryFn as any,
     {
-      refetchInterval: browserInactive && 1000 * 60 * 5,
-      enabled: !browserInactive,
+      refetchInterval: 1000 * 60 * 5,
       keepPreviousData: true,
       onError: queryErrorReporter,
     },
