@@ -5,7 +5,6 @@ import {
   NebulaContants,
   NebulaContractAddress,
 } from '@nebula-js/app-fns';
-import { NEBULA_TX_KEYS } from '@nebula-js/app-provider/env';
 import {
   CT,
   CW20Addr,
@@ -17,6 +16,7 @@ import {
 } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
+import { NEBULA_TX_KEYS } from '../../env';
 
 export interface ClusterRedeemTxParams {
   amount: u<CT>;

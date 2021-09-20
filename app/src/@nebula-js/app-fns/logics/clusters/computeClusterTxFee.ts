@@ -1,7 +1,7 @@
-import { Gas, u, UST } from '@libs/types';
 import { GasPrice } from '@libs/app-fns';
-import { ClusterFeeMultipliers } from '@nebula-js/app-fns';
+import { Gas, u, UST } from '@libs/types';
 import big from 'big.js';
+import { ClusterFeeMultipliers } from '../../types';
 
 export function computeClusterTxFee(
   gasPrice: GasPrice,

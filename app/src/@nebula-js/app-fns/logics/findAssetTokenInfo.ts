@@ -1,5 +1,5 @@
 import { cw20, terraswap, Token } from '@nebula-js/types';
-import { AssetTokenInfo } from '@nebula-js/app-fns';
+import { AssetTokenInfo } from '../queries/clusters/info';
 
 export function findAssetTokenInfo(
   asset: terraswap.AssetInfo,

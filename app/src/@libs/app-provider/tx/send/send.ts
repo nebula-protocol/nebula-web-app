@@ -1,14 +1,12 @@
 import { sendTx } from '@libs/app-fns';
-import {
-  TERRA_TX_KEYS,
-  useGasPrice,
-  useRefetchQueries,
-} from '@libs/app-provider';
-import { useApp } from '@libs/app-provider/contexts/app';
-import { useTax } from '@libs/app-provider/queries/terra/tax';
 import { HumanAddr, terraswap, Token, u, UST } from '@libs/types';
 import { useConnectedWallet } from '@terra-dev/use-wallet';
 import { useCallback } from 'react';
+import { useApp } from '../../contexts/app';
+import { TERRA_TX_KEYS } from '../../env';
+import { useGasPrice } from '../../hooks/useGasPrice';
+import { useRefetchQueries } from '../../hooks/useRefetchQueries';
+import { useTax } from '../../queries/terra/tax';
 
 export interface SendTxParams {
   amount: u<Token>;

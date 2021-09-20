@@ -1,16 +1,14 @@
 import { cw20BuyTokenTx } from '@libs/app-fns';
-import {
-  TERRA_TX_KEYS,
-  useGasPrice,
-  useRefetchQueries,
-} from '@libs/app-provider';
-import { useApp } from '@libs/app-provider/contexts/app';
-import { useTax } from '@libs/app-provider/queries/terra/tax';
 import { formatExecuteMsgNumber } from '@libs/formatter';
 import { HumanAddr, Rate, Token, u, UST } from '@libs/types';
 import { useConnectedWallet } from '@terra-dev/use-wallet';
 import big from 'big.js';
 import { useCallback } from 'react';
+import { useApp } from '../../contexts/app';
+import { TERRA_TX_KEYS } from '../../env';
+import { useGasPrice } from '../../hooks/useGasPrice';
+import { useRefetchQueries } from '../../hooks/useRefetchQueries';
+import { useTax } from '../../queries/terra/tax';
 import { useTerraswapPoolQuery } from '../../queries/terraswap/pool';
 
 export interface CW20BuyTokenTxParams {

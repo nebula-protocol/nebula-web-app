@@ -6,8 +6,8 @@ import {
   NebulaContants,
   NebulaContractAddress,
 } from '@nebula-js/app-fns';
-import { NEBULA_QUERY_KEYS } from '@nebula-js/app-provider/env';
 import { useQuery, UseQueryResult } from 'react-query';
+import { NEBULA_QUERY_KEYS } from '../../env';
 
 const queryFn = createQueryFn(clustersListQuery);
 

@@ -1,10 +1,9 @@
+import { TxResultRendering, TxStreamPhase } from '../../models/tx';
 import {
   pickAttributeValueByKey,
   pickEvent,
   pickRawLog,
-  TxResultRendering,
-  TxStreamPhase,
-} from '@libs/app-fns';
+} from '../../queries/txInfo';
 import { floor } from '@libs/big-math';
 import {
   formatTokenIntegerWithPostfixUnits,

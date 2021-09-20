@@ -1,9 +1,3 @@
-import {
-  pickEvent,
-  pickRawLog,
-  TxResultRendering,
-  TxStreamPhase,
-} from '@libs/app-fns';
 import { floor } from '@libs/big-math';
 import { HumanAddr, Rate, terraswap, Token, u, UST } from '@libs/types';
 import { pipe } from '@rx-stream/pipe';
@@ -14,6 +8,8 @@ import {
   StdFee,
 } from '@terra-money/terra.js';
 import { Observable } from 'rxjs';
+import { TxResultRendering, TxStreamPhase } from '../../models/tx';
+import { pickEvent, pickRawLog } from '../../queries/txInfo';
 import {
   _catchTxError,
   _createTxOptions,

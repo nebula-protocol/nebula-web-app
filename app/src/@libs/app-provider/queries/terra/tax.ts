@@ -1,6 +1,6 @@
-import { useTerraTreasuryTaxCapQuery } from '@libs/app-provider/queries/terra/treasuryTaxCap';
-import { useTerraTreasuryTaxRateQuery } from '@libs/app-provider/queries/terra/treasuryTaxRate';
 import { NativeDenom, Rate, Token, u } from '@libs/types';
+import { useTerraTreasuryTaxCapQuery } from './treasuryTaxCap';
+import { useTerraTreasuryTaxRateQuery } from './treasuryTaxRate';
 
 export function useTax<T extends Token>(
   denom: NativeDenom,

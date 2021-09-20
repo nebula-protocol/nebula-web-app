@@ -1,6 +1,6 @@
-import { useApp } from '@libs/app-provider/contexts/app';
 import { useCallback } from 'react';
 import { useQueryClient } from 'react-query';
+import { useApp } from '../contexts/app';
 import { QueryRefetch } from '../types';
 
 function runRefetch(queryRefetch: string | QueryRefetch): Promise<string> {

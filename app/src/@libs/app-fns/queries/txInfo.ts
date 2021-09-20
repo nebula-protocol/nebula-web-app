@@ -1,7 +1,7 @@
 import { MantleFetch } from '@libs/mantle';
-import { PollingTimeout } from '@libs/app-fns';
 import { TxFailed } from '@terra-dev/wallet-types';
 import { CreateTxOptions } from '@terra-money/terra.js';
+import { PollingTimeout } from '../errors';
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 

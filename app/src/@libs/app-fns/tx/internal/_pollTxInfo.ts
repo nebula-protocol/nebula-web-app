@@ -1,11 +1,7 @@
 import { MantleFetch } from '@libs/mantle';
-import {
-  pollTxInfo,
-  TxInfoData,
-  TxResultRendering,
-  TxStreamPhase,
-} from '@libs/app-fns';
 import { TxResult } from '@terra-dev/wallet-types';
+import { TxResultRendering, TxStreamPhase } from '../../models/tx';
+import { pollTxInfo, TxInfoData } from '../../queries/txInfo';
 import { TxHelper } from './TxHelper';
 
 interface Params {

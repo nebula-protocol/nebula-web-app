@@ -3,14 +3,14 @@ import {
   NativeBalances,
   pickNativeBalance,
   terraNativeBalancesQuery,
-} from '@libs/app-fns/queries/terra/nativeBalances';
-import { useApp } from '@libs/app-provider/contexts/app';
-import { TERRA_QUERY_KEY } from '@libs/app-provider/env';
+} from '@libs/app-fns';
 import { createQueryFn } from '@libs/react-query-utils';
 import { HumanAddr, NativeDenom, Token, u } from '@libs/types';
 import { useConnectedWallet } from '@terra-dev/use-wallet';
 import { useMemo } from 'react';
 import { useQuery, UseQueryResult } from 'react-query';
+import { useApp } from '../../contexts/app';
+import { TERRA_QUERY_KEY } from '../../env';
 
 const queryFn = createQueryFn(terraNativeBalancesQuery);
 

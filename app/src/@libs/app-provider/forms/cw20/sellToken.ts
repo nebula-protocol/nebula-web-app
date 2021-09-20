@@ -3,14 +3,14 @@ import {
   cw20SellTokenForm,
   CW20SellTokenFormInput,
 } from '@libs/app-fns';
-import { useApp } from '@libs/app-provider/contexts/app';
-import { useGasPrice } from '@libs/app-provider/hooks/useGasPrice';
-import { useTerraNativeBalanceQuery } from '@libs/app-provider/queries/terra/nativeBalances';
-import { useTax } from '@libs/app-provider/queries/terra/tax';
 import { CW20Addr, HumanAddr, Token, UST } from '@libs/types';
 import { useForm } from '@libs/use-form';
 import { useConnectedWallet } from '@terra-dev/use-wallet';
+import { useApp } from '../../contexts/app';
+import { useGasPrice } from '../../hooks/useGasPrice';
 import { useCW20Balance } from '../../queries/cw20/balance';
+import { useTerraNativeBalanceQuery } from '../../queries/terra/nativeBalances';
+import { useTax } from '../../queries/terra/tax';
 
 export interface CW20SellTokenFormParams {
   ustTokenPairAddr: HumanAddr;

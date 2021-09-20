@@ -4,14 +4,14 @@ import {
   SendFormInput,
   SendTokenInfo,
 } from '@libs/app-fns';
-import { useApp } from '@libs/app-provider/contexts/app';
-import { useGasPrice } from '@libs/app-provider/hooks/useGasPrice';
-import { useTerraNativeBalanceQuery } from '@libs/app-provider/queries/terra/nativeBalances';
-import { useTax } from '@libs/app-provider/queries/terra/tax';
 import { Token, UST } from '@libs/types';
 import { useForm } from '@libs/use-form';
 import { useConnectedWallet } from '@terra-dev/use-wallet';
+import { useApp } from '../../contexts/app';
+import { useGasPrice } from '../../hooks/useGasPrice';
 import { useSendBalanceQuery } from '../../queries/send/balance';
+import { useTerraNativeBalanceQuery } from '../../queries/terra/nativeBalances';
+import { useTax } from '../../queries/terra/tax';
 
 export interface SendFormParams {
   tokenInfo: SendTokenInfo;

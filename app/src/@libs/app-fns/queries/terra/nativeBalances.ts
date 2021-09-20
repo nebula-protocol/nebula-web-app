@@ -1,4 +1,3 @@
-import { defaultLcdFetch, LCDFetch } from '@libs/app-fns/clients/lcd';
 import {
   AUD,
   CAD,
@@ -27,6 +26,7 @@ import {
   u,
   UST,
 } from '@libs/types';
+import { defaultLcdFetch, LCDFetch } from '../../clients/lcd';
 
 export interface NativeBalances {
   uUST: u<UST>;

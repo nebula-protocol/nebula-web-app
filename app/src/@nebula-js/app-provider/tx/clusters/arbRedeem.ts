@@ -5,10 +5,10 @@ import {
   NebulaContants,
   NebulaContractAddress,
 } from '@nebula-js/app-fns';
-import { NEBULA_TX_KEYS } from '@nebula-js/app-provider/env';
 import { HumanAddr, terraswap, Token, u, UST } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
+import { NEBULA_TX_KEYS } from '../../env';
 
 export interface ClusterArbRedeemTxParams {
   amount: u<UST>;
