@@ -3,10 +3,10 @@ name: Test
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   test:
@@ -56,10 +56,10 @@ jobs:
 
 #      - name: Build
 #        run: yarn run build
-#
-#      - name: Coverage Test
-#        run: yarn run coverage # coverage: "yarn workspace {workspace} run coverage && yarn workspace {workspace} run coverage && ..."
-#
+
+      - name: Coverage Test
+        run: yarn run coverage # coverage: "yarn workspace {workspace} run coverage && yarn workspace {workspace} run coverage && ..."
+
 #      - name: Upload coverage to Codecov
 #        uses: codecov/codecov-action@v1
 #        with:
