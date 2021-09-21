@@ -1,3 +1,9 @@
+import { TxResultRendering, TxStreamPhase } from '../../models/tx';
+import {
+  pickAttributeValueByKey,
+  pickEvent,
+  pickRawLog,
+} from '../../queries/txInfo';
 import { floor } from '@libs/big-math';
 import {
   formatTokenIntegerWithPostfixUnits,
@@ -14,18 +20,10 @@ import {
   u,
   UST,
 } from '@libs/types';
-import {
-  pickAttributeValueByKey,
-  pickEvent,
-  pickRawLog,
-  TxResultRendering,
-  TxStreamPhase,
-} from '@libs/app-fns';
 import { pipe } from '@rx-stream/pipe';
 import { MsgExecuteContract, StdFee } from '@terra-money/terra.js';
 import big, { Big } from 'big.js';
 import { Observable } from 'rxjs';
-import { Tax } from '../../types';
 import {
   _catchTxError,
   _createTxOptions,
@@ -45,7 +43,8 @@ export function cw20SellTokenTx<T extends Token>(
     beliefPrice: T;
     /** = slippage_tolerance */
     maxSpread: Rate;
-    tax: Tax;
+    taxRate: Rate;
+    maxTaxUUSD: u<UST>;
     onTxSucceed?: () => void;
   } & TxCommonParams,
 ): Observable<TxResultRendering> {
@@ -123,7 +122,7 @@ export function cw20SellTokenTx<T extends Token>(
           spread_amount && commission_amount
             ? (big(spread_amount).plus(commission_amount) as u<UST<Big>>)
             : undefined;
-        const txFee = big($.fixedGas).plus(transfer_amount) as u<UST<Big>>;
+        const txFee = big($.fixedFee).plus(transfer_amount) as u<UST<Big>>;
 
         return {
           value: null,

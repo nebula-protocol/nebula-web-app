@@ -1,10 +1,16 @@
-import { ArrowSouthIcon, WalletIcon } from '@nebula-js/icons';
+import {
+  useApp,
+  useCW20SellTokenForm,
+  useCW20SellTokenTx,
+} from '@libs/app-provider';
 import {
   formatFluidDecimalPoints,
   formatUInput,
   formatUToken,
   microfy,
 } from '@libs/formatter';
+import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
+import { ArrowSouthIcon, WalletIcon } from '@nebula-js/icons';
 import { NEB, Rate, u, UST } from '@nebula-js/types';
 import {
   breakpoints,
@@ -17,8 +23,6 @@ import {
   TokenSpan,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { useCW20SellTokenForm, useCW20SellTokenTx } from '@libs/app-provider';
-import { useNebulaWebapp } from '@nebula-js/webapp-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
@@ -39,7 +43,7 @@ function SellBase({ className }: SellProps) {
 
   const { broadcast } = useTxBroadcast();
 
-  const { contractAddress } = useNebulaWebapp();
+  const { contractAddress } = useApp<NebulaContractAddress, NebulaContants>();
 
   const [openMoreOptions, setOpenMoreOptions] = useState<boolean>(false);
 

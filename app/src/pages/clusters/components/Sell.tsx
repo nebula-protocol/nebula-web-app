@@ -17,7 +17,7 @@ import {
   TokenSpan,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { ClusterInfo } from '@nebula-js/webapp-fns';
+import { ClusterInfo } from '@nebula-js/app-fns';
 import { useCW20SellTokenForm, useCW20SellTokenTx } from '@libs/app-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';

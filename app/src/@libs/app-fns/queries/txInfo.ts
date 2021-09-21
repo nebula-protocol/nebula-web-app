@@ -1,7 +1,8 @@
-import { MantleFetch } from '@libs/mantle';
-import { PollingTimeout } from '@libs/app-fns';
+import { WasmClient } from '@libs/query-client';
+import { Gas, ISODateFormat, Num } from '@libs/types';
 import { TxFailed } from '@terra-dev/wallet-types';
 import { CreateTxOptions } from '@terra-money/terra.js';
+import { PollingTimeout } from '../errors';
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -40,7 +41,7 @@ export interface TxInfoVariables {
 }
 
 // language=graphql
-export const TX_INFO_QUERY = `
+const TX_INFO_QUERY = `
   query ($txhash: String!) {
     TxInfos(TxHash: $txhash) {
       TxHash
@@ -50,36 +51,88 @@ export const TX_INFO_QUERY = `
   }
 `;
 
+interface LcdTxs {
+  gas_used: Gas<string>;
+  gas_wanted: Gas<string>;
+  height: Num;
+  logs: RawLogMsg[];
+  raw_log: string;
+  timestamp: ISODateFormat;
+  tx: any; // TODO CreateTxOptions + .toJSON()
+  txhash: string;
+}
+
+interface LcdTxsFail {
+  code: number;
+  codespace: string;
+  gas_used: Gas<string>;
+  gas_wanted: Gas<string>;
+  height: Num;
+  raw_log: string;
+  timestamp: ISODateFormat;
+  tx: any; // TODO CreateTxOptions + .toJSON()
+  txhash: string;
+}
+
 export interface TxInfoQueryParams {
-  mantleEndpoint: string;
-  mantleFetch: MantleFetch;
-  variables: TxInfoVariables;
+  wasmClient: WasmClient;
+  txhash: string;
 }
 
 export async function txInfoQuery({
-  mantleEndpoint,
-  mantleFetch,
-  variables,
+  wasmClient,
+  txhash,
 }: TxInfoQueryParams): Promise<TxInfoData> {
-  const { TxInfos } = await mantleFetch<TxInfoVariables, TxInfoRawData>(
-    TX_INFO_QUERY,
-    variables,
-    `${mantleEndpoint}?txinfo&txhash=${variables.txhash}`,
-  );
+  const fetchTxInfo: Promise<TxInfoData> =
+    'lcdEndpoint' in wasmClient
+      ? wasmClient
+          .lcdFetcher<LcdTxs | LcdTxsFail>(
+            `${wasmClient.lcdEndpoint}/txs/${txhash}`,
+          )
+          .then((result) => {
+            if ('logs' in result) {
+              return [
+                {
+                  TxHash: result.txhash,
+                  Success: true,
+                  RawLog: result.logs,
+                },
+              ];
+            } else if ('code' in result) {
+              return [
+                {
+                  TxHash: result.txhash,
+                  Success: false,
+                  RawLog: result.raw_log,
+                },
+              ];
+            } else {
+              return [];
+            }
+          })
+      : wasmClient
+          .hiveFetcher<TxInfoVariables, TxInfoRawData>(
+            TX_INFO_QUERY,
+            { txhash },
+            `${wasmClient.hiveEndpoint}?txinfo&txhash=${txhash}`,
+          )
+          .then(({ TxInfos }) => {
+            return TxInfos.map(({ TxHash, Success, RawLog: _RawLog }) => {
+              let RawLog: TxInfoData[number]['RawLog'] = _RawLog;
 
-  return TxInfos.map(({ TxHash, Success, RawLog: _RawLog }) => {
-    let RawLog: TxInfoData[number]['RawLog'] = _RawLog;
+              try {
+                RawLog = JSON.parse(_RawLog) ?? _RawLog;
+              } catch {}
 
-    try {
-      RawLog = JSON.parse(_RawLog) ?? _RawLog;
-    } catch {}
+              return {
+                TxHash,
+                Success,
+                RawLog,
+              };
+            });
+          });
 
-    return {
-      TxHash,
-      Success,
-      RawLog,
-    };
-  });
+  return fetchTxInfo;
 }
 
 // ---------------------------------------------
@@ -96,26 +149,23 @@ export class TxInfoFailed extends Error {
   }
 }
 
-export type PollTxInfoParams = Omit<TxInfoQueryParams, 'variables'> & {
+export type PollTxInfoParams = TxInfoQueryParams & {
   tx?: CreateTxOptions;
   txhash: string;
 };
 
 export async function pollTxInfo({
-  mantleEndpoint,
-  mantleFetch,
+  wasmClient,
   tx,
   txhash,
 }: PollTxInfoParams): Promise<TxInfoData> {
   const until = Date.now() + 1000 * 60 * 60;
   const untilInterval = Date.now() + 1000 * 60;
-  //const until = Date.now() + 100;
 
   while (true) {
     const txInfo = await txInfoQuery({
-      mantleEndpoint,
-      mantleFetch,
-      variables: { txhash },
+      wasmClient,
+      txhash,
     });
 
     if (txInfo.length > 0) {
@@ -147,7 +197,6 @@ export async function pollTxInfo({
         `Transaction queued. To verify the status, please check the transaction hash below.`,
         txhash,
       );
-      //throw new Timeout(`Could not get TxInfo for 20 seconds`);
     }
   }
 }

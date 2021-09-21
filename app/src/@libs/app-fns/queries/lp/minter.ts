@@ -1,11 +1,10 @@
-import { lp, LPAddr } from '@libs/types';
 import {
-  defaultMantleFetch,
-  mantle,
-  MantleFetch,
+  WasmClient,
+  wasmFetch,
   WasmQuery,
   WasmQueryData,
-} from '@libs/mantle';
+} from '@libs/query-client';
+import { lp, LPAddr } from '@libs/types';
 
 interface LpMinterWasmQuery {
   minter: WasmQuery<lp.Minter, lp.MinterResponse>;
@@ -15,15 +14,11 @@ export type LpMinter = WasmQueryData<LpMinterWasmQuery>;
 
 export async function lpMinterQuery(
   lpTokenAddr: LPAddr,
-  mantleEndpoint: string,
-  mantleFetch: MantleFetch = defaultMantleFetch,
-  requestInit?: RequestInit,
+  wasmClient: WasmClient,
 ): Promise<LpMinter> {
-  return mantle<LpMinterWasmQuery>({
-    mantleEndpoint: `${mantleEndpoint}?lp--minter=${lpTokenAddr}`,
-    mantleFetch,
-    requestInit,
-    variables: {},
+  return wasmFetch<LpMinterWasmQuery>({
+    ...wasmClient,
+    id: `lp--minter=${lpTokenAddr}`,
     wasmQuery: {
       minter: {
         contractAddress: lpTokenAddr,

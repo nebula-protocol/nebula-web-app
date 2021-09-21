@@ -1,6 +1,6 @@
 import { Header } from 'components/header';
 import { DisableOverflowXStyle } from 'components/styles/DisableOverflowXStyle';
-import { AppProviders } from 'configurations/app';
+import { Providers } from 'configurations/app';
 import 'configurations/chartjs';
 import ClustersDetail from 'pages/clusters/detail';
 import ClustersMain from 'pages/clusters/main';
@@ -74,9 +74,9 @@ function App() {
 }
 
 render(
-  <AppProviders>
+  <Providers>
     <DisableOverflowXStyle />
     <App />
-  </AppProviders>,
+  </Providers>,
   document.querySelector('#root'),
 );

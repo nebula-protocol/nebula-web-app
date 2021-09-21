@@ -1,6 +1,7 @@
-import { createQueryFn } from '@libs/react-query-utils';
 import { GasPrice, gasPriceCache, gasPriceQuery } from '@libs/app-fns';
+import { createQueryFn } from '@libs/react-query-utils';
 import { useQuery, UseQueryResult } from 'react-query';
+import { TERRA_QUERY_KEY } from '../env';
 
 const queryFn = createQueryFn((gasPriceEndpoint: string) => {
   return gasPriceQuery(gasPriceEndpoint);
@@ -10,10 +11,14 @@ export function useGasPriceQuery(
   gasPriceEndpoint: string,
   queryErrorReporter: ((error: unknown) => void) | undefined,
 ): UseQueryResult<GasPrice | undefined> {
-  const result = useQuery(['TERRA_GAS_PRICE', gasPriceEndpoint], queryFn, {
-    onError: queryErrorReporter,
-    placeholderData: () => gasPriceCache.get(gasPriceEndpoint),
-  });
+  const result = useQuery(
+    [TERRA_QUERY_KEY.TERRA_GAS_PRICE, gasPriceEndpoint],
+    queryFn,
+    {
+      onError: queryErrorReporter,
+      placeholderData: () => gasPriceCache.get(gasPriceEndpoint),
+    },
+  );
 
   return result;
 }

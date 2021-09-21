@@ -1,34 +1,22 @@
+import { TerraswapPool, terraswapPoolQuery } from '@libs/app-fns';
 import { createQueryFn } from '@libs/react-query-utils';
-import { useBrowserInactive } from '@libs/use-browser-inactive';
-import {
-  TERRA_QUERY_KEY,
-  TerraswapPool,
-  terraswapPoolQuery,
-} from '@libs/app-fns';
-import { useTerraWebapp } from '@libs/app-provider';
 import { HumanAddr, Token } from '@libs/types';
 import { useQuery, UseQueryResult } from 'react-query';
+import { useApp } from '../../contexts/app';
+import { TERRA_QUERY_KEY } from '../../env';
 
 const queryFn = createQueryFn(terraswapPoolQuery);
 
 export function useTerraswapPoolQuery<T extends Token>(
   terraswapPairAddr: HumanAddr | undefined,
 ): UseQueryResult<TerraswapPool<T> | undefined> {
-  const { mantleFetch, mantleEndpoint, queryErrorReporter } = useTerraWebapp();
-
-  const { browserInactive } = useBrowserInactive();
+  const { wasmClient, queryErrorReporter } = useApp();
 
   const result = useQuery(
-    [
-      TERRA_QUERY_KEY.TERRASWAP_POOL,
-      terraswapPairAddr,
-      mantleEndpoint,
-      mantleFetch,
-    ],
+    [TERRA_QUERY_KEY.TERRASWAP_POOL, terraswapPairAddr, wasmClient],
     queryFn as any,
     {
-      refetchInterval: browserInactive && 1000 * 60 * 5,
-      enabled: !browserInactive,
+      refetchInterval: 1000 * 60 * 5,
       keepPreviousData: true,
       onError: queryErrorReporter,
     },

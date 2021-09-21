@@ -13,12 +13,12 @@ import {
   TwoLine,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { GovVoters, pickGovPollVoted } from '@nebula-js/webapp-fns';
+import { GovVoters, pickGovPollVoted } from '@nebula-js/app-fns';
 import {
   useGovPollQuery,
   useGovStakerQuery,
   useGovVotersQuery,
-} from '@nebula-js/webapp-provider';
+} from '@nebula-js/app-provider';
 import { useConnectedWallet, useWallet } from '@terra-money/wallet-provider';
 import { MainLayout } from 'components/layouts/MainLayout';
 import { fixHMR } from 'fix-hmr';

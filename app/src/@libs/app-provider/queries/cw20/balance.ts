@@ -1,9 +1,10 @@
+import { CW20Balance, cw20BalanceQuery } from '@libs/app-fns';
 import { createQueryFn } from '@libs/react-query-utils';
-import { CW20Addr, HumanAddr, Token } from '@libs/types';
-import { useBrowserInactive } from '@libs/use-browser-inactive';
-import { CW20Balance, cw20BalanceQuery, TERRA_QUERY_KEY } from '@libs/app-fns';
+import { CW20Addr, HumanAddr, Token, u } from '@libs/types';
+import { useMemo } from 'react';
 import { useQuery, UseQueryResult } from 'react-query';
-import { useTerraWebapp } from '../../contexts/context';
+import { useApp } from '../../contexts/app';
+import { TERRA_QUERY_KEY } from '../../env';
 
 const queryFn = createQueryFn(cw20BalanceQuery);
 
@@ -11,26 +12,31 @@ export function useCW20BalanceQuery<T extends Token>(
   tokenAddr: CW20Addr | undefined,
   walletAddr: HumanAddr | undefined,
 ): UseQueryResult<CW20Balance<T> | undefined> {
-  const { mantleFetch, mantleEndpoint, queryErrorReporter } = useTerraWebapp();
-
-  const { browserInactive } = useBrowserInactive();
+  const { wasmClient, queryErrorReporter } = useApp();
 
   const result = useQuery(
-    [
-      TERRA_QUERY_KEY.CW20_BALANCE,
-      walletAddr,
-      tokenAddr,
-      mantleEndpoint,
-      mantleFetch,
-    ],
+    [TERRA_QUERY_KEY.CW20_BALANCE, walletAddr, tokenAddr, wasmClient],
     queryFn as any,
     {
-      refetchInterval: browserInactive && 1000 * 60 * 5,
-      enabled: !browserInactive,
+      refetchInterval: 1000 * 60 * 5,
       keepPreviousData: true,
       onError: queryErrorReporter,
     },
   );
 
   return result as UseQueryResult<CW20Balance<T> | undefined>;
+}
+
+export function useCW20Balance<T extends Token>(
+  tokenAddr: CW20Addr | undefined,
+  walletAddr: HumanAddr | undefined,
+): u<T> {
+  const { data: { tokenBalance } = {} } = useCW20BalanceQuery<T>(
+    tokenAddr,
+    walletAddr,
+  );
+
+  return useMemo<u<T>>(() => {
+    return tokenBalance?.balance ?? ('0' as u<T>);
+  }, [tokenBalance?.balance]);
 }

@@ -1,10 +1,15 @@
 import {
+  useApp,
+  useCW20BuyTokenForm,
+  useCW20BuyTokenTx,
+} from '@libs/app-provider';
+import {
   formatFluidDecimalPoints,
   formatUInput,
   formatUToken,
   microfy,
 } from '@libs/formatter';
-import { useCW20BuyTokenForm, useCW20BuyTokenTx } from '@libs/app-provider';
+import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
 import { ArrowSouthIcon, WalletIcon } from '@nebula-js/icons';
 import { NEB, Rate, u, UST } from '@nebula-js/types';
 import {
@@ -19,7 +24,6 @@ import {
   useConfirm,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { useNebulaWebapp } from '@nebula-js/webapp-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
@@ -44,7 +48,7 @@ function BuyBase({ className }: BuyProps) {
 
   const [openMoreOptions, setOpenMoreOptions] = useState<boolean>(false);
 
-  const { contractAddress } = useNebulaWebapp();
+  const { contractAddress } = useApp<NebulaContractAddress, NebulaContants>();
 
   const postTx = useCW20BuyTokenTx(contractAddress.terraswap.nebUstPair, 'NEB');
 

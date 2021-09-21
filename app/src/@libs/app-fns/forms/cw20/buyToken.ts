@@ -1,12 +1,11 @@
 import { min } from '@libs/big-math';
 import { demicrofy, microfy } from '@libs/formatter';
-import { MantleFetch } from '@libs/mantle';
+import { WasmClient } from '@libs/query-client';
 import { CW20Addr, HumanAddr, Rate, Token, u, UST } from '@libs/types';
 import { FormFunction, FormReturn } from '@libs/use-form';
 import big, { Big, BigSource } from 'big.js';
 import { computeMaxUstBalanceForUstTransfer } from '../../logics/computeMaxUstBalanceForUstTransfer';
 import { terraswapSimulationQuery } from '../../queries/terraswap/simulation';
-import { Tax } from '../../types';
 
 export interface CW20BuyTokenFormInput<T extends Token> {
   ustAmount?: UST;
@@ -15,16 +14,15 @@ export interface CW20BuyTokenFormInput<T extends Token> {
 }
 
 export interface CW20BuyTokenFormDependency {
-  // terraswap simulation
-  mantleEndpoint: string;
-  mantleFetch: MantleFetch;
-  requestInit?: Omit<RequestInit, 'method' | 'body'>;
+  wasmClient: WasmClient;
+  //
   ustTokenPairAddr: HumanAddr;
   tokenAddr: CW20Addr;
   //
   ustBalance: u<UST>;
-  tax: Tax;
-  fixedGas: u<UST<BigSource>>;
+  taxRate: Rate;
+  maxTaxUUSD: u<UST>;
+  fixedFee: u<UST<BigSource>>;
   //
   connected: boolean;
 }
@@ -59,18 +57,21 @@ export type CW20BuyTokenForm<T extends Token> = FormFunction<
 export const cw20BuyTokenForm = <T extends Token>({
   ustTokenPairAddr,
   tokenAddr,
-  mantleEndpoint,
-  mantleFetch,
-  requestInit,
+  wasmClient,
+  //mantleEndpoint,
+  //mantleFetch,
+  //requestInit,
   ustBalance,
-  tax,
-  fixedGas,
+  taxRate,
+  maxTaxUUSD,
+  fixedFee,
   connected,
 }: CW20BuyTokenFormDependency) => {
   const maxUstAmount = computeMaxUstBalanceForUstTransfer(
     ustBalance,
-    tax,
-    fixedGas,
+    taxRate,
+    maxTaxUUSD,
+    fixedFee,
   );
 
   return ({
@@ -128,17 +129,14 @@ export const cw20BuyTokenForm = <T extends Token>({
               },
             },
           },
-          mantleEndpoint,
-          mantleFetch,
-          requestInit,
+          wasmClient,
         ).then(
           ({
             simulation: { return_amount, commission_amount, spread_amount },
           }) => {
-            const _tax = min(
-              microfy(ustAmount!).mul(tax.taxRate),
-              tax.maxTaxUUSD,
-            ) as u<UST<Big>>;
+            const _tax = min(microfy(ustAmount!).mul(taxRate), maxTaxUUSD) as u<
+              UST<Big>
+            >;
 
             const beliefPrice = (
               big(return_amount).gt(0)
@@ -152,7 +150,7 @@ export const cw20BuyTokenForm = <T extends Token>({
               .div(beliefPrice)
               .minus(_tax) as u<UST<Big>>;
 
-            const txFee = _tax.plus(fixedGas).toFixed() as u<UST>;
+            const txFee = _tax.plus(fixedFee).toFixed() as u<UST>;
 
             const tradingFee = big(commission_amount)
               .plus(spread_amount)
@@ -181,7 +179,7 @@ export const cw20BuyTokenForm = <T extends Token>({
               big(ustBalance)
                 .minus(microfy(ustAmount!))
                 .minus(txFee)
-                .lt(fixedGas)
+                .lt(fixedFee)
                 ? 'You may run out of USD balance needed for future transactions'
                 : null;
 
@@ -221,17 +219,14 @@ export const cw20BuyTokenForm = <T extends Token>({
               },
             },
           },
-          mantleEndpoint,
-          mantleFetch,
-          requestInit,
+          wasmClient,
         ).then(
           ({
             simulation: { return_amount, spread_amount, commission_amount },
           }) => {
-            const _tax = min(
-              big(return_amount).mul(tax.taxRate),
-              tax.maxTaxUUSD,
-            ) as u<UST<Big>>;
+            const _tax = min(big(return_amount).mul(taxRate), maxTaxUUSD) as u<
+              UST<Big>
+            >;
 
             const beliefPrice = big(return_amount)
               .div(microfy(tokenAmount!))
@@ -243,7 +238,7 @@ export const cw20BuyTokenForm = <T extends Token>({
 
             const rate = big(1).minus(maxSpread) as Rate<Big>;
 
-            const txFee = _tax.plus(fixedGas).toFixed() as u<UST>;
+            const txFee = _tax.plus(fixedFee).toFixed() as u<UST>;
 
             const tradingFee = big(commission_amount)
               .plus(spread_amount)
@@ -269,7 +264,7 @@ export const cw20BuyTokenForm = <T extends Token>({
             const warningNextTxFee =
               connected &&
               availableTx &&
-              big(ustBalance).minus(return_amount).minus(txFee).lt(fixedGas)
+              big(ustBalance).minus(return_amount).minus(txFee).lt(fixedFee)
                 ? 'You may run out of USD balance needed for future transactions'
                 : null;
 

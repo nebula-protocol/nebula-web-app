@@ -1,8 +1,16 @@
-import { defaultMantleFetch, mantle, MantleFetch } from '@libs/mantle';
-import { cw20, HumanAddr, NativeDenom, terraswap, Token, u } from '@libs/types';
+import { hiveFetch, lcdFetch, WasmClient } from '@libs/query-client';
+import {
+  cw20,
+  HumanAddr,
+  NativeDenom,
+  Num,
+  terraswap,
+  Token,
+  u,
+} from '@libs/types';
 
 // language=graphql
-const TERRA_BALANCES_QUERY = `
+const NATIVE_BALANCES_QUERY = `
   query ($walletAddress: String!) {
     nativeTokenBalances: BankBalancesAddress(Address: $walletAddress) {
       Result {
@@ -13,14 +21,19 @@ const TERRA_BALANCES_QUERY = `
   }
 `;
 
-interface TerraBalancesQueryVariables {
+interface NativeBalancesQueryVariables {
   walletAddress: HumanAddr;
 }
 
-interface TerraBalancesQueryResult {
+interface NativeBalancesQueryResult {
   nativeTokenBalances: {
     Result: Array<{ Denom: NativeDenom; Amount: u<Token> }>;
   };
+}
+
+interface LcdBankBalances {
+  height: Num;
+  result: Array<{ denom: NativeDenom; amount: u<Token> }>;
 }
 
 export type TerraBalances = {
@@ -31,9 +44,7 @@ export type TerraBalances = {
 export async function terraBalancesQuery(
   walletAddr: HumanAddr | undefined,
   assets: terraswap.AssetInfo[],
-  mantleEndpoint: string,
-  mantleFetch: MantleFetch = defaultMantleFetch,
-  requestInit?: RequestInit,
+  wasmClient: WasmClient,
 ): Promise<TerraBalances> {
   type CW20Query = Record<
     string,
@@ -69,35 +80,61 @@ export async function terraBalancesQuery(
     return wq;
   }, {} as CW20Query);
 
-  const result = await mantle<
-    any,
-    TerraBalancesQueryVariables,
-    TerraBalancesQueryResult
-  >({
-    mantleEndpoint: `${mantleEndpoint}?terra-balances=${walletAddr}`,
-    mantleFetch,
-    variables: {
-      walletAddress: walletAddr,
-    },
-    wasmQuery,
-    query: TERRA_BALANCES_QUERY,
-    requestInit,
-  });
+  const balancesPromise: Promise<TerraBalances['balances']> =
+    'lcdEndpoint' in wasmClient
+      ? Promise.all([
+          wasmClient.lcdFetcher<LcdBankBalances>(
+            `${wasmClient.lcdEndpoint}/bank/balances/${walletAddr}`,
+            wasmClient.requestInit,
+          ),
+          lcdFetch<any>({
+            ...wasmClient,
+            id: `terra-balances=${walletAddr}`,
+            wasmQuery,
+          }),
+        ]).then(([nativeTokenBalances, cw20TokenBalances]) => {
+          return assets.map((asset, i) => {
+            if ('token' in asset) {
+              const cw20Balance: cw20.BalanceResponse<Token> =
+                cw20TokenBalances['asset' + i] as any;
+              return { asset, balance: cw20Balance.balance };
+            }
 
-  const balances = assets.map((asset, i) => {
-    if ('token' in asset) {
-      const cw20Balance: cw20.BalanceResponse<Token> = result[
-        'asset' + i
-      ] as any;
-      return { asset, balance: cw20Balance.balance };
-    }
+            const nativeAsset = nativeTokenBalances.result.find(
+              ({ denom }) => asset.native_token.denom === denom,
+            );
 
-    const nativeAsset = result.nativeTokenBalances.Result.find(
-      ({ Denom }) => asset.native_token.denom === Denom,
-    );
+            return { asset, balance: nativeAsset?.amount ?? ('0' as u<Token>) };
+          });
+        })
+      : hiveFetch<any, NativeBalancesQueryVariables, NativeBalancesQueryResult>(
+          {
+            ...wasmClient,
+            id: `terra-balances=${walletAddr}`,
+            variables: {
+              walletAddress: walletAddr,
+            },
+            wasmQuery,
+            query: NATIVE_BALANCES_QUERY,
+          },
+        ).then((result) => {
+          return assets.map((asset, i) => {
+            if ('token' in asset) {
+              const cw20Balance: cw20.BalanceResponse<Token> = result[
+                'asset' + i
+              ] as any;
+              return { asset, balance: cw20Balance.balance };
+            }
 
-    return { asset, balance: nativeAsset?.Amount ?? ('0' as u<Token>) };
-  });
+            const nativeAsset = result.nativeTokenBalances.Result.find(
+              ({ Denom }) => asset.native_token.denom === Denom,
+            );
+
+            return { asset, balance: nativeAsset?.Amount ?? ('0' as u<Token>) };
+          });
+        });
+
+  const balances = await balancesPromise;
 
   const balancesIndex = new Map<terraswap.AssetInfo, u<Token>>();
 

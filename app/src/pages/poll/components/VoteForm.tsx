@@ -1,5 +1,8 @@
-import { WalletIcon } from '@nebula-js/icons';
+import { useApp, useCW20Balance } from '@libs/app-provider';
 import { formatUToken, microfy } from '@libs/formatter';
+import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
+import { useGovVoteTx } from '@nebula-js/app-provider/tx/gov/vote';
+import { WalletIcon } from '@nebula-js/icons';
 import { gov, NEB, u } from '@nebula-js/types';
 import {
   breakpoints,
@@ -9,10 +12,7 @@ import {
   TokenSpan,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { NebulaTokenBalances } from '@nebula-js/webapp-fns';
-import { useGovVoteTx } from '@nebula-js/webapp-provider/tx/gov/vote';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useBank } from '@libs/app-provider';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
 import React, { useCallback, useState } from 'react';
@@ -28,6 +28,8 @@ export interface VoteFormProps {
 function VoteFormBase({ className, pollId, onVoteComplete }: VoteFormProps) {
   const connectedWallet = useConnectedWallet();
 
+  const { contractAddress } = useApp<NebulaContractAddress, NebulaContants>();
+
   const { broadcast } = useTxBroadcast();
 
   const postTx = useGovVoteTx(pollId);
@@ -35,7 +37,11 @@ function VoteFormBase({ className, pollId, onVoteComplete }: VoteFormProps) {
   const [vote, setVote] = useState<gov.VoteOption | null>(null);
   const [amount, setAmount] = useState<NEB>('' as NEB);
 
-  const { tokenBalances } = useBank<NebulaTokenBalances>();
+  //const { tokenBalances } = useBank<NebulaTokenBalances>();
+  const uNEB = useCW20Balance<NEB>(
+    contractAddress.cw20.NEB,
+    connectedWallet?.walletAddress,
+  );
 
   const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
     mobile: 'medium',
@@ -95,13 +101,13 @@ function VoteFormBase({ className, pollId, onVoteComplete }: VoteFormProps) {
         placeholder="0.00"
         token={<TokenSpan>NEB</TokenSpan>}
         suggest={
-          <EmptyButton onClick={() => setAmount(tokenBalances.uNEB)}>
+          <EmptyButton onClick={() => setAmount(uNEB)}>
             <WalletIcon
               style={{
                 transform: 'translate(-0.3em, -0.1em)',
               }}
             />{' '}
-            {formatUToken(tokenBalances.uNEB)}
+            {formatUToken(uNEB)}
           </EmptyButton>
         }
       />

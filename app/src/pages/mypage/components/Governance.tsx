@@ -8,10 +8,7 @@ import {
   Table3SectionHeader,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import {
-  useGovMyPollsQuery,
-  useGovStakerQuery,
-} from '@nebula-js/webapp-provider';
+import { useGovMyPollsQuery, useGovStakerQuery } from '@nebula-js/app-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import React from 'react';
 import { Link } from 'react-router-dom';

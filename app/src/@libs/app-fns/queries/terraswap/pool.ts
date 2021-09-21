@@ -1,10 +1,9 @@
 import {
-  defaultMantleFetch,
-  mantle,
-  MantleFetch,
+  WasmClient,
+  wasmFetch,
   WasmQuery,
   WasmQueryData,
-} from '@libs/mantle';
+} from '@libs/query-client';
 import { HumanAddr, LP, terraswap, Token, u, UST } from '@libs/types';
 import big from 'big.js';
 
@@ -30,15 +29,11 @@ export type TerraswapPool<T extends Token> = WasmQueryData<
 
 export async function terraswapPoolQuery<T extends Token>(
   ustPairAddr: HumanAddr,
-  mantleEndpoint: string,
-  mantleFetch: MantleFetch = defaultMantleFetch,
-  requestInit?: RequestInit,
+  wasmClient: WasmClient,
 ): Promise<TerraswapPool<T>> {
-  const { terraswapPool } = await mantle<TerraswapPoolWasmQuery<T>>({
-    mantleEndpoint: `${mantleEndpoint}?terraswap--pool=${ustPairAddr}`,
-    mantleFetch,
-    requestInit,
-    variables: {},
+  const { terraswapPool } = await wasmFetch<TerraswapPoolWasmQuery<T>>({
+    ...wasmClient,
+    id: `terraswap--pool=${ustPairAddr}`,
     wasmQuery: {
       terraswapPool: {
         // pair contract address

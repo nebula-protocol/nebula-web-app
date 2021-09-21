@@ -3,7 +3,7 @@ import { breakpoints, EmptyButton, Search } from '@nebula-js/ui';
 import {
   useNEBPoolQuery,
   useStakingPoolInfoListQuery,
-} from '@nebula-js/webapp-provider';
+} from '@nebula-js/app-provider';
 import { useLocalStorage } from '@libs/use-local-storage';
 import { useQueryBoundInput } from '@libs/use-query-bound-input';
 import { MainLayout } from 'components/layouts/MainLayout';

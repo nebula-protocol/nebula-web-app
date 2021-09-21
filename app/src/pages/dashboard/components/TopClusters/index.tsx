@@ -12,8 +12,8 @@ import {
   ClusterInfo,
   computeMarketCap,
   computeProvided,
-} from '@nebula-js/webapp-fns';
-import { useClustersInfoListQuery } from '@nebula-js/webapp-provider';
+} from '@nebula-js/app-fns';
+import { useClustersInfoListQuery } from '@nebula-js/app-provider';
 import { Big } from 'big.js';
 import { ClusterView, toClusterView } from 'pages/clusters/models/clusters';
 import React, { useMemo, useState } from 'react';

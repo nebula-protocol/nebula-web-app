@@ -1,15 +1,14 @@
+import { cw20SellTokenTx } from '@libs/app-fns';
 import { formatExecuteMsgNumber } from '@libs/formatter';
 import { CW20Addr, HumanAddr, Rate, Token, u, UST } from '@libs/types';
-import {
-  cw20SellTokenTx,
-  Tax,
-  TERRA_TX_KEYS,
-  TokenBalances,
-} from '@libs/app-fns';
-import { useBank, useRefetchQueries, useTerraWebapp } from '@libs/app-provider';
 import { useConnectedWallet } from '@terra-dev/use-wallet';
 import big from 'big.js';
 import { useCallback } from 'react';
+import { useApp } from '../../contexts/app';
+import { TERRA_TX_KEYS } from '../../env';
+import { useGasPrice } from '../../hooks/useGasPrice';
+import { useRefetchQueries } from '../../hooks/useRefetchQueries';
+import { useTax } from '../../queries/terra/tax';
 import { useTerraswapPoolQuery } from '../../queries/terraswap/pool';
 
 export interface CW20SellTokenTxParams<T extends Token> {
@@ -27,12 +26,13 @@ export function useCW20SellTokenTx<T extends Token>(
 ) {
   const connectedWallet = useConnectedWallet();
 
-  const { mantleFetch, mantleEndpoint, txErrorReporter, constants } =
-    useTerraWebapp();
+  const { wasmClient, txErrorReporter, constants } = useApp();
+
+  const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
 
   const refetchQueries = useRefetchQueries();
 
-  const { tax } = useBank<TokenBalances, Tax>();
+  const { taxRate, maxTax } = useTax<UST>('uusd');
 
   const { data: { terraswapPool } = {} } =
     useTerraswapPoolQuery<Token>(tokenUstPairAddr);
@@ -64,14 +64,14 @@ export function useCW20SellTokenTx<T extends Token>(
         tokenAddr,
         tokenUstPairAddr,
         tokenSymbol,
-        tax,
+        taxRate,
+        maxTaxUUSD: maxTax,
         maxSpread,
         sellerAddr: connectedWallet.walletAddress,
-        fixedGas: constants.fixedFee,
+        fixedFee,
         gasWanted: constants.gasWanted,
         gasAdjustment: constants.gasAdjustment,
-        mantleEndpoint,
-        mantleFetch,
+        wasmClient,
         txErrorReporter,
         onTxSucceed: () => {
           onTxSucceed?.();
@@ -83,18 +83,18 @@ export function useCW20SellTokenTx<T extends Token>(
     },
     [
       connectedWallet,
-      constants.fixedFee,
       constants.gasAdjustment,
       constants.gasWanted,
-      mantleEndpoint,
-      mantleFetch,
+      fixedFee,
+      maxTax,
       refetchQueries,
-      tax,
+      taxRate,
       terraswapPool,
       tokenAddr,
       tokenSymbol,
       tokenUstPairAddr,
       txErrorReporter,
+      wasmClient,
     ],
   );
 

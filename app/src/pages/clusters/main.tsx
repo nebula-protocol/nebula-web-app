@@ -1,6 +1,6 @@
 import { List, ViewModule } from '@material-ui/icons';
 import { breakpoints, EmptyButton, Search } from '@nebula-js/ui';
-import { useClustersInfoListQuery } from '@nebula-js/webapp-provider';
+import { useClustersInfoListQuery } from '@nebula-js/app-provider';
 import { useLocalStorage } from '@libs/use-local-storage';
 import { useQueryBoundInput } from '@libs/use-query-bound-input';
 import { MainLayout } from 'components/layouts/MainLayout';

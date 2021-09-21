@@ -1,6 +1,5 @@
 // THIS FILE IS AUTO CREATED
 // @see ~/scripts/create-index.ts
-export * from './env';
 export * from './types';
 export * from './errors';
 export * from './caches/cw20TokenInfoCache';
@@ -20,14 +19,15 @@ export * from './queries/cw20/tokenInfo';
 export * from './queries/gasPrice';
 export * from './queries/lastSyncedHeight';
 export * from './queries/lp/minter';
-export * from './queries/tax';
 export * from './queries/terra/balances';
 export * from './queries/terra/balancesWithTokenInfo';
+export * from './queries/terra/nativeBalances';
 export * from './queries/terra/tokenInfo';
+export * from './queries/terra/treasuryTaxCap';
+export * from './queries/terra/treasuryTaxRate';
 export * from './queries/terraswap/pair';
 export * from './queries/terraswap/pool';
 export * from './queries/terraswap/simulation';
-export * from './queries/tokenBalances';
 export * from './queries/txInfo';
 export * from './tx/cw20/buyToken';
 export * from './tx/cw20/sellToken';

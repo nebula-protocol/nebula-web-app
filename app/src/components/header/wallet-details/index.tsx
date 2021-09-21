@@ -1,9 +1,14 @@
-import { CallMade, Check } from '@material-ui/icons';
+import {
+  useApp,
+  useCW20Balance,
+  useTerraNativeBalances,
+} from '@libs/app-provider';
 import { formatUTokenWithPostfixUnits, truncate } from '@libs/formatter';
+import { CallMade, Check } from '@material-ui/icons';
+import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
+import { NEB } from '@nebula-js/types';
 import { Button, Tooltip } from '@nebula-js/ui';
-import { NebulaTokenBalances } from '@nebula-js/webapp-fns';
 import { useConnectedWallet, useWallet } from '@terra-money/wallet-provider';
-import { useBank } from '@libs/app-provider';
 import big from 'big.js';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -32,9 +37,24 @@ function WalletDetailsBase({
     },
   );
 
-  const {
-    tokenBalances: { uUST, uLuna, uNEB },
-  } = useBank<NebulaTokenBalances>();
+  const { contractAddress } = useApp<NebulaContractAddress, NebulaContants>();
+
+  const { uUST, uLuna } = useTerraNativeBalances(
+    connectedWallet?.walletAddress,
+  );
+
+  const uNEB = useCW20Balance<NEB>(
+    contractAddress.cw20.NEB,
+    connectedWallet?.walletAddress,
+  );
+
+  //const uUST = useTerraNativeBalanceQuery<UST>('uusd');
+  //
+  //const uLuna = useTerraNativeBalanceQuery<Luna>('uluna');
+
+  //const {
+  //  tokenBalances: { uUST, uLuna, uNEB },
+  //} = useBank<NebulaTokenBalances>();
 
   if (!connectedWallet) {
     return null;

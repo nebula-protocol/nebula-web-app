@@ -1,7 +1,7 @@
 import { formatUToken } from '@libs/formatter';
 import { Token, u } from '@nebula-js/types';
 import { TokenSpan } from '@nebula-js/ui';
-import { AssetTokenInfo } from '@nebula-js/webapp-fns';
+import { AssetTokenInfo } from '@nebula-js/app-fns';
 import { fixHMR } from 'fix-hmr';
 import React from 'react';
 import styled from 'styled-components';

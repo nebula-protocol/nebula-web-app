@@ -1,15 +1,16 @@
-import { CW20Addr, HumanAddr, Token, u } from '@libs/types';
-import { useForm } from '@libs/use-form';
 import {
   CW20SellTokenForm,
   cw20SellTokenForm,
   CW20SellTokenFormInput,
-  Tax,
-  TokenBalances,
 } from '@libs/app-fns';
-import { useBank, useTerraWebapp } from '@libs/app-provider';
+import { CW20Addr, HumanAddr, Token, UST } from '@libs/types';
+import { useForm } from '@libs/use-form';
 import { useConnectedWallet } from '@terra-dev/use-wallet';
-import { useCW20BalanceQuery } from '../../queries/cw20/balance';
+import { useApp } from '../../contexts/app';
+import { useGasPrice } from '../../hooks/useGasPrice';
+import { useCW20Balance } from '../../queries/cw20/balance';
+import { useTerraNativeBalanceQuery } from '../../queries/terra/nativeBalances';
+import { useTax } from '../../queries/terra/tax';
 
 export interface CW20SellTokenFormParams {
   ustTokenPairAddr: HumanAddr;
@@ -22,18 +23,18 @@ export function useCW20SellTokenForm<T extends Token>({
 }: CW20SellTokenFormParams) {
   const connectedWallet = useConnectedWallet();
 
-  const {
-    mantleFetch,
-    mantleEndpoint,
-    constants: { fixedFee },
-  } = useTerraWebapp();
+  const { wasmClient, constants } = useApp();
 
-  const { tax, tokenBalances } = useBank<TokenBalances, Tax>();
+  const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
 
-  const { data: { tokenBalance } = {} } = useCW20BalanceQuery<T>(
-    tokenAddr,
-    connectedWallet?.terraAddress,
+  const { taxRate, maxTax } = useTax<UST>('uusd');
+
+  const uUST = useTerraNativeBalanceQuery<UST>(
+    'uusd',
+    connectedWallet?.walletAddress,
   );
+
+  const uToken = useCW20Balance<T>(tokenAddr, connectedWallet?.terraAddress);
 
   const form: CW20SellTokenForm<T> = cw20SellTokenForm;
 
@@ -42,12 +43,12 @@ export function useCW20SellTokenForm<T extends Token>({
     {
       ustTokenPairAddr,
       tokenAddr,
-      mantleEndpoint,
-      mantleFetch,
-      ustBalance: tokenBalances.uUST,
-      tokenBalance: tokenBalance?.balance ?? ('0' as u<T>),
-      tax,
-      fixedGas: fixedFee,
+      wasmClient,
+      ustBalance: uUST,
+      tokenBalance: uToken,
+      taxRate,
+      maxTaxUUSD: maxTax,
+      fixedFee,
       connected: !!connectedWallet,
     },
     () =>

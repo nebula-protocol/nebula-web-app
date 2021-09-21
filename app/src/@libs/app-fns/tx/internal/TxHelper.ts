@@ -1,9 +1,9 @@
 import { formatUToken } from '@libs/formatter';
 import { u, UST } from '@libs/types';
-import { TxReceipt, TxResultRendering, TxStreamPhase } from '@libs/app-fns';
 import { NetworkInfo, TxResult } from '@terra-dev/wallet-types';
 import { CreateTxOptions } from '@terra-money/terra.js';
 import { BigSource } from 'big.js';
+import { TxReceipt, TxResultRendering, TxStreamPhase } from '../../models/tx';
 
 export class TxHelper {
   private _savedTx: CreateTxOptions | null = null;

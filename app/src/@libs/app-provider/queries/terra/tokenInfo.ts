@@ -1,18 +1,19 @@
+import { terraTokenInfoQuery } from '@libs/app-fns';
 import { createQueryFn } from '@libs/react-query-utils';
 import { cw20, terraswap, Token } from '@libs/types';
-import { TERRA_QUERY_KEY, terraTokenInfoQuery } from '@libs/app-fns';
 import { useQuery, UseQueryResult } from 'react-query';
-import { useTerraWebapp } from '../../contexts/context';
+import { useApp } from '../../contexts/app';
+import { TERRA_QUERY_KEY } from '../../env';
 
 const queryFn = createQueryFn(terraTokenInfoQuery);
 
 export function useTerraTokenInfo<T extends Token>(
   asset: terraswap.AssetInfo,
 ): UseQueryResult<cw20.TokenInfoResponse<T> | undefined> {
-  const { mantleFetch, mantleEndpoint, queryErrorReporter } = useTerraWebapp();
+  const { wasmClient, queryErrorReporter } = useApp();
 
   const result = useQuery(
-    [TERRA_QUERY_KEY.TERRA_TOKEN_INFO, asset, mantleEndpoint, mantleFetch],
+    [TERRA_QUERY_KEY.TERRA_TOKEN_INFO, asset, wasmClient],
     queryFn as any,
     {
       keepPreviousData: true,

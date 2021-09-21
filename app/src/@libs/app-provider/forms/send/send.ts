@@ -1,16 +1,17 @@
-import { Token } from '@libs/types';
-import { useForm } from '@libs/use-form';
 import {
   sendForm,
   SendForm,
   SendFormInput,
   SendTokenInfo,
-  Tax,
-  TokenBalances,
 } from '@libs/app-fns';
-import { useBank, useTerraWebapp } from '@libs/app-provider';
+import { Token, UST } from '@libs/types';
+import { useForm } from '@libs/use-form';
 import { useConnectedWallet } from '@terra-dev/use-wallet';
+import { useApp } from '../../contexts/app';
+import { useGasPrice } from '../../hooks/useGasPrice';
 import { useSendBalanceQuery } from '../../queries/send/balance';
+import { useTerraNativeBalanceQuery } from '../../queries/terra/nativeBalances';
+import { useTax } from '../../queries/terra/tax';
 
 export interface SendFormParams {
   tokenInfo: SendTokenInfo;
@@ -19,19 +20,22 @@ export interface SendFormParams {
 export function useSendForm<T extends Token>({ tokenInfo }: SendFormParams) {
   const connectedWallet = useConnectedWallet();
 
-  const {
-    mantleFetch,
-    mantleEndpoint,
-    constants: { fixedFee },
-  } = useTerraWebapp();
+  const { wasmClient, constants } = useApp();
+
+  const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
+
+  const { taxRate, maxTax } = useTax<UST>('uusd');
+
+  const uUST = useTerraNativeBalanceQuery<UST>(
+    'uusd',
+    connectedWallet?.walletAddress,
+  );
 
   const balance = useSendBalanceQuery<T>(
     'native_token' in tokenInfo.assetInfo
       ? tokenInfo.assetInfo.native_token.denom
       : tokenInfo.assetInfo.token.contract_addr,
   );
-
-  const { tax, tokenBalances } = useBank<TokenBalances, Tax>();
 
   const form: SendForm<T> = sendForm;
 
@@ -41,11 +45,11 @@ export function useSendForm<T extends Token>({ tokenInfo }: SendFormParams) {
       tokenInfo,
       balance,
       walletAddr: connectedWallet?.walletAddress,
-      mantleEndpoint,
-      mantleFetch,
-      ustBalance: tokenBalances.uUST,
-      tax,
-      fixedGas: fixedFee,
+      wasmClient,
+      ustBalance: uUST,
+      taxRate,
+      maxTaxUUSD: maxTax,
+      fixedFee,
       maxSpread: 0.1,
       connected: !!connectedWallet,
     },

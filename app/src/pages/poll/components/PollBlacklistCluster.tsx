@@ -1,5 +1,5 @@
 import { FormLabel, NativeSelect } from '@nebula-js/ui';
-import { useClustersInfoListQuery } from '@nebula-js/webapp-provider';
+import { useClustersInfoListQuery } from '@nebula-js/app-provider';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { PollCreateBase } from './PollCreateBase';
 

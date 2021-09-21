@@ -9,7 +9,7 @@ import {
   UST,
 } from '@nebula-js/types';
 import { partitionColor } from '@nebula-js/ui';
-import { ClusterInfo, getAssetAmount } from '@nebula-js/webapp-fns';
+import { ClusterInfo, getAssetAmount } from '@nebula-js/app-fns';
 import { sum, vectorMultiply } from '@libs/big-math';
 import big, { Big } from 'big.js';
 

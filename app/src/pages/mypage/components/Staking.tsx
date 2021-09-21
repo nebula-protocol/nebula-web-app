@@ -1,5 +1,7 @@
+import { useApp, useCW20PoolInfoQuery } from '@libs/app-provider';
 import { formatUTokenWithPostfixUnits } from '@libs/formatter';
-import { useCW20PoolInfoQuery } from '@libs/app-provider';
+import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
+import { useMypageStakingQuery } from '@nebula-js/app-provider';
 import { SendIcon } from '@nebula-js/icons';
 import { NEB, Token, u, UST } from '@nebula-js/types';
 import {
@@ -11,10 +13,6 @@ import {
   TwoLine,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import {
-  useMypageStakingQuery,
-  useNebulaWebapp,
-} from '@nebula-js/webapp-provider';
 import big, { Big } from 'big.js';
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
@@ -25,7 +23,7 @@ export interface StakingProps {
 }
 
 function StakingBase({ className }: StakingProps) {
-  const { contractAddress } = useNebulaWebapp();
+  const { contractAddress } = useApp<NebulaContractAddress, NebulaContants>();
 
   const { data = [] } = useMypageStakingQuery();
 

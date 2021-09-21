@@ -1,10 +1,9 @@
 import {
-  defaultMantleFetch,
-  mantle,
-  MantleFetch,
+  WasmClient,
+  wasmFetch,
   WasmQuery,
   WasmQueryData,
-} from '@libs/mantle';
+} from '@libs/query-client';
 import { cw20, CW20Addr, HumanAddr, Token } from '@libs/types';
 
 interface CW20BalanceWasmQuery<T extends Token> {
@@ -18,16 +17,12 @@ export type CW20Balance<T extends Token> = WasmQueryData<
 export async function cw20BalanceQuery<T extends Token>(
   walletAddr: HumanAddr | undefined,
   tokenAddr: CW20Addr | undefined,
-  mantleEndpoint: string,
-  mantleFetch: MantleFetch = defaultMantleFetch,
-  requestInit?: RequestInit,
+  wasmClient: WasmClient,
 ): Promise<CW20Balance<T> | undefined> {
   return walletAddr && tokenAddr
-    ? mantle<CW20BalanceWasmQuery<T>>({
-        mantleEndpoint: `${mantleEndpoint}?cw20--balance=${tokenAddr}`,
-        mantleFetch,
-        requestInit,
-        variables: {},
+    ? wasmFetch<CW20BalanceWasmQuery<T>>({
+        ...wasmClient,
+        id: `cw20--balance=${tokenAddr}`,
         wasmQuery: {
           tokenBalance: {
             contractAddress: tokenAddr,

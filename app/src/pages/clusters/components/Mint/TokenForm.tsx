@@ -14,7 +14,7 @@ import {
   ClusterMintAdvancedFormAsyncStates,
   ClusterMintAdvancedFormInput,
   ClusterMintAdvancedFormStates,
-} from '@nebula-js/webapp-fns';
+} from '@nebula-js/app-fns';
 import { FormInput, FormStates } from '@libs/use-form';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big from 'big.js';

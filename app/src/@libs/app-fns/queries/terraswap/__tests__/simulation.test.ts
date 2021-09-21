@@ -1,6 +1,6 @@
-import { defaultMantleFetch, mantle, WasmQuery } from '@libs/mantle';
+import { TEST_HIVE_CLIENT } from '@libs/app-fns/test-env';
+import { wasmFetch, WasmQuery } from '@libs/query-client';
 import { CW20Addr, HumanAddr, terraswap } from '@libs/types';
-import { TEST_MANTLE_ENDPOINT } from '@libs/app-fns/test-env';
 
 type AncWasmQuery = {
   anc: WasmQuery<terraswap.factory.Pair, terraswap.factory.PairResponse>;
@@ -8,10 +8,8 @@ type AncWasmQuery = {
 
 describe('queries/simulation', () => {
   test('should get pair contract', async () => {
-    const { anc } = await mantle<AncWasmQuery>({
-      mantleEndpoint: TEST_MANTLE_ENDPOINT,
-      mantleFetch: defaultMantleFetch,
-      variables: {},
+    const { anc } = await wasmFetch<AncWasmQuery>({
+      ...TEST_HIVE_CLIENT,
       wasmQuery: {
         anc: {
           contractAddress:

@@ -4,18 +4,16 @@ import {
   formatUTokenIntegerWithPostfixUnits,
 } from '@libs/formatter';
 import { HumanAddr, Rate, terraswap, Token, u, UST } from '@libs/types';
-import {
-  pickAttributeValueByKey,
-  pickEvent,
-  pickRawLog,
-  TxResultRendering,
-  TxStreamPhase,
-} from '@libs/app-fns';
 import { pipe } from '@rx-stream/pipe';
 import { MsgExecuteContract, StdFee } from '@terra-money/terra.js';
 import big, { Big } from 'big.js';
 import { Observable } from 'rxjs';
-import { Tax } from '../../types';
+import { TxResultRendering, TxStreamPhase } from '../../models/tx';
+import {
+  pickAttributeValueByKey,
+  pickEvent,
+  pickRawLog,
+} from '../../queries/txInfo';
 import {
   _catchTxError,
   _createTxOptions,
@@ -34,7 +32,8 @@ export function cw20BuyTokenTx(
     beliefPrice: UST;
     /** = slippage_tolerance */
     maxSpread: Rate;
-    tax: Tax;
+    taxRate: Rate;
+    maxTaxUUSD: u<UST>;
     onTxSucceed?: () => void;
   } & TxCommonParams,
 ): Observable<TxResultRendering> {
@@ -108,8 +107,8 @@ export function cw20BuyTokenTx(
             ? (big(spread_amount).plus(commission_amount) as u<Token<Big>>)
             : undefined;
         const txFee = offer_amount
-          ? (big($.fixedGas).plus(
-              min(big(offer_amount).mul($.tax.taxRate), $.tax.maxTaxUUSD),
+          ? (big($.fixedFee).plus(
+              min(big(offer_amount).mul($.taxRate), $.maxTaxUUSD),
             ) as u<UST<Big>>)
           : undefined;
 
