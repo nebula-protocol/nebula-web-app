@@ -1,8 +1,8 @@
+import { GasPrice } from '@libs/app-fns';
 import { sum, vectorMultiply } from '@libs/big-math';
 import { microfy } from '@libs/formatter';
-import { MantleFetch } from '@libs/mantle';
+import { WasmClient } from '@libs/query-client';
 import { FormReturn } from '@libs/use-form';
-import { GasPrice } from '@libs/app-fns';
 import { cluster, CT, NoMicro, Rate, Token, u, UST } from '@nebula-js/types';
 import big, { BigSource } from 'big.js';
 import { computeClusterTxFee } from '../../logics/clusters/computeClusterTxFee';
@@ -14,9 +14,7 @@ export interface ClusterRedeemBasicFormInput {
 }
 
 export interface ClusterRedeemBasicFormDependency {
-  mantleEndpoint: string;
-  mantleFetch: MantleFetch;
-  requestInit?: Omit<RequestInit, 'method' | 'body'>;
+  wasmClient: WasmClient;
   lastSyncedHeight: () => Promise<number>;
   //
   clusterState: cluster.ClusterStateResponse;
@@ -82,7 +80,7 @@ export const clusterRedeemBasicForm = (
 
     if (
       !asyncStates ||
-      dependency.mantleEndpoint !== prevDependency?.mantleEndpoint ||
+      dependency.wasmClient !== prevDependency?.wasmClient ||
       dependency.lastSyncedHeight !== prevDependency?.lastSyncedHeight ||
       dependency.clusterState !== prevDependency?.clusterState ||
       dependency.clusterFee !== prevDependency?.clusterFee ||
@@ -93,9 +91,7 @@ export const clusterRedeemBasicForm = (
         input.tokenAmount,
         dependency.clusterState,
         dependency.lastSyncedHeight,
-        dependency.mantleEndpoint,
-        dependency.mantleFetch,
-        dependency.requestInit,
+        dependency.wasmClient,
       ).then(({ redeem }) => {
         const clusterTxFee = computeClusterTxFee(
           dependency.gasPrice,

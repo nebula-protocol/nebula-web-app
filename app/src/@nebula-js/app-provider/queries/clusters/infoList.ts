@@ -14,8 +14,10 @@ const queryFn = createQueryFn(clustersInfoListQuery);
 export function useClustersInfoListQuery(): UseQueryResult<
   ClustersInfoList | undefined
 > {
-  const { mantleFetch, mantleEndpoint, queryErrorReporter, contractAddress } =
-    useApp<NebulaContractAddress, NebulaContants>();
+  const { wasmClient, queryErrorReporter, contractAddress } = useApp<
+    NebulaContractAddress,
+    NebulaContants
+  >();
 
   //const {
   //  contractAddress: { clusterFactory, terraswap },
@@ -28,8 +30,7 @@ export function useClustersInfoListQuery(): UseQueryResult<
       NEBULA_QUERY_KEYS.CLUSTERS_LIST,
       contractAddress.clusterFactory,
       contractAddress.terraswap.factory,
-      mantleEndpoint,
-      mantleFetch,
+      wasmClient,
     ],
     queryFn,
     {

@@ -1,25 +1,5 @@
 import { FieldNode } from 'graphql';
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-export interface WasmQuery<Query extends {}, Response extends {}> {
-  query: Query;
-  response: Response;
-}
-
-export type WasmQueryInput<T> = {
-  [P in keyof T]: T[P] extends WasmQuery<infer Q, infer R>
-    ? { contractAddress: string; query: Q }
-    : never;
-};
-
-export type WasmQueryRawData<T> = {
-  [P in keyof T]: { Result: string };
-};
-
-export type WasmQueryData<T> = {
-  [P in keyof T]: T[P] extends WasmQuery<infer Q, infer R> ? R : never;
-};
+import { WasmQueryData, WasmQueryInput, WasmQueryRawData } from '../interface';
 
 export function wasmQueryToFields<T>(queries: WasmQueryInput<T>): FieldNode[] {
   const keys = Object.keys(queries) as Array<keyof T>;

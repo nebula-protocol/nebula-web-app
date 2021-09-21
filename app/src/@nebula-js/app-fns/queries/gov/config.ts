@@ -1,11 +1,10 @@
-import { gov, HumanAddr } from '@nebula-js/types';
 import {
-  defaultMantleFetch,
-  mantle,
-  MantleFetch,
+  WasmClient,
+  wasmFetch,
   WasmQuery,
   WasmQueryData,
-} from '@libs/mantle';
+} from '@libs/query-client';
+import { gov, HumanAddr } from '@nebula-js/types';
 
 interface GovConfigWasmQuery {
   govConfig: WasmQuery<gov.Config, gov.ConfigResponse>;
@@ -15,15 +14,11 @@ export type GovConfig = WasmQueryData<GovConfigWasmQuery>;
 
 export async function govConfigQuery(
   govAddr: HumanAddr,
-  mantleEndpoint: string,
-  mantleFetch: MantleFetch = defaultMantleFetch,
-  requestInit?: RequestInit,
+  wasmClient: WasmClient,
 ): Promise<GovConfig> {
-  return mantle<GovConfigWasmQuery>({
-    mantleEndpoint: `${mantleEndpoint}?gov--config`,
-    mantleFetch,
-    requestInit,
-    variables: {},
+  return wasmFetch<GovConfigWasmQuery>({
+    ...wasmClient,
+    id: `gov--config`,
     wasmQuery: {
       govConfig: {
         contractAddress: govAddr,

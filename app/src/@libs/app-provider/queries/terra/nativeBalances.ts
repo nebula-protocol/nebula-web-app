@@ -17,7 +17,7 @@ const queryFn = createQueryFn(terraNativeBalancesQuery);
 export function useTerraNativeBalancesQuery(
   walletAddr?: HumanAddr,
 ): UseQueryResult<NativeBalances | undefined> {
-  const { lcdEndpoint, lcdFetch, queryErrorReporter } = useApp();
+  const { wasmClient, queryErrorReporter } = useApp();
 
   const connectedWallet = useConnectedWallet();
 
@@ -25,8 +25,7 @@ export function useTerraNativeBalancesQuery(
     [
       TERRA_QUERY_KEY.TERRA_NATIVE_BALANCES,
       walletAddr ?? connectedWallet?.walletAddress,
-      lcdEndpoint,
-      lcdFetch,
+      wasmClient,
     ],
     queryFn,
     {

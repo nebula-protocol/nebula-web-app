@@ -59,6 +59,7 @@ export function Providers({ children }: { children: ReactNode }) {
         <QueryClientProvider client={queryClient}>
           <BrowserInactiveProvider>
             <AppProvider
+              defaultWasmClient="hive"
               contractAddress={nebulaContractAddress}
               constants={nebulaConstants}
               refetchMap={NEBULA_TX_REFETCH_MAP}

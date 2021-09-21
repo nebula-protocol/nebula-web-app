@@ -14,8 +14,10 @@ const queryFn = createQueryFn(stakingPoolInfoQuery);
 export function useStakingPoolInfoQuery(
   tokenAddr: CW20Addr,
 ): UseQueryResult<StakingPoolInfo | undefined> {
-  const { mantleFetch, mantleEndpoint, queryErrorReporter, contractAddress } =
-    useApp<NebulaContractAddress, NebulaContants>();
+  const { wasmClient, queryErrorReporter, contractAddress } = useApp<
+    NebulaContractAddress,
+    NebulaContants
+  >();
 
   //const {
   //  contractAddress: { staking, terraswap },
@@ -29,8 +31,7 @@ export function useStakingPoolInfoQuery(
       tokenAddr,
       contractAddress.staking,
       contractAddress.terraswap.factory,
-      mantleEndpoint,
-      mantleFetch,
+      wasmClient,
     ],
     queryFn,
     {

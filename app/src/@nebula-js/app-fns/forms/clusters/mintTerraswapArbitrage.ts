@@ -1,5 +1,5 @@
-import { FormReturn } from '@libs/use-form';
 import { terraswapSimulationQuery } from '@libs/app-fns';
+import { FormReturn } from '@libs/use-form';
 import { terraswap, u, UST } from '@nebula-js/types';
 import {
   clusterMintAdvancedForm,
@@ -52,9 +52,7 @@ export const clusterMintTerraswapArbitrageForm = (
               },
             },
           },
-          dependency.mantleEndpoint,
-          dependency.mantleFetch,
-          dependency.requestInit,
+          dependency.wasmClient,
         ).then(({ simulation }) => {
           return {
             ...advancedAsyncStates,

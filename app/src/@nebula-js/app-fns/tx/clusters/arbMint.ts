@@ -67,17 +67,15 @@ export function clusterArbMintTx(
 
   return pipe(
     (_: void) => {
-      return terraswapPoolQuery(
-        $.terraswapPairAddr,
-        $.mantleEndpoint,
-        $.mantleFetch,
-      ).then(({ terraswapPool }) => {
-        return {
-          value: terraswapPool,
-          phase: TxStreamPhase.POST,
-          receipts: [],
-        } as TxResultRendering<terraswap.pair.PoolResponse<Token, Token>>;
-      });
+      return terraswapPoolQuery($.terraswapPairAddr, $.wasmClient).then(
+        ({ terraswapPool }) => {
+          return {
+            value: terraswapPool,
+            phase: TxStreamPhase.POST,
+            receipts: [],
+          } as TxResultRendering<terraswap.pair.PoolResponse<Token, Token>>;
+        },
+      );
     },
     ({ value }) =>
       _createTxOptions({

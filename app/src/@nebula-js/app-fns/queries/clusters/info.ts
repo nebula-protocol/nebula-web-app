@@ -1,16 +1,15 @@
 import {
-  defaultMantleFetch,
-  mantle,
-  MantleFetch,
-  WasmQuery,
-  WasmQueryData,
-} from '@libs/mantle';
-import {
   cw20PoolInfoQuery,
   cw20TokenInfoQuery,
   nativeTokenInfoQuery,
   TerraswapPoolInfo,
 } from '@libs/app-fns';
+import {
+  WasmClient,
+  wasmFetch,
+  WasmQuery,
+  WasmQueryData,
+} from '@libs/query-client';
 import {
   cluster,
   CT,
@@ -44,42 +43,34 @@ export type ClusterInfo = WasmQueryData<ClusterInfoWasmQuery> & {
 export async function clusterInfoQuery(
   clusterAddr: HumanAddr,
   terraswapFactoryAddr: HumanAddr,
-  mantleEndpoint: string,
-  mantleFetch: MantleFetch = defaultMantleFetch,
-  requestInit?: RequestInit,
+  wasmClient: WasmClient,
 ): Promise<ClusterInfo> {
-  const { clusterState, clusterConfig } = await mantle<ClusterStateWasmQuery>({
-    mantleEndpoint: `${mantleEndpoint}?cluster--state=${clusterAddr}`,
-    mantleFetch,
-    requestInit,
-    variables: {},
-    wasmQuery: {
-      clusterState: {
-        contractAddress: clusterAddr,
-        query: {
-          cluster_state: {
-            cluster_contract_address: clusterAddr,
+  const { clusterState, clusterConfig } =
+    await wasmFetch<ClusterStateWasmQuery>({
+      ...wasmClient,
+      id: `cluster--state=${clusterAddr}`,
+      wasmQuery: {
+        clusterState: {
+          contractAddress: clusterAddr,
+          query: {
+            cluster_state: {
+              cluster_contract_address: clusterAddr,
+            },
+          },
+        },
+        clusterConfig: {
+          contractAddress: clusterAddr,
+          query: {
+            config: {},
           },
         },
       },
-      clusterConfig: {
-        contractAddress: clusterAddr,
-        query: {
-          config: {},
-        },
-      },
-    },
-  });
+    });
 
   const tokenInfos: AssetTokenInfo[] = await Promise.all(
     clusterState.target.map(({ info }) => {
       if ('token' in info) {
-        return cw20TokenInfoQuery(
-          info.token.contract_addr,
-          mantleEndpoint,
-          mantleFetch,
-          requestInit,
-        ).then(
+        return cw20TokenInfoQuery(info.token.contract_addr, wasmClient).then(
           ({ tokenInfo }) => ({ asset: info, tokenInfo } as AssetTokenInfo),
         );
       } else if ('native_token' in info) {
@@ -102,9 +93,7 @@ export async function clusterInfoQuery(
     await cw20PoolInfoQuery<CT>(
       clusterState.cluster_token,
       terraswapFactoryAddr,
-      mantleEndpoint,
-      mantleFetch,
-      requestInit,
+      wasmClient,
     );
 
   return {

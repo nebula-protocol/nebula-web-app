@@ -1,12 +1,11 @@
 import { microfy } from '@libs/formatter';
-import { cluster, penalty, Token, u } from '@nebula-js/types';
 import {
-  defaultMantleFetch,
-  mantle,
-  MantleFetch,
+  WasmClient,
+  wasmFetch,
   WasmQuery,
   WasmQueryData,
-} from '@libs/mantle';
+} from '@libs/query-client';
+import { cluster, penalty, Token, u } from '@nebula-js/types';
 
 interface ClusterMintWasmQuery {
   mint: WasmQuery<penalty.Mint, penalty.MintResponse>;
@@ -18,17 +17,13 @@ export async function clusterMintQuery(
   amounts: Token[],
   clusterState: cluster.ClusterStateResponse,
   lastSyncedHeight: () => Promise<number>,
-  mantleEndpoint: string,
-  mantleFetch: MantleFetch = defaultMantleFetch,
-  requestInit?: RequestInit,
+  wasmClient: WasmClient,
 ): Promise<ClusterMint> {
   const blockHeight = await lastSyncedHeight();
 
-  return mantle<ClusterMintWasmQuery>({
-    mantleEndpoint: `${mantleEndpoint}?cluster--mint`,
-    mantleFetch,
-    requestInit,
-    variables: {},
+  return wasmFetch<ClusterMintWasmQuery>({
+    ...wasmClient,
+    id: `cluster--mint`,
     wasmQuery: {
       mint: {
         contractAddress: clusterState.penalty,

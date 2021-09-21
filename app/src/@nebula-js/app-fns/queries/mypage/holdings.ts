@@ -1,9 +1,9 @@
-import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
 import {
   cw20BalanceQuery,
   CW20PoolInfo,
   cw20PoolInfoQuery,
 } from '@libs/app-fns';
+import { WasmClient } from '@libs/query-client';
 import { cluster, cw20, CW20Addr, HumanAddr, Token, u } from '@nebula-js/types';
 import { clusterStateListQuery } from '../clusters/stateList';
 
@@ -19,9 +19,7 @@ export async function mypageHoldingsQuery(
   nebTokenAddr: CW20Addr,
   terraswapFactoryAddr: HumanAddr,
   clusterFactoryAddr: HumanAddr,
-  mantleEndpoint: string,
-  mantleFetch: MantleFetch = defaultMantleFetch,
-  requestInit?: RequestInit,
+  wasmClient: WasmClient,
 ): Promise<MypageHoldings> {
   if (!walletAddr) {
     return [];
@@ -29,9 +27,7 @@ export async function mypageHoldingsQuery(
 
   const clusterStates = await clusterStateListQuery(
     clusterFactoryAddr,
-    mantleEndpoint,
-    mantleFetch,
-    requestInit,
+    wasmClient,
   );
 
   const tokenInfos: Array<
@@ -50,20 +46,8 @@ export async function mypageHoldingsQuery(
   return await Promise.all(
     tokenInfos.map(([tokenAddr, clusterState]) => {
       return Promise.all([
-        cw20PoolInfoQuery(
-          tokenAddr,
-          terraswapFactoryAddr,
-          mantleEndpoint,
-          mantleFetch,
-          requestInit,
-        ),
-        cw20BalanceQuery(
-          walletAddr,
-          tokenAddr,
-          mantleEndpoint,
-          mantleFetch,
-          requestInit,
-        ),
+        cw20PoolInfoQuery(tokenAddr, terraswapFactoryAddr, wasmClient),
+        cw20BalanceQuery(walletAddr, tokenAddr, wasmClient),
       ]).then(([poolInfo, balance]) => ({
         ...poolInfo,
         clusterState,

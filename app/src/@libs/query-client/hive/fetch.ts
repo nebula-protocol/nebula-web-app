@@ -1,13 +1,13 @@
-import { MantleError } from './errors';
+import { HiveFetchError } from '../errors';
 
-export type MantleFetch = <Variables extends {}, Data>(
+export type HiveFetcher = <Variables extends {}, Data>(
   query: string,
   variables: Variables,
   endpoint: string,
   requestInit?: Omit<RequestInit, 'method' | 'body'>,
 ) => Promise<Data>;
 
-export const defaultMantleFetch: MantleFetch = <Variables extends {}, Data>(
+export const defaultHiveFetcher: HiveFetcher = <Variables extends {}, Data>(
   query: string,
   variables: Variables,
   endpoint: string,
@@ -30,7 +30,7 @@ export const defaultMantleFetch: MantleFetch = <Variables extends {}, Data>(
     .then(({ data, errors }) => {
       if (!!errors) {
         if (Array.isArray(errors)) {
-          throw new MantleError(errors);
+          throw new HiveFetchError(errors);
         } else {
           throw new Error(String(errors));
         }
@@ -41,14 +41,14 @@ export const defaultMantleFetch: MantleFetch = <Variables extends {}, Data>(
 
 const workerPool: Worker[] = [];
 
-export const webworkerMantleFetch: MantleFetch = <Variables extends {}, Data>(
+export const webworkerHiveFetcher: HiveFetcher = <Variables extends {}, Data>(
   query: string,
   variables: Variables,
   endpoint: string,
   requestInit?: Omit<RequestInit, 'method' | 'body'>,
 ) => {
   if (!window.Worker) {
-    return defaultMantleFetch(query, variables, endpoint, requestInit);
+    return defaultHiveFetcher(query, variables, endpoint, requestInit);
   }
 
   return new Promise<Data>((resolve, reject) => {
@@ -67,13 +67,15 @@ export const webworkerMantleFetch: MantleFetch = <Variables extends {}, Data>(
     }
 
     const worker: Worker =
-      workerPool.length > 0 ? workerPool.pop()! : new Worker('/fetchWorker.js');
+      workerPool.length > 0
+        ? workerPool.pop()!
+        : new Worker('/hiveFetchWorker.js');
 
     const onMessage = (event: MessageEvent) => {
       if (!aborted) {
         if ('error' in event.data) {
-          if (event.data.error.type === 'MantleError') {
-            reject(new MantleError(event.data.error.errors));
+          if (event.data.error.type === 'HiveFetchError') {
+            reject(new HiveFetchError(event.data.error.errors));
           } else {
             reject(new Error(event.data.error.error));
           }

@@ -22,13 +22,9 @@ export function useCW20BuyTokenForm<T extends Token>({
 }: CW20BuyTokenFormParams) {
   const connectedWallet = useConnectedWallet();
 
-  const {
-    mantleFetch,
-    mantleEndpoint,
-    constants: { fixedGas },
-  } = useApp();
+  const { wasmClient, constants } = useApp();
 
-  const fixedFee = useGasPrice(fixedGas, 'uusd');
+  const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
 
   const { taxRate, maxTax } = useTax<UST>('uusd');
 
@@ -44,8 +40,7 @@ export function useCW20BuyTokenForm<T extends Token>({
     {
       ustTokenPairAddr,
       tokenAddr,
-      mantleEndpoint,
-      mantleFetch,
+      wasmClient,
       ustBalance: uUST,
       taxRate,
       maxTaxUUSD: maxTax,

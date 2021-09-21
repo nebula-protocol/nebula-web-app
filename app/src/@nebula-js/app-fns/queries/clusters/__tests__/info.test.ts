@@ -1,10 +1,9 @@
-import { HumanAddr } from '@nebula-js/types';
 import { clusterInfoQuery } from '@nebula-js/app-fns';
 import {
   TEST_CONTRACT_ADDRESS,
-  TEST_MANTLE_ENDPOINT,
+  TEST_LCD_CLIENT,
 } from '@nebula-js/app-fns/test-env';
-import { defaultMantleFetch } from '@libs/mantle';
+import { HumanAddr } from '@nebula-js/types';
 
 describe.skip('clusters/info', () => {
   test('should get result data', async () => {
@@ -15,8 +14,7 @@ describe.skip('clusters/info', () => {
       await clusterInfoQuery(
         'terra1rkgpmrqmddwtq48e5mr4vsps53vudmd4mgvfkz' as HumanAddr,
         TEST_CONTRACT_ADDRESS.terraswap.factory,
-        TEST_MANTLE_ENDPOINT,
-        defaultMantleFetch,
+        TEST_LCD_CLIENT,
       );
 
     expect(clusterConfig).not.toBeUndefined();

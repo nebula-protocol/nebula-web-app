@@ -1,6 +1,6 @@
 import { min } from '@libs/big-math';
 import { demicrofy, microfy } from '@libs/formatter';
-import { MantleFetch } from '@libs/mantle';
+import { WasmClient } from '@libs/query-client';
 import { CW20Addr, HumanAddr, Rate, Token, u, UST } from '@libs/types';
 import { FormFunction, FormReturn } from '@libs/use-form';
 import big, { Big, BigSource } from 'big.js';
@@ -14,10 +14,11 @@ export interface CW20BuyTokenFormInput<T extends Token> {
 }
 
 export interface CW20BuyTokenFormDependency {
+  wasmClient: WasmClient;
+  //mantleEndpoint: string;
+  //mantleFetch: MantleFetch;
+  //requestInit?: Omit<RequestInit, 'method' | 'body'>;
   // terraswap simulation
-  mantleEndpoint: string;
-  mantleFetch: MantleFetch;
-  requestInit?: Omit<RequestInit, 'method' | 'body'>;
   ustTokenPairAddr: HumanAddr;
   tokenAddr: CW20Addr;
   //
@@ -59,9 +60,10 @@ export type CW20BuyTokenForm<T extends Token> = FormFunction<
 export const cw20BuyTokenForm = <T extends Token>({
   ustTokenPairAddr,
   tokenAddr,
-  mantleEndpoint,
-  mantleFetch,
-  requestInit,
+  wasmClient,
+  //mantleEndpoint,
+  //mantleFetch,
+  //requestInit,
   ustBalance,
   taxRate,
   maxTaxUUSD,
@@ -130,9 +132,7 @@ export const cw20BuyTokenForm = <T extends Token>({
               },
             },
           },
-          mantleEndpoint,
-          mantleFetch,
-          requestInit,
+          wasmClient,
         ).then(
           ({
             simulation: { return_amount, commission_amount, spread_amount },
@@ -222,9 +222,7 @@ export const cw20BuyTokenForm = <T extends Token>({
               },
             },
           },
-          mantleEndpoint,
-          mantleFetch,
-          requestInit,
+          wasmClient,
         ).then(
           ({
             simulation: { return_amount, spread_amount, commission_amount },

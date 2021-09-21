@@ -1,7 +1,7 @@
-import { microfy } from '@libs/formatter';
-import { MantleFetch } from '@libs/mantle';
-import { FormReturn } from '@libs/use-form';
 import { computeMaxUstBalanceForUstTransfer, GasPrice } from '@libs/app-fns';
+import { microfy } from '@libs/formatter';
+import { WasmClient } from '@libs/query-client';
+import { FormReturn } from '@libs/use-form';
 import { cluster, CT, HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
 import { BigSource } from 'big.js';
 import { computeClusterTxFee } from '../../logics/clusters/computeClusterTxFee';
@@ -13,9 +13,7 @@ export interface ClusterMintBasicFormInput {
 }
 
 export interface ClusterMintBaicFormDependency {
-  mantleEndpoint: string;
-  mantleFetch: MantleFetch;
-  requestInit?: Omit<RequestInit, 'method' | 'body'>;
+  wasmClient: WasmClient;
   //
   clusterState: cluster.ClusterStateResponse;
   terraswapFactoryAddr: HumanAddr;
@@ -39,9 +37,7 @@ export interface ClusterMintBasicFormAsyncStates {
 }
 
 export const clusterMintBasicForm = ({
-  mantleEndpoint,
-  mantleFetch,
-  requestInit,
+  wasmClient,
   ustBalance,
   clusterState,
   terraswapFactoryAddr,
@@ -61,9 +57,7 @@ export const clusterMintBasicForm = ({
   const optimizer = new EasyMintOptimizer(
     clusterState.cluster_contract_address,
     terraswapFactoryAddr,
-    mantleEndpoint,
-    mantleFetch,
-    requestInit,
+    wasmClient,
   );
 
   optimizer.resetInitialState();

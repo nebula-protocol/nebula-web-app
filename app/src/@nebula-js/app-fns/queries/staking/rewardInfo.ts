@@ -1,11 +1,10 @@
-import { CW20Addr, HumanAddr, staking } from '@nebula-js/types';
 import {
-  defaultMantleFetch,
-  mantle,
-  MantleFetch,
+  WasmClient,
+  wasmFetch,
   WasmQuery,
   WasmQueryData,
-} from '@libs/mantle';
+} from '@libs/query-client';
+import { CW20Addr, HumanAddr, staking } from '@nebula-js/types';
 
 interface StakingRewardInfoWasmQuery {
   rewardInfo: WasmQuery<staking.RewardInfo, staking.RewardInfoResponse>;
@@ -17,16 +16,12 @@ export async function stakingRewardInfoQuery(
   walletAddr: HumanAddr | undefined,
   stakingAddr: HumanAddr,
   clusterToken: CW20Addr | undefined,
-  mantleEndpoint: string,
-  mantleFetch: MantleFetch = defaultMantleFetch,
-  requestInit?: RequestInit,
+  wasmClient: WasmClient,
 ): Promise<StakingRewardInfo | undefined> {
   return walletAddr
-    ? mantle<StakingRewardInfoWasmQuery>({
-        mantleEndpoint: `${mantleEndpoint}?staking--reward-info`,
-        mantleFetch,
-        requestInit,
-        variables: {},
+    ? wasmFetch<StakingRewardInfoWasmQuery>({
+        ...wasmClient,
+        id: `staking--reward-info`,
         wasmQuery: {
           rewardInfo: {
             contractAddress: stakingAddr,

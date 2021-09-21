@@ -12,16 +12,10 @@ export function useCW20BalanceQuery<T extends Token>(
   tokenAddr: CW20Addr | undefined,
   walletAddr: HumanAddr | undefined,
 ): UseQueryResult<CW20Balance<T> | undefined> {
-  const { mantleFetch, mantleEndpoint, queryErrorReporter } = useApp();
+  const { wasmClient, queryErrorReporter } = useApp();
 
   const result = useQuery(
-    [
-      TERRA_QUERY_KEY.CW20_BALANCE,
-      walletAddr,
-      tokenAddr,
-      mantleEndpoint,
-      mantleFetch,
-    ],
+    [TERRA_QUERY_KEY.CW20_BALANCE, walletAddr, tokenAddr, wasmClient],
     queryFn as any,
     {
       refetchInterval: 1000 * 60 * 5,

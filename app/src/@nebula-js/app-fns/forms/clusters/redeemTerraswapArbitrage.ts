@@ -1,12 +1,12 @@
-import { sum, vectorMultiply } from '@libs/big-math';
-import { demicrofy, microfy } from '@libs/formatter';
-import { MantleFetch } from '@libs/mantle';
-import { FormReturn } from '@libs/use-form';
 import {
   computeMaxUstBalanceForUstTransfer,
   GasPrice,
   terraswapSimulationQuery,
 } from '@libs/app-fns';
+import { sum, vectorMultiply } from '@libs/big-math';
+import { demicrofy, microfy } from '@libs/formatter';
+import { WasmClient } from '@libs/query-client';
+import { FormReturn } from '@libs/use-form';
 import {
   cluster,
   CT,
@@ -28,9 +28,7 @@ export interface ClusterRedeemTerraswapArbitrageFormInput {
 }
 
 export interface ClusterRedeemTerraswapArbitrageFormDependency {
-  mantleEndpoint: string;
-  mantleFetch: MantleFetch;
-  requestInit?: Omit<RequestInit, 'method' | 'body'>;
+  wasmClient: WasmClient;
   lastSyncedHeight: () => Promise<number>;
   //
   clusterState: cluster.ClusterStateResponse;
@@ -107,7 +105,7 @@ export const clusterRedeemTerraswapArbitrageForm = (
     if (
       !asyncStates ||
       dependency.connected !== prevDependency?.connected ||
-      dependency.mantleEndpoint !== prevDependency?.mantleEndpoint ||
+      dependency.wasmClient !== prevDependency?.wasmClient ||
       dependency.lastSyncedHeight !== prevDependency?.lastSyncedHeight ||
       dependency.clusterState !== prevDependency?.clusterState ||
       dependency.gasPrice !== prevDependency?.gasPrice ||
@@ -125,9 +123,7 @@ export const clusterRedeemTerraswapArbitrageForm = (
             },
           },
         },
-        dependency.mantleEndpoint,
-        dependency.mantleFetch,
-        dependency.requestInit,
+        dependency.wasmClient,
       )
         .then(({ simulation: { return_amount } }) => {
           const clusterTxFee = computeClusterTxFee(
@@ -149,9 +145,7 @@ export const clusterRedeemTerraswapArbitrageForm = (
             demicrofy(return_amount as u<CT>).toFixed() as CT,
             dependency.clusterState,
             dependency.lastSyncedHeight,
-            dependency.mantleEndpoint,
-            dependency.mantleFetch,
-            dependency.requestInit,
+            dependency.wasmClient,
           );
         })
         .then(({ redeem }) => {

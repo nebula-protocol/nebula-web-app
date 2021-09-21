@@ -1,14 +1,4 @@
 import {
-  cluster,
-  CT,
-  HumanAddr,
-  Num,
-  penalty,
-  terraswap,
-  Token,
-  u,
-} from '@nebula-js/types';
-import {
   abs,
   exp,
   max,
@@ -19,7 +9,17 @@ import {
   vectorMultiply,
   vectorPlus,
 } from '@libs/big-math';
-import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
+import { WasmClient } from '@libs/query-client';
+import {
+  cluster,
+  CT,
+  HumanAddr,
+  Num,
+  penalty,
+  terraswap,
+  Token,
+  u,
+} from '@nebula-js/types';
 import big, { Big, BigSource } from 'big.js';
 import { clusterPenaltyParamsQuery } from '../../../queries/clusters/penaltyParams';
 import { clusterStateQuery } from '../../../queries/clusters/state';
@@ -34,19 +34,12 @@ export class ClusterSimulatorWithPenalty {
   public targetAmounts!: u<Token>[];
   private lastBlock: number = 0;
 
-  constructor(
-    private clusterAddr: HumanAddr,
-    private mantleEndpoint: string,
-    private mantleFetch: MantleFetch = defaultMantleFetch,
-    private requestInit?: RequestInit,
-  ) {}
+  constructor(private clusterAddr: HumanAddr, private wasmClient: WasmClient) {}
 
   resetInitialState = async () => {
     const { clusterState } = await clusterStateQuery(
       this.clusterAddr,
-      this.mantleEndpoint,
-      this.mantleFetch,
-      this.requestInit,
+      this.wasmClient,
     );
     this.clusterState = clusterState;
 
@@ -55,9 +48,7 @@ export class ClusterSimulatorWithPenalty {
 
     const { penaltyParams } = await clusterPenaltyParamsQuery(
       clusterState.penalty,
-      this.mantleEndpoint,
-      this.mantleFetch,
-      this.requestInit,
+      this.wasmClient,
     );
     this.penaltyInfo = penaltyParams;
 

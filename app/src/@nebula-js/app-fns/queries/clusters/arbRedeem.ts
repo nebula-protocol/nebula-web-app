@@ -1,11 +1,10 @@
-import { CT, penalty, terraswap, UST } from '@nebula-js/types';
 import {
-  defaultMantleFetch,
-  mantle,
-  MantleFetch,
+  WasmClient,
+  wasmFetch,
   WasmQuery,
   WasmQueryData,
-} from '@libs/mantle';
+} from '@libs/query-client';
+import { CT, penalty, terraswap, UST } from '@nebula-js/types';
 
 interface SimulationWasmQuery {
   simulation: WasmQuery<
@@ -25,15 +24,11 @@ export type ClusterArbRedeem = WasmQueryData<
 // TODO
 export async function clusterArbRedeemQuery(
   lastSyncedHeight: () => Promise<number>,
-  mantleEndpoint: string,
-  mantleFetch: MantleFetch = defaultMantleFetch,
-  requestInit?: RequestInit,
+  wasmClient: WasmClient,
 ): Promise<ClusterArbRedeem> {
-  const { simulation } = await mantle<SimulationWasmQuery>({
-    mantleEndpoint: `${mantleEndpoint}?cluster--redeem-simulation`,
-    mantleFetch,
-    requestInit,
-    variables: {},
+  const { simulation } = await wasmFetch<SimulationWasmQuery>({
+    ...wasmClient,
+    id: `cluster--redeem-simulation`,
     wasmQuery: {
       simulation: {
         contractAddress: '',
@@ -44,11 +39,9 @@ export async function clusterArbRedeemQuery(
 
   //wasmQuery.redeem.query.redeem.max_tokens = simulation.return_amount;
 
-  const { redeem } = await mantle<RedeemWasmQuery>({
-    mantleEndpoint: `${mantleEndpoint}?cluster--redeem`,
-    mantleFetch,
-    requestInit,
-    variables: {},
+  const { redeem } = await wasmFetch<RedeemWasmQuery>({
+    ...wasmClient,
+    id: `cluster--redeem`,
     wasmQuery: {
       redeem: {
         contractAddress: '',

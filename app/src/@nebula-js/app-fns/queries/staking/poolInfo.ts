@@ -1,11 +1,10 @@
+import { cw20PoolInfoQuery, TerraswapPoolInfo } from '@libs/app-fns';
 import {
-  defaultMantleFetch,
-  mantle,
-  MantleFetch,
+  WasmClient,
+  wasmFetch,
   WasmQuery,
   WasmQueryData,
-} from '@libs/mantle';
-import { cw20PoolInfoQuery, TerraswapPoolInfo } from '@libs/app-fns';
+} from '@libs/query-client';
 import {
   cw20,
   CW20Addr,
@@ -32,24 +31,14 @@ export async function stakingPoolInfoQuery(
   tokenAddr: CW20Addr,
   stakingAddr: HumanAddr,
   terraswapFactoryAddr: HumanAddr,
-  mantleEndpoint: string,
-  mantleFetch: MantleFetch = defaultMantleFetch,
-  requestInit?: RequestInit,
+  wasmClient: WasmClient,
 ): Promise<StakingPoolInfo> {
   const { terraswapPair, terraswapPool, terraswapPoolInfo, tokenInfo } =
-    await cw20PoolInfoQuery(
-      tokenAddr,
-      terraswapFactoryAddr,
-      mantleEndpoint,
-      mantleFetch,
-      requestInit,
-    );
+    await cw20PoolInfoQuery(tokenAddr, terraswapFactoryAddr, wasmClient);
 
-  const { poolInfo } = await mantle<StakingPoolInfoWasmQuery>({
-    mantleEndpoint: `${mantleEndpoint}?staking--pool-info=${tokenAddr}`,
-    mantleFetch,
-    requestInit,
-    variables: {},
+  const { poolInfo } = await wasmFetch<StakingPoolInfoWasmQuery>({
+    ...wasmClient,
+    id: `staking--pool-info=${tokenAddr}`,
     wasmQuery: {
       poolInfo: {
         contractAddress: stakingAddr,

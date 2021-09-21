@@ -1,12 +1,11 @@
 import { microfy } from '@libs/formatter';
-import { cluster, CT, penalty, u } from '@nebula-js/types';
 import {
-  defaultMantleFetch,
-  mantle,
-  MantleFetch,
+  WasmClient,
+  wasmFetch,
   WasmQuery,
   WasmQueryData,
-} from '@libs/mantle';
+} from '@libs/query-client';
+import { cluster, CT, penalty, u } from '@nebula-js/types';
 
 interface ClusterRedeemWasmQuery {
   redeem: WasmQuery<penalty.Redeem, penalty.RedeemResponse>;
@@ -18,17 +17,13 @@ export async function clusterRedeemQuery(
   clusterTokenAmount: CT,
   clusterState: cluster.ClusterStateResponse,
   lastSyncedHeight: () => Promise<number>,
-  mantleEndpoint: string,
-  mantleFetch: MantleFetch = defaultMantleFetch,
-  requestInit?: RequestInit,
+  wasmClient: WasmClient,
 ): Promise<ClusterRedeem> {
   const blockHeight = await lastSyncedHeight();
 
-  return mantle<ClusterRedeemWasmQuery>({
-    mantleEndpoint: `${mantleEndpoint}?cluster--redeem`,
-    mantleFetch,
-    requestInit,
-    variables: {},
+  return wasmFetch<ClusterRedeemWasmQuery>({
+    ...wasmClient,
+    id: `cluster--redeem`,
     wasmQuery: {
       redeem: {
         contractAddress: clusterState.penalty,

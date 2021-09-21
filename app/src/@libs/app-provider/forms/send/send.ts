@@ -20,13 +20,9 @@ export interface SendFormParams {
 export function useSendForm<T extends Token>({ tokenInfo }: SendFormParams) {
   const connectedWallet = useConnectedWallet();
 
-  const {
-    mantleFetch,
-    mantleEndpoint,
-    constants: { fixedGas },
-  } = useApp();
+  const { wasmClient, constants } = useApp();
 
-  const fixedFee = useGasPrice(fixedGas, 'uusd');
+  const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
 
   const { taxRate, maxTax } = useTax<UST>('uusd');
 
@@ -49,8 +45,7 @@ export function useSendForm<T extends Token>({ tokenInfo }: SendFormParams) {
       tokenInfo,
       balance,
       walletAddr: connectedWallet?.walletAddress,
-      mantleEndpoint,
-      mantleFetch,
+      wasmClient,
       ustBalance: uUST,
       taxRate,
       maxTaxUUSD: maxTax,

@@ -17,8 +17,10 @@ export function useMypageStakingQuery(): UseQueryResult<
 > {
   const connectedWallet = useConnectedWallet();
 
-  const { mantleFetch, mantleEndpoint, queryErrorReporter, contractAddress } =
-    useApp<NebulaContractAddress, NebulaContants>();
+  const { wasmClient, queryErrorReporter, contractAddress } = useApp<
+    NebulaContractAddress,
+    NebulaContants
+  >();
 
   //const {
   //  contractAddress: { terraswap, staking },
@@ -32,8 +34,7 @@ export function useMypageStakingQuery(): UseQueryResult<
       connectedWallet?.walletAddress,
       contractAddress.staking,
       contractAddress.terraswap.factory,
-      mantleEndpoint,
-      mantleFetch,
+      wasmClient,
     ],
     queryFn,
     {

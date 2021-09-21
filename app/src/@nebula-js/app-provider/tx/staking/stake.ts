@@ -24,13 +24,10 @@ export function useStakingStakeTx(
 ) {
   const connectedWallet = useConnectedWallet();
 
-  const {
-    mantleFetch,
-    mantleEndpoint,
-    txErrorReporter,
-    constants,
-    contractAddress,
-  } = useApp<NebulaContractAddress, NebulaContants>();
+  const { wasmClient, txErrorReporter, constants, contractAddress } = useApp<
+    NebulaContractAddress,
+    NebulaContants
+  >();
 
   const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
 
@@ -65,8 +62,7 @@ export function useStakingStakeTx(
         gasWanted: constants.gasWanted,
         slippageTolerance,
         gasAdjustment: constants.gasAdjustment,
-        mantleEndpoint,
-        mantleFetch,
+        wasmClient,
         txErrorReporter,
         onTxSucceed: () => {
           onTxSucceed?.();
@@ -82,12 +78,11 @@ export function useStakingStakeTx(
       constants.gasWanted,
       contractAddress.staking,
       fixedFee,
-      mantleEndpoint,
-      mantleFetch,
       refetchQueries,
       tokenAddr,
       tokenUstPairAddr,
       txErrorReporter,
+      wasmClient,
     ],
   );
 

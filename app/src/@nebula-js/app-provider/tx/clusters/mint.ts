@@ -24,13 +24,10 @@ export function useClusterMintTx(
 ) {
   const connectedWallet = useConnectedWallet();
 
-  const {
-    mantleFetch,
-    mantleEndpoint,
-    txErrorReporter,
-    constants,
-    contractAddress,
-  } = useApp<NebulaContractAddress, NebulaContants>();
+  const { wasmClient, txErrorReporter, constants, contractAddress } = useApp<
+    NebulaContractAddress,
+    NebulaContants
+  >();
 
   const refetchQueries = useRefetchQueries();
 
@@ -61,8 +58,7 @@ export function useClusterMintTx(
           amounts.filter((amount) => big(amount).gt(0)).length,
         ),
         gasAdjustment: constants.gasAdjustment,
-        mantleEndpoint,
-        mantleFetch,
+        wasmClient,
         txErrorReporter,
         onTxSucceed: () => {
           onTxSucceed?.();
@@ -80,10 +76,9 @@ export function useClusterMintTx(
       constants.gasAdjustment,
       contractAddress.incentives,
       fixedFee,
-      mantleEndpoint,
-      mantleFetch,
       refetchQueries,
       txErrorReporter,
+      wasmClient,
     ],
   );
 

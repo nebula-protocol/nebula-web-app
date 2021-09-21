@@ -19,8 +19,10 @@ export interface ClusterMintBasicFormParams {
 export function useClusterMintBasicForm({
   clusterState,
 }: ClusterMintBasicFormParams) {
-  const { mantleFetch, mantleEndpoint, gasPrice, constants, contractAddress } =
-    useApp<NebulaContractAddress, NebulaContants>();
+  const { wasmClient, gasPrice, constants, contractAddress } = useApp<
+    NebulaContractAddress,
+    NebulaContants
+  >();
 
   const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
 
@@ -33,8 +35,7 @@ export function useClusterMintBasicForm({
   return useForm(
     clusterMintBasicForm,
     {
-      mantleEndpoint,
-      mantleFetch,
+      wasmClient,
       ustBalance: uUST,
       taxRate,
       maxTaxUUSD: maxTax,

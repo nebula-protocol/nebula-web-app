@@ -1,10 +1,9 @@
 import {
-  defaultMantleFetch,
-  mantle,
-  MantleFetch,
+  WasmClient,
+  wasmFetch,
   WasmQuery,
   WasmQueryData,
-} from '@libs/mantle';
+} from '@libs/query-client';
 import { HumanAddr, terraswap } from '@libs/types';
 
 export interface TerraswapPairWasmQuery {
@@ -19,9 +18,7 @@ export type TerraswapPair = WasmQueryData<TerraswapPairWasmQuery>;
 export async function terraswapPairQuery(
   terraswapFactoryAddr: HumanAddr,
   assetInfos: [terraswap.AssetInfo, terraswap.AssetInfo],
-  mantleEndpoint: string,
-  mantleFetch: MantleFetch = defaultMantleFetch,
-  requestInit?: RequestInit,
+  wasmClient: WasmClient,
 ): Promise<TerraswapPair> {
   const urlQuery = assetInfos
     .reduce((urlQueries, asset, i) => {
@@ -34,11 +31,9 @@ export async function terraswapPairQuery(
     }, [] as string[])
     .join('&');
 
-  return mantle<TerraswapPairWasmQuery>({
-    mantleEndpoint: `${mantleEndpoint}?terraswap--pair&${urlQuery}`,
-    mantleFetch,
-    requestInit,
-    variables: {},
+  return wasmFetch<TerraswapPairWasmQuery>({
+    ...wasmClient,
+    id: `terraswap--pair&${urlQuery}`,
     wasmQuery: {
       terraswapPair: {
         contractAddress: terraswapFactoryAddr,

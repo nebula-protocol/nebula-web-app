@@ -14,13 +14,8 @@ const queryFn = createQueryFn(govPollQuery);
 export function useGovPollQuery(
   pollId: number | undefined,
 ): UseQueryResult<GovPoll | undefined> {
-  const {
-    mantleFetch,
-    mantleEndpoint,
-    queryErrorReporter,
-    lastSyncedHeight,
-    contractAddress,
-  } = useApp<NebulaContractAddress, NebulaContants>();
+  const { wasmClient, queryErrorReporter, lastSyncedHeight, contractAddress } =
+    useApp<NebulaContractAddress, NebulaContants>();
 
   //const { contractAddress } = useNebulaWebapp();
   //
@@ -33,8 +28,7 @@ export function useGovPollQuery(
       pollId!,
       contractAddress.cw20.NEB,
       lastSyncedHeight,
-      mantleEndpoint,
-      mantleFetch,
+      wasmClient,
     ],
     queryFn,
     {

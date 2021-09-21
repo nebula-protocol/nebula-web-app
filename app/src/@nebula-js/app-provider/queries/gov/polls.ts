@@ -13,13 +13,8 @@ export function useGovPollsQuery(
   filter: gov.PollStatus | undefined,
   limit: number,
 ): UseInfiniteQueryResult<GovPolls | undefined> {
-  const {
-    mantleFetch,
-    mantleEndpoint,
-    queryErrorReporter,
-    lastSyncedHeight,
-    contractAddress,
-  } = useApp<NebulaContractAddress, NebulaContants>();
+  const { wasmClient, queryErrorReporter, lastSyncedHeight, contractAddress } =
+    useApp<NebulaContractAddress, NebulaContants>();
 
   //const { contractAddress } = useNebulaWebapp();
   //
@@ -37,8 +32,7 @@ export function useGovPollsQuery(
         },
         contractAddress.cw20.NEB,
         lastSyncedHeight,
-        mantleEndpoint,
-        mantleFetch,
+        wasmClient,
       );
     },
     {

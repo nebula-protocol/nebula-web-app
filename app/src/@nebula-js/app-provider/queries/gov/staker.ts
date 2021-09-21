@@ -15,21 +15,17 @@ const queryFn = createQueryFn(govStakerQuery);
 export function useGovStakerQuery(
   walletAddr: HumanAddr | undefined,
 ): UseQueryResult<GovStaker | undefined> {
-  const { mantleFetch, mantleEndpoint, queryErrorReporter, contractAddress } =
-    useApp<NebulaContractAddress, NebulaContants>();
+  const { wasmClient, queryErrorReporter, contractAddress } = useApp<
+    NebulaContractAddress,
+    NebulaContants
+  >();
 
   //const { contractAddress } = useNebulaWebapp();
   //
   //const { browserInactive } = useBrowserInactive();
 
   const result = useQuery(
-    [
-      NEBULA_QUERY_KEYS.GOV_STAKER,
-      walletAddr,
-      contractAddress.gov,
-      mantleEndpoint,
-      mantleFetch,
-    ],
+    [NEBULA_QUERY_KEYS.GOV_STAKER, walletAddr, contractAddress.gov, wasmClient],
     queryFn,
     {
       refetchInterval: 1000 * 60 * 5,

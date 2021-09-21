@@ -1,17 +1,17 @@
-interface MantleErrorItem {
+interface HiveFetchErrorItem {
   message: string;
   locations: Array<{ line: number; column: number }>;
   path: Array<string>;
 }
 
-export class MantleError extends Error {
-  constructor(public readonly errors: MantleErrorItem[]) {
+export class HiveFetchError extends Error {
+  constructor(public readonly errors: HiveFetchErrorItem[]) {
     super(
       errors
         .map(({ message, path }, i) => `${i} [${path.join(', ')}]: ${message}`)
         .join('\n'),
     );
-    this.name = 'MantleError';
+    this.name = 'HiveFetchError';
   }
 
   toString = () => {

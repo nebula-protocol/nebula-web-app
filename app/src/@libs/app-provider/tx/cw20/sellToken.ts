@@ -26,7 +26,7 @@ export function useCW20SellTokenTx<T extends Token>(
 ) {
   const connectedWallet = useConnectedWallet();
 
-  const { mantleFetch, mantleEndpoint, txErrorReporter, constants } = useApp();
+  const { wasmClient, txErrorReporter, constants } = useApp();
 
   const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
 
@@ -71,8 +71,7 @@ export function useCW20SellTokenTx<T extends Token>(
         fixedGas: fixedFee,
         gasWanted: constants.gasWanted,
         gasAdjustment: constants.gasAdjustment,
-        mantleEndpoint,
-        mantleFetch,
+        wasmClient,
         txErrorReporter,
         onTxSucceed: () => {
           onTxSucceed?.();
@@ -87,8 +86,6 @@ export function useCW20SellTokenTx<T extends Token>(
       constants.gasAdjustment,
       constants.gasWanted,
       fixedFee,
-      mantleEndpoint,
-      mantleFetch,
       maxTax,
       refetchQueries,
       taxRate,
@@ -97,6 +94,7 @@ export function useCW20SellTokenTx<T extends Token>(
       tokenSymbol,
       tokenUstPairAddr,
       txErrorReporter,
+      wasmClient,
     ],
   );
 

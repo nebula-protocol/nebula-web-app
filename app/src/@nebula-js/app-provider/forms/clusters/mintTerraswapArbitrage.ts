@@ -22,8 +22,10 @@ export function useClusterMintTerraswapArbitrageForm({
   clusterState,
   terraswapPair,
 }: ClusterMintTerraswapArbitrageFormParams) {
-  const { mantleFetch, mantleEndpoint, lastSyncedHeight, gasPrice, constants } =
-    useApp<NebulaContractAddress, NebulaContants>();
+  const { wasmClient, lastSyncedHeight, gasPrice, constants } = useApp<
+    NebulaContractAddress,
+    NebulaContants
+  >();
 
   const assetInfos = useMemo(() => {
     return clusterState.target.map(({ info }) => info);
@@ -38,8 +40,7 @@ export function useClusterMintTerraswapArbitrageForm({
   return useForm(
     clusterMintTerraswapArbitrageForm,
     {
-      mantleEndpoint,
-      mantleFetch,
+      wasmClient,
       clusterState,
       lastSyncedHeight,
       terraswapPair,

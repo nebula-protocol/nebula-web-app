@@ -13,6 +13,7 @@ import {
   NebulaContants,
   NebulaContractAddress,
 } from '@nebula-js/app-fns';
+import { useWallet } from '@terra-money/wallet-provider';
 import { useCallback, useEffect } from 'react';
 
 const NATIVE_DENOMS = ['uusd', 'uluna'] as NativeDenom[];
@@ -30,7 +31,9 @@ const cw20AddrCache = new PersistCache<CW20Addr[]>(
 );
 
 export function useSendTokensForm() {
-  const { mantleFetch, mantleEndpoint, contractAddress } = useApp<
+  const { network } = useWallet();
+
+  const { wasmClient, contractAddress } = useApp<
     NebulaContractAddress,
     NebulaContants
   >();
@@ -40,47 +43,44 @@ export function useSendTokensForm() {
   const [_updateInput, states] = useForm(
     sendTokensForm,
     {
-      mantleEndpoint,
-      mantleFetch,
+      wasmClient,
       fallbackTokenInfo: FALLBACK as any,
     },
     () =>
       ({
         nativeDenoms: NATIVE_DENOMS,
-        cw20Addrs: cw20AddrCache.get(mantleEndpoint) ?? [],
+        cw20Addrs: cw20AddrCache.get(network.chainID) ?? [],
         selectedTokenInfo: undefined,
       } as SendTokensFormInput),
   );
 
   useEffect(() => {
-    if (!cw20AddrCache.has(mantleEndpoint)) {
-      clusterStateListQuery(
-        contractAddress.clusterFactory,
-        mantleEndpoint,
-        mantleFetch,
-      ).then((clusterStates) => {
-        const cw20Addrs = clusterStates.map(
-          ({ cluster_token }) => cluster_token,
-        );
-        cw20AddrCache.set(mantleEndpoint, cw20Addrs);
-        _updateInput({ cw20Addrs });
-      });
+    if (!cw20AddrCache.has(network.chainID)) {
+      clusterStateListQuery(contractAddress.clusterFactory, wasmClient).then(
+        (clusterStates) => {
+          const cw20Addrs = clusterStates.map(
+            ({ cluster_token }) => cluster_token,
+          );
+          cw20AddrCache.set(network.chainID, cw20Addrs);
+          _updateInput({ cw20Addrs });
+        },
+      );
     }
   }, [
     contractAddress.clusterFactory,
-    mantleEndpoint,
-    mantleFetch,
     _updateInput,
+    network.chainID,
+    wasmClient,
   ]);
 
   const updateInput = useCallback(
     (input: Partial<SendTokensFormInput>) => {
       if (input.cw20Addrs) {
-        cw20AddrCache.set(mantleEndpoint, input.cw20Addrs);
+        cw20AddrCache.set(network.chainID, input.cw20Addrs);
       }
       _updateInput(input);
     },
-    [_updateInput, mantleEndpoint],
+    [_updateInput, network.chainID],
   );
 
   return [updateInput, states] as const;

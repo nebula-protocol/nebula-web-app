@@ -4,8 +4,7 @@ import {
   GasPrice,
   lastSyncedHeightQuery,
 } from '@libs/app-fns';
-import { defaultLcdFetch, LCDFetch } from '@libs/app-fns/clients/lcd';
-import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
+import { HiveWasmClient, LcdWasmClient, WasmClient } from '@libs/query-client';
 import { useWallet } from '@terra-dev/use-wallet';
 import { NetworkInfo } from '@terra-dev/wallet-types';
 import React, {
@@ -19,8 +18,8 @@ import React, {
 import {
   defaultFallbackGasPrice,
   defaultGasPriceEndpoint,
-  defaultLcdEndpoint,
-  defaultMantleEndpoint,
+  defaultHiveWasmClient,
+  defaultLcdWasmClient,
 } from '../env';
 import { useGasPriceQuery } from '../queries/gasPrice';
 import { TxRefetchMap } from '../types';
@@ -34,11 +33,15 @@ export interface AppProviderProps<
   contractAddress: (network: NetworkInfo) => ContractAddress;
   constants: (network: NetworkInfo) => Constants;
 
-  lcdEndpoint?: (network: NetworkInfo) => string;
-  lcdFetch?: LCDFetch;
+  defaultWasmClient?: 'lcd' | 'hive';
+  lcdWasmClient?: (network: NetworkInfo) => LcdWasmClient;
+  hiveWasmClient?: (network: NetworkInfo) => HiveWasmClient;
 
-  mantleEndpoint?: (network: NetworkInfo) => string;
-  mantleFetch?: MantleFetch;
+  //lcdEndpoint?: (network: NetworkInfo) => string;
+  //lcdFetch?: LCDFetch;
+  //
+  //mantleEndpoint?: (network: NetworkInfo) => string;
+  //mantleFetch?: MantleFetch;
 
   // gas
   gasPriceEndpoint?: (network: NetworkInfo) => string;
@@ -64,11 +67,16 @@ export interface App<
   // functions
   lastSyncedHeight: () => Promise<number>;
 
-  lcdEndpoint: string;
-  lcdFetch: LCDFetch;
+  // wasm
+  wasmClient: WasmClient;
+  lcdWasmClient: LcdWasmClient;
+  hiveWasmClient: HiveWasmClient;
 
-  mantleEndpoint: string;
-  mantleFetch: MantleFetch;
+  //lcdEndpoint: string;
+  //lcdFetch: LCDFetch;
+  //
+  //mantleEndpoint: string;
+  //mantleFetch: MantleFetch;
 
   // gas
   gasPrice: GasPrice;
@@ -93,10 +101,13 @@ export function AppProvider<
   children,
   contractAddress,
   constants,
-  lcdEndpoint = defaultLcdEndpoint,
-  lcdFetch = defaultLcdFetch,
-  mantleEndpoint = defaultMantleEndpoint,
-  mantleFetch = defaultMantleFetch,
+  defaultWasmClient = 'hive',
+  lcdWasmClient: _lcdWasmClient = defaultLcdWasmClient,
+  hiveWasmClient: _hiveWasmClient = defaultHiveWasmClient,
+  //lcdEndpoint = defaultLcdEndpoint,
+  //lcdFetch = defaultLcdFetch,
+  //mantleEndpoint = defaultMantleEndpoint,
+  //mantleFetch = defaultMantleFetch,
   gasPriceEndpoint = defaultGasPriceEndpoint,
   fallbackGasPrice = defaultFallbackGasPrice,
   queryErrorReporter,
@@ -108,24 +119,37 @@ export function AppProvider<
   const networkBoundStates = useMemo<
     Pick<
       App<any, any>,
-      'contractAddress' | 'constants' | 'lcdEndpoint' | 'mantleEndpoint'
+      | 'contractAddress'
+      | 'constants'
+      | 'wasmClient'
+      | 'lcdWasmClient'
+      | 'hiveWasmClient'
     >
   >(() => {
+    const lcdWasmClient = _lcdWasmClient(network);
+    const hiveWasmClient = _hiveWasmClient(network);
+    const wasmClient =
+      defaultWasmClient === 'lcd' ? lcdWasmClient : hiveWasmClient;
+
     return {
       contractAddress: contractAddress(network),
       constants: constants(network),
-      lcdEndpoint: lcdEndpoint(network),
-      mantleEndpoint: mantleEndpoint(network),
+      wasmClient,
+      lcdWasmClient,
+      hiveWasmClient,
     };
-  }, [constants, contractAddress, lcdEndpoint, mantleEndpoint, network]);
+  }, [
+    _hiveWasmClient,
+    _lcdWasmClient,
+    constants,
+    contractAddress,
+    defaultWasmClient,
+    network,
+  ]);
 
   const lastSyncedHeight = useMemo(() => {
-    return () =>
-      lastSyncedHeightQuery({
-        mantleEndpoint: networkBoundStates.mantleEndpoint,
-        mantleFetch,
-      });
-  }, [mantleFetch, networkBoundStates.mantleEndpoint]);
+    return () => lastSyncedHeightQuery(networkBoundStates.wasmClient);
+  }, [networkBoundStates.wasmClient]);
 
   const {
     data: gasPrice = fallbackGasPrice(network) ?? fallbackGasPrice(network),
@@ -138,8 +162,6 @@ export function AppProvider<
     return {
       ...networkBoundStates,
       lastSyncedHeight,
-      lcdFetch,
-      mantleFetch,
       txErrorReporter,
       queryErrorReporter,
       gasPrice,
@@ -148,8 +170,6 @@ export function AppProvider<
   }, [
     gasPrice,
     lastSyncedHeight,
-    lcdFetch,
-    mantleFetch,
     networkBoundStates,
     queryErrorReporter,
     refetchMap,

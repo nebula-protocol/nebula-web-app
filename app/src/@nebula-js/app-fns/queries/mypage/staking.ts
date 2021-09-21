@@ -1,5 +1,5 @@
-import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
 import { CW20PoolInfo, cw20PoolInfoQuery } from '@libs/app-fns';
+import { WasmClient } from '@libs/query-client';
 import { HumanAddr, staking, Token } from '@nebula-js/types';
 import { stakingRewardInfoQuery } from '../staking/rewardInfo';
 
@@ -13,9 +13,7 @@ export async function mypageStakingQuery(
   walletAddr: HumanAddr | undefined,
   stakingAddr: HumanAddr,
   terraswapFactoryAddr: HumanAddr,
-  mantleEndpoint: string,
-  mantleFetch: MantleFetch = defaultMantleFetch,
-  requestInit?: RequestInit,
+  wasmClient: WasmClient,
 ): Promise<MypageStaking> {
   if (!walletAddr) {
     return [];
@@ -25,9 +23,7 @@ export async function mypageStakingQuery(
     walletAddr,
     stakingAddr,
     undefined,
-    mantleEndpoint,
-    mantleFetch,
-    requestInit,
+    wasmClient,
   );
 
   if (!rewardInfoResult) {
@@ -41,9 +37,7 @@ export async function mypageStakingQuery(
       return cw20PoolInfoQuery(
         info.asset_token,
         terraswapFactoryAddr,
-        mantleEndpoint,
-        mantleFetch,
-        requestInit,
+        wasmClient,
       ).then((poolInfo) => ({
         ...poolInfo,
         rewardInfo: info,

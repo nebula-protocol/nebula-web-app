@@ -4,7 +4,6 @@ export * from './types';
 export * from './errors';
 export * from './caches/cw20TokenInfoCache';
 export * from './caches/gasPrice';
-export * from './clients/lcd';
 export * from './forms/cw20/buyToken';
 export * from './forms/cw20/sellToken';
 export * from './forms/cw20/send';

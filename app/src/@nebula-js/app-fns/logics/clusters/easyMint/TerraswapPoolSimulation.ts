@@ -1,5 +1,5 @@
-import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
 import { TerraswapPoolInfo, terraswapPoolQuery } from '@libs/app-fns';
+import { WasmClient } from '@libs/query-client';
 import { HumanAddr, terraswap, Token, u } from '@nebula-js/types';
 import big, { Big } from 'big.js';
 
@@ -12,23 +12,18 @@ export class TerraswapPoolSimulation {
   constructor(
     private pairContract: HumanAddr,
     private comissionRate: number = 0.03,
-    private mantleEndpoint: string,
-    private mantleFetch: MantleFetch = defaultMantleFetch,
-    private requestInit?: RequestInit,
+    private wasmClient: WasmClient,
   ) {}
 
   reset = async () => {
-    await terraswapPoolQuery(
-      this.pairContract,
-      this.mantleEndpoint,
-      this.mantleFetch,
-      this.requestInit,
-    ).then(({ terraswapPool, terraswapPoolInfo }) => {
-      this.pool = terraswapPool;
-      this.poolInfo = terraswapPoolInfo;
-      //this.asset0 = {...this.pool.assets[0]};
-      //this.asset1 = {...this.pool.assets[1]};
-    });
+    await terraswapPoolQuery(this.pairContract, this.wasmClient).then(
+      ({ terraswapPool, terraswapPoolInfo }) => {
+        this.pool = terraswapPool;
+        this.poolInfo = terraswapPoolInfo;
+        //this.asset0 = {...this.pool.assets[0]};
+        //this.asset1 = {...this.pool.assets[1]};
+      },
+    );
   };
 
   simulateSwap = (

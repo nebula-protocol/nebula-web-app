@@ -1,11 +1,10 @@
-import { cluster, HumanAddr } from '@nebula-js/types';
 import {
-  defaultMantleFetch,
-  mantle,
-  MantleFetch,
+  WasmClient,
+  wasmFetch,
   WasmQuery,
   WasmQueryData,
-} from '@libs/mantle';
+} from '@libs/query-client';
+import { cluster, HumanAddr } from '@nebula-js/types';
 
 interface ClusterStateWasmQuery {
   clusterState: WasmQuery<cluster.ClusterState, cluster.ClusterStateResponse>;
@@ -15,15 +14,11 @@ export type ClusterState = WasmQueryData<ClusterStateWasmQuery>;
 
 export async function clusterStateQuery(
   clusterAddr: HumanAddr,
-  mantleEndpoint: string,
-  mantleFetch: MantleFetch = defaultMantleFetch,
-  requestInit?: RequestInit,
+  wasmClient: WasmClient,
 ): Promise<ClusterState> {
-  return mantle<ClusterStateWasmQuery>({
-    mantleEndpoint: `${mantleEndpoint}?cluster--state=${clusterAddr}`,
-    mantleFetch,
-    requestInit,
-    variables: {},
+  return wasmFetch<ClusterStateWasmQuery>({
+    ...wasmClient,
+    id: `cluster--state=${clusterAddr}`,
     wasmQuery: {
       clusterState: {
         contractAddress: clusterAddr,

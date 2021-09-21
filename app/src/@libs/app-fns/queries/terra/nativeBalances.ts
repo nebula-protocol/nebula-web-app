@@ -1,3 +1,4 @@
+import { hiveFetch, WasmClient } from '@libs/query-client';
 import {
   AUD,
   CAD,
@@ -17,6 +18,7 @@ import {
   MNT,
   NativeDenom,
   NOK,
+  Num,
   PHP,
   SDR,
   SEK,
@@ -26,7 +28,33 @@ import {
   u,
   UST,
 } from '@libs/types';
-import { defaultLcdFetch, LCDFetch } from '../../clients/lcd';
+
+// language=graphql
+const NATIVE_BALANCES_QUERY = `
+  query ($walletAddress: String!) {
+    nativeTokenBalances: BankBalancesAddress(Address: $walletAddress) {
+      Result {
+        Denom
+        Amount
+      }
+    }
+  }
+`;
+
+interface NativeBalancesQueryVariables {
+  walletAddress: HumanAddr;
+}
+
+interface NativeBalancesQueryResult {
+  nativeTokenBalances: {
+    Result: Array<{ Denom: NativeDenom; Amount: u<Token> }>;
+  };
+}
+
+interface LcdBankBalances {
+  height: Num;
+  result: Array<{ denom: NativeDenom; amount: u<Token> }>;
+}
 
 export interface NativeBalances {
   uUST: u<UST>;
@@ -80,17 +108,42 @@ export const EMPTY_NATIVE_BALANCES: NativeBalances = {
 
 export async function terraNativeBalancesQuery(
   walletAddr: HumanAddr | undefined,
-  lcdEndpoint: string,
-  lcdFetch: LCDFetch = defaultLcdFetch,
-  requestInit?: RequestInit,
+  wasmClient: WasmClient,
 ): Promise<NativeBalances> {
   if (!walletAddr) {
     return EMPTY_NATIVE_BALANCES;
   }
 
-  const balances = await lcdFetch<
+  const balancesPromise: Promise<
     Array<{ denom: NativeDenom; amount: u<Token> }>
-  >(`${lcdEndpoint}/bank/balances/${walletAddr}`, requestInit);
+  > =
+    'lcdEndpoint' in wasmClient
+      ? wasmClient
+          .lcdFetcher<LcdBankBalances>(
+            `${wasmClient.lcdEndpoint}/bank/balances/${walletAddr}`,
+            wasmClient.requestInit,
+          )
+          .then(({ result }) => {
+            return result;
+          })
+      : hiveFetch<any, NativeBalancesQueryVariables, NativeBalancesQueryResult>(
+          {
+            ...wasmClient,
+            id: `native-balances=${walletAddr}`,
+            variables: {
+              walletAddress: walletAddr,
+            },
+            wasmQuery: {},
+            query: NATIVE_BALANCES_QUERY,
+          },
+        ).then(({ nativeTokenBalances }) => {
+          return nativeTokenBalances.Result.map(({ Denom, Amount }) => ({
+            denom: Denom,
+            amount: Amount,
+          }));
+        });
+
+  const balances = await balancesPromise;
 
   const result = { ...EMPTY_NATIVE_BALANCES };
 

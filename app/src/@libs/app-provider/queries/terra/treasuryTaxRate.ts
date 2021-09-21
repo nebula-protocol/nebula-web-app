@@ -8,10 +8,10 @@ import { TERRA_QUERY_KEY } from '../../env';
 const queryFn = createQueryFn(terraTreasuryTaxRateQuery);
 
 export function useTerraTreasuryTaxRateQuery(): UseQueryResult<Rate> {
-  const { lcdEndpoint, lcdFetch, queryErrorReporter } = useApp();
+  const { lcdWasmClient, queryErrorReporter } = useApp();
 
   const result = useQuery(
-    [TERRA_QUERY_KEY.TERRA_TREASURY_TAX_RATE, lcdEndpoint, lcdFetch],
+    [TERRA_QUERY_KEY.TERRA_TREASURY_TAX_RATE, lcdWasmClient],
     queryFn,
     {
       keepPreviousData: true,

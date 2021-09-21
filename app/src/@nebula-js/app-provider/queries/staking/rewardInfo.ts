@@ -18,8 +18,10 @@ export function useStakingRewardInfoQuery(
 ): UseQueryResult<StakingRewardInfo | undefined> {
   const connectedWallet = useConnectedWallet();
 
-  const { mantleFetch, mantleEndpoint, queryErrorReporter, contractAddress } =
-    useApp<NebulaContractAddress, NebulaContants>();
+  const { wasmClient, queryErrorReporter, contractAddress } = useApp<
+    NebulaContractAddress,
+    NebulaContants
+  >();
 
   //const {
   //  contractAddress: { staking },
@@ -33,8 +35,7 @@ export function useStakingRewardInfoQuery(
       connectedWallet?.walletAddress,
       contractAddress.staking,
       tokenAddr,
-      mantleEndpoint,
-      mantleFetch,
+      wasmClient,
     ],
     queryFn,
     {

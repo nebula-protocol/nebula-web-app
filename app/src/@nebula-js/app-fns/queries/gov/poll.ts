@@ -1,11 +1,10 @@
+import { cw20BalanceQuery } from '@libs/app-fns';
 import {
-  defaultMantleFetch,
-  mantle,
-  MantleFetch,
+  WasmClient,
+  wasmFetch,
   WasmQuery,
   WasmQueryData,
-} from '@libs/mantle';
-import { cw20BalanceQuery } from '@libs/app-fns';
+} from '@libs/query-client';
 import { CW20Addr, gov, HumanAddr, NEB } from '@nebula-js/types';
 import {
   ParsedPoll,
@@ -27,26 +26,16 @@ export async function govPollQuery(
   pollId: number,
   nebTokenAddr: CW20Addr,
   lastSyncedHeight: () => Promise<number>,
-  mantleEndpoint: string,
-  mantleFetch: MantleFetch = defaultMantleFetch,
-  requestInit?: RequestInit,
+  wasmClient: WasmClient,
 ): Promise<GovPoll> {
   const [{ govConfig }, { govState }, nebBalance, { poll }, blockHeight] =
     await Promise.all([
-      govConfigQuery(govAddr, mantleEndpoint, mantleFetch, requestInit),
-      govStateQuery(govAddr, mantleEndpoint, mantleFetch, requestInit),
-      cw20BalanceQuery<NEB>(
-        govAddr,
-        nebTokenAddr,
-        mantleEndpoint,
-        mantleFetch,
-        requestInit,
-      ),
-      mantle<GovPollWasmQuery>({
-        mantleEndpoint: `${mantleEndpoint}?gov--poll`,
-        mantleFetch,
-        requestInit,
-        variables: {},
+      govConfigQuery(govAddr, wasmClient),
+      govStateQuery(govAddr, wasmClient),
+      cw20BalanceQuery<NEB>(govAddr, nebTokenAddr, wasmClient),
+      wasmFetch<GovPollWasmQuery>({
+        ...wasmClient,
+        id: `gov--poll`,
         wasmQuery: {
           poll: {
             contractAddress: govAddr,

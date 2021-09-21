@@ -12,16 +12,13 @@ import { NEBULA_QUERY_KEYS } from '../../env';
 const queryFn = createQueryFn(govConfigQuery);
 
 export function useGovConfigQuery(): UseQueryResult<GovConfig | undefined> {
-  const { mantleFetch, mantleEndpoint, queryErrorReporter, contractAddress } =
-    useApp<NebulaContractAddress, NebulaContants>();
+  const { wasmClient, queryErrorReporter, contractAddress } = useApp<
+    NebulaContractAddress,
+    NebulaContants
+  >();
 
   const result = useQuery(
-    [
-      NEBULA_QUERY_KEYS.GOV_CONFIG,
-      contractAddress.gov,
-      mantleEndpoint,
-      mantleFetch,
-    ],
+    [NEBULA_QUERY_KEYS.GOV_CONFIG, contractAddress.gov, wasmClient],
     queryFn,
     {
       refetchInterval: 1000 * 60 * 5,

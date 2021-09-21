@@ -1,5 +1,5 @@
-import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
 import { terraswapPairQuery } from '@libs/app-fns';
+import { WasmClient } from '@libs/query-client';
 import { HumanAddr, terraswap, Token, u, UST } from '@nebula-js/types';
 import big, { Big, BigSource } from 'big.js';
 import { ClusterSimulatorWithPenalty } from './ClusterSimulatorWithPenalty';
@@ -17,15 +17,11 @@ export class EasyMintOptimizer {
   constructor(
     private clusterAddr: HumanAddr,
     private terraswapFactoryAddr: HumanAddr,
-    private mantleEndpoint: string,
-    private mantleFetch: MantleFetch = defaultMantleFetch,
-    private requestInit?: RequestInit,
+    private wasmClient: WasmClient,
   ) {
     this.clusterSimulator = new ClusterSimulatorWithPenalty(
       clusterAddr,
-      mantleEndpoint,
-      mantleFetch,
-      requestInit,
+      wasmClient,
     );
   }
 
@@ -57,9 +53,7 @@ export class EasyMintOptimizer {
               },
             },
           ],
-          this.mantleEndpoint,
-          this.mantleFetch,
-          this.requestInit,
+          this.wasmClient,
         );
       }),
     ).then((pairs) => {
@@ -67,13 +61,7 @@ export class EasyMintOptimizer {
     });
 
     this.terraswapSimulators = this.pairContracts.map((p) => {
-      return new TerraswapPoolSimulation(
-        p,
-        0.03,
-        this.mantleEndpoint,
-        this.mantleFetch,
-        this.requestInit,
-      );
+      return new TerraswapPoolSimulation(p, 0.03, this.wasmClient);
     });
 
     await Promise.all(this.terraswapSimulators.map((ts) => ts.reset()));

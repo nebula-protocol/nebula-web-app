@@ -1,4 +1,4 @@
-import { MantleFetch } from '@libs/mantle';
+import { WasmClient } from '@libs/query-client';
 import { TxResult } from '@terra-dev/wallet-types';
 import { TxResultRendering, TxStreamPhase } from '../../models/tx';
 import { pollTxInfo, TxInfoData } from '../../queries/txInfo';
@@ -6,21 +6,14 @@ import { TxHelper } from './TxHelper';
 
 interface Params {
   helper: TxHelper;
-  mantleEndpoint: string;
-  mantleFetch: MantleFetch;
+  wasmClient: WasmClient;
   onTxSucceed?: () => void;
 }
 
-export function _pollTxInfo({
-  helper,
-  mantleEndpoint,
-  mantleFetch,
-  onTxSucceed,
-}: Params) {
+export function _pollTxInfo({ helper, wasmClient, onTxSucceed }: Params) {
   return ({ value: txResult }: TxResultRendering<TxResult>) => {
     return pollTxInfo({
-      mantleEndpoint,
-      mantleFetch,
+      wasmClient,
       tx: helper.savedTx,
       txhash: txResult.result.txhash,
     }).then((txInfo) => {

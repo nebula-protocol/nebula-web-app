@@ -32,13 +32,10 @@ export function useClusterRedeemTx(
 ) {
   const connectedWallet = useConnectedWallet();
 
-  const {
-    mantleFetch,
-    mantleEndpoint,
-    txErrorReporter,
-    contractAddress,
-    constants,
-  } = useApp<NebulaContractAddress, NebulaContants>();
+  const { wasmClient, txErrorReporter, contractAddress, constants } = useApp<
+    NebulaContractAddress,
+    NebulaContants
+  >();
 
   const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
 
@@ -69,8 +66,7 @@ export function useClusterRedeemTx(
           assets.length,
         ),
         gasAdjustment: constants.gasAdjustment,
-        mantleEndpoint,
-        mantleFetch,
+        wasmClient,
         txErrorReporter,
         onTxSucceed: () => {
           onTxSucceed?.();
@@ -89,10 +85,9 @@ export function useClusterRedeemTx(
       constants.gasAdjustment,
       contractAddress.incentives,
       fixedFee,
-      mantleEndpoint,
-      mantleFetch,
       refetchQueries,
       txErrorReporter,
+      wasmClient,
     ],
   );
 

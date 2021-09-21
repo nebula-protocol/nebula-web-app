@@ -1,38 +1,43 @@
 import { GasPrice } from '@libs/app-fns';
+import {
+  defaultHiveFetcher,
+  defaultLcdFetcher,
+  HiveWasmClient,
+  LcdWasmClient,
+} from '@libs/query-client';
 import { NetworkInfo } from '@terra-dev/wallet-types';
 import { UseQueryResult } from 'react-query';
 
-export function defaultMantleEndpoint(network: NetworkInfo): string {
+export function defaultHiveWasmClient(network: NetworkInfo): HiveWasmClient {
   switch (network.chainID) {
     case 'tequila-0004':
-      return 'https://tequila-mantle.terra.dev';
+      return {
+        hiveEndpoint: 'https://tequila-mantle.terra.dev',
+        hiveFetcher: defaultHiveFetcher,
+      };
     case 'bombay-10':
-      return 'https://bombay-mantle.terra.dev';
+      return {
+        hiveEndpoint: 'https://bombay-mantle.terra.dev',
+        hiveFetcher: defaultHiveFetcher,
+      };
     default:
-      return 'https://mantle.terra.dev';
+      return {
+        hiveEndpoint: 'https://mantle.terra.dev',
+        hiveFetcher: defaultHiveFetcher,
+      };
   }
 }
 
-export function defaultLcdEndpoint(network: NetworkInfo): string {
-  switch (network.chainID) {
-    case 'tequila-0004':
-      return 'https://tequila-lcd.terra.dev';
-    case 'bombay-10':
-      return 'https://bombay-lcd.terra.dev';
-    default:
-      return 'https://lcd.terra.dev';
-  }
+export function defaultLcdWasmClient(network: NetworkInfo): LcdWasmClient {
+  return {
+    lcdEndpoint: network.lcd,
+    lcdFetcher: defaultLcdFetcher,
+  };
 }
 
 export function defaultGasPriceEndpoint(network: NetworkInfo): string {
-  switch (network.chainID) {
-    case 'tequila-0004':
-      return 'https://tequila-fcd.terra.dev/v1/txs/gas_prices';
-    case 'bombay-10':
-      return 'https://bombay-fcd.terra.dev/v1/txs/gas_prices';
-    default:
-      return 'https://fcd.terra.dev/v1/txs/gas_prices';
-  }
+  const fcd = network.lcd.replace(/lcd/, 'fcd');
+  return `${fcd}/v1/txs/gas_prices`;
 }
 
 const FALLBACK_GAS_PRICE_COLUMNBUS = {

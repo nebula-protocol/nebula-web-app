@@ -1,5 +1,5 @@
+import { WasmClient } from '@libs/query-client';
 import { HumanAddr } from '@nebula-js/types';
-import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
 import { ClusterInfo, clusterInfoQuery } from './info';
 import { clustersListQuery } from './list';
 
@@ -8,26 +8,16 @@ export type ClustersInfoList = ClusterInfo[];
 export async function clustersInfoListQuery(
   clusterFactoryAddr: HumanAddr,
   terraswapFactoryAddr: HumanAddr,
-  mantleEndpoint: string,
-  mantleFetch: MantleFetch = defaultMantleFetch,
-  requestInit?: RequestInit,
+  wasmClient: WasmClient,
 ): Promise<ClustersInfoList> {
   const { clusterList } = await clustersListQuery(
     clusterFactoryAddr,
-    mantleEndpoint,
-    mantleFetch,
-    requestInit,
+    wasmClient,
   );
 
   return Promise.all(
     clusterList.contract_infos.map(([clusterAddr]) =>
-      clusterInfoQuery(
-        clusterAddr,
-        terraswapFactoryAddr,
-        mantleEndpoint,
-        mantleFetch,
-        requestInit,
-      ),
+      clusterInfoQuery(clusterAddr, terraswapFactoryAddr, wasmClient),
     ),
   );
 }

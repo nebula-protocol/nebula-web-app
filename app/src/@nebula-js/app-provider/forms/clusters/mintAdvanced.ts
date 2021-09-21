@@ -20,8 +20,10 @@ export interface ClusterMintAdvancedFormParams {
 export function useClusterMintAdvancedForm({
   clusterState,
 }: ClusterMintAdvancedFormParams) {
-  const { mantleFetch, mantleEndpoint, lastSyncedHeight, gasPrice, constants } =
-    useApp<NebulaContractAddress, NebulaContants>();
+  const { wasmClient, lastSyncedHeight, gasPrice, constants } = useApp<
+    NebulaContractAddress,
+    NebulaContants
+  >();
 
   const assetInfos = useMemo(() => {
     return clusterState.target.map(({ info }) => info);
@@ -40,8 +42,7 @@ export function useClusterMintAdvancedForm({
   return useForm(
     clusterMintAdvancedForm,
     {
-      mantleEndpoint,
-      mantleFetch,
+      wasmClient,
       clusterState,
       lastSyncedHeight,
       balances,

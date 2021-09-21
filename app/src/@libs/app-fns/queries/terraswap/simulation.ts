@@ -1,10 +1,9 @@
 import {
-  defaultMantleFetch,
-  mantle,
-  MantleFetch,
+  WasmClient,
+  wasmFetch,
   WasmQuery,
   WasmQueryData,
-} from '@libs/mantle';
+} from '@libs/query-client';
 import { HumanAddr, terraswap, Token } from '@libs/types';
 
 export interface TerraswapSimulationWasmQuery {
@@ -19,15 +18,17 @@ export type TerraswapSimulation = WasmQueryData<TerraswapSimulationWasmQuery>;
 export async function terraswapSimulationQuery(
   ustPairAddr: HumanAddr,
   offerAssetQuery: terraswap.pair.Simulation<Token>['simulation']['offer_asset'],
-  mantleEndpoint: string,
-  mantleFetch: MantleFetch = defaultMantleFetch,
-  requestInit?: RequestInit,
+  wasmClient: WasmClient,
+  //mantleEndpoint: string,
+  //mantleFetch: MantleFetch = defaultMantleFetch,
+  //requestInit?: RequestInit,
 ): Promise<TerraswapSimulation> {
-  const data = await mantle<TerraswapSimulationWasmQuery>({
-    mantleEndpoint: `${mantleEndpoint}?terraswap--simulation?pair=${ustPairAddr}`,
-    mantleFetch,
-    requestInit,
-    variables: {},
+  const data = await wasmFetch<TerraswapSimulationWasmQuery>({
+    ...wasmClient,
+    //mantleEndpoint: `${mantleEndpoint}?terraswap--simulation?pair=${ustPairAddr}`,
+    //mantleFetch,
+    //requestInit,
+    //variables: {},
     wasmQuery: {
       simulation: {
         contractAddress: ustPairAddr,

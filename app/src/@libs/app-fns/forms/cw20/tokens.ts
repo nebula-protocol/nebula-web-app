@@ -1,5 +1,5 @@
+import { WasmClient } from '@libs/query-client';
 import { cw20, CW20Addr, NativeDenom, terraswap, Token } from '@libs/types';
-import { MantleFetch } from '@libs/mantle';
 import { FormReturn } from '@libs/use-form';
 import { nativeTokenInfoQuery } from '../../queries/cw20/nativeTokenInfo';
 import { cw20TokenInfoQuery } from '../../queries/cw20/tokenInfo';
@@ -22,9 +22,10 @@ export interface SendTokensFormInput {
 
 export interface SendTokensFormDependency {
   // terraswap simulation
-  mantleEndpoint: string;
-  mantleFetch: MantleFetch;
-  requestInit?: Omit<RequestInit, 'method' | 'body'>;
+  wasmClient: WasmClient;
+  //mantleEndpoint: string;
+  //mantleFetch: MantleFetch;
+  //requestInit?: Omit<RequestInit, 'method' | 'body'>;
 
   fallbackTokenInfo: SendTokenInfo;
 }
@@ -52,8 +53,7 @@ export const sendTokensForm = (
   ): FormReturn<SendTokensFormStates, SendTokensFormAsyncStates> => {
     if (
       !tokenInfoAsyncStates ||
-      dependency.mantleEndpoint !== prevDependency?.mantleEndpoint ||
-      dependency.mantleFetch !== prevDependency?.mantleFetch ||
+      dependency.wasmClient !== prevDependency?.wasmClient ||
       input.nativeDenoms !== prevInput?.nativeDenoms ||
       input.cw20Addrs !== prevInput?.cw20Addrs
     ) {
@@ -77,9 +77,10 @@ export const sendTokensForm = (
           input.cw20Addrs.map((tokenAddr) =>
             cw20TokenInfoQuery(
               tokenAddr,
-              dependency.mantleEndpoint,
-              dependency.mantleFetch,
-              dependency.requestInit,
+              dependency.wasmClient,
+              //dependency.mantleEndpoint,
+              //dependency.mantleFetch,
+              //dependency.requestInit,
             ).then(({ tokenInfo }) => ({
               assetInfo: {
                 token: {

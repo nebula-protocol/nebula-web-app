@@ -1,10 +1,6 @@
-import { defaultMantleFetch } from '@libs/mantle';
-import { terraswap } from '@libs/types';
 import { terraBalancesQuery } from '@libs/app-fns';
-import {
-  TEST_MANTLE_ENDPOINT,
-  TEST_WALLET_ADDRESS,
-} from '@libs/app-fns/test-env';
+import { TEST_HIVE_CLIENT, TEST_WALLET_ADDRESS } from '@libs/app-fns/test-env';
+import { terraswap } from '@libs/types';
 
 const assetInfos: terraswap.AssetInfo[] = [
   {
@@ -29,8 +25,7 @@ describe('terraBalancesQuery()', () => {
     const result = await terraBalancesQuery(
       TEST_WALLET_ADDRESS,
       assetInfos,
-      TEST_MANTLE_ENDPOINT,
-      defaultMantleFetch,
+      TEST_HIVE_CLIENT,
     );
 
     expect(result.balances[0].asset).toEqual({

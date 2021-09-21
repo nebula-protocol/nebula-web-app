@@ -1,5 +1,5 @@
+import { WasmClient } from '@libs/query-client';
 import { CW20Addr, gov, HumanAddr, OrderBy } from '@nebula-js/types';
-import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
 import { ParsedPoll } from '../../logics/gov/parseGovPollResponse';
 import { govPollsQuery } from './polls';
 import { govStakerQuery } from './staker';
@@ -11,9 +11,7 @@ export async function govMyPollsQuery(
   govAddr: HumanAddr,
   nebTokenAddr: CW20Addr,
   lastSyncedHeight: () => Promise<number>,
-  mantleEndpoint: string,
-  mantleFetch: MantleFetch = defaultMantleFetch,
-  requestInit?: RequestInit,
+  wasmClient: WasmClient,
 ): Promise<GovMyPolls> {
   const { parsedPolls } = await govPollsQuery(
     govAddr,
@@ -24,9 +22,7 @@ export async function govMyPollsQuery(
     },
     nebTokenAddr,
     lastSyncedHeight,
-    mantleEndpoint,
-    mantleFetch,
-    requestInit,
+    wasmClient,
   );
 
   if (parsedPolls.length === 0) {
@@ -39,13 +35,7 @@ export async function govMyPollsQuery(
     return polls;
   }
 
-  const stakerResult = await govStakerQuery(
-    walletAddr,
-    govAddr,
-    mantleEndpoint,
-    mantleFetch,
-    requestInit,
-  );
+  const stakerResult = await govStakerQuery(walletAddr, govAddr, wasmClient);
 
   if (stakerResult && (stakerResult.govStaker.locked_balance.length ?? 0) > 0) {
     for (const poll of polls) {

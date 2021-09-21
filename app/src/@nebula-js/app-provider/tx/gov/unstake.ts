@@ -19,13 +19,10 @@ export interface GovUnstakeTxParams {
 export function useGovUnstakeTx() {
   const connectedWallet = useConnectedWallet();
 
-  const {
-    mantleFetch,
-    mantleEndpoint,
-    txErrorReporter,
-    contractAddress,
-    constants,
-  } = useApp<NebulaContractAddress, NebulaContants>();
+  const { wasmClient, txErrorReporter, contractAddress, constants } = useApp<
+    NebulaContractAddress,
+    NebulaContants
+  >();
 
   const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
 
@@ -50,8 +47,7 @@ export function useGovUnstakeTx() {
         fixedGas: fixedFee,
         gasWanted: constants.gasWanted,
         gasAdjustment: constants.gasAdjustment,
-        mantleEndpoint,
-        mantleFetch,
+        wasmClient,
         txErrorReporter,
         onTxSucceed: () => {
           onTxSucceed?.();
@@ -67,10 +63,9 @@ export function useGovUnstakeTx() {
       constants.gasWanted,
       contractAddress.gov,
       fixedFee,
-      mantleEndpoint,
-      mantleFetch,
       refetchQueries,
       txErrorReporter,
+      wasmClient,
     ],
   );
 

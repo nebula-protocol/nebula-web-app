@@ -1,7 +1,7 @@
 import { GasPrice, TerraBalances } from '@libs/app-fns';
 import { max, min } from '@libs/big-math';
 import { microfy } from '@libs/formatter';
-import { MantleFetch } from '@libs/mantle';
+import { WasmClient } from '@libs/query-client';
 import { FormReturn } from '@libs/use-form';
 import { cluster, CT, Rate, terraswap, Token, u, UST } from '@nebula-js/types';
 import big, { Big, BigSource } from 'big.js';
@@ -15,9 +15,7 @@ export interface ClusterMintAdvancedFormInput {
 }
 
 export interface ClusterMintAdvancedFormDependency {
-  mantleEndpoint: string;
-  mantleFetch: MantleFetch;
-  requestInit?: Omit<RequestInit, 'method' | 'body'>;
+  wasmClient: WasmClient;
   balances: TerraBalances | undefined;
   lastSyncedHeight: () => Promise<number>;
   clusterState: cluster.ClusterStateResponse;
@@ -119,7 +117,7 @@ export const clusterMintAdvancedForm = (
 
     if (
       !asyncStates ||
-      dependency.mantleEndpoint !== prevDependency?.mantleEndpoint ||
+      dependency.wasmClient !== prevDependency?.wasmClient ||
       dependency.lastSyncedHeight !== prevDependency?.lastSyncedHeight ||
       dependency.clusterState !== prevDependency?.clusterState ||
       dependency.clusterFee !== prevDependency?.clusterFee ||
@@ -133,9 +131,7 @@ export const clusterMintAdvancedForm = (
             input.amounts,
             dependency.clusterState,
             dependency.lastSyncedHeight,
-            dependency.mantleEndpoint,
-            dependency.mantleFetch,
-            dependency.requestInit,
+            dependency.wasmClient,
           ).then(({ mint }) => {
             const clusterTxFee = computeClusterTxFee(
               dependency.gasPrice,

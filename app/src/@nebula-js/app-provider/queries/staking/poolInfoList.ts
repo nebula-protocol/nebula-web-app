@@ -14,8 +14,10 @@ const queryFn = createQueryFn(stakingPoolInfoListQuery);
 export function useStakingPoolInfoListQuery(): UseQueryResult<
   StakingPoolInfoList | undefined
 > {
-  const { mantleFetch, mantleEndpoint, queryErrorReporter, contractAddress } =
-    useApp<NebulaContractAddress, NebulaContants>();
+  const { wasmClient, queryErrorReporter, contractAddress } = useApp<
+    NebulaContractAddress,
+    NebulaContants
+  >();
 
   //const {
   //  contractAddress: { clusterFactory, terraswap, staking, cw20 },
@@ -30,8 +32,7 @@ export function useStakingPoolInfoListQuery(): UseQueryResult<
       contractAddress.staking,
       contractAddress.clusterFactory,
       contractAddress.terraswap.factory,
-      mantleEndpoint,
-      mantleFetch,
+      wasmClient,
     ],
     queryFn,
     {

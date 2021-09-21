@@ -24,8 +24,10 @@ export function useClusterRedeemTerraswapArbitrageForm({
 }: ClusterRedeemTerraswapArbitrageFormParams) {
   const connectedWallet = useConnectedWallet();
 
-  const { mantleFetch, mantleEndpoint, lastSyncedHeight, gasPrice, constants } =
-    useApp<NebulaContractAddress, NebulaContants>();
+  const { wasmClient, lastSyncedHeight, gasPrice, constants } = useApp<
+    NebulaContractAddress,
+    NebulaContants
+  >();
 
   const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
 
@@ -36,8 +38,7 @@ export function useClusterRedeemTerraswapArbitrageForm({
   return useForm(
     clusterRedeemTerraswapArbitrageForm,
     {
-      mantleEndpoint,
-      mantleFetch,
+      wasmClient,
       lastSyncedHeight,
       ustBalance: uUST,
       terraswapPair,

@@ -12,8 +12,10 @@ export function useGovVotersQuery(
   pollId: number,
   limit: number,
 ): UseInfiniteQueryResult<GovVoters | undefined> {
-  const { mantleFetch, mantleEndpoint, queryErrorReporter, contractAddress } =
-    useApp<NebulaContractAddress, NebulaContants>();
+  const { wasmClient, queryErrorReporter, contractAddress } = useApp<
+    NebulaContractAddress,
+    NebulaContants
+  >();
 
   //const { contractAddress } = useNebulaWebapp();
   //
@@ -29,8 +31,7 @@ export function useGovVotersQuery(
           limit,
           start_after: pageParam,
         },
-        mantleEndpoint,
-        mantleFetch,
+        wasmClient,
       );
     },
     {

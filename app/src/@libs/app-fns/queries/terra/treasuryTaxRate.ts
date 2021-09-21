@@ -1,10 +1,13 @@
+import { LcdWasmClient } from '@libs/query-client';
 import { Rate } from '@libs/types';
-import { defaultLcdFetch, LCDFetch } from '../../clients/lcd';
 
 export async function terraTreasuryTaxRateQuery(
-  lcdEndpoint: string,
-  lcdFetch: LCDFetch = defaultLcdFetch,
-  requestInit?: RequestInit,
+  lcdClient: LcdWasmClient,
 ): Promise<Rate> {
-  return lcdFetch<Rate>(`${lcdEndpoint}/treasury/tax_rate`, requestInit);
+  return lcdClient
+    .lcdFetcher<{ result: Rate }>(
+      `${lcdClient.lcdEndpoint}/treasury/tax_rate`,
+      lcdClient.requestInit,
+    )
+    .then(({ result }) => result);
 }

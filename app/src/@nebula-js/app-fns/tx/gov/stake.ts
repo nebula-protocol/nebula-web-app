@@ -1,4 +1,3 @@
-import { floor } from '@libs/big-math';
 import {
   pickEvent,
   pickRawLog,
@@ -13,6 +12,7 @@ import {
   _postTx,
   TxHelper,
 } from '@libs/app-fns/tx/internal';
+import { floor } from '@libs/big-math';
 import { cw20, CW20Addr, gov, HumanAddr, NEB, u } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
 import { MsgExecuteContract, StdFee } from '@terra-money/terra.js';
@@ -33,18 +33,15 @@ export function govStakeTx(
 
   return pipe(
     (_: void) => {
-      return govStakerQuery(
-        $.walletAddr,
-        $.govAddr,
-        $.mantleEndpoint,
-        $.mantleFetch,
-      ).then((result) => {
-        return {
-          value: result!.govStaker,
-          phase: TxStreamPhase.POST,
-          receipts: [],
-        } as TxResultRendering<gov.StakerResponse>;
-      });
+      return govStakerQuery($.walletAddr, $.govAddr, $.wasmClient).then(
+        (result) => {
+          return {
+            value: result!.govStaker,
+            phase: TxStreamPhase.POST,
+            receipts: [],
+          } as TxResultRendering<gov.StakerResponse>;
+        },
+      );
     },
     ({ value }) => {
       const hasLockEndWeek =

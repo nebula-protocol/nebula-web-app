@@ -17,8 +17,10 @@ export function useMypageHoldingsQuery(): UseQueryResult<
 > {
   const connectedWallet = useConnectedWallet();
 
-  const { mantleFetch, mantleEndpoint, queryErrorReporter, contractAddress } =
-    useApp<NebulaContractAddress, NebulaContants>();
+  const { wasmClient, queryErrorReporter, contractAddress } = useApp<
+    NebulaContractAddress,
+    NebulaContants
+  >();
 
   //const {
   //  contractAddress: { clusterFactory, terraswap, cw20 },
@@ -33,8 +35,7 @@ export function useMypageHoldingsQuery(): UseQueryResult<
       contractAddress.cw20.NEB,
       contractAddress.terraswap.factory,
       contractAddress.clusterFactory,
-      mantleEndpoint,
-      mantleFetch,
+      wasmClient,
     ],
     queryFn,
     {

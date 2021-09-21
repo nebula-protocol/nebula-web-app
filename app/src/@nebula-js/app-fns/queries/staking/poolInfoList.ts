@@ -1,5 +1,5 @@
+import { WasmClient } from '@libs/query-client';
 import { CW20Addr, HumanAddr } from '@nebula-js/types';
-import { defaultMantleFetch, MantleFetch } from '@libs/mantle';
 import { clusterStateListQuery } from '../clusters/stateList';
 import { StakingPoolInfo, stakingPoolInfoQuery } from './poolInfo';
 
@@ -10,15 +10,11 @@ export async function stakingPoolInfoListQuery(
   stakingAddr: HumanAddr,
   clusterFactoryAddr: HumanAddr,
   terraswapFactoryAddr: HumanAddr,
-  mantleEndpoint: string,
-  mantleFetch: MantleFetch = defaultMantleFetch,
-  requestInit?: RequestInit,
+  wasmClient: WasmClient,
 ): Promise<StakingPoolInfoList> {
   const clusterStates = await clusterStateListQuery(
     clusterFactoryAddr,
-    mantleEndpoint,
-    mantleFetch,
-    requestInit,
+    wasmClient,
   );
 
   // TODO add NEB
@@ -33,9 +29,7 @@ export async function stakingPoolInfoListQuery(
         tokenAddr,
         stakingAddr,
         terraswapFactoryAddr,
-        mantleEndpoint,
-        mantleFetch,
-        requestInit,
+        wasmClient,
       );
     }),
   );
