@@ -20,10 +20,6 @@ export function useGovStakerQuery(
     NebulaContants
   >();
 
-  //const { contractAddress } = useNebulaWebapp();
-  //
-  //const { browserInactive } = useBrowserInactive();
-
   const result = useQuery(
     [NEBULA_QUERY_KEYS.GOV_STAKER, walletAddr, contractAddress.gov, wasmClient],
     queryFn,

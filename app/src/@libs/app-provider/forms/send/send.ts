@@ -49,7 +49,7 @@ export function useSendForm<T extends Token>({ tokenInfo }: SendFormParams) {
       ustBalance: uUST,
       taxRate,
       maxTaxUUSD: maxTax,
-      fixedGas: fixedFee,
+      fixedFee,
       maxSpread: 0.1,
       connected: !!connectedWallet,
     },

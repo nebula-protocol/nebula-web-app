@@ -1,6 +1,5 @@
 import { AppProvider } from '@libs/app-provider';
 import { patchReactQueryFocusRefetching } from '@libs/patch-react-query-focus-refetching';
-import { BrowserInactiveProvider } from '@libs/use-browser-inactive';
 import { GoogleAnalytics } from '@libs/use-google-analytics';
 import { RouterScrollRestoration } from '@libs/use-router-scroll-restoration';
 import { captureException } from '@sentry/react';
@@ -57,38 +56,23 @@ export function Providers({ children }: { children: ReactNode }) {
     >
       <Router>
         <QueryClientProvider client={queryClient}>
-          <BrowserInactiveProvider>
-            <AppProvider
-              defaultWasmClient="hive"
-              contractAddress={nebulaContractAddress}
-              constants={nebulaConstants}
-              refetchMap={NEBULA_TX_REFETCH_MAP}
-              txErrorReporter={errorReporter}
-              queryErrorReporter={errorReporter}
-            >
-              {typeof GA_TRACKING_ID === 'string' && (
-                <GoogleAnalytics trackingId={GA_TRACKING_ID} />
-              )}
-              <RouterScrollRestoration />
-              <StyleProviders>
-                <TxBroadcastProvider>{children}</TxBroadcastProvider>
-                {readonlyWalletSelectorElement}
-              </StyleProviders>
-            </AppProvider>
-            {/*<TerraWebappProvider*/}
-            {/*  txRefetchMap={NEBULA_TX_REFETCH_MAP}*/}
-            {/*  txErrorReporter={errorReporter}*/}
-            {/*  queryErrorReporter={errorReporter}*/}
-            {/*>*/}
-            {/*  <BankProvider*/}
-            {/*    cw20TokenContracts={CW20_TOKEN_CONTRACTS}*/}
-            {/*    maxCapTokenDenoms={MAX_CAP_TOKEN_DENOMS}*/}
-            {/*  >*/}
-            {/*    <NebulaWebappProvider>*/}
-            {/*    </NebulaWebappProvider>*/}
-            {/*  </BankProvider>*/}
-            {/*</TerraWebappProvider>*/}
-          </BrowserInactiveProvider>
+          <AppProvider
+            defaultWasmClient="hive"
+            contractAddress={nebulaContractAddress}
+            constants={nebulaConstants}
+            refetchMap={NEBULA_TX_REFETCH_MAP}
+            txErrorReporter={errorReporter}
+            queryErrorReporter={errorReporter}
+          >
+            {typeof GA_TRACKING_ID === 'string' && (
+              <GoogleAnalytics trackingId={GA_TRACKING_ID} />
+            )}
+            <RouterScrollRestoration />
+            <StyleProviders>
+              <TxBroadcastProvider>{children}</TxBroadcastProvider>
+              {readonlyWalletSelectorElement}
+            </StyleProviders>
+          </AppProvider>
         </QueryClientProvider>
       </Router>
     </WalletProvider>

@@ -22,7 +22,7 @@ export interface ClusterRedeemBasicFormDependency {
   tokenBalance: u<CT>;
   taxRate: Rate;
   maxTaxUUSD: u<UST>;
-  fixedGas: u<UST<BigSource>>;
+  fixedFee: u<UST<BigSource>>;
   gasPrice: GasPrice;
   clusterFee: NebulaClusterFee;
 }

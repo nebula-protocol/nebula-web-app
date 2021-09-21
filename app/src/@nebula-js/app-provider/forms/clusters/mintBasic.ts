@@ -30,8 +30,6 @@ export function useClusterMintBasicForm({
 
   const uUST = useTerraNativeBalanceQuery<UST>('uusd');
 
-  //const { tax, tokenBalances } = useBank<NebulaTokenBalances, NebulaTax>();
-
   return useForm(
     clusterMintBasicForm,
     {
@@ -41,7 +39,7 @@ export function useClusterMintBasicForm({
       maxTaxUUSD: maxTax,
       clusterState,
       terraswapFactoryAddr: contractAddress.terraswap.factory,
-      fixedGas: fixedFee,
+      fixedFee,
       clusterFee: constants.clusterFee,
       gasPrice,
     },

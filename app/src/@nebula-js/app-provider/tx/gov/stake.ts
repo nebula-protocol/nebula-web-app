@@ -29,11 +29,6 @@ export function useGovStakeTx() {
 
   const refetchQueries = useRefetchQueries();
 
-  //const {
-  //  constants: { fixedFee, gasWanted, gasAdjustment },
-  //  contractAddress,
-  //} = useNebulaWebapp();
-
   const stream = useCallback(
     ({ nebAmount, lockForWeeks, txFee, onTxSucceed }: GovStakeTxParams) => {
       if (!connectedWallet || !connectedWallet.availablePost) {
@@ -47,7 +42,7 @@ export function useGovStakeTx() {
         lockForWeeks,
         govAddr: contractAddress.gov,
         nebTokenAddr: contractAddress.cw20.NEB,
-        fixedGas: fixedFee,
+        fixedFee,
         gasWanted: constants.gasWanted,
         gasAdjustment: constants.gasAdjustment,
         wasmClient,

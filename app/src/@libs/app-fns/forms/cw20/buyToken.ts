@@ -15,17 +15,14 @@ export interface CW20BuyTokenFormInput<T extends Token> {
 
 export interface CW20BuyTokenFormDependency {
   wasmClient: WasmClient;
-  //mantleEndpoint: string;
-  //mantleFetch: MantleFetch;
-  //requestInit?: Omit<RequestInit, 'method' | 'body'>;
-  // terraswap simulation
+  //
   ustTokenPairAddr: HumanAddr;
   tokenAddr: CW20Addr;
   //
   ustBalance: u<UST>;
   taxRate: Rate;
   maxTaxUUSD: u<UST>;
-  fixedGas: u<UST<BigSource>>;
+  fixedFee: u<UST<BigSource>>;
   //
   connected: boolean;
 }
@@ -67,14 +64,14 @@ export const cw20BuyTokenForm = <T extends Token>({
   ustBalance,
   taxRate,
   maxTaxUUSD,
-  fixedGas,
+  fixedFee,
   connected,
 }: CW20BuyTokenFormDependency) => {
   const maxUstAmount = computeMaxUstBalanceForUstTransfer(
     ustBalance,
     taxRate,
     maxTaxUUSD,
-    fixedGas,
+    fixedFee,
   );
 
   return ({
@@ -153,7 +150,7 @@ export const cw20BuyTokenForm = <T extends Token>({
               .div(beliefPrice)
               .minus(_tax) as u<UST<Big>>;
 
-            const txFee = _tax.plus(fixedGas).toFixed() as u<UST>;
+            const txFee = _tax.plus(fixedFee).toFixed() as u<UST>;
 
             const tradingFee = big(commission_amount)
               .plus(spread_amount)
@@ -182,7 +179,7 @@ export const cw20BuyTokenForm = <T extends Token>({
               big(ustBalance)
                 .minus(microfy(ustAmount!))
                 .minus(txFee)
-                .lt(fixedGas)
+                .lt(fixedFee)
                 ? 'You may run out of USD balance needed for future transactions'
                 : null;
 
@@ -241,7 +238,7 @@ export const cw20BuyTokenForm = <T extends Token>({
 
             const rate = big(1).minus(maxSpread) as Rate<Big>;
 
-            const txFee = _tax.plus(fixedGas).toFixed() as u<UST>;
+            const txFee = _tax.plus(fixedFee).toFixed() as u<UST>;
 
             const tradingFee = big(commission_amount)
               .plus(spread_amount)
@@ -267,7 +264,7 @@ export const cw20BuyTokenForm = <T extends Token>({
             const warningNextTxFee =
               connected &&
               availableTx &&
-              big(ustBalance).minus(return_amount).minus(txFee).lt(fixedGas)
+              big(ustBalance).minus(return_amount).minus(txFee).lt(fixedFee)
                 ? 'You may run out of USD balance needed for future transactions'
                 : null;
 

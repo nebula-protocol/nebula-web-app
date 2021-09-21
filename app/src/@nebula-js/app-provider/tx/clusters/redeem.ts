@@ -41,11 +41,6 @@ export function useClusterRedeemTx(
 
   const refetchQueries = useRefetchQueries();
 
-  //const {
-  //  constants: { fixedFee, gasAdjustment, clusterFee },
-  //  contractAddress,
-  //} = useNebulaWebapp();
-
   const stream = useCallback(
     ({ amount, txFee, onTxSucceed }: ClusterRedeemTxParams) => {
       if (!connectedWallet || !connectedWallet.availablePost) {
@@ -59,7 +54,7 @@ export function useClusterRedeemTx(
         clusterAddr,
         clusterTokenAddr,
         amount,
-        fixedGas: fixedFee,
+        fixedFee,
         gasWanted: computeClusterGasWanted(
           constants.clusterFee.default,
           assets.length,

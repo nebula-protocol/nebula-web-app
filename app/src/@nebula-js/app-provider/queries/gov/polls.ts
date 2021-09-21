@@ -16,10 +16,6 @@ export function useGovPollsQuery(
   const { wasmClient, queryErrorReporter, lastSyncedHeight, contractAddress } =
     useApp<NebulaContractAddress, NebulaContants>();
 
-  //const { contractAddress } = useNebulaWebapp();
-  //
-  //const { browserInactive } = useBrowserInactive();
-
   const result = useInfiniteQuery(
     [NEBULA_QUERY_KEYS.GOV_POLLS, filter],
     ({ pageParam = undefined }) => {

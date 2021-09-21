@@ -33,11 +33,6 @@ export function useClusterMintTx(
 
   const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
 
-  //const {
-  //  constants: { fixedFee, gasAdjustment, clusterFee },
-  //  contractAddress,
-  //} = useNebulaWebapp();
-
   const stream = useCallback(
     ({ amounts, txFee, onTxSucceed }: ClusterMintTxParams) => {
       if (!connectedWallet || !connectedWallet.availablePost) {
@@ -51,7 +46,7 @@ export function useClusterMintTx(
         clusterAddr,
         assets,
         amounts,
-        fixedGas: fixedFee,
+        fixedFee,
         gasWanted: computeClusterGasWanted(
           constants.clusterFee.default,
           assets.length,

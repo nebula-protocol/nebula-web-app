@@ -33,11 +33,6 @@ export function useStakingStakeTx(
 
   const refetchQueries = useRefetchQueries();
 
-  //const {
-  //  constants: { fixedFee, gasWanted, gasAdjustment },
-  //  contractAddress,
-  //} = useNebulaWebapp();
-
   const stream = useCallback(
     ({
       ustAmount,
@@ -58,7 +53,7 @@ export function useStakingStakeTx(
         stakingAddr: contractAddress.staking,
         tokenAddr,
         tokenUstPairAddr,
-        fixedGas: fixedFee,
+        fixedFee,
         gasWanted: constants.gasWanted,
         slippageTolerance,
         gasAdjustment: constants.gasAdjustment,

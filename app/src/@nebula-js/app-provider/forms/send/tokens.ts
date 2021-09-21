@@ -38,8 +38,6 @@ export function useSendTokensForm() {
     NebulaContants
   >();
 
-  //const { contractAddress } = useNebulaWebapp();
-
   const [_updateInput, states] = useForm(
     sendTokensForm,
     {

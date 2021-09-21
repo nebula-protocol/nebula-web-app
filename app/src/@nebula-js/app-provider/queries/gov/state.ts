@@ -17,10 +17,6 @@ export function useGovStateQuery(): UseQueryResult<GovState | undefined> {
     NebulaContants
   >();
 
-  //const { contractAddress } = useNebulaWebapp();
-  //
-  //const { browserInactive } = useBrowserInactive();
-
   const result = useQuery(
     [NEBULA_QUERY_KEYS.GOV_STATE, contractAddress.gov, wasmClient],
     queryFn,

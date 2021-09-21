@@ -45,7 +45,7 @@ export function useGovUnstakeForm() {
       nebBalance: uNEB,
       ustBalance: uUST,
       govStaker,
-      fixedGas: fixedFee,
+      fixedFee,
       connected: !!connectedWallet,
     },
     () => ({ nebAmount: '' as NEB } as GovUnstakeFormInput),

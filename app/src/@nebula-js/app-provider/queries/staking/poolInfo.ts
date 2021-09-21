@@ -19,12 +19,6 @@ export function useStakingPoolInfoQuery(
     NebulaContants
   >();
 
-  //const {
-  //  contractAddress: { staking, terraswap },
-  //} = useNebulaWebapp();
-
-  //const { browserInactive } = useBrowserInactive();
-
   const result = useQuery(
     [
       TERRA_QUERY_KEY.STAKING_POOL_INFO,

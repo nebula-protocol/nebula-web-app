@@ -13,7 +13,7 @@ export interface GovStakeFormDependency {
   maxLockForWeeks?: number;
   nebBalance: u<NEB>;
   ustBalance: u<UST<BigSource>>;
-  fixedGas: u<UST<BigSource>>;
+  fixedFee: u<UST<BigSource>>;
   connected: boolean;
   govStaker: gov.StakerResponse | undefined;
 }
@@ -37,7 +37,7 @@ export const govStakeForm = ({
   ustBalance,
   minLockForWeeks = 1,
   maxLockForWeeks = 104,
-  fixedGas,
+  fixedFee,
   connected,
   govStaker,
 }: GovStakeFormDependency) => {
@@ -76,7 +76,7 @@ export const govStakeForm = ({
 
     const neb = microfy(nebAmount) as u<NEB<Big>>;
 
-    const txFee = fixedGas;
+    const txFee = fixedFee;
 
     const invalidTxFee =
       connected && big(txFee).gt(ustBalance)

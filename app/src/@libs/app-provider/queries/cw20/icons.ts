@@ -1,7 +1,7 @@
 import { CW20Icons, cw20IconsQuery } from '@libs/app-fns';
-import { useApp } from '@libs/app-provider/contexts/app';
 import { createQueryFn } from '@libs/react-query-utils';
 import { useQuery, UseQueryResult } from 'react-query';
+import { useApp } from '../../contexts/app';
 import { TERRA_QUERY_KEY } from '../../env';
 
 const queryFn = createQueryFn(cw20IconsQuery);

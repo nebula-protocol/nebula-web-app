@@ -20,7 +20,7 @@ export interface SendFormDependency<T extends Token> {
   //
   taxRate: Rate;
   maxTaxUUSD: u<UST>;
-  fixedGas: u<UST<BigSource>>;
+  fixedFee: u<UST<BigSource>>;
   //
   tokenInfo: SendTokenInfo;
   connected: boolean;
@@ -55,7 +55,7 @@ export const sendForm = <T extends Token>({
   tokenInfo,
   taxRate,
   maxTaxUUSD,
-  fixedGas,
+  fixedFee,
   connected,
 }: SendFormDependency<T>) => {
   const isUst =
@@ -67,7 +67,7 @@ export const sendForm = <T extends Token>({
         balance as u<UST>,
         taxRate,
         maxTaxUUSD,
-        fixedGas,
+        fixedFee,
       ).toFixed() as u<T>)
     : balance;
 
@@ -110,8 +110,8 @@ export const sendForm = <T extends Token>({
 
     const txFee = (
       isUst
-        ? min(microfy(amount!).mul(taxRate), maxTaxUUSD).plus(fixedGas)
-        : fixedGas
+        ? min(microfy(amount!).mul(taxRate), maxTaxUUSD).plus(fixedFee)
+        : fixedFee
     ) as u<UST<BigSource>>;
 
     const invalidTxFee =
@@ -142,7 +142,7 @@ export const sendForm = <T extends Token>({
       connected &&
       availableTx &&
       isUst &&
-      big(balance).minus(microfy(amount!)).minus(txFee).lt(fixedGas)
+      big(balance).minus(microfy(amount!)).minus(txFee).lt(fixedFee)
         ? 'You may run out of USD balance needed for future transactions'
         : null;
 

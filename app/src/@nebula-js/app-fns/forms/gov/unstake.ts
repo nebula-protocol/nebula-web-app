@@ -12,7 +12,7 @@ export interface GovUnstakeFormInput {
 export interface GovUnstakeFormDependency {
   ustBalance: u<UST<BigSource>>;
   govStaker: gov.StakerResponse | undefined;
-  fixedGas: u<UST<BigSource>>;
+  fixedFee: u<UST<BigSource>>;
   connected: boolean;
 }
 
@@ -31,7 +31,7 @@ export type GovUnstakeFormAsyncStates = {};
 
 export const govUnstakeForm = ({
   ustBalance,
-  fixedGas,
+  fixedFee,
   connected,
   govStaker,
 }: GovUnstakeFormDependency) => {
@@ -85,7 +85,7 @@ export const govUnstakeForm = ({
 
     const neb = microfy(nebAmount) as u<NEB<Big>>;
 
-    const txFee = fixedGas;
+    const txFee = fixedFee;
 
     const invalidTxFee =
       connected && big(txFee).gt(ustBalance)

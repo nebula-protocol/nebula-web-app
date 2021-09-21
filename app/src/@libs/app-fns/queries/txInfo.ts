@@ -75,9 +75,6 @@ interface LcdTxsFail {
 }
 
 export interface TxInfoQueryParams {
-  //mantleEndpoint: string;
-  //mantleFetch: MantleFetch;
-  //variables: TxInfoVariables;
   wasmClient: WasmClient;
   txhash: string;
 }
@@ -136,26 +133,6 @@ export async function txInfoQuery({
           });
 
   return fetchTxInfo;
-
-  //const { TxInfos } = await mantleFetch<TxInfoVariables, TxInfoRawData>(
-  //  TX_INFO_QUERY,
-  //  variables,
-  //  `${mantleEndpoint}?txinfo&txhash=${variables.txhash}`,
-  //);
-
-  //return TxInfos.map(({ TxHash, Success, RawLog: _RawLog }) => {
-  //  let RawLog: TxInfoData[number]['RawLog'] = _RawLog;
-  //
-  //  try {
-  //    RawLog = JSON.parse(_RawLog) ?? _RawLog;
-  //  } catch {}
-  //
-  //  return {
-  //    TxHash,
-  //    Success,
-  //    RawLog,
-  //  };
-  //});
 }
 
 // ---------------------------------------------
@@ -184,7 +161,6 @@ export async function pollTxInfo({
 }: PollTxInfoParams): Promise<TxInfoData> {
   const until = Date.now() + 1000 * 60 * 60;
   const untilInterval = Date.now() + 1000 * 60;
-  //const until = Date.now() + 100;
 
   while (true) {
     const txInfo = await txInfoQuery({
@@ -221,7 +197,6 @@ export async function pollTxInfo({
         `Transaction queued. To verify the status, please check the transaction hash below.`,
         txhash,
       );
-      //throw new Timeout(`Could not get TxInfo for 20 seconds`);
     }
   }
 }

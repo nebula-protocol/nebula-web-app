@@ -61,7 +61,7 @@ export function useCW20BuyTokenTx(
         maxTaxUUSD: maxTax,
         maxSpread,
         buyerAddr: connectedWallet.walletAddress,
-        fixedGas: fixedFee,
+        fixedFee,
         gasWanted: constants.gasWanted,
         gasAdjustment: constants.gasAdjustment,
         wasmClient,

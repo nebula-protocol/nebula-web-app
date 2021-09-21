@@ -21,7 +21,7 @@ export interface ClusterMintAdvancedFormDependency {
   clusterState: cluster.ClusterStateResponse;
   gasPrice: GasPrice;
   clusterFee: NebulaClusterFee;
-  fixedGas: u<UST<BigSource>>;
+  fixedFee: u<UST<BigSource>>;
   taxRate: Rate;
   maxTaxUUSD: u<UST>;
 }
@@ -157,7 +157,7 @@ export const clusterMintAdvancedForm = (
                 txFee = clusterTxFee;
               } else {
                 const uust = microfy(input.amounts[ustIndex]) as u<UST<Big>>;
-                const ratioTxFee = big(uust.minus(dependency.fixedGas))
+                const ratioTxFee = big(uust.minus(dependency.fixedFee))
                   .div(big(1).plus(dependency.taxRate))
                   .mul(dependency.taxRate);
 

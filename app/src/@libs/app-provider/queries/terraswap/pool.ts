@@ -12,8 +12,6 @@ export function useTerraswapPoolQuery<T extends Token>(
 ): UseQueryResult<TerraswapPool<T> | undefined> {
   const { wasmClient, queryErrorReporter } = useApp();
 
-  //const { browserInactive } = useBrowserInactive();
-
   const result = useQuery(
     [TERRA_QUERY_KEY.TERRASWAP_POOL, terraswapPairAddr, wasmClient],
     queryFn as any,

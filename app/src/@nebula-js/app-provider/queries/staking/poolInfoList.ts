@@ -19,12 +19,6 @@ export function useStakingPoolInfoListQuery(): UseQueryResult<
     NebulaContants
   >();
 
-  //const {
-  //  contractAddress: { clusterFactory, terraswap, staking, cw20 },
-  //} = useNebulaWebapp();
-  //
-  //const { browserInactive } = useBrowserInactive();
-
   const result = useQuery(
     [
       NEBULA_QUERY_KEYS.STAKING_POOL_INFO_LIST,

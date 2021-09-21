@@ -107,7 +107,7 @@ export function cw20BuyTokenTx(
             ? (big(spread_amount).plus(commission_amount) as u<Token<Big>>)
             : undefined;
         const txFee = offer_amount
-          ? (big($.fixedGas).plus(
+          ? (big($.fixedFee).plus(
               min(big(offer_amount).mul($.taxRate), $.maxTaxUUSD),
             ) as u<UST<Big>>)
           : undefined;

@@ -17,10 +17,6 @@ export function useGovVotersQuery(
     NebulaContants
   >();
 
-  //const { contractAddress } = useNebulaWebapp();
-  //
-  //const { browserInactive } = useBrowserInactive();
-
   const result = useInfiniteQuery(
     [NEBULA_QUERY_KEYS.GOV_VOTERS, pollId],
     ({ pageParam = undefined }) => {

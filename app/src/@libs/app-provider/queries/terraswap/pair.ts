@@ -12,8 +12,6 @@ export function useTerraswapPairQuery(
 ): UseQueryResult<TerraswapPair | undefined> {
   const { wasmClient, queryErrorReporter, contractAddress } = useApp();
 
-  //const { browserInactive } = useBrowserInactive();
-
   const result = useQuery(
     [
       TERRA_QUERY_KEY.TERRASWAP_PAIR,

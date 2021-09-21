@@ -6,10 +6,6 @@ import {
 } from '@libs/query-client';
 import { HumanAddr } from '@libs/types';
 
-//export const TEST_MANTLE_ENDPOINT = 'https://tequila-mantle.anchorprotocol.com';
-//
-//export const TEST_LCD_ENDPOINT = 'https://tequila-lcd.terra.dev';
-
 export const TEST_HIVE_CLIENT: HiveWasmClient = {
   hiveEndpoint: 'https://tequila-mantle.anchorprotocol.com',
   hiveFetcher: defaultHiveFetcher,

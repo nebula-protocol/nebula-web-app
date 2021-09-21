@@ -16,7 +16,7 @@ export interface StakingUnstakeFormDependency<T extends Token> {
   lpBalance: u<LP>;
   taxRate: Rate;
   maxTaxUUSD: u<UST>;
-  fixedGas: u<UST<BigSource>>;
+  fixedFee: u<UST<BigSource>>;
   connected: boolean;
 }
 
@@ -48,7 +48,7 @@ export const stakingUnstakeForm = <T extends Token>({
   ustBalance,
   taxRate,
   maxTaxUUSD,
-  fixedGas,
+  fixedFee,
   poolInfo,
   connected,
 }: StakingUnstakeFormDependency<T>) => {
@@ -90,7 +90,7 @@ export const stakingUnstakeForm = <T extends Token>({
 
     const poolPrice = poolInfo.tokenPrice;
 
-    const txFee = min(ust.mul(taxRate), maxTaxUUSD).plus(fixedGas) as u<
+    const txFee = min(ust.mul(taxRate), maxTaxUUSD).plus(fixedFee) as u<
       UST<Big>
     >;
 

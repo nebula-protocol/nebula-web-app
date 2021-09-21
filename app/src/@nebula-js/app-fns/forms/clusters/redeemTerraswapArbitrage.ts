@@ -37,7 +37,7 @@ export interface ClusterRedeemTerraswapArbitrageFormDependency {
   ustBalance: u<UST>;
   taxRate: Rate;
   maxTaxUUSD: u<UST>;
-  fixedGas: u<UST<BigSource>>;
+  fixedFee: u<UST<BigSource>>;
   gasPrice: GasPrice;
   clusterFee: NebulaClusterFee;
   //
@@ -66,7 +66,7 @@ export const clusterRedeemTerraswapArbitrageForm = (
     dependency.ustBalance,
     dependency.taxRate,
     dependency.maxTaxUUSD,
-    dependency.fixedGas,
+    dependency.fixedFee,
   );
 
   let invalidUstAmount: string | null;

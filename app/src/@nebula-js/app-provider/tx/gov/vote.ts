@@ -28,11 +28,6 @@ export function useGovVoteTx(pollId: number) {
 
   const refetchQueries = useRefetchQueries();
 
-  //const {
-  //  constants: { fixedFee, gasWanted, gasAdjustment },
-  //  contractAddress,
-  //} = useNebulaWebapp();
-
   const stream = useCallback(
     ({ vote, amount, onTxSucceed }: GovVoteTxParams) => {
       if (!connectedWallet || !connectedWallet.availablePost) {
@@ -46,7 +41,7 @@ export function useGovVoteTx(pollId: number) {
         amount,
         pollId,
         govAddr: contractAddress.gov,
-        fixedGas: fixedFee,
+        fixedFee,
         gasWanted: constants.gasWanted,
         gasAdjustment: constants.gasAdjustment,
         wasmClient,

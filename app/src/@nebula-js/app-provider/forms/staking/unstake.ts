@@ -36,12 +36,6 @@ export function useStakingUnstakeForm<T extends Token>({
 
   const uUST = useTerraNativeBalanceQuery<UST>('uusd');
 
-  //const {
-  //  constants: { fixedFee },
-  //} = useNebulaWebapp();
-
-  //const { tax, tokenBalances } = useBank<NebulaTokenBalances, NebulaTax>();
-
   const { data: { rewardInfo } = {} } = useStakingRewardInfoQuery(tokenAddr);
 
   const { data: { terraswapPoolInfo } = {} } =
@@ -57,7 +51,7 @@ export function useStakingUnstakeForm<T extends Token>({
       poolInfo: terraswapPoolInfo,
       taxRate,
       maxTaxUUSD: maxTax,
-      fixedGas: fixedFee,
+      fixedFee,
       connected: !!connectedWallet,
     },
     () => ({ lpAmount: '' as LP } as StakingUnstakeFormInput),

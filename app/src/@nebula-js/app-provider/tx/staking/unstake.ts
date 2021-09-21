@@ -32,11 +32,6 @@ export function useStakingUnstakeTx(
 
   const refetchQueries = useRefetchQueries();
 
-  //const {
-  //  constants: { fixedFee, gasWanted, gasAdjustment },
-  //  contractAddress,
-  //} = useNebulaWebapp();
-
   const stream = useCallback(
     ({ lpAmount, txFee, onTxSucceed }: StakingUnstakeTxParams) => {
       if (!connectedWallet || !connectedWallet.availablePost) {
@@ -51,7 +46,7 @@ export function useStakingUnstakeTx(
         stakingAddr: contractAddress.staking,
         tokenAddr,
         tokenUstPairAddr,
-        fixedGas: fixedFee,
+        fixedFee,
         gasWanted: constants.gasWanted,
         gasAdjustment: constants.gasAdjustment,
         wasmClient,

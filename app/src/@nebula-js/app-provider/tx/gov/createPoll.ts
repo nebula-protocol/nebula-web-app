@@ -38,13 +38,6 @@ export function useGovCreatePollTx() {
 
   const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
 
-  //const { tax } = useBank<NebulaTokenBalances, NebulaTax>();
-
-  //const {
-  //  constants: { fixedFee, gasWanted, gasAdjustment },
-  //  contractAddress,
-  //} = useNebulaWebapp();
-
   const stream = useCallback(
     ({
       depositAmount,
@@ -70,7 +63,7 @@ export function useGovCreatePollTx() {
         walletAddr: connectedWallet.walletAddress,
         taxRate,
         maxTaxUUSD: maxTax,
-        fixedGas: fixedFee,
+        fixedFee,
         gasWanted: constants.gasWanted,
         gasAdjustment: constants.gasAdjustment,
         wasmClient,

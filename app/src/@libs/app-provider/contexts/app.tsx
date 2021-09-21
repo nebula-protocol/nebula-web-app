@@ -37,12 +37,6 @@ export interface AppProviderProps<
   lcdWasmClient?: (network: NetworkInfo) => LcdWasmClient;
   hiveWasmClient?: (network: NetworkInfo) => HiveWasmClient;
 
-  //lcdEndpoint?: (network: NetworkInfo) => string;
-  //lcdFetch?: LCDFetch;
-  //
-  //mantleEndpoint?: (network: NetworkInfo) => string;
-  //mantleFetch?: MantleFetch;
-
   // gas
   gasPriceEndpoint?: (network: NetworkInfo) => string;
   fallbackGasPrice?: (network: NetworkInfo) => GasPrice;
@@ -72,12 +66,6 @@ export interface App<
   lcdWasmClient: LcdWasmClient;
   hiveWasmClient: HiveWasmClient;
 
-  //lcdEndpoint: string;
-  //lcdFetch: LCDFetch;
-  //
-  //mantleEndpoint: string;
-  //mantleFetch: MantleFetch;
-
   // gas
   gasPrice: GasPrice;
 
@@ -104,10 +92,6 @@ export function AppProvider<
   defaultWasmClient = 'hive',
   lcdWasmClient: _lcdWasmClient = defaultLcdWasmClient,
   hiveWasmClient: _hiveWasmClient = defaultHiveWasmClient,
-  //lcdEndpoint = defaultLcdEndpoint,
-  //lcdFetch = defaultLcdFetch,
-  //mantleEndpoint = defaultMantleEndpoint,
-  //mantleFetch = defaultMantleFetch,
   gasPriceEndpoint = defaultGasPriceEndpoint,
   fallbackGasPrice = defaultFallbackGasPrice,
   queryErrorReporter,

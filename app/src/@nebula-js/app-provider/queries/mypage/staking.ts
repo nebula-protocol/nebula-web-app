@@ -22,12 +22,6 @@ export function useMypageStakingQuery(): UseQueryResult<
     NebulaContants
   >();
 
-  //const {
-  //  contractAddress: { terraswap, staking },
-  //} = useNebulaWebapp();
-  //
-  //const { browserInactive } = useBrowserInactive();
-
   const result = useQuery(
     [
       NEBULA_QUERY_KEYS.MYPAGE_STAKING,

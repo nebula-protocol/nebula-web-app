@@ -22,12 +22,6 @@ export function useMypageHoldingsQuery(): UseQueryResult<
     NebulaContants
   >();
 
-  //const {
-  //  contractAddress: { clusterFactory, terraswap, cw20 },
-  //} = useNebulaWebapp();
-
-  //const { browserInactive } = useBrowserInactive();
-
   const result = useQuery(
     [
       NEBULA_QUERY_KEYS.MYPAGE_HOLDINGS,

@@ -8,7 +8,7 @@ export interface TxCommonParams {
   txFee: u<UST>;
   gasWanted: Gas;
   gasAdjustment: Rate<number>;
-  fixedGas: u<UST<string | number>>;
+  fixedFee: u<UST<string | number>>;
   // network
   network: NetworkInfo;
   wasmClient: WasmClient;

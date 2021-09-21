@@ -34,11 +34,6 @@ export function useClusterArbMintTx(
 
   const refetchQueries = useRefetchQueries();
 
-  //const {
-  //  constants: { fixedFee, gasAdjustment, clusterFee },
-  //  contractAddress,
-  //} = useNebulaWebapp();
-
   const stream = useCallback(
     ({ amounts, txFee, onTxSucceed }: ClusterArbMintTxParams) => {
       if (!connectedWallet || !connectedWallet.availablePost) {
@@ -61,7 +56,7 @@ export function useClusterArbMintTx(
         terraswapPairAddr,
         assets,
         amounts,
-        fixedGas: fixedFee,
+        fixedFee,
         gasWanted: computeClusterGasWanted(
           constants.clusterFee.arbMint,
           amounts.length,

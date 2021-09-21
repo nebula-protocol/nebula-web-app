@@ -19,12 +19,6 @@ export function useClustersListQuery(): UseQueryResult<
     NebulaContants
   >();
 
-  //const {
-  //  contractAddress: { clusterFactory },
-  //} = useNebulaWebapp();
-  //
-  //const { browserInactive } = useBrowserInactive();
-
   const result = useQuery(
     [
       NEBULA_QUERY_KEYS.CLUSTERS_LIST,

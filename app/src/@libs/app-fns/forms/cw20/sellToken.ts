@@ -14,10 +14,7 @@ export interface CW20SellTokenFormInput<T extends Token> {
 
 export interface CW20SellTokenFormDependency<T extends Token> {
   wasmClient: WasmClient;
-  //mantleEndpoint: string;
-  //mantleFetch: MantleFetch;
-  //requestInit?: Omit<RequestInit, 'method' | 'body'>;
-  // terraswap simulation
+  //
   ustTokenPairAddr: HumanAddr;
   tokenAddr: CW20Addr;
   //
@@ -25,7 +22,7 @@ export interface CW20SellTokenFormDependency<T extends Token> {
   tokenBalance: u<T>;
   taxRate: Rate;
   maxTaxUUSD: u<UST>;
-  fixedGas: u<UST<BigSource>>;
+  fixedFee: u<UST<BigSource>>;
   //
   connected: boolean;
 }
@@ -67,7 +64,7 @@ export const cw20SellTokenForm = <T extends Token>({
   tokenBalance,
   taxRate,
   maxTaxUUSD,
-  fixedGas,
+  fixedFee,
   connected,
 }: CW20SellTokenFormDependency<T>) => {
   return ({
@@ -145,7 +142,7 @@ export const cw20SellTokenForm = <T extends Token>({
               UST<Big>
             >;
 
-            const txFee = _tax.plus(fixedGas).toFixed() as u<UST>;
+            const txFee = _tax.plus(fixedFee).toFixed() as u<UST>;
 
             const tradingFee = big(commission_amount)
               .plus(spread_amount)
@@ -156,7 +153,7 @@ export const cw20SellTokenForm = <T extends Token>({
               .toFixed() as u<UST>;
 
             const invalidTxFee =
-              connected && big(fixedGas).gt(ustBalance)
+              connected && big(fixedFee).gt(ustBalance)
                 ? 'Not enough transaction fees'
                 : null;
 
@@ -230,7 +227,7 @@ export const cw20SellTokenForm = <T extends Token>({
 
             const rate = big(1).minus(maxSpread) as Rate<Big>;
 
-            const txFee = _tax.plus(fixedGas).toFixed() as u<UST>;
+            const txFee = _tax.plus(fixedFee).toFixed() as u<UST>;
 
             const tradingFee = big(commission_amount)
               .plus(spread_amount)
@@ -241,7 +238,7 @@ export const cw20SellTokenForm = <T extends Token>({
               .toFixed() as u<UST>;
 
             const invalidTxFee =
-              connected && big(fixedGas).gt(ustBalance)
+              connected && big(fixedFee).gt(ustBalance)
                 ? 'Not enough transaction fees'
                 : null;
 

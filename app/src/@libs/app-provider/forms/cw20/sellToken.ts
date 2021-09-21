@@ -48,7 +48,7 @@ export function useCW20SellTokenForm<T extends Token>({
       tokenBalance: uToken,
       taxRate,
       maxTaxUUSD: maxTax,
-      fixedGas: fixedFee,
+      fixedFee,
       connected: !!connectedWallet,
     },
     () =>

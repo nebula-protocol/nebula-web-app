@@ -20,12 +20,6 @@ export function useClusterInfoQuery(
     NebulaContants
   >();
 
-  //const {
-  //  contractAddress: { terraswap },
-  //} = useNebulaWebapp();
-
-  //const { browserInactive } = useBrowserInactive();
-
   const result = useQuery(
     [
       NEBULA_QUERY_KEYS.CLUSTER_INFO,

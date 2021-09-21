@@ -21,11 +21,8 @@ export interface SendTokensFormInput {
 }
 
 export interface SendTokensFormDependency {
-  // terraswap simulation
+  //
   wasmClient: WasmClient;
-  //mantleEndpoint: string;
-  //mantleFetch: MantleFetch;
-  //requestInit?: Omit<RequestInit, 'method' | 'body'>;
 
   fallbackTokenInfo: SendTokenInfo;
 }

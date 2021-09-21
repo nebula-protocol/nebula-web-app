@@ -33,10 +33,6 @@ export function useClusterMintAdvancedForm({
 
   const { taxRate, maxTax } = useTax('uusd');
 
-  //const { tax } = useBank<NebulaTokenBalances, NebulaTax>();
-
-  //const { constants } = useNebulaWebapp();
-
   const { data: balances } = useTerraBalancesQuery(assetInfos);
 
   return useForm(
@@ -48,7 +44,7 @@ export function useClusterMintAdvancedForm({
       balances,
       taxRate,
       maxTaxUUSD: maxTax,
-      fixedGas: fixedFee,
+      fixedFee,
       clusterFee: constants.clusterFee,
       gasPrice,
     },

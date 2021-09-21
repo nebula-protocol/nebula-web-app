@@ -45,7 +45,7 @@ export function useClusterRedeemBasicForm({
       taxRate,
       maxTaxUUSD: maxTax,
       clusterState,
-      fixedGas: fixedFee,
+      fixedFee,
       clusterFee: constants.clusterFee,
       gasPrice,
     },

@@ -23,12 +23,6 @@ export function useStakingRewardInfoQuery(
     NebulaContants
   >();
 
-  //const {
-  //  contractAddress: { staking },
-  //} = useNebulaWebapp();
-  //
-  //const { browserInactive } = useBrowserInactive();
-
   const result = useQuery(
     [
       NEBULA_QUERY_KEYS.STAKING_REWARD_INFO,

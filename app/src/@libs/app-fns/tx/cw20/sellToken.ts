@@ -122,7 +122,7 @@ export function cw20SellTokenTx<T extends Token>(
           spread_amount && commission_amount
             ? (big(spread_amount).plus(commission_amount) as u<UST<Big>>)
             : undefined;
-        const txFee = big($.fixedGas).plus(transfer_amount) as u<UST<Big>>;
+        const txFee = big($.fixedFee).plus(transfer_amount) as u<UST<Big>>;
 
         return {
           value: null,

@@ -44,7 +44,7 @@ export function useSendTx() {
         walletAddr: connectedWallet.walletAddress,
         taxRate,
         maxTaxUUSD: maxTax,
-        fixedGas: fixedFee,
+        fixedFee,
         gasWanted: constants.gasWanted,
         gasAdjustment: constants.gasAdjustment,
         wasmClient,

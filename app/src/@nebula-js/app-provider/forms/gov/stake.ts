@@ -52,7 +52,7 @@ export function useGovStakeForm() {
     {
       nebBalance: uNEB,
       ustBalance: uUST,
-      fixedGas: fixedFee,
+      fixedFee,
       minLockForWeeks: lockEndWeeks ?? 0,
       connected: !!connectedWallet,
       govStaker,

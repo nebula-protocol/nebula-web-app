@@ -21,7 +21,7 @@ export interface StakingStakeFormDependency {
   tokenBalance: u<CT>;
   taxRate: Rate;
   maxTaxUUSD: u<UST>;
-  fixedGas: u<UST<BigSource>>;
+  fixedFee: u<UST<BigSource>>;
   connected: boolean;
 }
 
@@ -47,7 +47,7 @@ export const stakingStakeForm = ({
   tokenBalance,
   taxRate,
   maxTaxUUSD,
-  fixedGas,
+  fixedFee,
   poolInfo,
   connected,
 }: StakingStakeFormDependency) => {
@@ -55,7 +55,7 @@ export const stakingStakeForm = ({
     ustBalance,
     taxRate,
     maxTaxUUSD,
-    fixedGas,
+    fixedFee,
   );
 
   const maxTokenAmount = tokenBalance;
@@ -118,7 +118,7 @@ export const stakingStakeForm = ({
       token.mul(poolInfo.lpShare).div(poolInfo.tokenPoolSize),
     ) as u<LP<Big>>;
 
-    const txFee = min(ust.mul(taxRate), maxTaxUUSD).plus(fixedGas) as u<
+    const txFee = min(ust.mul(taxRate), maxTaxUUSD).plus(fixedFee) as u<
       UST<Big>
     >;
 
@@ -137,7 +137,7 @@ export const stakingStakeForm = ({
     const warningNextTxFee =
       connected &&
       availableTx &&
-      big(ustBalance).minus(ust).minus(txFee).lt(fixedGas)
+      big(ustBalance).minus(ust).minus(txFee).lt(fixedFee)
         ? 'You may run out of USD balance needed for future transactions'
         : null;
 

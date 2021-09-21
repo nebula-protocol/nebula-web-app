@@ -134,21 +134,6 @@ export async function terraBalancesQuery(
           });
         });
 
-  //const result = await mantle<
-  //  any,
-  //  TerraBalancesQueryVariables,
-  //  TerraBalancesQueryResult
-  //>({
-  //  mantleEndpoint: `${mantleEndpoint}?terra-balances=${walletAddr}`,
-  //  mantleFetch,
-  //  variables: {
-  //    walletAddress: walletAddr,
-  //  },
-  //  wasmQuery,
-  //  query: TERRA_BALANCES_QUERY,
-  //  requestInit,
-  //});
-
   const balances = await balancesPromise;
 
   const balancesIndex = new Map<terraswap.AssetInfo, u<Token>>();

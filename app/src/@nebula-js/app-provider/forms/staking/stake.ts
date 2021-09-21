@@ -38,8 +38,6 @@ export function useStakingStakeForm({
 
   const tax = useTax<UST>('uusd');
 
-  //const { tax, tokenBalances } = useBank<NebulaTokenBalances, NebulaTax>();
-
   const uCT = useCW20Balance<CT>(tokenAddr, connectedWallet?.walletAddress);
 
   const { data: { terraswapPoolInfo } = {} } =
@@ -53,7 +51,7 @@ export function useStakingStakeForm({
       poolInfo: terraswapPoolInfo,
       taxRate: tax.taxRate,
       maxTaxUUSD: tax.maxTax,
-      fixedGas: fixedFee,
+      fixedFee,
       connected: !!connectedWallet,
     },
     () =>

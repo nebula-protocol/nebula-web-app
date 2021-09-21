@@ -21,7 +21,7 @@ export interface ClusterMintBaicFormDependency {
   ustBalance: u<UST>;
   taxRate: Rate;
   maxTaxUUSD: u<UST>;
-  fixedGas: u<UST<BigSource>>;
+  fixedFee: u<UST<BigSource>>;
   gasPrice: GasPrice;
   clusterFee: NebulaClusterFee;
 }
@@ -43,7 +43,7 @@ export const clusterMintBasicForm = ({
   terraswapFactoryAddr,
   taxRate,
   maxTaxUUSD,
-  fixedGas,
+  fixedFee,
   gasPrice,
   clusterFee,
 }: ClusterMintBaicFormDependency) => {
@@ -51,7 +51,7 @@ export const clusterMintBasicForm = ({
     ustBalance,
     taxRate,
     maxTaxUUSD,
-    fixedGas,
+    fixedFee,
   );
 
   const optimizer = new EasyMintOptimizer(
