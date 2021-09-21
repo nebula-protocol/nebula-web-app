@@ -62,7 +62,7 @@ export const DEFAULT_NEBULA_CONSTANTS: Record<string, NebulaContantsInput> = {
     },
   },
   testnet: {
-    gasWanted: 2_000_000 as Gas,
+    gasWanted: 1_000_000 as Gas,
     fixedGas: 1_671_053 as Gas,
     //fixedGas: 635_000 as u<UST<number>>,
     blocksPerYear: 4_656_810,
