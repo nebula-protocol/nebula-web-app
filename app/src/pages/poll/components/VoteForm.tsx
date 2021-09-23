@@ -17,7 +17,6 @@ import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import VoteOption = gov.VoteOption;
 
 export interface VoteFormProps {
   className?: string;
@@ -51,7 +50,7 @@ function VoteFormBase({ className, pollId, onVoteComplete }: VoteFormProps) {
   });
 
   const proceed = useCallback(
-    async (_vote: VoteOption, _amount: NEB) => {
+    async (_vote: gov.VoteOption, _amount: NEB) => {
       const stream = postTx?.({
         vote: _vote,
         amount: microfy(_amount).toFixed() as u<NEB>,
@@ -71,24 +70,24 @@ function VoteFormBase({ className, pollId, onVoteComplete }: VoteFormProps) {
         <Button
           size="normal"
           color="border"
-          onClick={() => setVote(VoteOption.Yes)}
-          aria-selected={vote === VoteOption.Yes}
+          onClick={() => setVote(gov.VoteOption.Yes)}
+          aria-selected={vote === gov.VoteOption.Yes}
         >
           YES
         </Button>
         <Button
           size="normal"
           color="border"
-          onClick={() => setVote(VoteOption.No)}
-          aria-selected={vote === VoteOption.No}
+          onClick={() => setVote(gov.VoteOption.No)}
+          aria-selected={vote === gov.VoteOption.No}
         >
           NO
         </Button>
         <Button
           size="normal"
           color="border"
-          onClick={() => setVote(VoteOption.Abstain)}
-          aria-selected={vote === VoteOption.Abstain}
+          onClick={() => setVote(gov.VoteOption.Abstain)}
+          aria-selected={vote === gov.VoteOption.Abstain}
         >
           Abstain
         </Button>
