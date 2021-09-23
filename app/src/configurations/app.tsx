@@ -19,6 +19,7 @@ import {
   NEBULA_TX_REFETCH_MAP,
   nebulaConstants,
   nebulaContractAddress,
+  nebulaDefaultWasmClient,
   ON_PRODUCTION,
   WALLETCONNECT_CHANNEL_IDS,
 } from './env';
@@ -57,7 +58,7 @@ export function Providers({ children }: { children: ReactNode }) {
       <Router>
         <QueryClientProvider client={queryClient}>
           <AppProvider
-            defaultWasmClient="hive"
+            defaultWasmClient={nebulaDefaultWasmClient}
             contractAddress={nebulaContractAddress}
             constants={nebulaConstants}
             refetchMap={NEBULA_TX_REFETCH_MAP}

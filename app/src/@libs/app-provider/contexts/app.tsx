@@ -33,7 +33,10 @@ export interface AppProviderProps<
   contractAddress: (network: NetworkInfo) => ContractAddress;
   constants: (network: NetworkInfo) => Constants;
 
-  defaultWasmClient?: 'lcd' | 'hive';
+  defaultWasmClient?:
+    | 'lcd'
+    | 'hive'
+    | ((network: NetworkInfo) => 'lcd' | 'hive');
   lcdWasmClient?: (network: NetworkInfo) => LcdWasmClient;
   hiveWasmClient?: (network: NetworkInfo) => HiveWasmClient;
 
@@ -112,8 +115,12 @@ export function AppProvider<
   >(() => {
     const lcdWasmClient = _lcdWasmClient(network);
     const hiveWasmClient = _hiveWasmClient(network);
+    const wasmClientType =
+      typeof defaultWasmClient === 'function'
+        ? defaultWasmClient(network)
+        : defaultWasmClient;
     const wasmClient =
-      defaultWasmClient === 'lcd' ? lcdWasmClient : hiveWasmClient;
+      wasmClientType === 'lcd' ? lcdWasmClient : hiveWasmClient;
 
     return {
       contractAddress: contractAddress(network),

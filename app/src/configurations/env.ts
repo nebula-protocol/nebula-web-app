@@ -4,6 +4,14 @@ import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
 import { NEBULA_QUERY_KEYS, NEBULA_TX_KEYS } from '@nebula-js/app-provider';
 import { NetworkInfo } from '@terra-dev/wallet-types';
 
+export function nebulaDefaultWasmClient(network: NetworkInfo): 'lcd' | 'hive' {
+  if (network.chainID === 'tequila-0004') {
+    return Math.random() > 0.5 ? 'lcd' : 'hive';
+  }
+
+  throw new Error(`currently only support "tequila-0004"`);
+}
+
 export function nebulaContractAddress(
   network: NetworkInfo,
 ): NebulaContractAddress {
