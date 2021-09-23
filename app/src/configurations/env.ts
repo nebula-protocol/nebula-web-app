@@ -113,7 +113,13 @@ export const WALLETCONNECT_CHANNEL_IDS: Record<number, NetworkInfo> = {
 export const ON_PRODUCTION = global.location.host === 'app.nebulaprotocol.com';
 
 // TODO: set ga tracking id
-export const GA_TRACKING_ID = import.meta.env.GA_TRACKING_ID;
+export const GA_TRACKING_ID = (() => {
+  try {
+    return import.meta.env.GA_TRACKING_ID;
+  } catch {
+    return undefined;
+  }
+})();
 
 export const NEBULA_TX_REFETCH_MAP = {
   [TERRA_TX_KEYS.CW20_BUY]: [
