@@ -2656,7 +2656,7 @@ __metadata:
     lint-staged: ^11.1.2
     multiplerun: ^2.0.1
     numeral: ^2.0.6
-    puppeteer: ^10.2.0
+    puppeteer: ^10.4.0
     react: ^17.0.2
     react-csv: ^2.0.3
     react-dom: ^17.0.2
@@ -17319,9 +17319,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"puppeteer@npm:^10.2.0":
-  version: 10.2.0
-  resolution: "puppeteer@npm:10.2.0"
+"puppeteer@npm:^10.4.0":
+  version: 10.4.0
+  resolution: "puppeteer@npm:10.4.0"
   dependencies:
     debug: 4.3.1
     devtools-protocol: 0.0.901419
@@ -17335,7 +17335,7 @@ fsevents@^1.2.7:
     tar-fs: 2.0.0
     unbzip2-stream: 1.3.3
     ws: 7.4.6
-  checksum: 2722adc087a01a3797948f9ec0bd98f4c6d5aaf8f5fed8c0407259ccfeaaa4c25c6bd27927aca3db58e6de03456f5556806a1cce322a7529a7624eafb87321ab
+  checksum: 3b7b628f07b3e1f960110691363c1eb07a485fa2f24b5a083558a56841cc46bfcac7a3ab8ae5c687f39621972b35327ce934ea731c831dcd8b75d897920bdc26
   languageName: node
   linkType: hard
 
@@ -22255,7 +22255,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"ws@npm:7.5.3, ws@npm:^7.4.2, ws@npm:^7.4.5, ws@npm:^7.5.3":
+"ws@npm:7.5.3":
   version: 7.5.3
   resolution: "ws@npm:7.5.3"
   peerDependencies:
@@ -22276,6 +22276,21 @@ resolve@^2.0.0-next.3:
   dependencies:
     async-limiter: ~1.0.0
   checksum: aec3154ec51477c094ac2cb5946a156e17561a581fa27005cbf22c53ac57f8d4e5f791dd4bbba6a488602cb28778c8ab7df06251d590507c3c550fd8ebeee949
+  languageName: node
+  linkType: hard
+
+"ws@npm:^7.4.2, ws@npm:^7.4.5, ws@npm:^7.5.3":
+  version: 7.5.5
+  resolution: "ws@npm:7.5.5"
+  peerDependencies:
+    bufferutil: ^4.0.1
+    utf-8-validate: ^5.0.2
+  peerDependenciesMeta:
+    bufferutil:
+      optional: true
+    utf-8-validate:
+      optional: true
+  checksum: bd2b437256012af526c69c03d6670a132e7ab0fe5853f3b7092826acea4203fad4ee2a8d0d9bd44834b2b968e747bf34f753ab535f4a3edf40d262da4b1d0805
   languageName: node
   linkType: hard
 

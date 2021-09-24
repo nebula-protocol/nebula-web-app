@@ -71,45 +71,6 @@ export function nebulaConstants(network: NetworkInfo): NebulaContants {
   throw new Error(`currently only support "tequila-0004"`);
 }
 
-//export const CW20_TOKEN_CONTRACTS: Record<
-//  string,
-//  Record<string, CW20Contract>
-//> = {
-//  //mainnet: {
-//  //  uNEB: {
-//  //    contractAddress: ADDRESSES.mainnet.cw20.aUST,
-//  //  },
-//  //},
-//  testnet: {
-//    uNEB: {
-//      contractAddress: DEFAULT_NEBULA_CONTRACT_ADDRESS['testnet'].cw20.NEB,
-//    },
-//  },
-//};
-//
-//export const MAX_CAP_TOKEN_DENOMS: Record<string, string> = {
-//  maxTaxUUSD: 'uusd',
-//};
-
-export const TESTNET = {
-  name: 'testnet',
-  chainID: 'tequila-0004',
-  lcd: 'https://tequila-lcd.terra.dev',
-};
-
-export const MAINNET = {
-  name: 'mainnet',
-  chainID: 'columbus-4',
-  lcd: 'https://lcd.terra.dev',
-};
-
-export const DEFAULT_NETWORK: NetworkInfo = TESTNET;
-
-export const WALLETCONNECT_CHANNEL_IDS: Record<number, NetworkInfo> = {
-  0: TESTNET,
-  1: MAINNET,
-};
-
 export const ON_PRODUCTION = global.location.host === 'app.nebulaprotocol.com';
 
 // TODO: set ga tracking id

@@ -5,7 +5,10 @@ import { RouterScrollRestoration } from '@libs/use-router-scroll-restoration';
 import { captureException } from '@sentry/react';
 import { ReadonlyWalletSession } from '@terra-dev/readonly-wallet';
 import { NetworkInfo } from '@terra-dev/wallet-types';
-import { WalletProvider } from '@terra-money/wallet-provider';
+import {
+  WalletControllerOptions,
+  WalletProvider,
+} from '@terra-money/wallet-provider';
 import { useReadonlyWalletDialog } from 'components/dialogs/useReadonlyWalletDialog';
 import { StyleProviders } from 'configurations/style';
 import { TxBroadcastProvider } from 'contexts/tx-broadcast';
@@ -14,14 +17,12 @@ import React, { ReactNode, useCallback } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter as Router } from 'react-router-dom';
 import {
-  DEFAULT_NETWORK,
   GA_TRACKING_ID,
   NEBULA_TX_REFETCH_MAP,
   nebulaConstants,
   nebulaContractAddress,
   nebulaDefaultWasmClient,
   ON_PRODUCTION,
-  WALLETCONNECT_CHANNEL_IDS,
 } from './env';
 
 patchReactQueryFocusRefetching();
@@ -31,7 +32,15 @@ const queryClient = new QueryClient();
 const errorReporter =
   process.env.NODE_ENV === 'production' ? captureException : undefined;
 
-export function Providers({ children }: { children: ReactNode }) {
+export interface ProvidersProps
+  extends Pick<
+    WalletControllerOptions,
+    'defaultNetwork' | 'walletConnectChainIds'
+  > {
+  children: ReactNode;
+}
+
+export function Providers({ children, ...networkOptions }: ProvidersProps) {
   const [openReadonlyWalletSelector, readonlyWalletSelectorElement] =
     useReadonlyWalletDialog();
 
@@ -46,8 +55,7 @@ export function Providers({ children }: { children: ReactNode }) {
 
   return (
     <WalletProvider
-      defaultNetwork={DEFAULT_NETWORK}
-      walletConnectChainIds={WALLETCONNECT_CHANNEL_IDS}
+      {...networkOptions}
       connectorOpts={{
         bridge: ON_PRODUCTION
           ? 'https://walletconnect.terra.dev/'

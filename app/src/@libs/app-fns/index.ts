@@ -11,6 +11,7 @@ export * from './forms/cw20/tokens';
 export * from './logics/computeMaxUstBalanceForUstTransfer';
 export * from './models/gasPrice';
 export * from './models/tx';
+export * from './queries/chains';
 export * from './queries/cw20/balance';
 export * from './queries/cw20/icons';
 export * from './queries/cw20/nativeTokenInfo';
