@@ -1,7 +1,7 @@
-import { useApp, useTerraswapPoolQuery } from '@libs/app-provider';
+import { useTerraswapPoolQuery } from '@libs/app-provider';
 import { formatToken } from '@libs/formatter';
 import { AnimateNumber } from '@libs/ui';
-import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
+import { useNebulaApp } from '@nebula-js/app-provider';
 import { NEB } from '@nebula-js/types';
 import { DiffSpan, Sub } from '@nebula-js/ui';
 import React from 'react';
@@ -12,7 +12,7 @@ export interface NEBPriceProps {
 }
 
 function NEBPriceBase({ className }: NEBPriceProps) {
-  const { contractAddress } = useApp<NebulaContractAddress, NebulaContants>();
+  const { contractAddress } = useNebulaApp();
 
   const { data: { terraswapPoolInfo } = {} } = useTerraswapPoolQuery<NEB>(
     contractAddress.terraswap.nebUstPair,

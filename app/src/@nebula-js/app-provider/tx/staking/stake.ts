@@ -1,13 +1,10 @@
-import { useApp, useGasPrice, useRefetchQueries } from '@libs/app-provider';
-import {
-  NebulaContants,
-  NebulaContractAddress,
-  stakingStakeTx,
-} from '@nebula-js/app-fns';
+import { useFixedFee, useRefetchQueries } from '@libs/app-provider';
+import { stakingStakeTx } from '@nebula-js/app-fns';
 import { CW20Addr, HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
 import { NEBULA_TX_KEYS } from '../../env';
+import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export interface StakingStakeTxParams {
   ustAmount: u<UST>;
@@ -24,12 +21,10 @@ export function useStakingStakeTx(
 ) {
   const connectedWallet = useConnectedWallet();
 
-  const { wasmClient, txErrorReporter, constants, contractAddress } = useApp<
-    NebulaContractAddress,
-    NebulaContants
-  >();
+  const { wasmClient, txErrorReporter, constants, contractAddress } =
+    useNebulaApp();
 
-  const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
+  const fixedFee = useFixedFee();
 
   const refetchQueries = useRefetchQueries();
 

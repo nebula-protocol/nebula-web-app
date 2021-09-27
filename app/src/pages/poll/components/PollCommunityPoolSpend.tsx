@@ -1,7 +1,7 @@
-import { useApp, useCW20BalanceQuery } from '@libs/app-provider';
+import { useCW20BalanceQuery } from '@libs/app-provider';
 import { formatUInput, formatUToken, microfy } from '@libs/formatter';
 import { InputAdornment } from '@material-ui/core';
-import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
+import { useNebulaApp } from '@nebula-js/app-provider';
 import { WalletIcon } from '@nebula-js/icons';
 import { community, gov, HumanAddr, NEB, u } from '@nebula-js/types';
 import {
@@ -15,7 +15,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { PollCreateBase } from './PollCreateBase';
 
 export default function PollCommunityPoolSpend() {
-  const { contractAddress } = useApp<NebulaContractAddress, NebulaContants>();
+  const { contractAddress } = useNebulaApp();
 
   const [recipient, setRecipient] = useState<string>('');
   const [amount, setAmount] = useState<NEB>('' as NEB);

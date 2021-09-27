@@ -1,13 +1,13 @@
 import { TerraswapPool } from '@libs/app-fns';
-import { useApp, useTerraswapPoolQuery } from '@libs/app-provider';
-import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
+import { useTerraswapPoolQuery } from '@libs/app-provider';
 import { NEB } from '@nebula-js/types';
 import { UseQueryResult } from 'react-query';
+import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export function useNEBPoolQuery(): UseQueryResult<
   TerraswapPool<NEB> | undefined
 > {
-  const { contractAddress } = useApp<NebulaContractAddress, NebulaContants>();
+  const { contractAddress } = useNebulaApp();
 
   return useTerraswapPoolQuery<NEB>(contractAddress.terraswap.nebUstPair);
 }

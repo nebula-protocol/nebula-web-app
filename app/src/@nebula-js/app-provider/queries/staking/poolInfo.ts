@@ -1,23 +1,16 @@
-import { TERRA_QUERY_KEY, useApp } from '@libs/app-provider';
+import { TERRA_QUERY_KEY } from '@libs/app-provider';
 import { createQueryFn } from '@libs/react-query-utils';
-import {
-  NebulaContants,
-  NebulaContractAddress,
-  StakingPoolInfo,
-  stakingPoolInfoQuery,
-} from '@nebula-js/app-fns';
+import { StakingPoolInfo, stakingPoolInfoQuery } from '@nebula-js/app-fns';
 import { CW20Addr } from '@nebula-js/types';
 import { useQuery, UseQueryResult } from 'react-query';
+import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 const queryFn = createQueryFn(stakingPoolInfoQuery);
 
 export function useStakingPoolInfoQuery(
   tokenAddr: CW20Addr,
 ): UseQueryResult<StakingPoolInfo | undefined> {
-  const { wasmClient, queryErrorReporter, contractAddress } = useApp<
-    NebulaContractAddress,
-    NebulaContants
-  >();
+  const { wasmClient, queryErrorReporter, contractAddress } = useNebulaApp();
 
   const result = useQuery(
     [

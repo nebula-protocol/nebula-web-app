@@ -1,40 +1,20 @@
-import {
-  useApp,
-  useCW20Balance,
-  useGasPrice,
-  useTerraNativeBalanceQuery,
-} from '@libs/app-provider';
+import { useFixedFee, useUstBalance } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
-import {
-  govStakeForm,
-  GovStakeFormInput,
-  NebulaContants,
-  NebulaContractAddress,
-} from '@nebula-js/app-fns';
-import { NEB, UST } from '@nebula-js/types';
+import { govStakeForm, GovStakeFormInput } from '@nebula-js/app-fns';
+import { NEB } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useMemo } from 'react';
+import { useNebBalance } from '../../hooks/useNebBalance';
 import { useGovStakerQuery } from '../../queries/gov/staker';
 
 export function useGovStakeForm() {
   const connectedWallet = useConnectedWallet();
 
-  const { contractAddress, constants } = useApp<
-    NebulaContractAddress,
-    NebulaContants
-  >();
+  const fixedFee = useFixedFee();
 
-  const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
+  const uUST = useUstBalance(connectedWallet?.walletAddress);
 
-  const uUST = useTerraNativeBalanceQuery<UST>(
-    'uusd',
-    connectedWallet?.walletAddress,
-  );
-
-  const uNEB = useCW20Balance<NEB>(
-    contractAddress.cw20.NEB,
-    connectedWallet?.walletAddress,
-  );
+  const uNEB = useNebBalance(connectedWallet?.walletAddress);
 
   const { data: { govStaker } = {} } = useGovStakerQuery(
     connectedWallet?.walletAddress,

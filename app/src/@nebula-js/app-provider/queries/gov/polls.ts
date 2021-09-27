@@ -1,20 +1,15 @@
-import { useApp } from '@libs/app-provider';
-import {
-  GovPolls,
-  govPollsQuery,
-  NebulaContants,
-  NebulaContractAddress,
-} from '@nebula-js/app-fns';
+import { GovPolls, govPollsQuery } from '@nebula-js/app-fns';
 import { gov } from '@nebula-js/types';
 import { useInfiniteQuery, UseInfiniteQueryResult } from 'react-query';
 import { NEBULA_QUERY_KEYS } from '../../env';
+import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export function useGovPollsQuery(
   filter: gov.PollStatus | undefined,
   limit: number,
 ): UseInfiniteQueryResult<GovPolls | undefined> {
   const { wasmClient, queryErrorReporter, lastSyncedHeight, contractAddress } =
-    useApp<NebulaContractAddress, NebulaContants>();
+    useNebulaApp();
 
   const result = useInfiniteQuery(
     [NEBULA_QUERY_KEYS.GOV_POLLS, filter],

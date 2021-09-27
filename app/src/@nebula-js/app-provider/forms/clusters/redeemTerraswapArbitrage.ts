@@ -1,17 +1,9 @@
-import {
-  useApp,
-  useGasPrice,
-  useTax,
-  useTerraNativeBalanceQuery,
-} from '@libs/app-provider';
+import { useFixedFee, useUstBalance, useUstTax } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
-import {
-  clusterRedeemTerraswapArbitrageForm,
-  NebulaContants,
-  NebulaContractAddress,
-} from '@nebula-js/app-fns';
+import { clusterRedeemTerraswapArbitrageForm } from '@nebula-js/app-fns';
 import { cluster, terraswap, UST } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
+import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export interface ClusterRedeemTerraswapArbitrageFormParams {
   clusterState: cluster.ClusterStateResponse;
@@ -24,16 +16,13 @@ export function useClusterRedeemTerraswapArbitrageForm({
 }: ClusterRedeemTerraswapArbitrageFormParams) {
   const connectedWallet = useConnectedWallet();
 
-  const { wasmClient, lastSyncedHeight, gasPrice, constants } = useApp<
-    NebulaContractAddress,
-    NebulaContants
-  >();
+  const { wasmClient, lastSyncedHeight, gasPrice, constants } = useNebulaApp();
 
-  const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
+  const fixedFee = useFixedFee();
 
-  const tax = useTax<UST>('uusd');
+  const tax = useUstTax();
 
-  const uUST = useTerraNativeBalanceQuery<UST>('uusd');
+  const uUST = useUstBalance(connectedWallet?.walletAddress);
 
   return useForm(
     clusterRedeemTerraswapArbitrageForm,

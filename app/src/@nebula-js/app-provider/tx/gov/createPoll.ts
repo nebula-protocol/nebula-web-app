@@ -1,18 +1,10 @@
-import {
-  useApp,
-  useGasPrice,
-  useRefetchQueries,
-  useTax,
-} from '@libs/app-provider';
-import {
-  govCreatePollTx,
-  NebulaContants,
-  NebulaContractAddress,
-} from '@nebula-js/app-fns';
+import { useFixedFee, useRefetchQueries, useUstTax } from '@libs/app-provider';
+import { govCreatePollTx } from '@nebula-js/app-fns';
 import { gov, NEB, u, UST } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
 import { NEBULA_TX_KEYS } from '../../env';
+import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export interface GovCreatePollTxParams {
   depositAmount: u<NEB>;
@@ -27,16 +19,14 @@ export interface GovCreatePollTxParams {
 export function useGovCreatePollTx() {
   const connectedWallet = useConnectedWallet();
 
-  const { wasmClient, txErrorReporter, constants, contractAddress } = useApp<
-    NebulaContractAddress,
-    NebulaContants
-  >();
+  const { wasmClient, txErrorReporter, constants, contractAddress } =
+    useNebulaApp();
 
   const refetchQueries = useRefetchQueries();
 
-  const { taxRate, maxTax } = useTax('uusd');
+  const { taxRate, maxTax } = useUstTax();
 
-  const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
+  const fixedFee = useFixedFee();
 
   const stream = useCallback(
     ({

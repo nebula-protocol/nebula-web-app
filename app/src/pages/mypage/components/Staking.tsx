@@ -1,7 +1,6 @@
-import { useApp, useCW20PoolInfoQuery } from '@libs/app-provider';
+import { useCW20PoolInfoQuery } from '@libs/app-provider';
 import { formatUTokenWithPostfixUnits } from '@libs/formatter';
-import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
-import { useMypageStakingQuery } from '@nebula-js/app-provider';
+import { useMypageStakingQuery, useNebulaApp } from '@nebula-js/app-provider';
 import { SendIcon } from '@nebula-js/icons';
 import { NEB, Token, u, UST } from '@nebula-js/types';
 import {
@@ -23,7 +22,7 @@ export interface StakingProps {
 }
 
 function StakingBase({ className }: StakingProps) {
-  const { contractAddress } = useApp<NebulaContractAddress, NebulaContants>();
+  const { contractAddress } = useNebulaApp();
 
   const { data = [] } = useMypageStakingQuery();
 

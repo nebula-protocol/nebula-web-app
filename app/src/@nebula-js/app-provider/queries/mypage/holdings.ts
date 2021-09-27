@@ -1,14 +1,9 @@
-import { useApp } from '@libs/app-provider';
 import { createQueryFn } from '@libs/react-query-utils';
-import {
-  MypageHoldings,
-  mypageHoldingsQuery,
-  NebulaContants,
-  NebulaContractAddress,
-} from '@nebula-js/app-fns';
+import { MypageHoldings, mypageHoldingsQuery } from '@nebula-js/app-fns';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useQuery, UseQueryResult } from 'react-query';
 import { NEBULA_QUERY_KEYS } from '../../env';
+import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 const queryFn = createQueryFn(mypageHoldingsQuery);
 
@@ -17,10 +12,7 @@ export function useMypageHoldingsQuery(): UseQueryResult<
 > {
   const connectedWallet = useConnectedWallet();
 
-  const { wasmClient, queryErrorReporter, contractAddress } = useApp<
-    NebulaContractAddress,
-    NebulaContants
-  >();
+  const { wasmClient, queryErrorReporter, contractAddress } = useNebulaApp();
 
   const result = useQuery(
     [

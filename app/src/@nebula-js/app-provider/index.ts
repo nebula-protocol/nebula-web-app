@@ -11,6 +11,8 @@ export * from './forms/gov/unstake';
 export * from './forms/send/tokens';
 export * from './forms/staking/stake';
 export * from './forms/staking/unstake';
+export * from './hooks/useNebBalance';
+export * from './hooks/useNebulaApp';
 export * from './queries/clusters/info';
 export * from './queries/clusters/infoList';
 export * from './queries/clusters/list';

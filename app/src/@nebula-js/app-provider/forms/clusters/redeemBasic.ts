@@ -1,17 +1,9 @@
-import {
-  useApp,
-  useCW20Balance,
-  useGasPrice,
-  useTax,
-} from '@libs/app-provider';
+import { useCW20Balance, useFixedFee, useUstTax } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
-import {
-  clusterRedeemBasicForm,
-  NebulaContants,
-  NebulaContractAddress,
-} from '@nebula-js/app-fns';
+import { clusterRedeemBasicForm } from '@nebula-js/app-fns';
 import { cluster, CT } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
+import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export interface ClusterRedeemBasicFormParams {
   clusterState: cluster.ClusterStateResponse;
@@ -22,14 +14,11 @@ export function useClusterRedeemBasicForm({
 }: ClusterRedeemBasicFormParams) {
   const connectedWallet = useConnectedWallet();
 
-  const { wasmClient, lastSyncedHeight, gasPrice, constants } = useApp<
-    NebulaContractAddress,
-    NebulaContants
-  >();
+  const { wasmClient, lastSyncedHeight, gasPrice, constants } = useNebulaApp();
 
-  const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
+  const fixedFee = useFixedFee();
 
-  const { maxTax, taxRate } = useTax('uusd');
+  const { maxTax, taxRate } = useUstTax();
 
   const uCT = useCW20Balance<CT>(
     clusterState.cluster_token,

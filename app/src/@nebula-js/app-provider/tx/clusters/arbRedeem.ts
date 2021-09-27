@@ -1,14 +1,13 @@
-import { useApp, useGasPrice, useRefetchQueries } from '@libs/app-provider';
+import { useFixedFee, useRefetchQueries } from '@libs/app-provider';
 import {
   clusterArbRedeemTx,
   computeClusterGasWanted,
-  NebulaContants,
-  NebulaContractAddress,
 } from '@nebula-js/app-fns';
 import { HumanAddr, terraswap, Token, u, UST } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
 import { NEBULA_TX_KEYS } from '../../env';
+import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export interface ClusterArbRedeemTxParams {
   amount: u<UST>;
@@ -23,12 +22,10 @@ export function useClusterArbRedeemTx(
 ) {
   const connectedWallet = useConnectedWallet();
 
-  const { wasmClient, txErrorReporter, constants, contractAddress } = useApp<
-    NebulaContractAddress,
-    NebulaContants
-  >();
+  const { wasmClient, txErrorReporter, constants, contractAddress } =
+    useNebulaApp();
 
-  const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
+  const fixedFee = useFixedFee();
 
   const refetchQueries = useRefetchQueries();
 

@@ -1,12 +1,11 @@
-import {
-  useApp,
-  useCW20Balance,
-  useCW20TokenInfoQuery,
-} from '@libs/app-provider';
+import { useCW20TokenInfoQuery } from '@libs/app-provider';
 import { formatRate, formatUTokenWithPostfixUnits } from '@libs/formatter';
 import { AnimateNumber } from '@libs/ui';
-import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
-import { useGovStateQuery } from '@nebula-js/app-provider';
+import {
+  useGovStateQuery,
+  useNebBalance,
+  useNebulaApp,
+} from '@nebula-js/app-provider';
 import { NEB, Rate, u } from '@nebula-js/types';
 import { breakpoints, Section, Sub, TitledLabel } from '@nebula-js/ui';
 import big, { Big } from 'big.js';
@@ -18,17 +17,11 @@ export interface StakingSectionProps {
 }
 
 function StakingSectionBase({ className }: StakingSectionProps) {
-  const { contractAddress } = useApp<NebulaContractAddress, NebulaContants>();
+  const { contractAddress } = useNebulaApp();
 
-  const govNebBalance = useCW20Balance<NEB>(
-    contractAddress.cw20.NEB,
-    contractAddress.gov,
-  );
+  const govNebBalance = useNebBalance(contractAddress.gov);
 
-  const communityNebBalance = useCW20Balance<NEB>(
-    contractAddress.cw20.NEB,
-    contractAddress.community,
-  );
+  const communityNebBalance = useNebBalance(contractAddress.community);
 
   const { data: { govState } = {} } = useGovStateQuery();
 

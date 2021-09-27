@@ -1,15 +1,11 @@
-import {
-  useApp,
-  useCW20SellTokenForm,
-  useCW20SellTokenTx,
-} from '@libs/app-provider';
+import { useCW20SellTokenForm, useCW20SellTokenTx } from '@libs/app-provider';
 import {
   formatFluidDecimalPoints,
   formatUInput,
   formatUToken,
   microfy,
 } from '@libs/formatter';
-import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
+import { useNebulaApp } from '@nebula-js/app-provider';
 import { ArrowSouthIcon, WalletIcon } from '@nebula-js/icons';
 import { NEB, Rate, u, UST } from '@nebula-js/types';
 import {
@@ -43,7 +39,7 @@ function SellBase({ className }: SellProps) {
 
   const { broadcast } = useTxBroadcast();
 
-  const { contractAddress } = useApp<NebulaContractAddress, NebulaContants>();
+  const { contractAddress } = useNebulaApp();
 
   const [openMoreOptions, setOpenMoreOptions] = useState<boolean>(false);
 

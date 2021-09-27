@@ -1,16 +1,8 @@
-import {
-  useApp,
-  useGasPrice,
-  useTax,
-  useTerraNativeBalanceQuery,
-} from '@libs/app-provider';
+import { useFixedFee, useUstBalance, useUstTax } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
-import {
-  clusterMintBasicForm,
-  NebulaContants,
-  NebulaContractAddress,
-} from '@nebula-js/app-fns';
+import { clusterMintBasicForm } from '@nebula-js/app-fns';
 import { cluster, UST } from '@nebula-js/types';
+import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export interface ClusterMintBasicFormParams {
   clusterState: cluster.ClusterStateResponse;
@@ -19,16 +11,13 @@ export interface ClusterMintBasicFormParams {
 export function useClusterMintBasicForm({
   clusterState,
 }: ClusterMintBasicFormParams) {
-  const { wasmClient, gasPrice, constants, contractAddress } = useApp<
-    NebulaContractAddress,
-    NebulaContants
-  >();
+  const { wasmClient, gasPrice, constants, contractAddress } = useNebulaApp();
 
-  const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
+  const fixedFee = useFixedFee();
 
-  const { taxRate, maxTax } = useTax('uusd');
+  const { taxRate, maxTax } = useUstTax();
 
-  const uUST = useTerraNativeBalanceQuery<UST>('uusd');
+  const uUST = useUstBalance();
 
   return useForm(
     clusterMintBasicForm,

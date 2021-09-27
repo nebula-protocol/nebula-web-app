@@ -4,17 +4,13 @@ import {
   sendTokensForm,
   SendTokensFormInput,
 } from '@libs/app-fns';
-import { useApp } from '@libs/app-provider';
 import { PersistCache } from '@libs/persist-cache';
 import { CW20Addr, NativeDenom } from '@libs/types';
 import { useForm } from '@libs/use-form';
-import {
-  clusterStateListQuery,
-  NebulaContants,
-  NebulaContractAddress,
-} from '@nebula-js/app-fns';
+import { clusterStateListQuery } from '@nebula-js/app-fns';
 import { useWallet } from '@terra-money/wallet-provider';
 import { useCallback, useEffect } from 'react';
+import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 const NATIVE_DENOMS = ['uusd', 'uluna'] as NativeDenom[];
 const FALLBACK = {
@@ -33,10 +29,7 @@ const cw20AddrCache = new PersistCache<CW20Addr[]>(
 export function useSendTokensForm() {
   const { network } = useWallet();
 
-  const { wasmClient, contractAddress } = useApp<
-    NebulaContractAddress,
-    NebulaContants
-  >();
+  const { wasmClient, contractAddress } = useNebulaApp();
 
   const [_updateInput, states] = useForm(
     sendTokensForm,

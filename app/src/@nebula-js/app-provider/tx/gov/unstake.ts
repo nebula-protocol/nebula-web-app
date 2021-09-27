@@ -1,13 +1,10 @@
-import { useApp, useGasPrice, useRefetchQueries } from '@libs/app-provider';
-import {
-  govUnstakeTx,
-  NebulaContants,
-  NebulaContractAddress,
-} from '@nebula-js/app-fns';
+import { useFixedFee, useRefetchQueries } from '@libs/app-provider';
+import { govUnstakeTx } from '@nebula-js/app-fns';
 import { NEB, u, UST } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
 import { NEBULA_TX_KEYS } from '../../env';
+import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export interface GovUnstakeTxParams {
   nebAmount: u<NEB>;
@@ -19,12 +16,10 @@ export interface GovUnstakeTxParams {
 export function useGovUnstakeTx() {
   const connectedWallet = useConnectedWallet();
 
-  const { wasmClient, txErrorReporter, contractAddress, constants } = useApp<
-    NebulaContractAddress,
-    NebulaContants
-  >();
+  const { wasmClient, txErrorReporter, contractAddress, constants } =
+    useNebulaApp();
 
-  const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
+  const fixedFee = useFixedFee();
 
   const refetchQueries = useRefetchQueries();
 

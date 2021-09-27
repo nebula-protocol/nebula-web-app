@@ -1,18 +1,12 @@
 import {
-  useApp,
   useCW20Balance,
-  useGasPrice,
-  useTax,
-  useTerraNativeBalanceQuery,
+  useFixedFee,
   useTerraswapPoolQuery,
+  useUstBalance,
+  useUstTax,
 } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
-import {
-  NebulaContants,
-  NebulaContractAddress,
-  stakingStakeForm,
-  StakingStakeFormInput,
-} from '@nebula-js/app-fns';
+import { stakingStakeForm, StakingStakeFormInput } from '@nebula-js/app-fns';
 import { CT, CW20Addr, HumanAddr, Rate, UST } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 
@@ -27,16 +21,11 @@ export function useStakingStakeForm({
 }: StakingStakeFormParams) {
   const connectedWallet = useConnectedWallet();
 
-  const { constants } = useApp<NebulaContractAddress, NebulaContants>();
+  const fixedFee = useFixedFee();
 
-  const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
+  const uUST = useUstBalance(connectedWallet?.walletAddress);
 
-  const uUST = useTerraNativeBalanceQuery<UST>(
-    'uusd',
-    connectedWallet?.walletAddress,
-  );
-
-  const tax = useTax<UST>('uusd');
+  const tax = useUstTax();
 
   const uCT = useCW20Balance<CT>(tokenAddr, connectedWallet?.walletAddress);
 

@@ -1,11 +1,9 @@
-import { useApp } from '@libs/app-provider';
 import { sum } from '@libs/big-math';
 import {
   formatTokenWithPostfixUnits,
   formatUTokenWithPostfixUnits,
 } from '@libs/formatter';
-import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
-import { useMypageHoldingsQuery } from '@nebula-js/app-provider';
+import { useMypageHoldingsQuery, useNebulaApp } from '@nebula-js/app-provider';
 import { SendIcon } from '@nebula-js/icons';
 import { u, UST } from '@nebula-js/types';
 import {
@@ -27,7 +25,7 @@ export interface HoldingsProps {
 }
 
 function HoldingsBase({ className }: HoldingsProps) {
-  const { contractAddress } = useApp<NebulaContractAddress, NebulaContants>();
+  const { contractAddress } = useNebulaApp();
 
   const { data = [] } = useMypageHoldingsQuery();
 

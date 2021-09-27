@@ -1,17 +1,13 @@
 import {
-  useApp,
-  useGasPrice,
-  useTax,
+  useFixedFee,
   useTerraBalancesQuery,
+  useUstTax,
 } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
-import {
-  clusterMintAdvancedForm,
-  NebulaContants,
-  NebulaContractAddress,
-} from '@nebula-js/app-fns';
+import { clusterMintAdvancedForm } from '@nebula-js/app-fns';
 import { cluster, terraswap, Token } from '@nebula-js/types';
 import { useMemo } from 'react';
+import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export interface ClusterMintAdvancedFormParams {
   clusterState: cluster.ClusterStateResponse;
@@ -20,18 +16,15 @@ export interface ClusterMintAdvancedFormParams {
 export function useClusterMintAdvancedForm({
   clusterState,
 }: ClusterMintAdvancedFormParams) {
-  const { wasmClient, lastSyncedHeight, gasPrice, constants } = useApp<
-    NebulaContractAddress,
-    NebulaContants
-  >();
+  const { wasmClient, lastSyncedHeight, gasPrice, constants } = useNebulaApp();
 
   const assetInfos = useMemo(() => {
     return clusterState.target.map(({ info }) => info);
   }, [clusterState.target]);
 
-  const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
+  const fixedFee = useFixedFee();
 
-  const { taxRate, maxTax } = useTax('uusd');
+  const { taxRate, maxTax } = useUstTax();
 
   const { data: balances } = useTerraBalancesQuery(assetInfos);
 

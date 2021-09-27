@@ -1,14 +1,13 @@
-import { useApp } from '@libs/app-provider';
 import { microfy } from '@libs/formatter';
 import { InputAdornment } from '@material-ui/core';
-import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
+import { useNebulaApp } from '@nebula-js/app-provider';
 import { gov, NEB, Num, rs, u } from '@nebula-js/types';
 import { FormLabel, NumberInput } from '@nebula-js/ui';
 import React, { useCallback, useState } from 'react';
 import { PollCreateBase } from './PollCreateBase';
 
 export default function PollGovernanceParameterChange() {
-  const { contractAddress } = useApp<NebulaContractAddress, NebulaContants>();
+  const { contractAddress } = useNebulaApp();
 
   const [votingPeriod, setVotingPeriod] = useState<Num>('' as Num);
   const [effectiveDelay, setEffectiveDelay] = useState<Num>('' as Num);

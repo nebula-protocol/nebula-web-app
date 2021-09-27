@@ -1,12 +1,7 @@
-import {
-  useApp,
-  useCW20Balance,
-  useTerraNativeBalances,
-} from '@libs/app-provider';
+import { useTerraNativeBalances } from '@libs/app-provider';
 import { formatUTokenWithPostfixUnits, truncate } from '@libs/formatter';
 import { CallMade, Check } from '@material-ui/icons';
-import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
-import { NEB } from '@nebula-js/types';
+import { useNebBalance } from '@nebula-js/app-provider';
 import { Button, Tooltip } from '@nebula-js/ui';
 import { useConnectedWallet, useWallet } from '@terra-money/wallet-provider';
 import big from 'big.js';
@@ -37,16 +32,11 @@ function WalletDetailsBase({
     },
   );
 
-  const { contractAddress } = useApp<NebulaContractAddress, NebulaContants>();
-
   const { uUST, uLuna } = useTerraNativeBalances(
     connectedWallet?.walletAddress,
   );
 
-  const uNEB = useCW20Balance<NEB>(
-    contractAddress.cw20.NEB,
-    connectedWallet?.walletAddress,
-  );
+  const uNEB = useNebBalance(connectedWallet?.walletAddress);
 
   //const uUST = useTerraNativeBalanceQuery<UST>('uusd');
   //

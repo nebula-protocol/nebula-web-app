@@ -1,21 +1,13 @@
-import { useApp } from '@libs/app-provider';
 import { createQueryFn } from '@libs/react-query-utils';
-import {
-  GovState,
-  govStateQuery,
-  NebulaContants,
-  NebulaContractAddress,
-} from '@nebula-js/app-fns';
+import { GovState, govStateQuery } from '@nebula-js/app-fns';
 import { useQuery, UseQueryResult } from 'react-query';
 import { NEBULA_QUERY_KEYS } from '../../env';
+import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 const queryFn = createQueryFn(govStateQuery);
 
 export function useGovStateQuery(): UseQueryResult<GovState | undefined> {
-  const { wasmClient, queryErrorReporter, contractAddress } = useApp<
-    NebulaContractAddress,
-    NebulaContants
-  >();
+  const { wasmClient, queryErrorReporter, contractAddress } = useNebulaApp();
 
   const result = useQuery(
     [NEBULA_QUERY_KEYS.GOV_STATE, contractAddress.gov, wasmClient],

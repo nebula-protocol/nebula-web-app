@@ -1,6 +1,5 @@
-import { useTerraNativeBalanceQuery } from '@libs/app-provider';
+import { useUstBalance } from '@libs/app-provider';
 import { demicrofy, formatTokenWithPostfixUnits } from '@libs/formatter';
-import { UST } from '@libs/types';
 import { ClickAwayListener, Grow, Popper } from '@material-ui/core';
 import { ChevronRightIcon, WalletIcon } from '@nebula-js/icons';
 import { EmptyButton, EmptyButtonProps, EmptyIconHolder } from '@nebula-js/ui';
@@ -17,7 +16,7 @@ export interface ConnectedProps
 function ConnectedBase({ ...buttonProps }: ConnectedProps) {
   const connectedWallet = useConnectedWallet();
 
-  const uUST = useTerraNativeBalanceQuery<UST>('uusd');
+  const uUST = useUstBalance(connectedWallet?.walletAddress);
 
   const [anchorElement, setAnchorElement] = useState<HTMLElement | null>(null);
 

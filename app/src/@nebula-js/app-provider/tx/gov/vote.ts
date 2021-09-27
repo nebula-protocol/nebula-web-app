@@ -1,13 +1,10 @@
-import { useApp, useGasPrice, useRefetchQueries } from '@libs/app-provider';
-import {
-  govVoteTx,
-  NebulaContants,
-  NebulaContractAddress,
-} from '@nebula-js/app-fns';
+import { useFixedFee, useRefetchQueries } from '@libs/app-provider';
+import { govVoteTx } from '@nebula-js/app-fns';
 import { gov, NEB, u, UST } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
 import { NEBULA_TX_KEYS } from '../../env';
+import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export interface GovVoteTxParams {
   vote: gov.VoteOption;
@@ -19,12 +16,10 @@ export interface GovVoteTxParams {
 export function useGovVoteTx(pollId: number) {
   const connectedWallet = useConnectedWallet();
 
-  const { wasmClient, txErrorReporter, constants, contractAddress } = useApp<
-    NebulaContractAddress,
-    NebulaContants
-  >();
+  const { wasmClient, txErrorReporter, constants, contractAddress } =
+    useNebulaApp();
 
-  const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
+  const fixedFee = useFixedFee();
 
   const refetchQueries = useRefetchQueries();
 

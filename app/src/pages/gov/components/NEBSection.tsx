@@ -1,8 +1,6 @@
-import { useApp, useCW20Balance } from '@libs/app-provider';
 import { formatUTokenWithPostfixUnits } from '@libs/formatter';
 import { AnimateNumber } from '@libs/ui';
-import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
-import { useGovStakerQuery } from '@nebula-js/app-provider';
+import { useGovStakerQuery, useNebBalance } from '@nebula-js/app-provider';
 import { NEB, u } from '@nebula-js/types';
 import {
   Button,
@@ -24,12 +22,7 @@ export interface NEBSectionProps {
 function NEBSectionBase({ className }: NEBSectionProps) {
   const connectedWallet = useConnectedWallet();
 
-  const { contractAddress } = useApp<NebulaContractAddress, NebulaContants>();
-
-  const uNEB = useCW20Balance<NEB>(
-    contractAddress.cw20.NEB,
-    connectedWallet?.walletAddress,
-  );
+  const uNEB = useNebBalance(connectedWallet?.walletAddress);
 
   const { data: { govStaker } = {} } = useGovStakerQuery(
     connectedWallet?.walletAddress,

@@ -1,6 +1,5 @@
-import { useApp, useCW20Balance } from '@libs/app-provider';
 import { formatUToken, microfy } from '@libs/formatter';
-import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
+import { useNebBalance } from '@nebula-js/app-provider';
 import { useGovVoteTx } from '@nebula-js/app-provider/tx/gov/vote';
 import { WalletIcon } from '@nebula-js/icons';
 import { gov, NEB, u } from '@nebula-js/types';
@@ -27,8 +26,6 @@ export interface VoteFormProps {
 function VoteFormBase({ className, pollId, onVoteComplete }: VoteFormProps) {
   const connectedWallet = useConnectedWallet();
 
-  const { contractAddress } = useApp<NebulaContractAddress, NebulaContants>();
-
   const { broadcast } = useTxBroadcast();
 
   const postTx = useGovVoteTx(pollId);
@@ -37,10 +34,7 @@ function VoteFormBase({ className, pollId, onVoteComplete }: VoteFormProps) {
   const [amount, setAmount] = useState<NEB>('' as NEB);
 
   //const { tokenBalances } = useBank<NebulaTokenBalances>();
-  const uNEB = useCW20Balance<NEB>(
-    contractAddress.cw20.NEB,
-    connectedWallet?.walletAddress,
-  );
+  const uNEB = useNebBalance(connectedWallet?.walletAddress);
 
   const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
     mobile: 'medium',

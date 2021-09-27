@@ -1,21 +1,13 @@
-import { useApp } from '@libs/app-provider';
-import {
-  GovVoters,
-  govVotersQuery,
-  NebulaContants,
-  NebulaContractAddress,
-} from '@nebula-js/app-fns';
+import { GovVoters, govVotersQuery } from '@nebula-js/app-fns';
 import { useInfiniteQuery, UseInfiniteQueryResult } from 'react-query';
 import { NEBULA_QUERY_KEYS } from '../../env';
+import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export function useGovVotersQuery(
   pollId: number,
   limit: number,
 ): UseInfiniteQueryResult<GovVoters | undefined> {
-  const { wasmClient, queryErrorReporter, contractAddress } = useApp<
-    NebulaContractAddress,
-    NebulaContants
-  >();
+  const { wasmClient, queryErrorReporter, contractAddress } = useNebulaApp();
 
   const result = useInfiniteQuery(
     [NEBULA_QUERY_KEYS.GOV_VOTERS, pollId],

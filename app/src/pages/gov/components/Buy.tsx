@@ -1,15 +1,11 @@
-import {
-  useApp,
-  useCW20BuyTokenForm,
-  useCW20BuyTokenTx,
-} from '@libs/app-provider';
+import { useCW20BuyTokenForm, useCW20BuyTokenTx } from '@libs/app-provider';
 import {
   formatFluidDecimalPoints,
   formatUInput,
   formatUToken,
   microfy,
 } from '@libs/formatter';
-import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
+import { useNebulaApp } from '@nebula-js/app-provider';
 import { ArrowSouthIcon, WalletIcon } from '@nebula-js/icons';
 import { NEB, Rate, u, UST } from '@nebula-js/types';
 import {
@@ -48,7 +44,7 @@ function BuyBase({ className }: BuyProps) {
 
   const [openMoreOptions, setOpenMoreOptions] = useState<boolean>(false);
 
-  const { contractAddress } = useApp<NebulaContractAddress, NebulaContants>();
+  const { contractAddress } = useNebulaApp();
 
   const postTx = useCW20BuyTokenTx(contractAddress.terraswap.nebUstPair, 'NEB');
 

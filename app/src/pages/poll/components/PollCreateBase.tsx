@@ -1,11 +1,14 @@
-import { useApp, useCW20Balance, useGasPrice } from '@libs/app-provider';
+import { useFixedFee } from '@libs/app-provider';
 import { formatUToken } from '@libs/formatter';
 import {
   BytesValid,
   useValidateStringBytes,
 } from '@libs/use-string-bytes-length';
-import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
-import { useGovConfigQuery, useGovCreatePollTx } from '@nebula-js/app-provider';
+import {
+  useGovConfigQuery,
+  useGovCreatePollTx,
+  useNebBalance,
+} from '@nebula-js/app-provider';
 import { WalletIcon } from '@nebula-js/icons';
 import { gov, NEB, u } from '@nebula-js/types';
 import {
@@ -44,11 +47,6 @@ function PollCreateBaseBase({
   submitButtonStatus,
   children,
 }: PollCreateBaseProps) {
-  const { contractAddress, constants } = useApp<
-    NebulaContractAddress,
-    NebulaContants
-  >();
-
   const connectedWallet = useConnectedWallet();
   const history = useHistory();
 
@@ -58,12 +56,9 @@ function PollCreateBaseBase({
 
   const { data: { govConfig } = {} } = useGovConfigQuery();
 
-  const uNEB = useCW20Balance<NEB>(
-    contractAddress.cw20.NEB,
-    connectedWallet?.walletAddress,
-  );
+  const uNEB = useNebBalance(connectedWallet?.walletAddress);
 
-  const fixedFee = useGasPrice(constants.fixedGas, 'uusd');
+  const fixedFee = useFixedFee();
   //const { tokenBalances } = useBank<NebulaTokenBalances>();
   //const {
   //  constants: { fixedFee },
