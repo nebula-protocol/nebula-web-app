@@ -1,4 +1,4 @@
-import { chains } from '@libs/app-fns';
+import { getChainOptions } from '@terra-money/wallet-provider';
 import { Header } from 'components/header';
 import { DisableOverflowXStyle } from 'components/styles/DisableOverflowXStyle';
 import { Providers } from 'configurations/app';
@@ -72,11 +72,11 @@ function App() {
   );
 }
 
-chains().then(({ mainnet, testnet, bombay }) => {
+getChainOptions().then((chainOptions) => {
   render(
     <Providers
-      defaultNetwork={testnet}
-      walletConnectChainIds={{ 0: testnet, 1: mainnet, 2: bombay }}
+      {...chainOptions}
+      defaultNetwork={chainOptions.walletConnectChainIds[0]}
     >
       <DisableOverflowXStyle />
       <App />

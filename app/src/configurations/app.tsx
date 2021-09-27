@@ -6,7 +6,7 @@ import { captureException } from '@sentry/react';
 import { ReadonlyWalletSession } from '@terra-dev/readonly-wallet';
 import { NetworkInfo } from '@terra-dev/wallet-types';
 import {
-  WalletControllerOptions,
+  WalletControllerChainOptions,
   WalletProvider,
 } from '@terra-money/wallet-provider';
 import { useReadonlyWalletDialog } from 'components/dialogs/useReadonlyWalletDialog';
@@ -32,15 +32,11 @@ const queryClient = new QueryClient();
 const errorReporter =
   process.env.NODE_ENV === 'production' ? captureException : undefined;
 
-export interface ProvidersProps
-  extends Pick<
-    WalletControllerOptions,
-    'defaultNetwork' | 'walletConnectChainIds'
-  > {
+export interface ProvidersProps extends WalletControllerChainOptions {
   children: ReactNode;
 }
 
-export function Providers({ children, ...networkOptions }: ProvidersProps) {
+export function Providers({ children, ...chainOptions }: ProvidersProps) {
   const [openReadonlyWalletSelector, readonlyWalletSelectorElement] =
     useReadonlyWalletDialog();
 
@@ -55,7 +51,7 @@ export function Providers({ children, ...networkOptions }: ProvidersProps) {
 
   return (
     <WalletProvider
-      {...networkOptions}
+      {...chainOptions}
       connectorOpts={{
         bridge: ON_PRODUCTION
           ? 'https://walletconnect.terra.dev/'
