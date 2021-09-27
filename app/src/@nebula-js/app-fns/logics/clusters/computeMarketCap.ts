@@ -11,7 +11,9 @@ export function computeMarketCap(
   const ust = terraswapPool.assets[ustIndex].amount as u<UST>;
   const token = terraswapPool.assets[ustIndex === 0 ? 1 : 0].amount as u<CT>;
 
-  return big(clusterState.outstanding_balance_tokens).mul(
-    big(ust).div(token),
+  return (
+    big(token).gt(0)
+      ? big(clusterState.outstanding_balance_tokens).mul(big(ust).div(token))
+      : big(0)
   ) as u<UST<Big>>;
 }
