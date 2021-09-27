@@ -9,22 +9,21 @@ import { NetworkInfo } from '@terra-dev/wallet-types';
 import { UseQueryResult } from 'react-query';
 
 export function defaultHiveWasmClient(network: NetworkInfo): HiveWasmClient {
-  switch (network.chainID) {
-    case 'tequila-0004':
-      return {
-        hiveEndpoint: 'https://tequila-mantle.terra.dev',
-        hiveFetcher: defaultHiveFetcher,
-      };
-    case 'bombay-10':
-      return {
-        hiveEndpoint: 'https://bombay-mantle.terra.dev',
-        hiveFetcher: defaultHiveFetcher,
-      };
-    default:
-      return {
-        hiveEndpoint: 'https://mantle.terra.dev',
-        hiveFetcher: defaultHiveFetcher,
-      };
+  if (network.chainID.startsWith('tequila')) {
+    return {
+      hiveEndpoint: 'https://tequila-mantle.terra.dev',
+      hiveFetcher: defaultHiveFetcher,
+    };
+  } else if (network.chainID.startsWith('bombay')) {
+    return {
+      hiveEndpoint: 'https://bombay-mantle.terra.dev',
+      hiveFetcher: defaultHiveFetcher,
+    };
+  } else {
+    return {
+      hiveEndpoint: 'https://mantle.terra.dev',
+      hiveFetcher: defaultHiveFetcher,
+    };
   }
 }
 
