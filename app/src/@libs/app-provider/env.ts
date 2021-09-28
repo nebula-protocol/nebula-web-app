@@ -8,7 +8,7 @@ import {
 import { NetworkInfo } from '@terra-dev/wallet-types';
 import { UseQueryResult } from 'react-query';
 
-export function defaultHiveWasmClient(network: NetworkInfo): HiveWasmClient {
+export function DEFAULT_HIVE_WASM_CLIENT(network: NetworkInfo): HiveWasmClient {
   if (network.chainID.startsWith('tequila')) {
     return {
       hiveEndpoint: 'https://tequila-mantle.terra.dev',
@@ -27,14 +27,14 @@ export function defaultHiveWasmClient(network: NetworkInfo): HiveWasmClient {
   }
 }
 
-export function defaultLcdWasmClient(network: NetworkInfo): LcdWasmClient {
+export function DEFAULT_LCD_WASM_CLIENT(network: NetworkInfo): LcdWasmClient {
   return {
     lcdEndpoint: network.lcd,
     lcdFetcher: defaultLcdFetcher,
   };
 }
 
-export function defaultGasPriceEndpoint(network: NetworkInfo): string {
+export function DEFAULT_GAS_PRICE_ENDPOINTS(network: NetworkInfo): string {
   const fcd = network.lcd.replace(/lcd/, 'fcd');
   return `${fcd}/v1/txs/gas_prices`;
 }
@@ -107,7 +107,7 @@ const FALLBACK_GAS_PRICE_BOMBAY = {
   udkk: '0.9',
 };
 
-export function defaultFallbackGasPrice(network: NetworkInfo): GasPrice {
+export function DEFAULT_FALLBACK_GAS_PRICE(network: NetworkInfo): GasPrice {
   switch (network.chainID) {
     case 'tequila-0004':
       return FALLBACK_GAS_PRICE_TEQUILA as GasPrice;

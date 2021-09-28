@@ -31,17 +31,13 @@ function createIndex(packageRoot: string, addedExports: string[]) {
   });
 }
 
-createIndex(path.resolve(__dirname, '../src/@libs/app-fns'), [
-  './types',
-  './errors',
-]);
+createIndex(path.resolve(__dirname, '../src/@libs/app-fns'), ['./errors']);
 createIndex(path.resolve(__dirname, '../src/@libs/app-provider'), [
   './env',
   './types',
 ]);
-createIndex(path.resolve(__dirname, '../src/@nebula-js/app-fns'), [
-  './types',
-]);
+createIndex(path.resolve(__dirname, '../src/@nebula-js/app-fns'), ['./types']);
 createIndex(path.resolve(__dirname, '../src/@nebula-js/app-provider'), [
   './env',
+  './types',
 ]);

@@ -1,5 +1,4 @@
-import { AppConstants, AppContractAddress } from '@libs/app-fns';
-import { CW20Addr, Gas, HumanAddr } from '@nebula-js/types';
+import { Gas } from '@nebula-js/types';
 
 // gas_price = uusd of https://[tequila-]fcd.terra.dev/v1/txs/gas_prices
 // txFee = (txFeeBase + (inventory * txFeePerInventory) + (asset count * txFeePerAsset)) * gas_price
@@ -16,28 +15,4 @@ export interface ClusterFeeMultipliers {
 export interface NebulaClusterFee {
   default: ClusterFeeMultipliers;
   arbMint: ClusterFeeMultipliers;
-}
-
-export interface NebulaContractAddress extends AppContractAddress {
-  airdrop: HumanAddr;
-  clusterFactory: HumanAddr;
-  collector: HumanAddr;
-  community: HumanAddr;
-  gov: HumanAddr;
-  incentives: HumanAddr;
-  incentivesCustody: HumanAddr;
-  staking: HumanAddr;
-
-  terraswap: {
-    factory: HumanAddr;
-    nebUstPair: HumanAddr;
-  };
-
-  cw20: {
-    NEB: CW20Addr;
-  };
-}
-
-export interface NebulaContants extends AppConstants {
-  clusterFee: NebulaClusterFee;
 }

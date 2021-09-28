@@ -12,17 +12,16 @@ import {
 import { useReadonlyWalletDialog } from 'components/dialogs/useReadonlyWalletDialog';
 import { StyleProviders } from 'configurations/style';
 import { TxBroadcastProvider } from 'contexts/tx-broadcast';
-
 import React, { ReactNode, useCallback } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter as Router } from 'react-router-dom';
 import {
   GA_TRACKING_ID,
   NEBULA_TX_REFETCH_MAP,
-  nebulaConstants,
-  nebulaContractAddress,
-  nebulaDefaultWasmClient,
-  ON_PRODUCTION,
+  NEBULA_CONSTANTS,
+  NEBULA_CONTRACT_ADDRESS,
+  NEBULA_DEFAULT_WASM_CLIENT,
+  WALLETCONNECT_BRIDGE_SERVER,
 } from './env';
 
 patchReactQueryFocusRefetching();
@@ -53,18 +52,16 @@ export function Providers({ children, ...chainOptions }: ProvidersProps) {
     <WalletProvider
       {...chainOptions}
       connectorOpts={{
-        bridge: ON_PRODUCTION
-          ? 'https://walletconnect.terra.dev/'
-          : 'https://tequila-walletconnect.terra.dev/',
+        bridge: WALLETCONNECT_BRIDGE_SERVER,
       }}
       createReadonlyWalletSession={createReadonlyWalletSession}
     >
       <Router>
         <QueryClientProvider client={queryClient}>
           <AppProvider
-            defaultWasmClient={nebulaDefaultWasmClient}
-            contractAddress={nebulaContractAddress}
-            constants={nebulaConstants}
+            defaultWasmClient={NEBULA_DEFAULT_WASM_CLIENT}
+            contractAddress={NEBULA_CONTRACT_ADDRESS}
+            constants={NEBULA_CONSTANTS}
             refetchMap={NEBULA_TX_REFETCH_MAP}
             txErrorReporter={errorReporter}
             queryErrorReporter={errorReporter}

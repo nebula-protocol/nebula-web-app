@@ -1,6 +1,5 @@
 // THIS FILE IS AUTO CREATED
 // @see ~/scripts/create-index.ts
-export * from './types';
 export * from './errors';
 export * from './caches/cw20TokenInfoCache';
 export * from './caches/gasPrice';

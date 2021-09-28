@@ -1,14 +1,20 @@
 import { TERRA_QUERY_KEY, TERRA_TX_KEYS } from '@libs/app-provider';
 import { CW20Addr, Gas, HumanAddr, Rate } from '@libs/types';
-import { NebulaContants, NebulaContractAddress } from '@nebula-js/app-fns';
-import { NEBULA_QUERY_KEYS, NEBULA_TX_KEYS } from '@nebula-js/app-provider';
+import {
+  NEBULA_QUERY_KEYS,
+  NEBULA_TX_KEYS,
+  NebulaContants,
+  NebulaContractAddress,
+} from '@nebula-js/app-provider';
 import { NetworkInfo } from '@terra-dev/wallet-types';
 
-export function nebulaDefaultWasmClient(network: NetworkInfo): 'lcd' | 'hive' {
+export function NEBULA_DEFAULT_WASM_CLIENT(
+  network: NetworkInfo,
+): 'lcd' | 'hive' {
   return network.chainID.startsWith('tequila') ? 'hive' : 'lcd';
 }
 
-export function nebulaContractAddress(
+export function NEBULA_CONTRACT_ADDRESS(
   network: NetworkInfo,
 ): NebulaContractAddress {
   if (network.chainID.startsWith('tequila')) {
@@ -53,10 +59,10 @@ export function nebulaContractAddress(
     };
   }
 
-  throw new Error(`currently only support "tequila-0004"`);
+  throw new Error(`currently only support "tequila-0004" or "bombay-11"`);
 }
 
-export function nebulaConstants(network: NetworkInfo): NebulaContants {
+export function NEBULA_CONSTANTS(network: NetworkInfo): NebulaContants {
   if (
     network.chainID.startsWith('tequila') ||
     network.chainID.startsWith('bombay')
@@ -87,10 +93,14 @@ export function nebulaConstants(network: NetworkInfo): NebulaContants {
     };
   }
 
-  throw new Error(`currently only support "tequila-0004"`);
+  throw new Error(`currently only support "tequila-0004" or "bombay-11"`);
 }
 
 export const ON_PRODUCTION = global.location.host === 'app.nebulaprotocol.com';
+
+export const WALLETCONNECT_BRIDGE_SERVER = ON_PRODUCTION
+  ? 'https://walletconnect.terra.dev/'
+  : 'https://tequila-walletconnect.terra.dev/';
 
 // TODO: set ga tracking id
 export const GA_TRACKING_ID = (() => {
