@@ -108,13 +108,12 @@ const FALLBACK_GAS_PRICE_BOMBAY = {
 };
 
 export function DEFAULT_FALLBACK_GAS_PRICE(network: NetworkInfo): GasPrice {
-  switch (network.chainID) {
-    case 'tequila-0004':
-      return FALLBACK_GAS_PRICE_TEQUILA as GasPrice;
-    case 'bombay-10':
-      return FALLBACK_GAS_PRICE_BOMBAY as GasPrice;
-    default:
-      return FALLBACK_GAS_PRICE_COLUMNBUS as GasPrice;
+  if (network.chainID.startsWith('tequila')) {
+    return FALLBACK_GAS_PRICE_TEQUILA as GasPrice;
+  } else if (network.chainID.startsWith('bombay')) {
+    return FALLBACK_GAS_PRICE_BOMBAY as GasPrice;
+  } else {
+    return FALLBACK_GAS_PRICE_COLUMNBUS as GasPrice;
   }
 }
 

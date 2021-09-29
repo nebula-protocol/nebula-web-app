@@ -39,27 +39,27 @@ export function NEBULA_CONTRACT_ADDRESS(
     };
   } else if (network.chainID.startsWith('bombay')) {
     return {
-      airdrop: 'terra1ajcery7rccn6za4hxjk3d0pyzycclepghh04ya' as HumanAddr,
-      collector: 'terra1k3rzamcfa6tfy9ystaypn78tghej3kd0nvwu2z' as HumanAddr,
-      community: 'terra1w6slwlf69gxzdqhvxw5ccw475xkeltjzqw4wjd' as HumanAddr,
+      airdrop: 'terra19dm5qdxvfkxxxw9kee8655gxkv97y5v3t3yn8d' as HumanAddr,
+      collector: 'terra1g4cquyyua48ua7apvl6qq4u4ghmj4sce5gv46m' as HumanAddr,
+      community: 'terra1nz7mhxttv8tmjh7kq4rttnm6vrcdmcjh8ugz5g' as HumanAddr,
       clusterFactory:
-        'terra1h50mkcllk2umkmx3zt28vs8cf0gqy5v2sjc5gg' as HumanAddr,
-      gov: 'terra1t3hg43dk64xxdf6pccey99ulx9uepjcte0xq9s' as HumanAddr,
-      incentives: 'terra1p4v3fekuz7gp5ptz2sn3sdpzygf4wl069guqsh' as HumanAddr,
+        'terra14dz2cgqtc3ug89vztp5fx8tt99chnts5zusq69' as HumanAddr,
+      gov: 'terra1wymnvrerea4ydar55dftjszcfec0hej0a434s3' as HumanAddr,
+      incentives: 'terra14hetryc3qn0mw7arq8pmvf842jd8dfr4yydptp' as HumanAddr,
       incentivesCustody:
-        'terra1r89l2xvgv3acrf083y3dqcp7c5hr46ramrmzmv' as HumanAddr,
-      staking: 'terra19pejfvz5jge6vxnm6tzg6dy7lwyzh846nkmz4n' as HumanAddr,
+        'terra1md4gk73gw5rnlra09gjr7w228h5ghgeu8q9hwy' as HumanAddr,
+      staking: 'terra1zcvr232eyd4s2a56nkpz4sh0uplpwj7k0grcrl' as HumanAddr,
       terraswap: {
         factory: 'terra18qpjm4zkvqnpjpw0zn0tdr8gdzvt8au35v45xf' as HumanAddr,
-        nebUstPair: 'terra1es0vnx9lw42qc8n76ewp2yj8z0mfh2smxd0unr' as HumanAddr,
+        nebUstPair: 'terra1xghjhk4u4x49f5lpsz3sgc3a6ta8wh89gnt30t' as HumanAddr,
       },
       cw20: {
-        NEB: 'terra1ccthcaymaeatd0ty42mka3wxj36hgxm5r49446' as CW20Addr,
+        NEB: 'terra17rfslz2j8zf9nmfvmzlvr68csjy6x78eyzms7x' as CW20Addr,
       },
     };
   }
 
-  throw new Error(`currently only support "tequila-0004" or "bombay-11"`);
+  throw new Error(`currently only support "tequila-0004" or "bombay-12"`);
 }
 
 export function NEBULA_CONSTANTS(network: NetworkInfo): NebulaContants {
@@ -93,7 +93,7 @@ export function NEBULA_CONSTANTS(network: NetworkInfo): NebulaContants {
     };
   }
 
-  throw new Error(`currently only support "tequila-0004" or "bombay-11"`);
+  throw new Error(`currently only support "tequila-0004" or "bombay-12"`);
 }
 
 export const ON_PRODUCTION = global.location.host === 'app.nebulaprotocol.com';
