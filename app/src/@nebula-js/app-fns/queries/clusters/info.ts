@@ -5,7 +5,7 @@ import {
   TerraswapPoolInfo,
 } from '@libs/app-fns';
 import {
-  WasmClient,
+  QueryClient,
   wasmFetch,
   WasmQuery,
   WasmQueryData,
@@ -43,11 +43,11 @@ export type ClusterInfo = WasmQueryData<ClusterInfoWasmQuery> & {
 export async function clusterInfoQuery(
   clusterAddr: HumanAddr,
   terraswapFactoryAddr: HumanAddr,
-  wasmClient: WasmClient,
+  queryClient: QueryClient,
 ): Promise<ClusterInfo> {
   const { clusterState, clusterConfig } =
     await wasmFetch<ClusterStateWasmQuery>({
-      ...wasmClient,
+      ...queryClient,
       id: `cluster--state=${clusterAddr}`,
       wasmQuery: {
         clusterState: {
@@ -70,7 +70,7 @@ export async function clusterInfoQuery(
   const tokenInfos: AssetTokenInfo[] = await Promise.all(
     clusterState.target.map(({ info }) => {
       if ('token' in info) {
-        return cw20TokenInfoQuery(info.token.contract_addr, wasmClient).then(
+        return cw20TokenInfoQuery(info.token.contract_addr, queryClient).then(
           ({ tokenInfo }) => ({ asset: info, tokenInfo } as AssetTokenInfo),
         );
       } else if ('native_token' in info) {
@@ -93,7 +93,7 @@ export async function clusterInfoQuery(
     await cw20PoolInfoQuery<CT>(
       clusterState.cluster_token,
       terraswapFactoryAddr,
-      wasmClient,
+      queryClient,
     );
 
   return {

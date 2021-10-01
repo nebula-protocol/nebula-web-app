@@ -8,7 +8,7 @@ export function useGovPollsQuery(
   filter: gov.PollStatus | undefined,
   limit: number,
 ): UseInfiniteQueryResult<GovPolls | undefined> {
-  const { wasmClient, queryErrorReporter, lastSyncedHeight, contractAddress } =
+  const { queryClient, queryErrorReporter, lastSyncedHeight, contractAddress } =
     useNebulaApp();
 
   const result = useInfiniteQuery(
@@ -23,7 +23,7 @@ export function useGovPollsQuery(
         },
         contractAddress.cw20.NEB,
         lastSyncedHeight,
-        wasmClient,
+        queryClient,
       );
     },
     {

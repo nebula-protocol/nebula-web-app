@@ -52,7 +52,7 @@ export const clusterMintTerraswapArbitrageForm = (
               },
             },
           },
-          dependency.wasmClient,
+          dependency.queryClient,
         ).then(({ simulation }) => {
           return {
             ...advancedAsyncStates,

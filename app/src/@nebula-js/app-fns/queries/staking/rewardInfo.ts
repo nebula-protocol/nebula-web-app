@@ -1,5 +1,5 @@
 import {
-  WasmClient,
+  QueryClient,
   wasmFetch,
   WasmQuery,
   WasmQueryData,
@@ -16,11 +16,11 @@ export async function stakingRewardInfoQuery(
   walletAddr: HumanAddr | undefined,
   stakingAddr: HumanAddr,
   clusterToken: CW20Addr | undefined,
-  wasmClient: WasmClient,
+  queryClient: QueryClient,
 ): Promise<StakingRewardInfo | undefined> {
   return walletAddr
     ? wasmFetch<StakingRewardInfoWasmQuery>({
-        ...wasmClient,
+        ...queryClient,
         id: `staking--reward-info`,
         wasmQuery: {
           rewardInfo: {

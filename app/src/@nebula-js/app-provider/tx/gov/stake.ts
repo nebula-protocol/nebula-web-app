@@ -17,7 +17,7 @@ export interface GovStakeTxParams {
 export function useGovStakeTx() {
   const connectedWallet = useConnectedWallet();
 
-  const { wasmClient, txErrorReporter, constants, contractAddress } =
+  const { queryClient, txErrorReporter, constants, contractAddress } =
     useNebulaApp();
 
   const fixedFee = useFixedFee();
@@ -40,7 +40,7 @@ export function useGovStakeTx() {
         fixedFee,
         gasWanted: constants.gasWanted,
         gasAdjustment: constants.gasAdjustment,
-        wasmClient,
+        queryClient,
         txErrorReporter,
         onTxSucceed: () => {
           onTxSucceed?.();
@@ -59,7 +59,7 @@ export function useGovStakeTx() {
       fixedFee,
       refetchQueries,
       txErrorReporter,
-      wasmClient,
+      queryClient,
     ],
   );
 

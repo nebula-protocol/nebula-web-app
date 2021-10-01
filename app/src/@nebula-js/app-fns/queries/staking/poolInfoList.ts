@@ -1,4 +1,4 @@
-import { WasmClient } from '@libs/query-client';
+import { QueryClient } from '@libs/query-client';
 import { CW20Addr, HumanAddr } from '@nebula-js/types';
 import { clusterStateListQuery } from '../clusters/stateList';
 import { StakingPoolInfo, stakingPoolInfoQuery } from './poolInfo';
@@ -10,11 +10,11 @@ export async function stakingPoolInfoListQuery(
   stakingAddr: HumanAddr,
   clusterFactoryAddr: HumanAddr,
   terraswapFactoryAddr: HumanAddr,
-  wasmClient: WasmClient,
+  queryClient: QueryClient,
 ): Promise<StakingPoolInfoList> {
   const clusterStates = await clusterStateListQuery(
     clusterFactoryAddr,
-    wasmClient,
+    queryClient,
   );
 
   // TODO add NEB
@@ -29,7 +29,7 @@ export async function stakingPoolInfoListQuery(
         tokenAddr,
         stakingAddr,
         terraswapFactoryAddr,
-        wasmClient,
+        queryClient,
       );
     }),
   );

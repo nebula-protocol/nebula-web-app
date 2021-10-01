@@ -7,7 +7,7 @@ export function useGovVotersQuery(
   pollId: number,
   limit: number,
 ): UseInfiniteQueryResult<GovVoters | undefined> {
-  const { wasmClient, queryErrorReporter, contractAddress } = useNebulaApp();
+  const { queryClient, queryErrorReporter, contractAddress } = useNebulaApp();
 
   const result = useInfiniteQuery(
     [NEBULA_QUERY_KEYS.GOV_VOTERS, pollId],
@@ -19,7 +19,7 @@ export function useGovVotersQuery(
           limit,
           start_after: pageParam,
         },
-        wasmClient,
+        queryClient,
       );
     },
     {

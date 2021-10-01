@@ -16,7 +16,7 @@ export interface GovVoteTxParams {
 export function useGovVoteTx(pollId: number) {
   const connectedWallet = useConnectedWallet();
 
-  const { wasmClient, txErrorReporter, constants, contractAddress } =
+  const { queryClient, txErrorReporter, constants, contractAddress } =
     useNebulaApp();
 
   const fixedFee = useFixedFee();
@@ -39,7 +39,7 @@ export function useGovVoteTx(pollId: number) {
         fixedFee,
         gasWanted: constants.gasWanted,
         gasAdjustment: constants.gasAdjustment,
-        wasmClient,
+        queryClient,
         txErrorReporter,
         onTxSucceed: () => {
           onTxSucceed?.();
@@ -58,7 +58,7 @@ export function useGovVoteTx(pollId: number) {
       pollId,
       refetchQueries,
       txErrorReporter,
-      wasmClient,
+      queryClient,
     ],
   );
 

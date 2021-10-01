@@ -1,6 +1,6 @@
 import { computeMaxUstBalanceForUstTransfer, GasPrice } from '@libs/app-fns';
 import { microfy } from '@libs/formatter';
-import { WasmClient } from '@libs/query-client';
+import { QueryClient } from '@libs/query-client';
 import { FormReturn } from '@libs/use-form';
 import { cluster, CT, HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
 import { BigSource } from 'big.js';
@@ -13,7 +13,7 @@ export interface ClusterMintBasicFormInput {
 }
 
 export interface ClusterMintBaicFormDependency {
-  wasmClient: WasmClient;
+  queryClient: QueryClient;
   //
   clusterState: cluster.ClusterStateResponse;
   terraswapFactoryAddr: HumanAddr;
@@ -37,7 +37,7 @@ export interface ClusterMintBasicFormAsyncStates {
 }
 
 export const clusterMintBasicForm = ({
-  wasmClient,
+  queryClient,
   ustBalance,
   clusterState,
   terraswapFactoryAddr,
@@ -57,7 +57,7 @@ export const clusterMintBasicForm = ({
   const optimizer = new EasyMintOptimizer(
     clusterState.cluster_contract_address,
     terraswapFactoryAddr,
-    wasmClient,
+    queryClient,
   );
 
   optimizer.resetInitialState();

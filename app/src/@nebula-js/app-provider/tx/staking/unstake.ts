@@ -20,7 +20,7 @@ export function useStakingUnstakeTx(
 ) {
   const connectedWallet = useConnectedWallet();
 
-  const { wasmClient, txErrorReporter, constants, contractAddress } =
+  const { queryClient, txErrorReporter, constants, contractAddress } =
     useNebulaApp();
 
   const fixedFee = useFixedFee();
@@ -44,7 +44,7 @@ export function useStakingUnstakeTx(
         fixedFee,
         gasWanted: constants.gasWanted,
         gasAdjustment: constants.gasAdjustment,
-        wasmClient,
+        queryClient,
         txErrorReporter,
         //terraswapPoolAddr: contractAddress.terraswap
         onTxSucceed: () => {
@@ -66,7 +66,7 @@ export function useStakingUnstakeTx(
       tokenAddr,
       tokenUstPairAddr,
       txErrorReporter,
-      wasmClient,
+      queryClient,
     ],
   );
 

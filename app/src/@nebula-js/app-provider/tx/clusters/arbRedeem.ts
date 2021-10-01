@@ -22,7 +22,7 @@ export function useClusterArbRedeemTx(
 ) {
   const connectedWallet = useConnectedWallet();
 
-  const { wasmClient, txErrorReporter, constants, contractAddress } =
+  const { queryClient, txErrorReporter, constants, contractAddress } =
     useNebulaApp();
 
   const fixedFee = useFixedFee();
@@ -47,7 +47,7 @@ export function useClusterArbRedeemTx(
           assets.length,
         ),
         gasAdjustment: constants.gasAdjustment,
-        wasmClient,
+        queryClient,
         txErrorReporter,
         onTxSucceed: () => {
           onTxSucceed?.();
@@ -68,7 +68,7 @@ export function useClusterArbRedeemTx(
       fixedFee,
       refetchQueries,
       txErrorReporter,
-      wasmClient,
+      queryClient,
     ],
   );
 

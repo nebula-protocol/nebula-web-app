@@ -1,5 +1,5 @@
 import {
-  WasmClient,
+  QueryClient,
   wasmFetch,
   WasmQuery,
   WasmQueryData,
@@ -24,10 +24,10 @@ export type ClusterArbRedeem = WasmQueryData<
 // TODO
 export async function clusterArbRedeemQuery(
   lastSyncedHeight: () => Promise<number>,
-  wasmClient: WasmClient,
+  queryClient: QueryClient,
 ): Promise<ClusterArbRedeem> {
   const { simulation } = await wasmFetch<SimulationWasmQuery>({
-    ...wasmClient,
+    ...queryClient,
     id: `cluster--redeem-simulation`,
     wasmQuery: {
       simulation: {
@@ -40,7 +40,7 @@ export async function clusterArbRedeemQuery(
   //wasmQuery.redeem.query.redeem.max_tokens = simulation.return_amount;
 
   const { redeem } = await wasmFetch<RedeemWasmQuery>({
-    ...wasmClient,
+    ...queryClient,
     id: `cluster--redeem`,
     wasmQuery: {
       redeem: {

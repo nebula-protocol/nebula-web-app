@@ -1,7 +1,7 @@
 import { GasPrice } from '@libs/app-fns';
 import { sum, vectorMultiply } from '@libs/big-math';
 import { microfy } from '@libs/formatter';
-import { WasmClient } from '@libs/query-client';
+import { QueryClient } from '@libs/query-client';
 import { FormReturn } from '@libs/use-form';
 import { cluster, CT, NoMicro, Rate, Token, u, UST } from '@nebula-js/types';
 import big, { BigSource } from 'big.js';
@@ -14,7 +14,7 @@ export interface ClusterRedeemBasicFormInput {
 }
 
 export interface ClusterRedeemBasicFormDependency {
-  wasmClient: WasmClient;
+  queryClient: QueryClient;
   lastSyncedHeight: () => Promise<number>;
   //
   clusterState: cluster.ClusterStateResponse;
@@ -80,7 +80,7 @@ export const clusterRedeemBasicForm = (
 
     if (
       !asyncStates ||
-      dependency.wasmClient !== prevDependency?.wasmClient ||
+      dependency.queryClient !== prevDependency?.queryClient ||
       dependency.lastSyncedHeight !== prevDependency?.lastSyncedHeight ||
       dependency.clusterState !== prevDependency?.clusterState ||
       dependency.clusterFee !== prevDependency?.clusterFee ||
@@ -91,7 +91,7 @@ export const clusterRedeemBasicForm = (
         input.tokenAmount,
         dependency.clusterState,
         dependency.lastSyncedHeight,
-        dependency.wasmClient,
+        dependency.queryClient,
       ).then(({ redeem }) => {
         const clusterTxFee = computeClusterTxFee(
           dependency.gasPrice,

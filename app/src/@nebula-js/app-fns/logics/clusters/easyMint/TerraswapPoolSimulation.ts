@@ -1,5 +1,5 @@
 import { TerraswapPoolInfo, terraswapPoolQuery } from '@libs/app-fns';
-import { WasmClient } from '@libs/query-client';
+import { QueryClient } from '@libs/query-client';
 import { HumanAddr, terraswap, Token, u } from '@nebula-js/types';
 import big, { Big } from 'big.js';
 
@@ -12,11 +12,11 @@ export class TerraswapPoolSimulation {
   constructor(
     private pairContract: HumanAddr,
     private comissionRate: number = 0.03,
-    private wasmClient: WasmClient,
+    private queryClient: QueryClient,
   ) {}
 
   reset = async () => {
-    await terraswapPoolQuery(this.pairContract, this.wasmClient).then(
+    await terraswapPoolQuery(this.pairContract, this.queryClient).then(
       ({ terraswapPool, terraswapPoolInfo }) => {
         this.pool = terraswapPool;
         this.poolInfo = terraswapPoolInfo;

@@ -14,7 +14,7 @@ export function useClusterRedeemBasicForm({
 }: ClusterRedeemBasicFormParams) {
   const connectedWallet = useConnectedWallet();
 
-  const { wasmClient, lastSyncedHeight, gasPrice, constants } = useNebulaApp();
+  const { queryClient, lastSyncedHeight, gasPrice, constants } = useNebulaApp();
 
   const fixedFee = useFixedFee();
 
@@ -28,7 +28,7 @@ export function useClusterRedeemBasicForm({
   return useForm(
     clusterRedeemBasicForm,
     {
-      wasmClient,
+      queryClient,
       lastSyncedHeight,
       tokenBalance: uCT,
       taxRate,

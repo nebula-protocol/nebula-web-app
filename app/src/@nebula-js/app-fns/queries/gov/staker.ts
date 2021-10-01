@@ -1,5 +1,5 @@
 import {
-  WasmClient,
+  QueryClient,
   wasmFetch,
   WasmQuery,
   WasmQueryData,
@@ -15,11 +15,11 @@ export type GovStaker = WasmQueryData<GovStakerWasmQuery>;
 export async function govStakerQuery(
   walletAddr: HumanAddr | undefined,
   govAddr: HumanAddr,
-  wasmClient: WasmClient,
+  queryClient: QueryClient,
 ): Promise<GovStaker | undefined> {
   return walletAddr
     ? wasmFetch<GovStakerWasmQuery>({
-        ...wasmClient,
+        ...queryClient,
         id: `gov--staker`,
         wasmQuery: {
           govStaker: {

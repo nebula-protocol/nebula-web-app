@@ -12,7 +12,7 @@ export function useMypageStakingQuery(): UseQueryResult<
 > {
   const connectedWallet = useConnectedWallet();
 
-  const { wasmClient, queryErrorReporter, contractAddress } = useNebulaApp();
+  const { queryClient, queryErrorReporter, contractAddress } = useNebulaApp();
 
   const result = useQuery(
     [
@@ -20,7 +20,7 @@ export function useMypageStakingQuery(): UseQueryResult<
       connectedWallet?.walletAddress,
       contractAddress.staking,
       contractAddress.terraswap.factory,
-      wasmClient,
+      queryClient,
     ],
     queryFn,
     {

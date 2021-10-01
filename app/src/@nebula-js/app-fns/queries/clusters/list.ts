@@ -1,5 +1,5 @@
 import {
-  WasmClient,
+  QueryClient,
   wasmFetch,
   WasmQuery,
   WasmQueryData,
@@ -17,10 +17,10 @@ export type ClustersList = WasmQueryData<ClustersListWasmQuery>;
 
 export async function clustersListQuery(
   clusterFactoryAddr: HumanAddr,
-  wasmClient: WasmClient,
+  queryClient: QueryClient,
 ): Promise<ClustersList> {
   return await wasmFetch<ClustersListWasmQuery>({
-    ...wasmClient,
+    ...queryClient,
     id: `clusters--list`,
     wasmQuery: {
       clusterList: {

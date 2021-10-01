@@ -33,7 +33,7 @@ export function govStakeTx(
 
   return pipe(
     (_: void) => {
-      return govStakerQuery($.walletAddr, $.govAddr, $.wasmClient).then(
+      return govStakerQuery($.walletAddr, $.govAddr, $.queryClient).then(
         (result) => {
           return {
             value: result!.govStaker,

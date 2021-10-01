@@ -13,7 +13,7 @@ export function useStakingRewardInfoQuery(
 ): UseQueryResult<StakingRewardInfo | undefined> {
   const connectedWallet = useConnectedWallet();
 
-  const { wasmClient, queryErrorReporter, contractAddress } = useNebulaApp();
+  const { queryClient, queryErrorReporter, contractAddress } = useNebulaApp();
 
   const result = useQuery(
     [
@@ -21,7 +21,7 @@ export function useStakingRewardInfoQuery(
       connectedWallet?.walletAddress,
       contractAddress.staking,
       tokenAddr,
-      wasmClient,
+      queryClient,
     ],
     queryFn,
     {

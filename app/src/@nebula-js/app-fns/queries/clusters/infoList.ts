@@ -1,4 +1,4 @@
-import { WasmClient } from '@libs/query-client';
+import { QueryClient } from '@libs/query-client';
 import { HumanAddr } from '@nebula-js/types';
 import { ClusterInfo, clusterInfoQuery } from './info';
 import { clustersListQuery } from './list';
@@ -8,16 +8,16 @@ export type ClustersInfoList = ClusterInfo[];
 export async function clustersInfoListQuery(
   clusterFactoryAddr: HumanAddr,
   terraswapFactoryAddr: HumanAddr,
-  wasmClient: WasmClient,
+  queryClient: QueryClient,
 ): Promise<ClustersInfoList> {
   const { clusterList } = await clustersListQuery(
     clusterFactoryAddr,
-    wasmClient,
+    queryClient,
   );
 
   return Promise.all(
     clusterList.contract_infos.map(([clusterAddr]) =>
-      clusterInfoQuery(clusterAddr, terraswapFactoryAddr, wasmClient),
+      clusterInfoQuery(clusterAddr, terraswapFactoryAddr, queryClient),
     ),
   );
 }

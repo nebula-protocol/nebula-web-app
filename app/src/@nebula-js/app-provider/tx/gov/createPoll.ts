@@ -19,7 +19,7 @@ export interface GovCreatePollTxParams {
 export function useGovCreatePollTx() {
   const connectedWallet = useConnectedWallet();
 
-  const { wasmClient, txErrorReporter, constants, contractAddress } =
+  const { queryClient, txErrorReporter, constants, contractAddress } =
     useNebulaApp();
 
   const refetchQueries = useRefetchQueries();
@@ -56,7 +56,7 @@ export function useGovCreatePollTx() {
         fixedFee,
         gasWanted: constants.gasWanted,
         gasAdjustment: constants.gasAdjustment,
-        wasmClient,
+        queryClient,
         txErrorReporter,
         onTxSucceed: () => {
           onTxSucceed?.();
@@ -77,7 +77,7 @@ export function useGovCreatePollTx() {
       refetchQueries,
       taxRate,
       txErrorReporter,
-      wasmClient,
+      queryClient,
     ],
   );
 

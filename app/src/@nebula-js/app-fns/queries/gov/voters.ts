@@ -1,5 +1,5 @@
 import {
-  WasmClient,
+  QueryClient,
   wasmFetch,
   WasmQuery,
   WasmQueryData,
@@ -15,10 +15,10 @@ export type GovVoters = WasmQueryData<GovVotersWasmQuery>;
 export async function govVotersQuery(
   govAddr: HumanAddr,
   votersQuery: gov.Voters['voters'],
-  wasmClient: WasmClient,
+  queryClient: QueryClient,
 ): Promise<GovVoters> {
   return wasmFetch<GovVotersWasmQuery>({
-    ...wasmClient,
+    ...queryClient,
     id: `gov--voters`,
     wasmQuery: {
       voters: {

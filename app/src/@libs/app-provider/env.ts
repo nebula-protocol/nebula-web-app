@@ -2,13 +2,13 @@ import { GasPrice } from '@libs/app-fns';
 import {
   defaultHiveFetcher,
   defaultLcdFetcher,
-  HiveWasmClient,
-  LcdWasmClient,
+  HiveQueryClient,
+  LcdQueryClient,
 } from '@libs/query-client';
 import { NetworkInfo } from '@terra-dev/wallet-types';
 import { UseQueryResult } from 'react-query';
 
-export function DEFAULT_HIVE_WASM_CLIENT(network: NetworkInfo): HiveWasmClient {
+export function DEFAULT_HIVE_WASM_CLIENT(network: NetworkInfo): HiveQueryClient {
   if (network.chainID.startsWith('bombay')) {
     return {
       hiveEndpoint: 'https://bombay-mantle.terra.dev',
@@ -22,7 +22,7 @@ export function DEFAULT_HIVE_WASM_CLIENT(network: NetworkInfo): HiveWasmClient {
   }
 }
 
-export function DEFAULT_LCD_WASM_CLIENT(network: NetworkInfo): LcdWasmClient {
+export function DEFAULT_LCD_WASM_CLIENT(network: NetworkInfo): LcdQueryClient {
   return {
     lcdEndpoint: network.lcd,
     lcdFetcher: defaultLcdFetcher,

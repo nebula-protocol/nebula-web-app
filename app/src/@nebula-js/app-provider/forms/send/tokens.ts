@@ -29,12 +29,12 @@ const cw20AddrCache = new PersistCache<CW20Addr[]>(
 export function useSendTokensForm() {
   const { network } = useWallet();
 
-  const { wasmClient, contractAddress } = useNebulaApp();
+  const { queryClient, contractAddress } = useNebulaApp();
 
   const [_updateInput, states] = useForm(
     sendTokensForm,
     {
-      wasmClient,
+      queryClient,
       fallbackTokenInfo: FALLBACK as any,
     },
     () =>
@@ -47,7 +47,7 @@ export function useSendTokensForm() {
 
   useEffect(() => {
     if (!cw20AddrCache.has(network.chainID)) {
-      clusterStateListQuery(contractAddress.clusterFactory, wasmClient).then(
+      clusterStateListQuery(contractAddress.clusterFactory, queryClient).then(
         (clusterStates) => {
           const cw20Addrs = clusterStates.map(
             ({ cluster_token }) => cluster_token,
@@ -61,7 +61,7 @@ export function useSendTokensForm() {
     contractAddress.clusterFactory,
     _updateInput,
     network.chainID,
-    wasmClient,
+    queryClient,
   ]);
 
   const updateInput = useCallback(

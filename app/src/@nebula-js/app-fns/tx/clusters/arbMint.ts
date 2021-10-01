@@ -67,7 +67,7 @@ export function clusterArbMintTx(
 
   return pipe(
     (_: void) => {
-      return terraswapPoolQuery($.terraswapPairAddr, $.wasmClient).then(
+      return terraswapPoolQuery($.terraswapPairAddr, $.queryClient).then(
         ({ terraswapPool }) => {
           return {
             value: terraswapPool,

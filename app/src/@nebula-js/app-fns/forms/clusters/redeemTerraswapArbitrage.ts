@@ -5,7 +5,7 @@ import {
 } from '@libs/app-fns';
 import { sum, vectorMultiply } from '@libs/big-math';
 import { demicrofy, microfy } from '@libs/formatter';
-import { WasmClient } from '@libs/query-client';
+import { QueryClient } from '@libs/query-client';
 import { FormReturn } from '@libs/use-form';
 import {
   cluster,
@@ -28,7 +28,7 @@ export interface ClusterRedeemTerraswapArbitrageFormInput {
 }
 
 export interface ClusterRedeemTerraswapArbitrageFormDependency {
-  wasmClient: WasmClient;
+  queryClient: QueryClient;
   lastSyncedHeight: () => Promise<number>;
   //
   clusterState: cluster.ClusterStateResponse;
@@ -105,7 +105,7 @@ export const clusterRedeemTerraswapArbitrageForm = (
     if (
       !asyncStates ||
       dependency.connected !== prevDependency?.connected ||
-      dependency.wasmClient !== prevDependency?.wasmClient ||
+      dependency.queryClient !== prevDependency?.queryClient ||
       dependency.lastSyncedHeight !== prevDependency?.lastSyncedHeight ||
       dependency.clusterState !== prevDependency?.clusterState ||
       dependency.gasPrice !== prevDependency?.gasPrice ||
@@ -123,7 +123,7 @@ export const clusterRedeemTerraswapArbitrageForm = (
             },
           },
         },
-        dependency.wasmClient,
+        dependency.queryClient,
       )
         .then(({ simulation: { return_amount } }) => {
           const clusterTxFee = computeClusterTxFee(
@@ -145,7 +145,7 @@ export const clusterRedeemTerraswapArbitrageForm = (
             demicrofy(return_amount as u<CT>).toFixed() as CT,
             dependency.clusterState,
             dependency.lastSyncedHeight,
-            dependency.wasmClient,
+            dependency.queryClient,
           );
         })
         .then(({ redeem }) => {

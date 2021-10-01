@@ -1,6 +1,6 @@
 import { cw20BalanceQuery } from '@libs/app-fns';
 import {
-  WasmClient,
+  QueryClient,
   wasmFetch,
   WasmQuery,
   WasmQueryData,
@@ -26,15 +26,15 @@ export async function govPollQuery(
   pollId: number,
   nebTokenAddr: CW20Addr,
   lastSyncedHeight: () => Promise<number>,
-  wasmClient: WasmClient,
+  queryClient: QueryClient,
 ): Promise<GovPoll> {
   const [{ govConfig }, { govState }, nebBalance, { poll }, blockHeight] =
     await Promise.all([
-      govConfigQuery(govAddr, wasmClient),
-      govStateQuery(govAddr, wasmClient),
-      cw20BalanceQuery<NEB>(govAddr, nebTokenAddr, wasmClient),
+      govConfigQuery(govAddr, queryClient),
+      govStateQuery(govAddr, queryClient),
+      cw20BalanceQuery<NEB>(govAddr, nebTokenAddr, queryClient),
       wasmFetch<GovPollWasmQuery>({
-        ...wasmClient,
+        ...queryClient,
         id: `gov--poll`,
         wasmQuery: {
           poll: {

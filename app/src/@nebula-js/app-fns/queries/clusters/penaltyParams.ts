@@ -1,5 +1,5 @@
 import {
-  WasmClient,
+  QueryClient,
   wasmFetch,
   WasmQuery,
   WasmQueryData,
@@ -14,10 +14,10 @@ export type clusterPenaltyParams = WasmQueryData<clusterPenaltyParamsWasmQuery>;
 
 export async function clusterPenaltyParamsQuery(
   penaltyAddr: HumanAddr,
-  wasmClient: WasmClient,
+  queryClient: QueryClient,
 ): Promise<clusterPenaltyParams> {
   return wasmFetch<clusterPenaltyParamsWasmQuery>({
-    ...wasmClient,
+    ...queryClient,
     id: `cluster--penalty-params`,
     wasmQuery: {
       penaltyParams: {

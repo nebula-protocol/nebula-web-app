@@ -1,5 +1,5 @@
 import {
-  WasmClient,
+  QueryClient,
   wasmFetch,
   WasmQuery,
   WasmQueryData,
@@ -14,10 +14,10 @@ export type GovConfig = WasmQueryData<GovConfigWasmQuery>;
 
 export async function govConfigQuery(
   govAddr: HumanAddr,
-  wasmClient: WasmClient,
+  queryClient: QueryClient,
 ): Promise<GovConfig> {
   return wasmFetch<GovConfigWasmQuery>({
-    ...wasmClient,
+    ...queryClient,
     id: `gov--config`,
     wasmQuery: {
       govConfig: {

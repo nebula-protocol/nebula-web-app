@@ -21,7 +21,7 @@ export function useClusterArbMintTx(
 ) {
   const connectedWallet = useConnectedWallet();
 
-  const { wasmClient, txErrorReporter, constants, contractAddress } =
+  const { queryClient, txErrorReporter, constants, contractAddress } =
     useNebulaApp();
 
   const fixedFee = useFixedFee();
@@ -57,7 +57,7 @@ export function useClusterArbMintTx(
           amounts.filter((amount) => big(amount).gt(0)).length,
         ),
         gasAdjustment: constants.gasAdjustment,
-        wasmClient,
+        queryClient,
         txErrorReporter,
         onTxSucceed: () => {
           onTxSucceed?.();
@@ -78,7 +78,7 @@ export function useClusterArbMintTx(
       refetchQueries,
       terraswapPairAddr,
       txErrorReporter,
-      wasmClient,
+      queryClient,
     ],
   );
 

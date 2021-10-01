@@ -20,7 +20,7 @@ export function useClusterMintTx(
 ) {
   const connectedWallet = useConnectedWallet();
 
-  const { wasmClient, txErrorReporter, constants, contractAddress } =
+  const { queryClient, txErrorReporter, constants, contractAddress } =
     useNebulaApp();
 
   const refetchQueries = useRefetchQueries();
@@ -47,7 +47,7 @@ export function useClusterMintTx(
           amounts.filter((amount) => big(amount).gt(0)).length,
         ),
         gasAdjustment: constants.gasAdjustment,
-        wasmClient,
+        queryClient,
         txErrorReporter,
         onTxSucceed: () => {
           onTxSucceed?.();
@@ -67,7 +67,7 @@ export function useClusterMintTx(
       fixedFee,
       refetchQueries,
       txErrorReporter,
-      wasmClient,
+      queryClient,
     ],
   );
 

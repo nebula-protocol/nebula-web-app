@@ -7,10 +7,10 @@ import { useNebulaApp } from '../../hooks/useNebulaApp';
 const queryFn = createQueryFn(govStateQuery);
 
 export function useGovStateQuery(): UseQueryResult<GovState | undefined> {
-  const { wasmClient, queryErrorReporter, contractAddress } = useNebulaApp();
+  const { queryClient, queryErrorReporter, contractAddress } = useNebulaApp();
 
   const result = useQuery(
-    [NEBULA_QUERY_KEYS.GOV_STATE, contractAddress.gov, wasmClient],
+    [NEBULA_QUERY_KEYS.GOV_STATE, contractAddress.gov, queryClient],
     queryFn,
     {
       refetchInterval: 1000 * 60 * 5,

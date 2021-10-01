@@ -1,5 +1,5 @@
 import { terraswapPairQuery } from '@libs/app-fns';
-import { WasmClient } from '@libs/query-client';
+import { QueryClient } from '@libs/query-client';
 import { HumanAddr, terraswap, Token, u, UST } from '@nebula-js/types';
 import big, { Big, BigSource } from 'big.js';
 import { ClusterSimulatorWithPenalty } from './ClusterSimulatorWithPenalty';
@@ -17,11 +17,11 @@ export class EasyMintOptimizer {
   constructor(
     private clusterAddr: HumanAddr,
     private terraswapFactoryAddr: HumanAddr,
-    private wasmClient: WasmClient,
+    private queryClient: QueryClient,
   ) {
     this.clusterSimulator = new ClusterSimulatorWithPenalty(
       clusterAddr,
-      wasmClient,
+      queryClient,
     );
   }
 
@@ -53,7 +53,7 @@ export class EasyMintOptimizer {
               },
             },
           ],
-          this.wasmClient,
+          this.queryClient,
         );
       }),
     ).then((pairs) => {
@@ -61,7 +61,7 @@ export class EasyMintOptimizer {
     });
 
     this.terraswapSimulators = this.pairContracts.map((p) => {
-      return new TerraswapPoolSimulation(p, 0.03, this.wasmClient);
+      return new TerraswapPoolSimulation(p, 0.03, this.queryClient);
     });
 
     await Promise.all(this.terraswapSimulators.map((ts) => ts.reset()));

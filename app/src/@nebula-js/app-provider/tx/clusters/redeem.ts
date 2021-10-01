@@ -28,7 +28,7 @@ export function useClusterRedeemTx(
 ) {
   const connectedWallet = useConnectedWallet();
 
-  const { wasmClient, txErrorReporter, contractAddress, constants } =
+  const { queryClient, txErrorReporter, contractAddress, constants } =
     useNebulaApp();
 
   const fixedFee = useFixedFee();
@@ -55,7 +55,7 @@ export function useClusterRedeemTx(
           assets.length,
         ),
         gasAdjustment: constants.gasAdjustment,
-        wasmClient,
+        queryClient,
         txErrorReporter,
         onTxSucceed: () => {
           onTxSucceed?.();
@@ -76,7 +76,7 @@ export function useClusterRedeemTx(
       fixedFee,
       refetchQueries,
       txErrorReporter,
-      wasmClient,
+      queryClient,
     ],
   );
 

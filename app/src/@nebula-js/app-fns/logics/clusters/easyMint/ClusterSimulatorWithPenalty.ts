@@ -9,7 +9,7 @@ import {
   vectorMultiply,
   vectorPlus,
 } from '@libs/big-math';
-import { WasmClient } from '@libs/query-client';
+import { QueryClient } from '@libs/query-client';
 import {
   cluster,
   CT,
@@ -34,12 +34,12 @@ export class ClusterSimulatorWithPenalty {
   public targetAmounts!: u<Token>[];
   private lastBlock: number = 0;
 
-  constructor(private clusterAddr: HumanAddr, private wasmClient: WasmClient) {}
+  constructor(private clusterAddr: HumanAddr, private queryClient: QueryClient) {}
 
   resetInitialState = async () => {
     const { clusterState } = await clusterStateQuery(
       this.clusterAddr,
-      this.wasmClient,
+      this.queryClient,
     );
     this.clusterState = clusterState;
 
@@ -48,7 +48,7 @@ export class ClusterSimulatorWithPenalty {
 
     const { penaltyParams } = await clusterPenaltyParamsQuery(
       clusterState.penalty,
-      this.wasmClient,
+      this.queryClient,
     );
     this.penaltyInfo = penaltyParams;
 

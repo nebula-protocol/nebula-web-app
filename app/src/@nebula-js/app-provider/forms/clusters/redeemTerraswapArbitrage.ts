@@ -16,7 +16,7 @@ export function useClusterRedeemTerraswapArbitrageForm({
 }: ClusterRedeemTerraswapArbitrageFormParams) {
   const connectedWallet = useConnectedWallet();
 
-  const { wasmClient, lastSyncedHeight, gasPrice, constants } = useNebulaApp();
+  const { queryClient, lastSyncedHeight, gasPrice, constants } = useNebulaApp();
 
   const fixedFee = useFixedFee();
 
@@ -27,7 +27,7 @@ export function useClusterRedeemTerraswapArbitrageForm({
   return useForm(
     clusterRedeemTerraswapArbitrageForm,
     {
-      wasmClient,
+      queryClient,
       lastSyncedHeight,
       ustBalance: uUST,
       terraswapPair,

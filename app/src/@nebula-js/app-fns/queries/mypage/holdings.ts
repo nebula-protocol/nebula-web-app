@@ -3,7 +3,7 @@ import {
   CW20PoolInfo,
   cw20PoolInfoQuery,
 } from '@libs/app-fns';
-import { WasmClient } from '@libs/query-client';
+import { QueryClient } from '@libs/query-client';
 import { cluster, cw20, CW20Addr, HumanAddr, Token, u } from '@nebula-js/types';
 import { clusterStateListQuery } from '../clusters/stateList';
 
@@ -19,7 +19,7 @@ export async function mypageHoldingsQuery(
   nebTokenAddr: CW20Addr,
   terraswapFactoryAddr: HumanAddr,
   clusterFactoryAddr: HumanAddr,
-  wasmClient: WasmClient,
+  queryClient: QueryClient,
 ): Promise<MypageHoldings> {
   if (!walletAddr) {
     return [];
@@ -27,7 +27,7 @@ export async function mypageHoldingsQuery(
 
   const clusterStates = await clusterStateListQuery(
     clusterFactoryAddr,
-    wasmClient,
+    queryClient,
   );
 
   const tokenInfos: Array<
@@ -46,8 +46,8 @@ export async function mypageHoldingsQuery(
   return await Promise.all(
     tokenInfos.map(([tokenAddr, clusterState]) => {
       return Promise.all([
-        cw20PoolInfoQuery(tokenAddr, terraswapFactoryAddr, wasmClient),
-        cw20BalanceQuery(walletAddr, tokenAddr, wasmClient),
+        cw20PoolInfoQuery(tokenAddr, terraswapFactoryAddr, queryClient),
+        cw20BalanceQuery(walletAddr, tokenAddr, queryClient),
       ]).then(([poolInfo, balance]) => ({
         ...poolInfo,
         clusterState,

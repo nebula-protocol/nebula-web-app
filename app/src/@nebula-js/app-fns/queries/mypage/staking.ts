@@ -1,5 +1,5 @@
 import { CW20PoolInfo, cw20PoolInfoQuery } from '@libs/app-fns';
-import { WasmClient } from '@libs/query-client';
+import { QueryClient } from '@libs/query-client';
 import { HumanAddr, staking, Token } from '@nebula-js/types';
 import { stakingRewardInfoQuery } from '../staking/rewardInfo';
 
@@ -13,7 +13,7 @@ export async function mypageStakingQuery(
   walletAddr: HumanAddr | undefined,
   stakingAddr: HumanAddr,
   terraswapFactoryAddr: HumanAddr,
-  wasmClient: WasmClient,
+  queryClient: QueryClient,
 ): Promise<MypageStaking> {
   if (!walletAddr) {
     return [];
@@ -23,7 +23,7 @@ export async function mypageStakingQuery(
     walletAddr,
     stakingAddr,
     undefined,
-    wasmClient,
+    queryClient,
   );
 
   if (!rewardInfoResult) {
@@ -37,7 +37,7 @@ export async function mypageStakingQuery(
       return cw20PoolInfoQuery(
         info.asset_token,
         terraswapFactoryAddr,
-        wasmClient,
+        queryClient,
       ).then((poolInfo) => ({
         ...poolInfo,
         rewardInfo: info,

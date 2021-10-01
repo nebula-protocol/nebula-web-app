@@ -1,6 +1,6 @@
 import { microfy } from '@libs/formatter';
 import {
-  WasmClient,
+  QueryClient,
   wasmFetch,
   WasmQuery,
   WasmQueryData,
@@ -17,12 +17,12 @@ export async function clusterRedeemQuery(
   clusterTokenAmount: CT,
   clusterState: cluster.ClusterStateResponse,
   lastSyncedHeight: () => Promise<number>,
-  wasmClient: WasmClient,
+  queryClient: QueryClient,
 ): Promise<ClusterRedeem> {
   const blockHeight = await lastSyncedHeight();
 
   return wasmFetch<ClusterRedeemWasmQuery>({
-    ...wasmClient,
+    ...queryClient,
     id: `cluster--redeem`,
     wasmQuery: {
       redeem: {

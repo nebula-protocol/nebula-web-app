@@ -1,4 +1,4 @@
-import { WasmClient, wasmFetch, WasmQuery } from '@libs/query-client';
+import { QueryClient, wasmFetch, WasmQuery } from '@libs/query-client';
 import { cluster, HumanAddr } from '@nebula-js/types';
 import { clustersListQuery } from './list';
 
@@ -10,17 +10,17 @@ export type ClusterStateList = cluster.ClusterStateResponse[];
 
 export async function clusterStateListQuery(
   clusterFactoryAddr: HumanAddr,
-  wasmClient: WasmClient,
+  queryClient: QueryClient,
 ): Promise<ClusterStateList> {
   const { clusterList } = await clustersListQuery(
     clusterFactoryAddr,
-    wasmClient,
+    queryClient,
   );
 
   return Promise.all(
     clusterList.contract_infos.map(([clusterAddr]) => {
       return wasmFetch<ClusterTokenListWasmQuery>({
-        ...wasmClient,
+        ...queryClient,
         id: `staking--cluster-state=${clusterAddr}`,
         wasmQuery: {
           clusterState: {

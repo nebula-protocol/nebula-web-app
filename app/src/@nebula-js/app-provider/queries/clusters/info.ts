@@ -10,14 +10,14 @@ const queryFn = createQueryFn(clusterInfoQuery);
 export function useClusterInfoQuery(
   clusterAddr: HumanAddr,
 ): UseQueryResult<ClusterInfo | undefined> {
-  const { wasmClient, queryErrorReporter, contractAddress } = useNebulaApp();
+  const { queryClient, queryErrorReporter, contractAddress } = useNebulaApp();
 
   const result = useQuery(
     [
       NEBULA_QUERY_KEYS.CLUSTER_INFO,
       clusterAddr,
       contractAddress.terraswap.factory,
-      wasmClient,
+      queryClient,
     ],
     queryFn,
     {

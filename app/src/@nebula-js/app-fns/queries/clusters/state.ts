@@ -1,5 +1,5 @@
 import {
-  WasmClient,
+  QueryClient,
   wasmFetch,
   WasmQuery,
   WasmQueryData,
@@ -14,10 +14,10 @@ export type ClusterState = WasmQueryData<ClusterStateWasmQuery>;
 
 export async function clusterStateQuery(
   clusterAddr: HumanAddr,
-  wasmClient: WasmClient,
+  queryClient: QueryClient,
 ): Promise<ClusterState> {
   return wasmFetch<ClusterStateWasmQuery>({
-    ...wasmClient,
+    ...queryClient,
     id: `cluster--state=${clusterAddr}`,
     wasmQuery: {
       clusterState: {

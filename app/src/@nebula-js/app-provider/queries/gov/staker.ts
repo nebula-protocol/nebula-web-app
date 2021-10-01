@@ -10,10 +10,10 @@ const queryFn = createQueryFn(govStakerQuery);
 export function useGovStakerQuery(
   walletAddr: HumanAddr | undefined,
 ): UseQueryResult<GovStaker | undefined> {
-  const { wasmClient, queryErrorReporter, contractAddress } = useNebulaApp();
+  const { queryClient, queryErrorReporter, contractAddress } = useNebulaApp();
 
   const result = useQuery(
-    [NEBULA_QUERY_KEYS.GOV_STAKER, walletAddr, contractAddress.gov, wasmClient],
+    [NEBULA_QUERY_KEYS.GOV_STAKER, walletAddr, contractAddress.gov, queryClient],
     queryFn,
     {
       refetchInterval: 1000 * 60 * 5,

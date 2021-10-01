@@ -59,7 +59,7 @@ export function Providers({ children, ...chainOptions }: ProvidersProps) {
       <Router>
         <QueryClientProvider client={queryClient}>
           <AppProvider
-            defaultWasmClient={NEBULA_DEFAULT_WASM_CLIENT}
+            defaultQueryClient={NEBULA_DEFAULT_WASM_CLIENT}
             contractAddress={NEBULA_CONTRACT_ADDRESS}
             constants={NEBULA_CONSTANTS}
             refetchMap={NEBULA_TX_REFETCH_MAP}

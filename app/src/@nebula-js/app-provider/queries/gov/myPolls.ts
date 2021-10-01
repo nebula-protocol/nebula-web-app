@@ -10,7 +10,7 @@ const queryFn = createQueryFn(govMyPollsQuery);
 export function useGovMyPollsQuery(): UseQueryResult<GovMyPolls | undefined> {
   const connectedWallet = useConnectedWallet();
 
-  const { wasmClient, queryErrorReporter, lastSyncedHeight, contractAddress } =
+  const { queryClient, queryErrorReporter, lastSyncedHeight, contractAddress } =
     useNebulaApp();
 
   const result = useQuery(
@@ -20,7 +20,7 @@ export function useGovMyPollsQuery(): UseQueryResult<GovMyPolls | undefined> {
       contractAddress.gov,
       contractAddress.cw20.NEB,
       lastSyncedHeight,
-      wasmClient,
+      queryClient,
     ],
     queryFn,
     {

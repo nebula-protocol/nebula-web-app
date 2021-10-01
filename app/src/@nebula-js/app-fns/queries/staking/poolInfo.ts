@@ -1,6 +1,6 @@
 import { cw20PoolInfoQuery, TerraswapPoolInfo } from '@libs/app-fns';
 import {
-  WasmClient,
+  QueryClient,
   wasmFetch,
   WasmQuery,
   WasmQueryData,
@@ -31,13 +31,13 @@ export async function stakingPoolInfoQuery(
   tokenAddr: CW20Addr,
   stakingAddr: HumanAddr,
   terraswapFactoryAddr: HumanAddr,
-  wasmClient: WasmClient,
+  queryClient: QueryClient,
 ): Promise<StakingPoolInfo> {
   const { terraswapPair, terraswapPool, terraswapPoolInfo, tokenInfo } =
-    await cw20PoolInfoQuery(tokenAddr, terraswapFactoryAddr, wasmClient);
+    await cw20PoolInfoQuery(tokenAddr, terraswapFactoryAddr, queryClient);
 
   const { poolInfo } = await wasmFetch<StakingPoolInfoWasmQuery>({
-    ...wasmClient,
+    ...queryClient,
     id: `staking--pool-info=${tokenAddr}`,
     wasmQuery: {
       poolInfo: {
