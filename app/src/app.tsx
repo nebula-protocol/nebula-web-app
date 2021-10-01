@@ -1,3 +1,4 @@
+import { importColor } from '@libs/style-router';
 import { getChainOptions } from '@terra-money/wallet-provider';
 import { Header } from 'components/header';
 import { DisableOverflowXStyle } from 'components/styles/DisableOverflowXStyle';
@@ -71,6 +72,8 @@ function App() {
     </div>
   );
 }
+
+importColor((color) => `/styles/colors/${color}.css`, 'dark', '#theme-color');
 
 getChainOptions().then((chainOptions) => {
   render(

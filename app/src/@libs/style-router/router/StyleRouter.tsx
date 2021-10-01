@@ -12,6 +12,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { COLOR_KEY } from '../env';
 
 export type Breakpoint = [key: string, query: string];
 
@@ -42,8 +43,6 @@ function findBreakpoint(
   );
   return breakpoint?.[0] ?? fallbackBreakpoint;
 }
-
-const COLOR_KEY = '__style-router_color__';
 
 export function StyleRouter({
   children,

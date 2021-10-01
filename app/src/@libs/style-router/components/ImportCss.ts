@@ -5,7 +5,7 @@ export interface ImportCssProps {
   selector?: string;
 }
 
-function createLinkElement(selector?: string): HTMLLinkElement {
+export function createLinkElement(selector?: string): HTMLLinkElement {
   if (selector) {
     const element = document.querySelector<HTMLLinkElement>(selector);
     if (element) {
