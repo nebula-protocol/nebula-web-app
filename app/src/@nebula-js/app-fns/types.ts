@@ -1,6 +1,6 @@
 import { Gas } from '@nebula-js/types';
 
-// gas_price = uusd of https://[tequila-]fcd.terra.dev/v1/txs/gas_prices
+// gas_price = uusd of https://[bombay-]fcd.terra.dev/v1/txs/gas_prices
 // txFee = (txFeeBase + (inventory * txFeePerInventory) + (asset count * txFeePerAsset)) * gas_price
 // gasWanted = gasWantedBase + (inventory * gasWantedPerInventory) + (asset count * gasWantedPerAsset)
 export interface ClusterFeeMultipliers {
