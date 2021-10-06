@@ -4,7 +4,12 @@ import { AnimateNumber } from '@libs/ui';
 import { computeMarketCap } from '@nebula-js/app-fns';
 import { useClustersInfoListQuery } from '@nebula-js/app-provider';
 import { u, UST } from '@nebula-js/types';
-import { PartitionBarGraph, Sub, VerticalPartitionLabels } from '@nebula-js/ui';
+import {
+  PartitionBarGraph,
+  partitionColor,
+  Sub,
+  VerticalPartitionLabels,
+} from '@nebula-js/ui';
 import big, { Big } from 'big.js';
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
@@ -48,22 +53,22 @@ function TotalValueLockedBase({ className }: TotalValueLockedProps) {
             {
               label: 'INVENTORY',
               value: <s>24.4%</s>,
-              color: '#cccccc',
+              color: partitionColor[0],
             },
             {
               label: 'LP STAKED',
               value: <s>20.8%</s>,
-              color: '#cccccc',
+              color: partitionColor[1],
             },
             {
               label: 'NEB STAKED',
               value: <s>16.2%</s>,
-              color: '#cccccc',
+              color: partitionColor[2],
             },
             {
               label: 'COMMUNITY',
               value: <s>16.2%</s>,
-              color: '#cccccc',
+              color: partitionColor[3],
             },
           ]}
         />
@@ -71,19 +76,19 @@ function TotalValueLockedBase({ className }: TotalValueLockedProps) {
           data={[
             {
               value: 24.4,
-              color: '#cccccc',
+              color: partitionColor[0],
             },
             {
               value: 24.4,
-              color: '#cccccc',
+              color: partitionColor[1],
             },
             {
               value: 24.4,
-              color: '#cccccc',
+              color: partitionColor[2],
             },
             {
               value: 24.4,
-              color: '#cccccc',
+              color: partitionColor[3],
             },
           ]}
           width={width}

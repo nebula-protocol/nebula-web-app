@@ -13,6 +13,7 @@ import {
   MiniTab,
   PartitionBarGraph,
   PartitionLabels,
+  useScreenSizeValue,
 } from '@nebula-js/ui';
 import { Big } from 'big.js';
 import { ClusterView, toClusterView } from 'pages/clusters/models/clusters';
@@ -36,6 +37,13 @@ function TopClustersBase({ className }: TopClustersProps) {
   const [slide, setSlide] = useState<number>(0);
 
   const { data: clusterInfos = [] } = useClustersInfoListQuery();
+
+  const maxShowLabels = useScreenSizeValue({
+    monitor: 3,
+    pc: 3,
+    tablet: 3,
+    mobile: 2,
+  });
 
   const topClusters = useMemo<TopCluster[]>(() => {
     return clusterInfos
@@ -128,15 +136,17 @@ function TopClustersBase({ className }: TopClustersProps) {
               <section className="graph">
                 <PartitionLabels
                   data={assets
-                    .slice(0, 3)
+                    .slice(0, maxShowLabels)
                     .map(({ token, color, portfolioRatio }) => ({
                       label: token.symbol,
                       color,
                       value: formatRate(portfolioRatio as Rate<number>) + '%',
                     }))}
                 >
-                  {assets.length - 3 > 0 && (
-                    <li className="more">+{assets.length - 3} more</li>
+                  {assets.length - maxShowLabels > 0 && (
+                    <li className="more">
+                      +{assets.length - maxShowLabels} more
+                    </li>
                   )}
                 </PartitionLabels>
                 <PartitionBarGraph
