@@ -1,19 +1,19 @@
-import { WalletIcon } from '@nebula-js/icons';
 import { formatUInput, formatUToken, microfy } from '@libs/formatter';
-import { u, UST } from '@nebula-js/types';
-import {
-  breakpoints,
-  Button,
-  EmptyButton,
-  TokenInput,
-  TokenSpan,
-  useScreenSizeValue,
-} from '@nebula-js/ui';
 import { ClusterInfo } from '@nebula-js/app-fns';
 import {
   useClusterArbRedeemTx,
   useClusterRedeemTerraswapArbitrageForm,
 } from '@nebula-js/app-provider';
+import { WalletIcon } from '@nebula-js/icons';
+import { u, UST } from '@nebula-js/types';
+import {
+  breakpoints,
+  Button,
+  TextButton,
+  TokenInput,
+  TokenSpan,
+  useScreenSizeValue,
+} from '@nebula-js/ui';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
@@ -89,7 +89,8 @@ function BurnTerraswapArbitrageBase({
         placeholder="0.00"
         label="INPUT"
         suggest={
-          <EmptyButton
+          <TextButton
+            fontSize={12}
             onClick={() =>
               updateInput({
                 ustAmount: formatUInput(states.maxUstAmount) as UST,
@@ -102,7 +103,7 @@ function BurnTerraswapArbitrageBase({
               }}
             />{' '}
             {formatUToken(states.maxUstAmount)}
-          </EmptyButton>
+          </TextButton>
         }
         token={<TokenSpan>UST</TokenSpan>}
         error={states.invalidUstAmount}

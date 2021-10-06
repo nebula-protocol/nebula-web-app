@@ -7,6 +7,7 @@ import {
   PartitionBarGraph,
   PartitionLabels,
   sectionStyle,
+  VerticalLabelAndValue,
 } from '@nebula-js/ui';
 import { fixHMR } from 'fix-hmr';
 import React, { DetailedHTMLProps } from 'react';
@@ -75,27 +76,21 @@ function ClustersCardsBase({
             />
 
             <div className="values">
-              <div>
-                <h5>MARKET CAP</h5>
-                <p>{formatUTokenDecimal2(marketCap)} UST</p>
-              </div>
+              <VerticalLabelAndValue label="MARKET CAP">
+                {formatUTokenDecimal2(marketCap)} UST
+              </VerticalLabelAndValue>
 
-              <div>
-                <h5>TOTAL PROVIDED</h5>
-                <p>{formatUTokenDecimal2(totalProvided)} UST</p>
-              </div>
+              <VerticalLabelAndValue label="TOTAL PROVIDED">
+                {formatUTokenDecimal2(totalProvided)} UST
+              </VerticalLabelAndValue>
 
-              <div>
-                <h5>PREMIUM</h5>
-                <p>{formatRate(premium)}%</p>
-              </div>
+              <VerticalLabelAndValue label="PREMIUM">
+                {formatRate(premium)}%
+              </VerticalLabelAndValue>
 
-              <div>
-                <h5>VOLUME</h5>
-                <p>
-                  <s>{formatUTokenDecimal2(volume)} UST</s>
-                </p>
-              </div>
+              <VerticalLabelAndValue label="VOLUME">
+                <s>{formatUTokenDecimal2(volume)} UST</s>
+              </VerticalLabelAndValue>
             </div>
 
             <Partition>
@@ -112,7 +107,7 @@ function ClustersCardsBase({
                 {assets.length - 2 > 0 && <li>+{assets.length - 2} more</li>}
               </PartitionLabels>
               <PartitionBarGraph
-                height={8}
+                height={5}
                 data={assets.map(({ color, portfolioRatio }) => ({
                   color,
                   value: portfolioRatio,
@@ -170,18 +165,6 @@ export const StyledClustersCards = styled(ClustersCardsBase)`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.71428571em;
-
-    h5 {
-      font-size: 12px;
-      color: var(--color-white44);
-
-      margin-bottom: 0.28571429em;
-    }
-
-    p {
-      font-size: 1rem;
-      color: var(--color-white92);
-    }
   }
 
   @media (max-width: ${breakpoints.tablet.max}px) {

@@ -33,6 +33,8 @@ const StyledSearch = styled(SearchBase)`
   align-items: center;
 
   > svg {
+    color: var(--color-paleblue);
+
     width: 1.1rem;
     height: 1.1rem;
   }

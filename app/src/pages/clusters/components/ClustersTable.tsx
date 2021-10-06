@@ -77,7 +77,7 @@ function ClustersTableBase({
                   subtext={
                     <Partition>
                       <PartitionBarGraph
-                        height={8}
+                        height={5}
                         data={assets.map(({ color, portfolioRatio }) => ({
                           color,
                           value: portfolioRatio,
@@ -97,7 +97,7 @@ function ClustersTableBase({
                       </PartitionLabels>
                     </Partition>
                   }
-                  textGap="0.4em"
+                  textGap="0.3em"
                 />
               </td>
               <td>

@@ -12,9 +12,9 @@ import {
   breakpoints,
   Button,
   Disclosure,
-  EmptyButton,
   FormLabel,
   IconSeparator,
+  TextButton,
   TokenInput,
   TokenSpan,
   useConfirm,
@@ -114,7 +114,8 @@ function BuyBase({ className }: BuyProps) {
         placeholder="0.00"
         label="UST AMOUNT"
         suggest={
-          <EmptyButton
+          <TextButton
+            fontSize={12}
             onClick={() =>
               updateInput({
                 ustAmount: formatUInput(states.maxUstAmount) as UST,
@@ -128,7 +129,7 @@ function BuyBase({ className }: BuyProps) {
               }}
             />{' '}
             {formatUToken(states.maxUstAmount)}
-          </EmptyButton>
+          </TextButton>
         }
         token={<TokenSpan>UST</TokenSpan>}
         error={states.invalidUstAmount}

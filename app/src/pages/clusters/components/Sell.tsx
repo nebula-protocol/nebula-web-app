@@ -1,24 +1,24 @@
+import { useCW20SellTokenForm, useCW20SellTokenTx } from '@libs/app-provider';
 import {
   formatFluidDecimalPoints,
   formatUInput,
   formatUToken,
   microfy,
 } from '@libs/formatter';
+import { ClusterInfo } from '@nebula-js/app-fns';
 import { ArrowSouthIcon, WalletIcon } from '@nebula-js/icons';
 import { CT, Rate, u, UST } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
   Disclosure,
-  EmptyButton,
   FormLabel,
   IconSeparator,
+  TextButton,
   TokenInput,
   TokenSpan,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { ClusterInfo } from '@nebula-js/app-fns';
-import { useCW20SellTokenForm, useCW20SellTokenTx } from '@libs/app-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
@@ -99,7 +99,8 @@ function ClusterSellBase({
         placeholder="0.00"
         label="FROM"
         suggest={
-          <EmptyButton
+          <TextButton
+            fontSize={12}
             onClick={() =>
               updateInput({
                 tokenAmount: formatUInput(states.tokenBalance) as CT,
@@ -113,7 +114,7 @@ function ClusterSellBase({
               }}
             />{' '}
             {formatUToken(states.tokenBalance)}
-          </EmptyButton>
+          </TextButton>
         }
         token={<TokenSpan>{clusterTokenInfo.symbol}</TokenSpan>}
         error={states.invalidTokenAmount}

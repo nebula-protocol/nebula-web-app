@@ -9,3 +9,4 @@ export * from './Sub';
 export * from './TwoLine';
 export * from './TitledLabel';
 export * from './PartitionLabels';
+export * from './VerticalLabelAndValue';

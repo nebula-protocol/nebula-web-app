@@ -246,12 +246,7 @@ function PollDetailBase({ className }: PollDetailProps) {
             />
           </div>
 
-          <Table
-            minWidth={300}
-            fontSize="0.9rem"
-            startPadding="0rem"
-            endPadding="0rem"
-          >
+          <Table minWidth={300} startPadding="0rem" endPadding="0rem">
             <thead>
               <tr>
                 <th>

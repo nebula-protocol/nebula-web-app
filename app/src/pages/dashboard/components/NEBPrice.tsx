@@ -3,9 +3,8 @@ import { formatToken } from '@libs/formatter';
 import { AnimateNumber } from '@libs/ui';
 import { useNebulaApp } from '@nebula-js/app-provider';
 import { NEB } from '@nebula-js/types';
-import { DiffSpan, Sub } from '@nebula-js/ui';
+import { DiffSpan, Sub, VerticalLabelAndValue } from '@nebula-js/ui';
 import { fixHMR } from 'fix-hmr';
-import { VerticalLabelAndValue } from 'pages/dashboard/components/text/VerticalLabelAndValue';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -42,8 +41,9 @@ function NEBPriceBase({ className }: NEBPriceProps) {
       <VerticalLabelAndValue
         className="circulating-supply"
         label="NEB CIRCULATING SUPPLY"
-        value={<s>100,000.123 NEB</s>}
-      />
+      >
+        <s>100,000.123 NEB</s>
+      </VerticalLabelAndValue>
     </div>
   );
 }

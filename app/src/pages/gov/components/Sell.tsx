@@ -12,9 +12,9 @@ import {
   breakpoints,
   Button,
   Disclosure,
-  EmptyButton,
   FormLabel,
   IconSeparator,
+  TextButton,
   TokenInput,
   TokenSpan,
   useScreenSizeValue,
@@ -98,7 +98,8 @@ function SellBase({ className }: SellProps) {
         placeholder="0.00"
         label="FROM"
         suggest={
-          <EmptyButton
+          <TextButton
+            fontSize={12}
             onClick={() =>
               updateInput({
                 tokenAmount: formatUInput(states.tokenBalance) as NEB,
@@ -112,7 +113,7 @@ function SellBase({ className }: SellProps) {
               }}
             />{' '}
             {formatUToken(states.tokenBalance)}
-          </EmptyButton>
+          </TextButton>
         }
         token={<TokenSpan>NEB</TokenSpan>}
         error={states.invalidTokenAmount}

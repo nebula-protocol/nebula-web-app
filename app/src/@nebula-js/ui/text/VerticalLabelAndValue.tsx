@@ -5,18 +5,18 @@ import React, { ReactNode } from 'react';
 export interface VerticalLabelAndValueProps {
   className?: string;
   label: ReactNode;
-  value: ReactNode;
+  children: ReactNode;
 }
 
 function VerticalLabelAndValueBase({
   className,
   label,
-  value,
+  children,
 }: VerticalLabelAndValueProps) {
   return (
     <div className={className}>
       <h4>{label}</h4>
-      <p>{value}</p>
+      <p>{children}</p>
     </div>
   );
 }

@@ -40,7 +40,7 @@ export function parseGovPollResponse(
   govConfig: gov.ConfigResponse,
   blockHeight: number,
 ): ParsedPoll {
-  const votesTotal: u<NEB> =
+  const _votesTotal: u<NEB> =
     poll.status !== 'in_progress' && poll.total_balance_at_end_poll
       ? poll.total_balance_at_end_poll
       : poll.staked_amount
@@ -48,6 +48,11 @@ export function parseGovPollResponse(
       : (big(govNebBalance.balance)
           .minus(govState.total_deposit)
           .toFixed() as u<NEB>);
+
+  // FIXME pool is 0
+  const votesTotal: u<NEB> = big(_votesTotal).gt(0)
+    ? _votesTotal
+    : ('1' as u<NEB>);
 
   const votesThreshold = big(
     big(poll.yes_votes).plus(poll.no_votes).plus(poll.abstain_votes),

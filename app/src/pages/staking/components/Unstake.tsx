@@ -1,24 +1,24 @@
-import { WalletIcon } from '@nebula-js/icons';
 import {
   formatFluidDecimalPoints,
   formatUInput,
   formatUToken,
   microfy,
 } from '@libs/formatter';
-import { CT, LP, u, UST } from '@nebula-js/types';
-import {
-  breakpoints,
-  Button,
-  EmptyButton,
-  TokenInput,
-  TokenSpan,
-  useScreenSizeValue,
-} from '@nebula-js/ui';
 import { StakingPoolInfo } from '@nebula-js/app-fns';
 import {
   useStakingUnstakeForm,
   useStakingUnstakeTx,
 } from '@nebula-js/app-provider';
+import { WalletIcon } from '@nebula-js/icons';
+import { CT, LP, u, UST } from '@nebula-js/types';
+import {
+  breakpoints,
+  Button,
+  TextButton,
+  TokenInput,
+  TokenSpan,
+  useScreenSizeValue,
+} from '@nebula-js/ui';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
@@ -93,7 +93,8 @@ function StakingUnstakeBase({
         placeholder="0.00"
         label="AMOUNT"
         suggest={
-          <EmptyButton
+          <TextButton
+            fontSize={12}
             onClick={() =>
               updateInput({
                 lpAmount: formatUInput(states.maxLpAmount) as u<LP>,
@@ -106,7 +107,7 @@ function StakingUnstakeBase({
               }}
             />{' '}
             {formatUToken(states.maxLpAmount)}
-          </EmptyButton>
+          </TextButton>
         }
         token={<TokenSpan>{tokenInfo.symbol}-UST LP</TokenSpan>}
         error={states.invalidLpAmount}

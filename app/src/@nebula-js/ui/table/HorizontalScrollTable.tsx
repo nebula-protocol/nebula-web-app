@@ -21,7 +21,7 @@ export interface HorizontalScrollTableProps
 
   endPadding?: `${number}rem`;
 
-  fontSize?: 'normal' | 'small' | `${number}rem`;
+  fontSize?: `${number}rem`;
 
   headerContents?: ReactNode;
 
@@ -56,12 +56,7 @@ function HorizontalScrollTableBase({
 }
 
 const StyledHorizontalScrollTable = styled(HorizontalScrollTableBase)`
-  font-size: ${({ fontSize = 'normal' }) =>
-    fontSize === 'normal'
-      ? '1.14285714rem'
-      : fontSize === 'small'
-      ? '1rem'
-      : fontSize};
+  font-size: ${({ fontSize = '1rem' }) => fontSize};
 
   > .scroll-container {
     overflow-x: scroll;
@@ -85,10 +80,10 @@ const StyledHorizontalScrollTable = styled(HorizontalScrollTableBase)`
             font-size: 12px;
           }
 
-          color: var(--color-white44);
+          color: var(--color-white64);
           font-weight: 500;
 
-          padding: 1em;
+          padding: 1.42857143em 1em;
 
           &:first-child {
             padding-left: ${({ startPadding = _startPadding }) => startPadding};
@@ -109,7 +104,7 @@ const StyledHorizontalScrollTable = styled(HorizontalScrollTableBase)`
           font-weight: 400;
 
           color: var(--color-white80);
-          padding: 1.5em 1em;
+          padding: 1.42857143em 1em;
 
           &:first-child {
             padding-left: ${({ startPadding = _startPadding }) => startPadding};
@@ -141,12 +136,7 @@ const StyledHorizontalScrollTable = styled(HorizontalScrollTableBase)`
 
   // mobile
   @media (max-width: ${breakpoints.mobile.max}px) {
-    font-size: ${({ fontSize = 'normal' }) =>
-      fontSize === 'normal'
-        ? '1.16666667rem'
-        : fontSize === 'small'
-        ? '1rem'
-        : fontSize};
+    font-size: ${({ fontSize = '1rem' }) => fontSize};
 
     > .scroll-container {
       > table {

@@ -1,28 +1,28 @@
-import { PlusIcon, WalletIcon } from '@nebula-js/icons';
 import {
   formatFluidDecimalPoints,
   formatUInput,
   formatUToken,
   microfy,
 } from '@libs/formatter';
-import { CT, Rate, u, UST } from '@nebula-js/types';
-import {
-  breakpoints,
-  Button,
-  Disclosure,
-  EmptyButton,
-  FormLabel,
-  IconSeparator,
-  TokenInput,
-  TokenSpan,
-  useConfirm,
-  useScreenSizeValue,
-} from '@nebula-js/ui';
 import { StakingPoolInfo } from '@nebula-js/app-fns';
 import {
   useStakingStakeForm,
   useStakingStakeTx,
 } from '@nebula-js/app-provider';
+import { PlusIcon, WalletIcon } from '@nebula-js/icons';
+import { CT, Rate, u, UST } from '@nebula-js/types';
+import {
+  breakpoints,
+  Button,
+  Disclosure,
+  FormLabel,
+  IconSeparator,
+  TextButton,
+  TokenInput,
+  TokenSpan,
+  useConfirm,
+  useScreenSizeValue,
+} from '@nebula-js/ui';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
@@ -119,7 +119,8 @@ function StakingStakeBase({
         placeholder="0.00"
         label="AMOUNT"
         suggest={
-          <EmptyButton
+          <TextButton
+            fontSize={12}
             onClick={() =>
               updateInput({
                 ustAmount: formatUInput(states.maxUstAmount) as UST,
@@ -133,7 +134,7 @@ function StakingStakeBase({
               }}
             />{' '}
             {formatUToken(states.maxUstAmount)}
-          </EmptyButton>
+          </TextButton>
         }
         token={<TokenSpan>UST</TokenSpan>}
         error={states.invalidUstAmount}
@@ -152,7 +153,8 @@ function StakingStakeBase({
         placeholder="0.00"
         label="AMOUNT"
         suggest={
-          <EmptyButton
+          <TextButton
+            fontSize={12}
             onClick={() =>
               updateInput({
                 ustAmount: undefined,
@@ -166,7 +168,7 @@ function StakingStakeBase({
               }}
             />{' '}
             {formatUToken(states.maxTokenAmount)}
-          </EmptyButton>
+          </TextButton>
         }
         token={<TokenSpan>{tokenInfo.symbol}</TokenSpan>}
         error={states.invalidTokenAmount}

@@ -1,15 +1,15 @@
-import { WalletIcon } from '@nebula-js/icons';
 import { formatUInput, formatUToken, microfy } from '@libs/formatter';
+import { useGovUnstakeForm, useGovUnstakeTx } from '@nebula-js/app-provider';
+import { WalletIcon } from '@nebula-js/icons';
 import { NEB, u, UST } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
-  EmptyButton,
+  TextButton,
   TokenInput,
   TokenSpan,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { useGovUnstakeForm, useGovUnstakeTx } from '@nebula-js/app-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
@@ -80,7 +80,8 @@ function GovUnstakeBase({ className }: GovUnstakeProps) {
         placeholder="0.00"
         label="AMOUNT"
         suggest={
-          <EmptyButton
+          <TextButton
+            fontSize={12}
             onClick={() =>
               updateInput({
                 nebAmount: formatUInput(states.maxNebAmount) as NEB,
@@ -93,7 +94,7 @@ function GovUnstakeBase({ className }: GovUnstakeProps) {
               }}
             />{' '}
             {formatUToken(states.maxNebAmount)}
-          </EmptyButton>
+          </TextButton>
         }
         token={<TokenSpan>NEB</TokenSpan>}
         error={states.invalidNebAmount}

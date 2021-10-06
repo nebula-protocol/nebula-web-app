@@ -1,21 +1,21 @@
-import { WalletIcon } from '@nebula-js/icons';
 import { demicrofy, formatUTokenInteger } from '@libs/formatter';
-import { terraswap, Token, u, UST } from '@nebula-js/types';
-import {
-  breakpoints,
-  Button,
-  EmptyButton,
-  TokenInput,
-  TokenSpan,
-  useScreenSizeValue,
-} from '@nebula-js/ui';
+import { FormInput, FormStates } from '@libs/use-form';
 import {
   ClusterInfo,
   ClusterMintAdvancedFormAsyncStates,
   ClusterMintAdvancedFormInput,
   ClusterMintAdvancedFormStates,
 } from '@nebula-js/app-fns';
-import { FormInput, FormStates } from '@libs/use-form';
+import { WalletIcon } from '@nebula-js/icons';
+import { terraswap, Token, u, UST } from '@nebula-js/types';
+import {
+  breakpoints,
+  Button,
+  TextButton,
+  TokenInput,
+  TokenSpan,
+  useScreenSizeValue,
+} from '@nebula-js/ui';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big from 'big.js';
 import { AddAssetBadges } from 'components/form/AddAssetBadges';
@@ -138,7 +138,8 @@ function TokenFormBase({
                     }
                     suggest={
                       big(states.balances?.balances[i].balance ?? 0).gt(0) && (
-                        <EmptyButton
+                        <TextButton
+                          fontSize={12}
                           onClick={() =>
                             states.balances?.balances &&
                             updateAmount(
@@ -159,7 +160,7 @@ function TokenFormBase({
                               '0') as u<Token>,
                           )}{' '}
                           {assetTokenInfos[i].tokenInfo.symbol ?? ''}
-                        </EmptyButton>
+                        </TextButton>
                       )
                     }
                     error={states.invalidAmounts[i]}

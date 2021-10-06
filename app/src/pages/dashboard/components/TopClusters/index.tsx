@@ -14,6 +14,7 @@ import {
   PartitionBarGraph,
   PartitionLabels,
   useScreenSizeValue,
+  VerticalLabelAndValue,
 } from '@nebula-js/ui';
 import { Big } from 'big.js';
 import { ClusterView, toClusterView } from 'pages/clusters/models/clusters';
@@ -21,7 +22,6 @@ import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import useResizeObserver from 'use-resize-observer/polyfilled';
-import { VerticalLabelAndValue } from '../text/VerticalLabelAndValue';
 
 interface TopCluster extends ClusterInfo {
   marketCap: u<UST<Big>>;
@@ -122,16 +122,16 @@ function TopClustersBase({ className }: TopClustersProps) {
               <VerticalLabelAndValue
                 className="provided-asset"
                 label="PROVIDED ASSET"
-                value={`${formatUTokenWithPostfixUnits(provided)} UST`}
-              />
+              >
+                {formatUTokenWithPostfixUnits(provided)} UST
+              </VerticalLabelAndValue>
 
-              <VerticalLabelAndValue
-                className="supply"
-                label="SUPPLY"
-                value={`${formatUTokenWithPostfixUnits(
+              <VerticalLabelAndValue className="supply" label="SUPPLY">
+                {formatUTokenWithPostfixUnits(
                   clusterState.outstanding_balance_tokens,
-                )} ${clusterTokenInfo.symbol}`}
-              />
+                )}{' '}
+                {clusterTokenInfo.symbol}
+              </VerticalLabelAndValue>
 
               <section className="graph">
                 <PartitionLabels

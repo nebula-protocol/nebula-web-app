@@ -182,7 +182,7 @@ function ClustersDetailBase({
                   }),
                 )}
                 width={width}
-                height={8}
+                height={5}
               />
             </section>
           )}
@@ -253,7 +253,7 @@ function ClustersDetailBase({
               <th>
                 <span>Price</span>
               </th>
-              <th>
+              <th className="portfolio-ratio">
                 <span>
                   Portfolio Ratio
                   <br />
@@ -277,7 +277,7 @@ function ClustersDetailBase({
                     <DiffSpan diff={0.5}>0%</DiffSpan>
                   </s>
                 </td>
-                <td>
+                <td className="portfolio-ratio">
                   {formatRate(portfolioRatio as Rate<number>)}%{' '}
                   <Sub>
                     <s>({0}%)</s>
@@ -312,6 +312,8 @@ const MainTab = styled(Tab)`
 
 const MainSection = styled(Section)`
   min-height: 200px;
+
+  background-color: var(--color-gray18);
 
   border-top-left-radius: 0;
   border-top-right-radius: 0;

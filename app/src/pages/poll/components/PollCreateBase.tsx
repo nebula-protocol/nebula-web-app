@@ -133,7 +133,7 @@ function PollCreateBaseBase({
         <p>{description}</p>
       </Section>
 
-      <Section>
+      <Section className="body">
         <FormLabel label="Title" className="form-label">
           <TextInput
             placeholder="Enter poll title"
@@ -280,6 +280,10 @@ export const StyledPollCreateBase = styled(PollCreateBaseBase)`
     }
 
     margin-bottom: 0.85714286em;
+  }
+
+  .body {
+    background-color: var(--color-gray18);
   }
 
   .form-label:not(:first-child) {

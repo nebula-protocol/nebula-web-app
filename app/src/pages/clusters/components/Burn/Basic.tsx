@@ -1,19 +1,19 @@
-import { WalletIcon } from '@nebula-js/icons';
 import { formatUInput, formatUToken, microfy } from '@libs/formatter';
-import { CT, u, UST } from '@nebula-js/types';
-import {
-  breakpoints,
-  Button,
-  EmptyButton,
-  TokenInput,
-  TokenSpan,
-  useScreenSizeValue,
-} from '@nebula-js/ui';
 import { ClusterInfo } from '@nebula-js/app-fns';
 import {
   useClusterRedeemBasicForm,
   useClusterRedeemTx,
 } from '@nebula-js/app-provider';
+import { WalletIcon } from '@nebula-js/icons';
+import { CT, u, UST } from '@nebula-js/types';
+import {
+  breakpoints,
+  Button,
+  TextButton,
+  TokenInput,
+  TokenSpan,
+  useScreenSizeValue,
+} from '@nebula-js/ui';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
@@ -84,7 +84,8 @@ function BurnBasicBase({
         placeholder="0.00"
         label="INPUT"
         suggest={
-          <EmptyButton
+          <TextButton
+            fontSize={12}
             onClick={() =>
               updateInput({
                 tokenAmount: formatUInput(states.tokenBalance) as CT,
@@ -97,7 +98,7 @@ function BurnBasicBase({
               }}
             />{' '}
             {formatUToken(states.tokenBalance)}
-          </EmptyButton>
+          </TextButton>
         }
         token={<TokenSpan>{clusterTokenInfo.symbol}</TokenSpan>}
         error={states.invalidTokenAmount}

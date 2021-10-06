@@ -111,7 +111,7 @@ const StyledPollMain = styled(PollMainBase)`
       margin: 0 calc(var(--section-padding-h) * -1);
 
       &:hover {
-        background-color: var(--color-gray22);
+        background-color: var(--color-gray18);
       }
 
       svg {
