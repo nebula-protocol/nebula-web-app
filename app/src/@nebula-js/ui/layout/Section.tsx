@@ -28,7 +28,7 @@ export const sectionStyle = css`
 
   border-radius: 8px;
 
-  background-color: var(--color-gray18);
+  background-color: var(--color-gray14);
   color: var(--color-white92);
 
   transition: background-color 0.3s ease-in-out;

@@ -43,7 +43,7 @@ function PartitionLabelsBase({
   );
 }
 
-export const StyledPartitionLabels = styled(PartitionLabelsBase)`
+const StyledPartitionLabels = styled(PartitionLabelsBase)`
   padding: 0;
   list-style: none;
 
@@ -60,3 +60,28 @@ export const StyledPartitionLabels = styled(PartitionLabelsBase)`
 `;
 
 export const PartitionLabels = fixHMR(StyledPartitionLabels);
+
+const StyledVerticalPartitionLabels = styled(PartitionLabelsBase)`
+  padding: 0;
+  list-style: none;
+
+  display: flex;
+  column-gap: ${({ columnGap = defaultColumnGap }) => columnGap};
+  row-gap: ${({ rowGap = defaultRowGap }) => rowGap};
+  max-width: 100%;
+  flex-wrap: wrap;
+
+  li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.28571429em;
+
+    font-size: 12px;
+  }
+
+  span:first-child {
+    font-weight: 500;
+  }
+`;
+
+export const VerticalPartitionLabels = fixHMR(StyledVerticalPartitionLabels);

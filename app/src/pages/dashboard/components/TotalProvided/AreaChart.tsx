@@ -98,6 +98,7 @@ export class AreaChart extends Component<AreaChartProps> {
           y: {
             grace: '25%',
             position: 'right',
+            min: 0,
             grid: {
               drawBorder: false,
               color:

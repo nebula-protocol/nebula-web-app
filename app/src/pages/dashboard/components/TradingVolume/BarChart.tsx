@@ -1,9 +1,9 @@
 import { formatToken } from '@libs/formatter';
-import { JSDateTime, UST, u } from '@nebula-js/types';
+import { getCssVariable } from '@libs/style-router';
+import { JSDateTime, u, UST } from '@nebula-js/types';
 import { Chart } from 'chart.js';
 import { format } from 'date-fns';
 import React, { Component, createRef } from 'react';
-import { getCssVariable } from '@libs/style-router';
 import styled from 'styled-components';
 
 interface ChartData {
@@ -42,10 +42,8 @@ export class BarChart extends Component<BarChartProps> {
   componentDidMount() {
     this.createChart();
 
-    setTimeout(() => {
-      this.updateColor();
-      this.chart.update();
-    }, 100);
+    this.updateColor();
+    this.chart.update();
   }
 
   componentDidUpdate(prevProps: Readonly<BarChartProps>) {
@@ -56,11 +54,14 @@ export class BarChart extends Component<BarChartProps> {
       this.chart.data.datasets[0].data = this.props.data.map(({ y }) => y);
     }
 
-    if (prevProps.color !== this.props.color) {
-      this.updateColor();
+    if (prevProps.color === this.props.color) {
+      this.chart.update();
     }
 
-    this.chart.update();
+    setTimeout(() => {
+      this.updateColor();
+      this.chart.update();
+    }, 100);
   }
 
   private updateColor = () => {
@@ -108,6 +109,7 @@ export class BarChart extends Component<BarChartProps> {
           y: {
             grace: '25%',
             position: 'right',
+            min: 0,
             grid: {
               drawBorder: false,
               color:

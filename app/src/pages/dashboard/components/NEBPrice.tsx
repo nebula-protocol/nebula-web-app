@@ -4,6 +4,8 @@ import { AnimateNumber } from '@libs/ui';
 import { useNebulaApp } from '@nebula-js/app-provider';
 import { NEB } from '@nebula-js/types';
 import { DiffSpan, Sub } from '@nebula-js/ui';
+import { fixHMR } from 'fix-hmr';
+import { VerticalLabelAndValue } from 'pages/dashboard/components/text/VerticalLabelAndValue';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -20,15 +22,16 @@ function NEBPriceBase({ className }: NEBPriceProps) {
 
   return (
     <div className={className}>
-      <p>
+      <p className="price">
         <AnimateNumber format={formatToken}>
           {terraswapPoolInfo
             ? terraswapPoolInfo.tokenPrice
             : (0 as NEB<number>)}
-        </AnimateNumber>
+        </AnimateNumber>{' '}
         <Sub>UST</Sub>
       </p>
-      <p>
+
+      <p className="diff">
         <s>
           <DiffSpan diff={123.12} translateIconY="0.15em">
             123.12%
@@ -36,26 +39,25 @@ function NEBPriceBase({ className }: NEBPriceProps) {
         </s>
       </p>
 
-      <section>
-        <h4>NEB CIRCULATING SUPPLY</h4>
-        <p>
-          <s>100,000.123 NEB</s>
-        </p>
-      </section>
+      <VerticalLabelAndValue
+        className="circulating-supply"
+        label="NEB CIRCULATING SUPPLY"
+        value={<s>100,000.123 NEB</s>}
+      />
     </div>
   );
 }
 
-export const NEBPrice = styled(NEBPriceBase)`
-  > :nth-child(1) {
+const StyledNEBPrice = styled(NEBPriceBase)`
+  .price {
     font-size: var(--font-size32);
   }
 
-  > :nth-child(2) {
+  .diff {
     font-size: var(--font-size12);
   }
 
-  > :nth-child(3) {
+  .circulating-supply {
     margin-top: 3.3em;
 
     font-size: var(--font-size12);
@@ -64,6 +66,10 @@ export const NEBPrice = styled(NEBPriceBase)`
       font-size: var(--font-size12);
       font-weight: 500;
       color: var(--color-white44);
+
+      margin-bottom: 0.28571429em;
     }
   }
 `;
+
+export const NEBPrice = fixHMR(StyledNEBPrice);

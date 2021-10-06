@@ -53,7 +53,7 @@ export const miniTabStyle = css`
 
     font-size: 1em;
 
-    background-color: var(--color-gray14);
+    background-color: var(--color-gray18);
     color: var(--color-white44);
 
     transition: background-color 0.3s ease-out, color 0.3s ease-out;
@@ -64,7 +64,7 @@ export const miniTabStyle = css`
 
     &[aria-selected='true'] {
       background-color: var(--color-white80);
-      color: var(--color-gray14);
+      color: var(--color-gray08);
     }
   }
 `;

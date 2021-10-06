@@ -1,5 +1,11 @@
-import { ChevronRight } from '@material-ui/icons';
 import { formatRate, formatUTokenWithPostfixUnits } from '@libs/formatter';
+import { ChevronRight } from '@material-ui/icons';
+import {
+  ClusterInfo,
+  computeMarketCap,
+  computeProvided,
+} from '@nebula-js/app-fns';
+import { useClustersInfoListQuery } from '@nebula-js/app-provider';
 import { Rate, u, UST } from '@nebula-js/types';
 import {
   Carousel,
@@ -8,18 +14,13 @@ import {
   PartitionBarGraph,
   PartitionLabels,
 } from '@nebula-js/ui';
-import {
-  ClusterInfo,
-  computeMarketCap,
-  computeProvided,
-} from '@nebula-js/app-fns';
-import { useClustersInfoListQuery } from '@nebula-js/app-provider';
 import { Big } from 'big.js';
 import { ClusterView, toClusterView } from 'pages/clusters/models/clusters';
 import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import useResizeObserver from 'use-resize-observer/polyfilled';
+import { VerticalLabelAndValue } from '../text/VerticalLabelAndValue';
 
 interface TopCluster extends ClusterInfo {
   marketCap: u<UST<Big>>;
@@ -95,10 +96,14 @@ function TopClustersBase({ className }: TopClustersProps) {
                       {clusterTokenInfo.name} <ChevronRight />
                     </Link>
                   </h4>
-                  <p>{formatUTokenWithPostfixUnits(marketCap)} UST</p>
                   <p>
+                    {formatUTokenWithPostfixUnits(marketCap)} UST{' '}
                     <s>
-                      <DiffSpan diff={10} translateIconY="0.15em">
+                      <DiffSpan
+                        diff={10}
+                        translateIconY="0.15em"
+                        style={{ fontSize: 12 }}
+                      >
                         10.00%
                       </DiffSpan>
                     </s>
@@ -106,20 +111,19 @@ function TopClustersBase({ className }: TopClustersProps) {
                 </div>
               </section>
 
-              <section className="provided-asset">
-                <h4>PROVIDED ASSET</h4>
-                <p>{formatUTokenWithPostfixUnits(provided)} UST</p>
-              </section>
+              <VerticalLabelAndValue
+                className="provided-asset"
+                label="PROVIDED ASSET"
+                value={`${formatUTokenWithPostfixUnits(provided)} UST`}
+              />
 
-              <section className="supply">
-                <h4>SUPPLY</h4>
-                <p>
-                  {formatUTokenWithPostfixUnits(
-                    clusterState.outstanding_balance_tokens,
-                  )}{' '}
-                  {clusterTokenInfo.symbol}
-                </p>
-              </section>
+              <VerticalLabelAndValue
+                className="supply"
+                label="SUPPLY"
+                value={`${formatUTokenWithPostfixUnits(
+                  clusterState.outstanding_balance_tokens,
+                )} ${clusterTokenInfo.symbol}`}
+              />
 
               <section className="graph">
                 <PartitionLabels
@@ -131,7 +135,9 @@ function TopClustersBase({ className }: TopClustersProps) {
                       value: formatRate(portfolioRatio as Rate<number>) + '%',
                     }))}
                 >
-                  {assets.length - 3 > 0 && <li>+{assets.length - 3} more</li>}
+                  {assets.length - 3 > 0 && (
+                    <li className="more">+{assets.length - 3} more</li>
+                  )}
                 </PartitionLabels>
                 <PartitionBarGraph
                   data={assets.map(({ color, portfolioRatio }) => ({
@@ -139,7 +145,7 @@ function TopClustersBase({ className }: TopClustersProps) {
                     value: portfolioRatio,
                   }))}
                   width={width}
-                  height={8}
+                  height={5}
                 />
               </section>
             </Content>
@@ -185,6 +191,8 @@ const Content = styled.div`
       svg {
         font-size: 0.8em;
       }
+
+      margin-bottom: 0.28571429em;
     }
 
     p:nth-child(2) {
@@ -200,22 +208,14 @@ const Content = styled.div`
 
   > .provided-asset,
   > .supply {
-    font-size: var(--font-size14-12);
-
-    h4 {
-      font-size: var(--font-size12);
-      font-weight: 500;
-      color: var(--color-white44);
-    }
-
     margin-bottom: 1.5em;
   }
 
   > .graph {
     margin-top: 3em;
 
-    > :first-child {
-      margin-bottom: 0.5em;
+    .more {
+      color: var(--color-white64);
     }
   }
 `;

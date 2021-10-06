@@ -1,9 +1,10 @@
-import { Rate, u, UST } from '@nebula-js/types';
+import { sum } from '@libs/big-math';
 import { computeMarketCap } from '@nebula-js/app-fns';
 import { useClustersInfoListQuery } from '@nebula-js/app-provider';
-import { sum } from '@libs/big-math';
+import { Rate, u, UST } from '@nebula-js/types';
 import big from 'big.js';
 import { fixHMR } from 'fix-hmr';
+import { VerticalLabelAndValue } from 'pages/dashboard/components/text/VerticalLabelAndValue';
 import React, { useMemo } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { PieChart } from './PieChart';
@@ -78,6 +79,12 @@ function ClusterDistributionBase({ className }: ClusterDistributionProps) {
 
   return (
     <div className={className}>
+      <VerticalLabelAndValue
+        className="inventory-value"
+        label="INVENTORY VALUE"
+        value={<s>1,000 UST</s>}
+      />
+
       <PieChart data={data} theme={theme} />
       <Table data={data} />
     </div>
