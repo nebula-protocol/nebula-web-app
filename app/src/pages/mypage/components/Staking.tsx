@@ -6,9 +6,9 @@ import { NEB, Token, u, UST } from '@nebula-js/types';
 import {
   Button,
   Descriptions,
-  EmptyButton,
   HorizontalScrollTable,
   Table3SectionHeader,
+  TextLink,
   TwoLine,
   useScreenSizeValue,
 } from '@nebula-js/ui';
@@ -124,11 +124,15 @@ function StakingBase({ className }: StakingProps) {
         <Table3SectionHeader>
           <h2>Staking</h2>
           <div className="buttons">
-            <EmptyButton>
-              <s>
-                <SendIcon style={{ marginRight: '0.5em' }} /> Claim All Rewards
-              </s>
-            </EmptyButton>
+            <TextLink component={Link} to="/send">
+              <SendIcon
+                style={{
+                  marginRight: '0.5em',
+                  transform: 'translateY(-0.1em)',
+                }}
+              />{' '}
+              <s>Claim All Rewards</s>
+            </TextLink>
           </div>
           <Descriptions
             className="descriptions"

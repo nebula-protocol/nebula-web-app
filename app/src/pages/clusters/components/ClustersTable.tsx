@@ -171,7 +171,7 @@ export const StyledClustersTable = styled(ClustersTableBase)`
       transition: background-color 0.3s ease-in-out;
 
       &:hover {
-        background-color: var(--color-gray22);
+        background-color: var(--color-gray18);
       }
     }
 

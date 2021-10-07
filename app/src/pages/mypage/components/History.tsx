@@ -1,5 +1,5 @@
 import { SendIcon } from '@nebula-js/icons';
-import { breakpoints, EmptyLink, TableHeader } from '@nebula-js/ui';
+import { breakpoints, TableHeader, TextLink } from '@nebula-js/ui';
 import React from 'react';
 import { CSVLink } from 'react-csv';
 import styled from 'styled-components';
@@ -30,9 +30,15 @@ function HistoryBase({ className }: HistoryProps) {
           <s>History</s>
         </h2>
         <div className="buttons">
-          <EmptyLink component={CSVLink} data={data} headers={headers}>
-            <SendIcon style={{ marginRight: '0.5em' }} /> CSV
-          </EmptyLink>
+          <TextLink component={CSVLink} data={data} headers={headers}>
+            <SendIcon
+              style={{
+                marginRight: '0.5em',
+                transform: 'translateY(-0.1em)',
+              }}
+            />{' '}
+            CSV
+          </TextLink>
         </div>
       </TableHeader>
       <ul>

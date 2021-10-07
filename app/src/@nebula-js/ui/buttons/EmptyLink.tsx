@@ -20,12 +20,12 @@ function EmptyLinkBase<C extends React.ElementType>({
 }
 
 export const StyledEmptyLink = styled(EmptyLinkBase)`
+  text-decoration: none;
+
   color: inherit;
 
   font-size: ${({ fontSize }) =>
     typeof fontSize === 'number' ? `${fontSize}px` : fontSize};
-
-  text-decoration: none;
 
   line-height: 1em;
   max-height: 1em;

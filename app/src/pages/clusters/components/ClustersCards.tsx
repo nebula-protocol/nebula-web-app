@@ -149,7 +149,7 @@ export const StyledClustersCards = styled(ClustersCardsBase)`
     background-color: var(--color-gray14);
 
     &:hover {
-      background-color: var(--color-gray22);
+      background-color: var(--color-gray18);
     }
 
     > button {

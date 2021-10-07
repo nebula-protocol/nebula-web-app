@@ -1,14 +1,14 @@
-import { SendIcon } from '@nebula-js/icons';
 import { formatUTokenWithPostfixUnits } from '@libs/formatter';
+import { useGovMyPollsQuery, useGovStakerQuery } from '@nebula-js/app-provider';
+import { SendIcon } from '@nebula-js/icons';
 import {
   Button,
   Descriptions,
-  EmptyButton,
   HorizontalScrollTable,
   Table3SectionHeader,
+  TextLink,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { useGovMyPollsQuery, useGovStakerQuery } from '@nebula-js/app-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -66,16 +66,25 @@ function GovernanceBase({ className }: GovernanceProps) {
         <Table3SectionHeader>
           <h2>Governance</h2>
           <div className="buttons">
-            <EmptyButton>
-              <s>
-                <SendIcon style={{ marginRight: '0.5em' }} /> Claim Rewards
-              </s>
-            </EmptyButton>
-            <EmptyButton>
-              <s>
-                <SendIcon style={{ marginRight: '0.5em' }} /> Restake Reward
-              </s>
-            </EmptyButton>
+            <TextLink component={Link} to="/send">
+              <SendIcon
+                style={{
+                  marginRight: '0.5em',
+                  transform: 'translateY(-0.1em)',
+                }}
+              />{' '}
+              <s>Claim Rewards</s>
+            </TextLink>
+
+            <TextLink component={Link} to="/send">
+              <SendIcon
+                style={{
+                  marginRight: '0.5em',
+                  transform: 'translateY(-0.1em)',
+                }}
+              />{' '}
+              <s>Restake Reward</s>
+            </TextLink>
           </div>
           <Descriptions
             className="descriptions"
