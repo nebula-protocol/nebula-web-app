@@ -1,4 +1,4 @@
-import { formatRate, formatUTokenDecimal2 } from '@libs/formatter';
+import { formatRate, formatToken, formatUTokenDecimal2 } from '@libs/formatter';
 import { Rate } from '@nebula-js/types';
 import {
   breakpoints,
@@ -58,16 +58,18 @@ function ClustersCardsBase({
             <IconAndLabels
               text={name}
               subtext={
-                <s>
-                  {formatUTokenDecimal2(price)} UST{' '}
-                  <DiffSpan
-                    diff={hr24diff}
-                    translateIconY={1}
-                    style={{ fontSize: '0.85714286em' }}
-                  >
-                    {formatRate(hr24diff)}%
-                  </DiffSpan>
-                </s>
+                <>
+                  {formatToken(price)} UST{' '}
+                  <s>
+                    <DiffSpan
+                      diff={hr24diff}
+                      translateIconY={1}
+                      style={{ fontSize: '0.85714286em' }}
+                    >
+                      {formatRate(hr24diff)}%
+                    </DiffSpan>
+                  </s>
+                </>
               }
               iconSize="4.28571429em"
               textSize="1.42857143em"

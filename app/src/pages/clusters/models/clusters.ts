@@ -1,3 +1,5 @@
+import { sum, vectorMultiply } from '@libs/big-math';
+import { ClusterInfo, getAssetAmount } from '@nebula-js/app-fns';
 import {
   CT,
   cw20,
@@ -9,8 +11,6 @@ import {
   UST,
 } from '@nebula-js/types';
 import { partitionColor } from '@nebula-js/ui';
-import { ClusterInfo, getAssetAmount } from '@nebula-js/app-fns';
-import { sum, vectorMultiply } from '@libs/big-math';
 import big, { Big } from 'big.js';
 
 export interface AssetView {
@@ -26,7 +26,7 @@ export interface ClusterView {
   name: string;
   nameLowerCase: string;
   description: string;
-  price: u<UST<Big>>;
+  price: UST<Big>;
   hr24: Rate<Big>;
   hr24diff: Rate<Big>;
   totalProvided: u<UST<Big>>;
@@ -56,7 +56,7 @@ export function toClusterView({
       name: clusterConfig.config.name,
       nameLowerCase: clusterConfig.config.name.toLowerCase(),
       description: clusterConfig.config.description,
-      price: big(0) as u<UST<Big>>,
+      price: big(0) as UST<Big>,
       hr24: big(0) as Rate<Big>,
       hr24diff: big(0) as Rate<Big>,
       marketCap: big(0) as u<UST<Big>>,
@@ -72,7 +72,7 @@ export function toClusterView({
     };
   }
 
-  const price = big(ustAmount).div(ctAmount) as u<UST<Big>>;
+  const price = big(ustAmount).div(ctAmount) as UST<Big>;
 
   const marketCap = big(clusterState.outstanding_balance_tokens).mul(
     price,
