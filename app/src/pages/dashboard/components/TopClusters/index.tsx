@@ -10,6 +10,7 @@ import { Rate, u, UST } from '@nebula-js/types';
 import {
   Carousel,
   DiffSpan,
+  InfoTooltip,
   MiniTab,
   PartitionBarGraph,
   PartitionLabels,
@@ -121,7 +122,11 @@ function TopClustersBase({ className }: TopClustersProps) {
 
               <VerticalLabelAndValue
                 className="provided-asset"
-                label="PROVIDED ASSET"
+                label={
+                  <>
+                    PROVIDED ASSET <InfoTooltip>Test tooltip...</InfoTooltip>
+                  </>
+                }
               >
                 {formatUTokenWithPostfixUnits(provided)} UST
               </VerticalLabelAndValue>

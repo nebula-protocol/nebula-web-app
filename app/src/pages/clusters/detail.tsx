@@ -7,6 +7,7 @@ import {
   DiffSpan,
   HorizontalScrollTable,
   IconAndLabels,
+  InfoTooltip,
   PartitionBarGraph,
   PartitionLabels,
   Section,
@@ -138,7 +139,11 @@ function ClustersDetailBase({
           direction={descriptionDisplay}
           descriptions={[
             {
-              label: 'VOLUME (24H)',
+              label: (
+                <>
+                  VOLUME (24H) <InfoTooltip>Test tooltip...</InfoTooltip>
+                </>
+              ),
               text: `${
                 clusterView?.volume
                   ? formatUTokenDecimal2(clusterView.volume)
@@ -234,7 +239,12 @@ function ClustersDetailBase({
             direction={descriptionDisplay}
             descriptions={[
               {
-                label: 'TOTAL TOKEN PROVIDED',
+                label: (
+                  <>
+                    TOTAL TOKEN PROVIDED{' '}
+                    <InfoTooltip>Test tooltip...</InfoTooltip>
+                  </>
+                ),
                 text:
                   (clusterView?.totalProvided
                     ? formatUTokenDecimal2(clusterView.totalProvided)

@@ -22,7 +22,7 @@ export const useTooltipStyle = makeStyles<NebulaTheme, TooltipProps>(
   (theme) => ({
     tooltip: {
       position: 'relative',
-      borderRadius: 8,
+      borderRadius: 4,
       color: 'var(--color-white80)',
       backgroundColor: 'var(--color-gray24)',
       fontSize: '12px',

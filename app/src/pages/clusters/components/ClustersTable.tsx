@@ -4,6 +4,7 @@ import {
   HorizontalScrollTable,
   HorizontalScrollTableProps,
   IconAndLabels,
+  InfoTooltip,
   PartitionBarGraph,
   PartitionLabels,
   TwoLine,
@@ -37,13 +38,19 @@ function ClustersTableBase({
       <thead>
         <tr>
           <th>
-            <span>Cluster</span>
+            <span>
+              Cluster <InfoTooltip>Test tooltip...</InfoTooltip>
+            </span>
           </th>
           <th>
-            <span>Price</span>
+            <span>
+              Price <InfoTooltip>Test tooltip...</InfoTooltip>
+            </span>
           </th>
           <th>
-            <span>Market Cap</span>
+            <span>
+              Market Cap <InfoTooltip>Test tooltip...</InfoTooltip>
+            </span>
           </th>
           <th>
             <span>Total Provided</span>

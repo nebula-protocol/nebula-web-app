@@ -1,4 +1,4 @@
-import { breakpoints, Section } from '@nebula-js/ui';
+import { breakpoints, InfoTooltip, Section } from '@nebula-js/ui';
 import { MainLayout } from 'components/layouts/MainLayout';
 import { fixHMR } from 'fix-hmr';
 import React from 'react';
@@ -31,27 +31,39 @@ function DashboardMainBase({ className }: DashboardMainProps) {
         columnClassName="masonry-column"
       >
         <Section>
-          <h3>Total Value Locked</h3>
+          <h3>
+            Total Value Locked <InfoTooltip>Test tooltip...</InfoTooltip>
+          </h3>
           <TotalValueLocked />
         </Section>
         <Section>
-          <h3>NEB Price</h3>
+          <h3>
+            NEB Price <InfoTooltip>Test tooltip...</InfoTooltip>
+          </h3>
           <NEBPrice />
         </Section>
         <Section>
-          <h3 style={{ marginBottom: '2em' }}>Top Clusters</h3>
+          <h3 style={{ marginBottom: '2em' }}>
+            Top Clusters <InfoTooltip>Test tooltip...</InfoTooltip>
+          </h3>
           <TopClusters />
         </Section>
         <Section>
-          <h3>Total Provided</h3>
+          <h3>
+            Total Provided <InfoTooltip>Test tooltip...</InfoTooltip>
+          </h3>
           <TotalProvided />
         </Section>
         <Section>
-          <h3>Cluster Distribution</h3>
+          <h3>
+            Cluster Distribution <InfoTooltip>Test tooltip...</InfoTooltip>
+          </h3>
           <ClusterDistribution />
         </Section>
         <Section>
-          <h3>Trading Volume</h3>
+          <h3>
+            Trading Volume <InfoTooltip>Test tooltip...</InfoTooltip>
+          </h3>
           <TradingVolume />
         </Section>
       </Masonry>
