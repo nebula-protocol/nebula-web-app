@@ -54,6 +54,7 @@ function ComponentBase({
                 onClick={() => closeDialog(asset)}
                 icon={icon}
                 symbol={symbol}
+                description={protocol}
               />
             ))}
           </ul>
@@ -67,17 +68,19 @@ function ListItem({
   onClick,
   symbol,
   icon,
+  description,
 }: {
   onClick: () => void;
   symbol: string;
   icon: string;
+  description: string;
 }) {
   const [failedLoadImage, setFailedLoadImage] = useState<boolean>(false);
 
   return failedLoadImage ? null : (
     <li onClick={onClick}>
       <img src={icon} alt={symbol} onError={() => setFailedLoadImage(true)} />
-      {symbol}
+      {symbol} - {description}
     </li>
   );
 }
