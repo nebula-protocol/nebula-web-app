@@ -266,6 +266,8 @@ export const StyledPollCreateBase = styled(PollCreateBaseBase)`
   --max-content-width: 704px;
 
   .header {
+    background-color: var(--color-gray18);
+
     h2 {
       font-size: 2em;
       font-weight: 500;

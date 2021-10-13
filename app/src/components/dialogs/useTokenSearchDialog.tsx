@@ -5,11 +5,18 @@ import { Modal } from '@material-ui/core';
 import { useNebulaApp } from '@nebula-js/app-provider';
 import { Dialog, TextInput } from '@nebula-js/ui';
 import { useWallet } from '@terra-dev/use-wallet';
-import React, { ChangeEvent, ReactNode, useCallback, useState } from 'react';
+import React, {
+  ChangeEvent,
+  ReactNode,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
 import styled from 'styled-components';
 
 interface FormParams {
   className?: string;
+  existsAssets: terraswap.AssetInfo[];
 }
 
 type FormReturn = terraswap.AssetInfo | null;
@@ -23,6 +30,7 @@ export function useTokenSearchDialog(): [
 
 function ComponentBase({
   className,
+  existsAssets,
   closeDialog,
 }: DialogProps<FormParams, FormReturn>) {
   const { network } = useWallet();
@@ -31,6 +39,27 @@ function ComponentBase({
   const [searchText, setSearchText] = useState<string>('');
 
   const searchResult = useTokenSearch(searchText, network, queryClient);
+
+  const filteredSearchResult = useMemo(() => {
+    const existsCW20Addrs: Set<string> = new Set<string>();
+    const existsNativeDenoms: Set<string> = new Set<string>();
+
+    for (const targetAsset of existsAssets) {
+      if ('token' in targetAsset) {
+        existsCW20Addrs.add(targetAsset.token.contract_addr);
+      } else {
+        existsNativeDenoms.add(targetAsset.native_token.denom);
+      }
+    }
+
+    return searchResult.filter((targetAsset) => {
+      if ('token' in targetAsset.asset) {
+        return !existsCW20Addrs.has(targetAsset.asset.token.contract_addr);
+      } else {
+        return !existsNativeDenoms.has(targetAsset.asset.native_token.denom);
+      }
+    });
+  }, [existsAssets, searchResult]);
 
   const onSearch = useCallback((event: ChangeEvent<{ value: string }>) => {
     setSearchText(event.target.value);
@@ -48,7 +77,7 @@ function ComponentBase({
           />
 
           <ul className="token-list">
-            {searchResult.map(({ icon, protocol, symbol, asset }) => (
+            {filteredSearchResult.map(({ icon, protocol, symbol, asset }) => (
               <ListItem
                 key={symbol}
                 onClick={() => closeDialog(asset)}

@@ -21,7 +21,7 @@ function PollMainBase({ className }: PollMainProps) {
             <ul>
               <li>
                 <Link to="/polls/create/whitelist-cluster">
-                  <s>Whitelist Cluster</s>
+                  Whitelist Cluster
                   <ChevronRightRounded />
                 </Link>
               </li>
