@@ -42,12 +42,12 @@ export default function PollBlacklistCluster() {
     };
 
     const executeMsg: gov.ExecuteMsg = {
-      contract: contractAddress.gov,
+      contract: contractAddress.clusterFactory,
       msg: Buffer.from(JSON.stringify(decommissionCluster)).toString('base64'),
     };
 
     return executeMsg;
-  }, [clusters, contractAddress.gov, selectedIndex]);
+  }, [clusters, contractAddress.clusterFactory, selectedIndex]);
 
   // ---------------------------------------------
   // presentation

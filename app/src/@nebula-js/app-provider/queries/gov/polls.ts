@@ -22,6 +22,7 @@ export function useGovPollsQuery(
           start_after: pageParam,
         },
         contractAddress.cw20.NEB,
+        contractAddress,
         lastSyncedHeight,
         queryClient,
       );

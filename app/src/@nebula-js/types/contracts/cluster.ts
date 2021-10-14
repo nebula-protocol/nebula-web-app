@@ -20,7 +20,6 @@ export namespace cluster {
 
   export interface UpdateTarget {
     update_target: {
-      // TODO is Asset type CT or Token?
       target: terraswap.Asset<Token>[];
     };
   }

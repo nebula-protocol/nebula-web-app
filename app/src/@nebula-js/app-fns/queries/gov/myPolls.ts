@@ -1,4 +1,5 @@
 import { QueryClient } from '@libs/query-client';
+import { NebulaContractAddress } from '@nebula-js/app-provider';
 import { CW20Addr, gov, HumanAddr, OrderBy } from '@nebula-js/types';
 import { ParsedPoll } from '../../logics/gov/parseGovPollResponse';
 import { govPollsQuery } from './polls';
@@ -10,6 +11,7 @@ export async function govMyPollsQuery(
   walletAddr: HumanAddr | undefined,
   govAddr: HumanAddr,
   nebTokenAddr: CW20Addr,
+  contractAddress: NebulaContractAddress,
   lastSyncedHeight: () => Promise<number>,
   queryClient: QueryClient,
 ): Promise<GovMyPolls> {
@@ -21,6 +23,7 @@ export async function govMyPollsQuery(
       order_by: OrderBy.Desc,
     },
     nebTokenAddr,
+    contractAddress,
     lastSyncedHeight,
     queryClient,
   );

@@ -1,8 +1,11 @@
+import { formatRate, formatUTokenWithPostfixUnits } from '@libs/formatter';
+import { FinderAddressLink } from '@libs/ui';
+import { GovVoters, pickGovPollVoted } from '@nebula-js/app-fns';
 import {
-  formatRate,
-  formatUTokenWithPostfixUnits,
-  truncate,
-} from '@libs/formatter';
+  useGovPollQuery,
+  useGovStakerQuery,
+  useGovVotersQuery,
+} from '@nebula-js/app-provider';
 import { gov } from '@nebula-js/types';
 import {
   breakpoints,
@@ -13,15 +16,10 @@ import {
   TwoLine,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { GovVoters, pickGovPollVoted } from '@nebula-js/app-fns';
-import {
-  useGovPollQuery,
-  useGovStakerQuery,
-  useGovVotersQuery,
-} from '@nebula-js/app-provider';
 import { useConnectedWallet, useWallet } from '@terra-money/wallet-provider';
 import { MainLayout } from 'components/layouts/MainLayout';
 import { fixHMR } from 'fix-hmr';
+import { PollDetail } from 'pages/poll/components/PollDetail';
 import React, { useMemo, useState } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
@@ -86,10 +84,8 @@ function PollDetailBase({ className }: PollDetailProps) {
         <div className="description-column">
           <Section className="summary">
             <header>
-              <div>
-                <s>Whitelist CV</s>
-              </div>
-              <div data-in-progress-over={parsedPoll?.inProgressOver}>
+              <div>{parsedPoll?.type}</div>
+              <div data-in-progress-over={parsedPoll?.inProgressTimeover}>
                 {parsedPoll?.status}
               </div>
             </header>
@@ -98,17 +94,19 @@ function PollDetailBase({ className }: PollDetailProps) {
 
             <p>
               <span>Creator</span>
-              <a
-                href={`https://finder.terra.money/${network.chainID}/address/${parsedPoll?.poll.creator}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {truncate(parsedPoll?.poll.creator)}
-              </a>
+              <FinderAddressLink
+                chainID={network.chainID}
+                address={parsedPoll?.poll.creator ?? ''}
+                shortenAddress
+              />
             </p>
             <p>
               <span>Estimated end time</span>
-              {parsedPoll?.endsIn.toLocaleString()}
+              {parsedPoll?.inProgressTimeover ? (
+                <s>{parsedPoll?.endsIn.toLocaleString()}</s>
+              ) : (
+                parsedPoll?.endsIn.toLocaleString()
+              )}
             </p>
             {userVoterInfo && (
               <p>
@@ -119,7 +117,7 @@ function PollDetailBase({ className }: PollDetailProps) {
             )}
             {!userVoterInfo &&
             parsedPoll?.poll.status === 'in_progress' &&
-            parsedPoll?.inProgressOver === false ? (
+            parsedPoll?.inProgressTimeover === false ? (
               startVote && !!match ? (
                 <VoteForm
                   className="form"
@@ -139,53 +137,7 @@ function PollDetailBase({ className }: PollDetailProps) {
             ) : null}
           </Section>
 
-          <Section className="detail">
-            <div>
-              <h4>Description</h4>
-              <p>{parsedPoll?.poll.description}</p>
-            </div>
-
-            <div>
-              <h4>
-                <s>Affected Cluster</s>
-              </h4>
-              <p>Next DOGE (NDOG)</p>
-            </div>
-
-            <div>
-              <h4>
-                <s>Oracle Feeder</s>
-              </h4>
-              <p>terra128968w0r6cche4pmf4xn5358kx2gth6tr</p>
-            </div>
-
-            <div>
-              <h4>
-                <s>Asset Allocation</s>
-              </h4>
-              <ul>
-                <li>
-                  <i /> Mirror Protocol (MIR) : 40%
-                </li>
-                <li>
-                  <i /> Anchor Protocol (ANC) : 40%
-                </li>
-                <li>
-                  <i /> Luna (LUNA) : 40%
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4>
-                <s>Penalty Parameters</s>
-              </h4>
-              <p>Alpha Plus : 1</p>
-              <p>Alpha Minus : -1</p>
-              <p>Sigma Plus : 1</p>
-              <p>Sigma Minus : -1</p>
-            </div>
-          </Section>
+          {parsedPoll && <PollDetail parsedPoll={parsedPoll} />}
         </div>
 
         <Section className="voters">
@@ -264,13 +216,11 @@ function PollDetailBase({ className }: PollDetailProps) {
               {voters.map(({ voter, vote, balance }) => (
                 <tr key={'row' + voter}>
                   <td>
-                    <a
-                      href={`https://finder.terra.money/${network.chainID}/address/${voter}`}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {truncate(voter)}
-                    </a>
+                    <FinderAddressLink
+                      chainID={network.chainID}
+                      address={voter}
+                      shortenAddress
+                    />
                   </td>
                   <td>{vote.toUpperCase()}</td>
                   <td>{formatUTokenWithPostfixUnits(balance)} NEB</td>
@@ -370,28 +320,6 @@ const StyledPollDetail = styled(PollDetailBase)`
 
         > .form {
           margin-top: 40px;
-        }
-      }
-    }
-
-    .detail {
-      > div {
-        font-size: 14px;
-
-        h4 {
-          color: var(--color-white44);
-          font-weight: 500;
-
-          margin-bottom: 4px;
-        }
-
-        p {
-          line-height: 21px;
-          color: var(--color-white100);
-        }
-
-        &:not(:last-child) {
-          margin-bottom: 28px;
         }
       }
     }

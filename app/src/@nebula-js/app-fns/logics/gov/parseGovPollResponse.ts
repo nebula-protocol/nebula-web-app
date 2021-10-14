@@ -1,13 +1,34 @@
 import { formatRate } from '@libs/formatter';
-import { cw20, gov, NEB, Rate, u } from '@nebula-js/types';
+import { NebulaContractAddress } from '@nebula-js/app-provider';
+import {
+  cluster,
+  cluster_factory,
+  community,
+  cw20,
+  gov,
+  HumanAddr,
+  NEB,
+  Rate,
+  u,
+} from '@nebula-js/types';
 import big from 'big.js';
+
+export interface ParsedExecuteMsg {
+  contract: HumanAddr;
+  msg:
+    | cluster_factory.CreateCluster // whitelist cluster
+    | cluster_factory.DecommissionCluster // blacklist cluster
+    | cluster.UpdateConfig // cluster parameter change
+    | gov.UpdateConfig // governance parameter change
+    | community.Spend; // community pool spend
+}
 
 export interface ParsedPoll {
   poll: gov.PollResponse;
 
   status: string;
 
-  inProgressOver: boolean;
+  inProgressTimeover: boolean;
 
   votes: {
     yes: u<NEB>;
@@ -31,6 +52,10 @@ export interface ParsedPoll {
   };
 
   endsIn: Date;
+
+  type: string;
+
+  executeMsg: ParsedExecuteMsg | undefined;
 }
 
 export function parseGovPollResponse(
@@ -38,6 +63,7 @@ export function parseGovPollResponse(
   govNebBalance: cw20.BalanceResponse<NEB>,
   govState: gov.StateResponse,
   govConfig: gov.ConfigResponse,
+  contractAddress: NebulaContractAddress,
   blockHeight: number,
 ): ParsedPoll {
   const _votesTotal: u<NEB> =
@@ -70,6 +96,10 @@ export function parseGovPollResponse(
 
   const inProgressOver = poll.status === 'in_progress' && endsIn <= new Date();
 
+  const executeMsg: ParsedExecuteMsg | undefined = poll.execute_data
+    ? parseExecuteMsg(poll.execute_data)
+    : undefined;
+
   return {
     poll,
 
@@ -86,7 +116,7 @@ export function parseGovPollResponse(
         ? 'Expired'
         : 'Unknown Status',
 
-    inProgressOver,
+    inProgressTimeover: inProgressOver,
 
     votes: {
       yes: poll.yes_votes,
@@ -117,5 +147,54 @@ export function parseGovPollResponse(
         },
 
     endsIn,
+
+    type: parsePollType(executeMsg, contractAddress),
+
+    executeMsg,
   };
+}
+
+function parseExecuteMsg(executeMsg: gov.ExecuteMsg): ParsedExecuteMsg {
+  const msg = JSON.parse(atob(executeMsg.msg)) as any;
+
+  return {
+    contract: executeMsg.contract,
+    msg,
+  };
+}
+
+function parsePollType(
+  executeMsg: ParsedExecuteMsg | undefined,
+  address: NebulaContractAddress,
+): string {
+  if (!executeMsg) {
+    return 'Text Poll';
+  } else if (
+    executeMsg.contract === address.clusterFactory &&
+    'create_cluster' in executeMsg.msg
+  ) {
+    return 'Whitelist Cluster';
+  } else if (
+    executeMsg.contract === address.clusterFactory &&
+    'decommission_cluster' in executeMsg.msg
+  ) {
+    return 'Blacklist Cluster';
+  } else if (
+    executeMsg.contract === address.gov &&
+    'update_config' in executeMsg.msg
+  ) {
+    return 'Governance Parameter Change';
+  } else if (
+    executeMsg.contract === address.community &&
+    'spend' in executeMsg.msg
+  ) {
+    return 'Community Pool spend';
+  } else if (
+    executeMsg.contract !== address.gov &&
+    'update_config' in executeMsg.msg
+  ) {
+    return 'Cluster Parameter Change';
+  } else {
+    return 'Unknown Poll';
+  }
 }

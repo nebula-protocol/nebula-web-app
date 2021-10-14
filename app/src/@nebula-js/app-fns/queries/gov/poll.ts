@@ -5,6 +5,7 @@ import {
   WasmQuery,
   WasmQueryData,
 } from '@libs/query-client';
+import { NebulaContractAddress } from '@nebula-js/app-provider';
 import { CW20Addr, gov, HumanAddr, NEB } from '@nebula-js/types';
 import {
   ParsedPoll,
@@ -25,6 +26,7 @@ export async function govPollQuery(
   govAddr: HumanAddr,
   pollId: number,
   nebTokenAddr: CW20Addr,
+  contractAddress: NebulaContractAddress,
   lastSyncedHeight: () => Promise<number>,
   queryClient: QueryClient,
 ): Promise<GovPoll> {
@@ -55,6 +57,7 @@ export async function govPollQuery(
     nebBalance!.tokenBalance,
     govState,
     govConfig,
+    contractAddress,
     blockHeight,
   );
 

@@ -124,8 +124,8 @@ function GovernanceBase({ className }: GovernanceProps) {
       <tbody>
         {myPolls.map(({ poll, voterInfo }) => (
           <tr key={'poll' + poll.poll.id}>
-            <td data-in-progress-over={poll.inProgressOver}>
-              {poll.poll.title}
+            <td data-in-progress-over={poll.inProgressTimeover}>
+              {poll.poll.type}
             </td>
             <td>{voterInfo ? voterInfo.vote.toUpperCase() : '-'}</td>
             <td>

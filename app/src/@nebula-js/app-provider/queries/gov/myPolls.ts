@@ -19,6 +19,7 @@ export function useGovMyPollsQuery(): UseQueryResult<GovMyPolls | undefined> {
       connectedWallet?.walletAddress,
       contractAddress.gov,
       contractAddress.cw20.NEB,
+      contractAddress,
       lastSyncedHeight,
       queryClient,
     ],

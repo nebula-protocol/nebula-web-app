@@ -1,4 +1,5 @@
-import { HumanAddr, terraswap, Token } from '@libs/types';
+import { microfy } from '@libs/formatter';
+import { HumanAddr, terraswap, Token, u } from '@libs/types';
 import {
   BytesValid,
   useValidateStringBytes,
@@ -17,13 +18,13 @@ import React, {
   useState,
 } from 'react';
 import { useClusterSelection } from '../hooks/useClusterSelection';
-import { ClusterAssetsForm } from './ClusterAssetsForm';
+import { ClusterAssetsForm, FormAsset } from './ClusterAssetsForm';
 import { PollCreateBase } from './PollCreateBase';
 
 export default function PollClusterParameterChange() {
   const { clusters, selectCluster, selectedIndex } = useClusterSelection();
 
-  const { contractAddress, queryClient } = useNebulaApp();
+  const { queryClient } = useNebulaApp();
 
   // ---------------------------------------------
   // states
@@ -35,7 +36,7 @@ export default function PollClusterParameterChange() {
   const [priceOracleAddress, setPriceOracleAddress] = useState<string>('');
   const [targetOracleAddress, setTargetOracleAddress] = useState<string>('');
   const [penaltyAddress, setPenaltyAddress] = useState<string>('');
-  const [assets, setAssets] = useState<terraswap.Asset<Token>[]>(() => []);
+  const [assets, setAssets] = useState<FormAsset[]>(() => []);
 
   // ---------------------------------------------
   // logics
@@ -155,13 +156,27 @@ export default function PollClusterParameterChange() {
       clusterUpdateConfig.penalty = penaltyAddress as HumanAddr;
     }
 
-    if (originParameters.clusterTarget.target !== assets) {
-      clusterUpdateConfig.target = assets;
+    const nextTarget = assets.map(({ info, amount }) => {
+      return {
+        info,
+        amount: microfy(amount).toFixed() as u<Token>,
+      } as terraswap.Asset<Token>;
+    });
+
+    if (
+      JSON.stringify(originParameters.clusterTarget.target) !==
+      JSON.stringify(assets)
+    ) {
+      clusterUpdateConfig.target = nextTarget;
     }
 
     const executeMsg: gov.ExecuteMsg = {
-      contract: contractAddress.gov,
-      msg: Buffer.from(JSON.stringify(clusterUpdateConfig)).toString('base64'),
+      contract: clusters[selectedIndex].clusterState.cluster_contract_address,
+      msg: Buffer.from(
+        JSON.stringify({
+          update_config: clusterUpdateConfig,
+        } as cluster.UpdateConfig),
+      ).toString('base64'),
     };
 
     return executeMsg;
@@ -169,10 +184,11 @@ export default function PollClusterParameterChange() {
     assets,
     clusterDescription,
     clusterName,
-    contractAddress.gov,
+    clusters,
     originParameters,
     penaltyAddress,
     priceOracleAddress,
+    selectedIndex,
     targetOracleAddress,
   ]);
 

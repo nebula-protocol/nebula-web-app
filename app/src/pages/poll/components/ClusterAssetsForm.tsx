@@ -1,15 +1,18 @@
-import { useTerraTokenInfo } from '@libs/app-provider';
-import { terraswap, Token, u } from '@libs/types';
+import { terraswap, Token } from '@libs/types';
 import { NumberInput } from '@nebula-js/ui';
 import { useTokenSearchDialog } from 'components/dialogs/useTokenSearchDialog';
+import { TokenLabel } from 'pages/poll/components/TokenLabel';
 import React, { useCallback } from 'react';
 
+export interface FormAsset {
+  info: terraswap.AssetInfo;
+  amount: Token;
+}
+
 interface ClusterAssetsFormProps {
-  assets: terraswap.Asset<Token>[];
+  assets: FormAsset[];
   onAssetsChange: (
-    nextAssets:
-      | terraswap.Asset<Token>[]
-      | ((prevAssets: terraswap.Asset<Token>[]) => terraswap.Asset<Token>[]),
+    nextAssets: FormAsset[] | ((prevAssets: FormAsset[]) => FormAsset[]),
   ) => void;
 }
 
@@ -29,15 +32,15 @@ export function ClusterAssetsForm({
           ...prev,
           {
             info: selectedAsset,
-            amount: '' as u<Token>,
-          } as terraswap.Asset<Token>,
+            amount: '' as Token,
+          } as FormAsset,
         ];
       });
     }
   }, [assets, onAssetsChange, search]);
 
   const onTargetChange = useCallback(
-    (asset: terraswap.AssetInfo, nextAmount: u<Token>) => {
+    (asset: terraswap.AssetInfo, nextAmount: Token) => {
       onAssetsChange((prev) => {
         const assetIndex = prev.findIndex(
           (targetAsset) => targetAsset.info === asset,
@@ -46,7 +49,7 @@ export function ClusterAssetsForm({
         next[assetIndex] = {
           info: asset,
           amount: nextAmount,
-        } as terraswap.Asset<Token>;
+        } as FormAsset;
         return next;
       });
     },
@@ -75,9 +78,11 @@ export function ClusterAssetsForm({
         <tbody>
           {assets.map(({ info, amount }, i) => (
             <tr key={`asset-${i}`}>
-              <ClusterAssetLabel asset={info} />
               <td>
-                <NumberInput
+                <TokenLabel assetInfo={info} />
+              </td>
+              <td>
+                <NumberInput<Token>
                   value={amount}
                   type="decimal"
                   maxDecimalPoints={6}
@@ -94,18 +99,5 @@ export function ClusterAssetsForm({
       <button onClick={openSearch}>Token Search</button>
       {searchDialogElement}
     </section>
-  );
-}
-
-function ClusterAssetLabel({ asset }: { asset: terraswap.AssetInfo }) {
-  const { data: tokenInfo } = useTerraTokenInfo(asset);
-
-  return tokenInfo ? (
-    <td>
-      <p>{tokenInfo.symbol}</p>
-      <p>{tokenInfo.symbol !== tokenInfo.name ? tokenInfo.name : null}</p>
-    </td>
-  ) : (
-    <td />
   );
 }

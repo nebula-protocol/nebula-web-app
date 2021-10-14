@@ -10,6 +10,7 @@ describe('govPollsQuery()', () => {
       TEST_CONTRACT_ADDRESS.gov,
       {},
       TEST_CONTRACT_ADDRESS.cw20.NEB,
+      TEST_CONTRACT_ADDRESS,
       () => Promise.resolve(100000),
       TEST_LCD_CLIENT,
     );

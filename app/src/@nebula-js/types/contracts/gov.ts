@@ -18,8 +18,7 @@ export namespace gov {
 
   export interface ExecuteMsg {
     contract: HumanAddr;
-    // TODO ?
-    msg: unknown; // Binary;
+    msg: string; // Binary -> JSON.parse(atob(msg));
   }
 
   export interface VoterInfo {
@@ -175,9 +174,9 @@ export namespace gov {
     creator: HumanAddr;
     status: PollStatus;
     end_height: rs.u64;
-    title: String;
-    description: String;
-    link?: String;
+    title: string;
+    description: string;
+    link?: string;
     // TODO set token type to deposit_amount
     deposit_amount: rs.Uint128;
     execute_data?: ExecuteMsg;

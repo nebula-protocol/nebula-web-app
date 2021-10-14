@@ -1,4 +1,5 @@
-import { HumanAddr, terraswap, Token } from '@libs/types';
+import { microfy } from '@libs/formatter';
+import { HumanAddr, terraswap, Token, u } from '@libs/types';
 import {
   BytesValid,
   useValidateStringBytes,
@@ -9,7 +10,7 @@ import { FormLabel, TextInput } from '@nebula-js/ui';
 import { AccAddress } from '@terra-money/terra.js';
 import big from 'big.js';
 import React, { useCallback, useMemo, useState } from 'react';
-import { ClusterAssetsForm } from './ClusterAssetsForm';
+import { ClusterAssetsForm, FormAsset } from './ClusterAssetsForm';
 import { PollCreateBase } from './PollCreateBase';
 
 export default function PollWhitelistCluster() {
@@ -24,7 +25,7 @@ export default function PollWhitelistCluster() {
   const [priceOracleAddress, setPriceOracleAddress] = useState<string>('');
   const [targetOracleAddress, setTargetOracleAddress] = useState<string>('');
   const [penaltyAddress, setPenaltyAddress] = useState<string>('');
-  const [assets, setAssets] = useState<terraswap.Asset<Token>[]>(() => []);
+  const [assets, setAssets] = useState<FormAsset[]>(() => []);
 
   // ---------------------------------------------
   // logics
@@ -43,7 +44,7 @@ export default function PollWhitelistCluster() {
     };
   }, [assets]);
 
-  const invalidSymbol = useValidateStringBytes(clusterSymbol, 4, 64);
+  const invalidSymbol = useValidateStringBytes(clusterSymbol, 3, 64);
 
   const invalidClusterName = useValidateStringBytes(clusterName, 4, 64);
 
@@ -93,13 +94,18 @@ export default function PollWhitelistCluster() {
           penalty: penaltyAddress as HumanAddr,
           pricing_oracle: priceOracleAddress as HumanAddr,
           target_oracle: targetOracleAddress as HumanAddr,
-          target: assets,
+          target: assets.map(({ info, amount }) => {
+            return {
+              info,
+              amount: microfy(amount).toFixed() as u<Token>,
+            } as terraswap.Asset<Token>;
+          }),
         },
       },
     };
 
     const executeMsg: gov.ExecuteMsg = {
-      contract: contractAddress.gov,
+      contract: contractAddress.clusterFactory,
       msg: Buffer.from(JSON.stringify(clusterFactoryCreateCluster)).toString(
         'base64',
       ),
@@ -114,7 +120,7 @@ export default function PollWhitelistCluster() {
     priceOracleAddress,
     targetOracleAddress,
     assets,
-    contractAddress.gov,
+    contractAddress.clusterFactory,
   ]);
 
   // ---------------------------------------------

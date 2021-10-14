@@ -18,6 +18,7 @@ export function useGovPollQuery(
       contractAddress.gov,
       pollId!,
       contractAddress.cw20.NEB,
+      contractAddress,
       lastSyncedHeight,
       queryClient,
     ],

@@ -1,5 +1,7 @@
-import { ExpandMore } from '@material-ui/icons';
 import { formatRate } from '@libs/formatter';
+import { ExpandMore } from '@material-ui/icons';
+import { GovPolls, ParsedPoll } from '@nebula-js/app-fns';
+import { useGovPollsQuery } from '@nebula-js/app-provider';
 import { gov } from '@nebula-js/types';
 import {
   Button,
@@ -9,8 +11,6 @@ import {
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { EmptySelect } from '@nebula-js/ui/form/EmptySelect';
-import { GovPolls, ParsedPoll } from '@nebula-js/app-fns';
-import { useGovPollsQuery } from '@nebula-js/app-provider';
 import { fixHMR } from 'fix-hmr';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
@@ -130,12 +130,11 @@ function PollsTableBase({ className }: PollsTableProps) {
               votes,
               quorum,
               status,
-              inProgressOver,
+              inProgressTimeover,
+              type,
             }) => (
               <tr key={id} onClick={() => gotoPoll(id)}>
-                <td>
-                  <s>Whitelist CV</s>
-                </td>
+                <td>{type}</td>
                 <td
                   style={{
                     wordBreak: 'break-all',
@@ -156,7 +155,7 @@ function PollsTableBase({ className }: PollsTableProps) {
                     {formatRate(votes.noRatio)}%
                   </p>
                 </td>
-                <td data-in-progress-over={inProgressOver}>{status}</td>
+                <td data-in-progress-over={inProgressTimeover}>{status}</td>
               </tr>
             ),
           )}

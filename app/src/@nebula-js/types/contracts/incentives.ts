@@ -59,7 +59,7 @@ export namespace incentives {
     factory: HumanAddr;
     terraswap_factory: HumanAddr;
     nebula_token: HumanAddr;
-    base_denom: String;
+    base_denom: string;
     owner: HumanAddr;
     custody: HumanAddr;
   }
