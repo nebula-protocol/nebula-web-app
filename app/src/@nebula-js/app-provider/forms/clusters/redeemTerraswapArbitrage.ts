@@ -34,7 +34,7 @@ export function useClusterRedeemTerraswapArbitrageForm({
       taxRate: tax.taxRate,
       maxTaxUUSD: tax.maxTax,
       fixedFee,
-      clusterFee: constants.clusterFee,
+      clusterFee: constants.nebula.clusterFee,
       gasPrice,
       clusterState,
       connected: !!connectedWallet,

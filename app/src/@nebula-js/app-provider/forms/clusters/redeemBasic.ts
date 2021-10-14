@@ -35,7 +35,7 @@ export function useClusterRedeemBasicForm({
       maxTaxUUSD: maxTax,
       clusterState,
       fixedFee,
-      clusterFee: constants.clusterFee,
+      clusterFee: constants.nebula.clusterFee,
       gasPrice,
     },
     () => {

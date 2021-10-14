@@ -23,5 +23,7 @@ export interface NebulaContractAddress extends AppContractAddress {
 }
 
 export interface NebulaContants extends AppConstants {
-  clusterFee: NebulaClusterFee;
+  nebula: {
+    clusterFee: NebulaClusterFee;
+  };
 }

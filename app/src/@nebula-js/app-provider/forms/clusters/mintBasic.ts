@@ -29,7 +29,7 @@ export function useClusterMintBasicForm({
       clusterState,
       terraswapFactoryAddr: contractAddress.terraswap.factory,
       fixedFee,
-      clusterFee: constants.clusterFee,
+      clusterFee: constants.nebula.clusterFee,
       gasPrice,
     },
     () => {

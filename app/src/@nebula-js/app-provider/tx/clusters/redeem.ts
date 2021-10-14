@@ -50,7 +50,7 @@ export function useClusterRedeemTx(
         amount,
         fixedFee,
         gasWanted: computeClusterGasWanted(
-          constants.clusterFee.default,
+          constants.nebula.clusterFee.default,
           assets.length,
           assets.length,
         ),
@@ -70,7 +70,7 @@ export function useClusterRedeemTx(
       clusterAddr,
       clusterTokenAddr,
       connectedWallet,
-      constants.clusterFee.default,
+      constants.nebula.clusterFee.default,
       constants.gasAdjustment,
       contractAddress.incentives,
       fixedFee,

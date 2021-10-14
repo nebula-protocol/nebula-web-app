@@ -37,7 +37,7 @@ export function useClusterArbMintTx(
       console.log(
         'arbMint.ts..()',
         amounts,
-        constants.clusterFee.arbMint,
+        constants.nebula.clusterFee.arbMint,
         amounts.length,
         amounts.filter((amount) => big(amount).gt(0)).length,
       );
@@ -52,7 +52,7 @@ export function useClusterArbMintTx(
         amounts,
         fixedFee,
         gasWanted: computeClusterGasWanted(
-          constants.clusterFee.arbMint,
+          constants.nebula.clusterFee.arbMint,
           amounts.length,
           amounts.filter((amount) => big(amount).gt(0)).length,
         ),
@@ -71,7 +71,7 @@ export function useClusterArbMintTx(
       assets,
       clusterAddr,
       connectedWallet,
-      constants.clusterFee.arbMint,
+      constants.nebula.clusterFee.arbMint,
       constants.gasAdjustment,
       contractAddress.incentives,
       fixedFee,

@@ -42,7 +42,7 @@ export function useClusterMintTx(
         amounts,
         fixedFee,
         gasWanted: computeClusterGasWanted(
-          constants.clusterFee.default,
+          constants.nebula.clusterFee.default,
           assets.length,
           amounts.filter((amount) => big(amount).gt(0)).length,
         ),
@@ -61,7 +61,7 @@ export function useClusterMintTx(
       assets,
       clusterAddr,
       connectedWallet,
-      constants.clusterFee.default,
+      constants.nebula.clusterFee.default,
       constants.gasAdjustment,
       contractAddress.incentives,
       fixedFee,

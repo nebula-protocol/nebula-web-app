@@ -41,7 +41,7 @@ export function useClusterMintTerraswapArbitrageForm({
       taxRate: tax.taxRate,
       maxTaxUUSD: tax.maxTax,
       fixedFee,
-      clusterFee: constants.clusterFee,
+      clusterFee: constants.nebula.clusterFee,
       gasPrice,
     },
     () => {

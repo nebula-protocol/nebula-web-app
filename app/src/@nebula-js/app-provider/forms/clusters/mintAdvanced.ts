@@ -38,7 +38,7 @@ export function useClusterMintAdvancedForm({
       taxRate,
       maxTaxUUSD: maxTax,
       fixedFee,
-      clusterFee: constants.clusterFee,
+      clusterFee: constants.nebula.clusterFee,
       gasPrice,
     },
     () => {

@@ -50,22 +50,24 @@ export function NEBULA_CONSTANTS(network: NetworkInfo): NebulaContants {
       fixedGas: 1_671_053 as Gas,
       blocksPerYear: 4_656_810,
       gasAdjustment: 1.6 as Rate<number>,
-      clusterFee: {
-        default: {
-          txFeeBase: 2_000_000 as Gas,
-          txFeePerInventory: 600_000 as Gas,
-          txFeePerAsset: 400_000 as Gas,
-          gasWantedBase: 1_000_000 as Gas,
-          gasWantedPerInventory: 400_000 as Gas,
-          gasWantedPerAsset: 280_000 as Gas,
-        },
-        arbMint: {
-          txFeeBase: 2_000_000 as Gas,
-          txFeePerInventory: 800_000 as Gas,
-          txFeePerAsset: 400_000 as Gas,
-          gasWantedBase: 1_000_000 as Gas,
-          gasWantedPerInventory: 600_000 as Gas,
-          gasWantedPerAsset: 280_000 as Gas,
+      nebula: {
+        clusterFee: {
+          default: {
+            txFeeBase: 2_000_000 as Gas,
+            txFeePerInventory: 600_000 as Gas,
+            txFeePerAsset: 400_000 as Gas,
+            gasWantedBase: 1_000_000 as Gas,
+            gasWantedPerInventory: 400_000 as Gas,
+            gasWantedPerAsset: 280_000 as Gas,
+          },
+          arbMint: {
+            txFeeBase: 2_000_000 as Gas,
+            txFeePerInventory: 800_000 as Gas,
+            txFeePerAsset: 400_000 as Gas,
+            gasWantedBase: 1_000_000 as Gas,
+            gasWantedPerInventory: 600_000 as Gas,
+            gasWantedPerAsset: 280_000 as Gas,
+          },
         },
       },
     };
