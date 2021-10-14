@@ -7,6 +7,7 @@ import {
   HorizontalScrollTable,
   Table3SectionHeader,
   TextLink,
+  TwoLine,
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
@@ -125,7 +126,7 @@ function GovernanceBase({ className }: GovernanceProps) {
         {myPolls.map(({ poll, voterInfo }) => (
           <tr key={'poll' + poll.poll.id}>
             <td data-in-progress-over={poll.inProgressTimeover}>
-              {poll.poll.type}
+              <TwoLine text={poll.poll.title} subText={poll.type} />
             </td>
             <td>{voterInfo ? voterInfo.vote.toUpperCase() : '-'}</td>
             <td>
