@@ -1,52 +1,86 @@
+import { useNebulaApp } from '@nebula-js/app-provider';
+import { cluster_factory, gov } from '@nebula-js/types';
 import { FormLabel, NativeSelect } from '@nebula-js/ui';
-import { useClustersInfoListQuery } from '@nebula-js/app-provider';
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useCallback } from 'react';
+import { useClusterSelection } from '../hooks/useClusterSelection';
 import { PollCreateBase } from './PollCreateBase';
 
-// TODO need token list for adding token
-
 export default function PollBlacklistCluster() {
-  const { data: clustersList = [] } = useClustersInfoListQuery();
+  const { clusters, selectCluster, selectedIndex } = useClusterSelection();
 
-  const [targetClusterSymbol, setTargetClusterSymbol] = useState<string | null>(
-    null,
+  const { contractAddress } = useNebulaApp();
+
+  // ---------------------------------------------
+  // callbacks
+  // ---------------------------------------------
+  const onSelectCluster = useCallback(
+    (clusterToken: string) => {
+      const nextCluster = clusters.find(
+        ({ clusterState }) => clusterState.cluster_token === clusterToken,
+      );
+
+      if (!nextCluster) {
+        throw new Error(`Can't find cluster "${clusterToken}"`);
+      }
+
+      selectCluster(nextCluster);
+    },
+    [clusters, selectCluster],
   );
 
-  useEffect(() => {
-    if (clustersList?.length > 0) {
-      setTargetClusterSymbol((prev) => {
-        return !prev ? clustersList[0].clusterTokenInfo.symbol : prev;
-      });
+  const createMsg = useCallback(() => {
+    if (clusters.length === 0) {
+      throw new Error(`Can't find target cluster!`);
     }
-  }, [clustersList]);
+
+    const decommissionCluster: cluster_factory.DecommissionCluster = {
+      decommission_cluster: {
+        cluster_contract:
+          clusters[selectedIndex].clusterState.cluster_contract_address,
+        cluster_token: clusters[selectedIndex].clusterState.cluster_token,
+      },
+    };
+
+    const executeMsg: gov.ExecuteMsg = {
+      contract: contractAddress.gov,
+      msg: Buffer.from(JSON.stringify(decommissionCluster)).toString('base64'),
+    };
+
+    return executeMsg;
+  }, [clusters, contractAddress.gov, selectedIndex]);
+
+  // ---------------------------------------------
+  // presentation
+  // ---------------------------------------------
+  if (clusters.length === 0) {
+    return null;
+  }
 
   return (
     <PollCreateBase
       title="Blacklist Cluster"
       description="Delist an existing cluster from Nebula Protocol"
-      onCreateMsg={() => undefined}
-      submitButtonStatus
+      onCreateMsg={createMsg}
+      submitButtonStatus={true}
     >
-      {typeof targetClusterSymbol === 'string' && (
-        <FormLabel label="Choose a Cluster" className="form-label">
-          <NativeSelect
-            fullWidth
-            value={targetClusterSymbol}
-            onChange={({ target }: ChangeEvent<HTMLSelectElement>) =>
-              setTargetClusterSymbol(target.value)
-            }
-          >
-            {clustersList.map(({ clusterTokenInfo }) => (
-              <option
-                key={clusterTokenInfo.symbol}
-                value={clusterTokenInfo.symbol}
-              >
-                {clusterTokenInfo.symbol} - {clusterTokenInfo.name}
-              </option>
-            ))}
-          </NativeSelect>
-        </FormLabel>
-      )}
+      <FormLabel label="Choose a Cluster" className="form-label">
+        <NativeSelect
+          fullWidth
+          value={clusters[selectedIndex].clusterState.cluster_token}
+          onChange={({ target }: ChangeEvent<HTMLSelectElement>) =>
+            onSelectCluster(target.value)
+          }
+        >
+          {clusters.map(({ clusterTokenInfo, clusterState }) => (
+            <option
+              key={clusterState.cluster_token}
+              value={clusterState.cluster_token}
+            >
+              {clusterTokenInfo.symbol} - {clusterTokenInfo.name}
+            </option>
+          ))}
+        </NativeSelect>
+      </FormLabel>
     </PollCreateBase>
   );
 }

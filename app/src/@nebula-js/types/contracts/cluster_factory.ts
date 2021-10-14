@@ -1,4 +1,4 @@
-import { DateTime, HumanAddr, rs, terraswap, Token } from '@libs/types';
+import { CW20Addr, DateTime, HumanAddr, rs, terraswap, Token } from '@libs/types';
 
 export namespace cluster_factory {
   export interface Params {
@@ -76,6 +76,13 @@ export namespace cluster_factory {
       contract_addr: HumanAddr;
       // TODO what is Binary type? Base64 encoded string?
       msg: unknown; // Binary,
+    };
+  }
+
+  export interface DecommissionCluster {
+    decommission_cluster: {
+      cluster_contract: HumanAddr;
+      cluster_token: CW20Addr;
     };
   }
 

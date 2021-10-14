@@ -27,7 +27,7 @@ function PollMainBase({ className }: PollMainProps) {
               </li>
               <li>
                 <Link to="/polls/create/blacklist-cluster">
-                  <s>Blacklist Cluster</s>
+                  Blacklist Cluster
                   <ChevronRightRounded />
                 </Link>
               </li>

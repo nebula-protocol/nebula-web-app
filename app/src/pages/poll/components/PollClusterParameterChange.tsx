@@ -6,7 +6,7 @@ import {
 import { ClusterParameter, clusterParameterQuery } from '@nebula-js/app-fns';
 import { useNebulaApp } from '@nebula-js/app-provider';
 import { cluster, gov } from '@nebula-js/types';
-import { FormLabel, TextInput } from '@nebula-js/ui';
+import { FormLabel, NativeSelect, TextInput } from '@nebula-js/ui';
 import { AccAddress } from '@terra-money/terra.js';
 import big from 'big.js';
 import React, {
@@ -155,7 +155,9 @@ export default function PollClusterParameterChange() {
       clusterUpdateConfig.penalty = penaltyAddress as HumanAddr;
     }
 
-    // TODO update target
+    if (originParameters.clusterTarget.target !== assets) {
+      clusterUpdateConfig.target = assets;
+    }
 
     const executeMsg: gov.ExecuteMsg = {
       contract: contractAddress.gov,
@@ -164,6 +166,7 @@ export default function PollClusterParameterChange() {
 
     return executeMsg;
   }, [
+    assets,
     clusterDescription,
     clusterName,
     contractAddress.gov,
@@ -212,21 +215,22 @@ export default function PollClusterParameterChange() {
       }
     >
       <FormLabel label="Cluster" className="form-label">
-        <select
+        <NativeSelect
+          fullWidth
           value={clusters[selectedIndex].clusterState.cluster_token}
-          onChange={({ target }: ChangeEvent<{ value: string }>) =>
+          onChange={({ target }: ChangeEvent<HTMLSelectElement>) =>
             onSelectCluster(target.value)
           }
         >
-          {clusters.map(({ clusterState, clusterConfig }, i) => (
+          {clusters.map(({ clusterTokenInfo, clusterState }) => (
             <option
               key={clusterState.cluster_token}
               value={clusterState.cluster_token}
             >
-              {clusterConfig.config.name}
+              {clusterTokenInfo.symbol} - {clusterTokenInfo.name}
             </option>
           ))}
-        </select>
+        </NativeSelect>
       </FormLabel>
 
       <FormLabel label="Cluster Name" className="form-label">
