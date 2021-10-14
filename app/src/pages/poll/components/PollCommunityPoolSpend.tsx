@@ -1,7 +1,8 @@
 import { useCW20BalanceQuery } from '@libs/app-provider';
+import { min } from '@libs/big-math';
 import { formatUInput, formatUToken, microfy } from '@libs/formatter';
 import { InputAdornment } from '@material-ui/core';
-import { useNebulaApp } from '@nebula-js/app-provider';
+import { useCommunityConfigQuery, useNebulaApp } from '@nebula-js/app-provider';
 import { WalletIcon } from '@nebula-js/icons';
 import { community, gov, HumanAddr, NEB, u } from '@nebula-js/types';
 import {
@@ -11,6 +12,7 @@ import {
   TextInput,
 } from '@nebula-js/ui';
 import { AccAddress } from '@terra-money/terra.js';
+import { Big } from 'big.js';
 import React, { useCallback, useMemo, useState } from 'react';
 import { PollCreateBase } from './PollCreateBase';
 
@@ -26,17 +28,27 @@ export default function PollCommunityPoolSpend() {
       contractAddress.community,
     );
 
+  const { data: { communityConfig } = {} } = useCommunityConfigQuery();
+
+  const maxNebSpend = useMemo(() => {
+    if (!communityNebBalance || !communityConfig) {
+      return undefined;
+    }
+
+    return min(communityNebBalance.balance, communityConfig.spend_limit) as u<
+      NEB<Big>
+    >;
+  }, [communityConfig, communityNebBalance]);
+
   const invalidAmount = useMemo(() => {
-    if (amount.length === 0 || !communityNebBalance) {
+    if (amount.length === 0 || !maxNebSpend) {
       return undefined;
     }
 
     const uneb = microfy(amount as NEB);
 
-    return uneb.gt(communityNebBalance.balance)
-      ? 'Spending Limit Exceeded'
-      : undefined;
-  }, [amount, communityNebBalance]);
+    return uneb.gt(maxNebSpend) ? 'Spending Limit Exceeded' : undefined;
+  }, [amount, maxNebSpend]);
 
   const invalidRecipient = useMemo(() => {
     if (recipient.length === 0) {
@@ -90,14 +102,14 @@ export default function PollCommunityPoolSpend() {
       <FormLabel
         label="Amount of NEB to request"
         aside={
-          communityNebBalance && (
+          maxNebSpend && (
             <FormLabelAside
               onClick={() =>
-                communityNebBalance &&
-                setAmount(formatUInput(communityNebBalance.balance) as NEB)
+                maxNebSpend && setAmount(formatUInput(maxNebSpend) as NEB)
               }
+              style={{ color: 'var(--color-paleblue)', cursor: 'pointer' }}
             >
-              <WalletIcon /> {formatUToken(communityNebBalance.balance)}
+              <WalletIcon /> {formatUToken(maxNebSpend)}
             </FormLabelAside>
           )
         }

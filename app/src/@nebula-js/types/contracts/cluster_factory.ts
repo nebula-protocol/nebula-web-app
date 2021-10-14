@@ -1,4 +1,11 @@
-import { CW20Addr, DateTime, HumanAddr, rs, terraswap, Token } from '@libs/types';
+import {
+  CW20Addr,
+  DateTime,
+  HumanAddr,
+  rs,
+  terraswap,
+  Token,
+} from '@libs/types';
 
 export namespace cluster_factory {
   export interface Params {
@@ -36,7 +43,6 @@ export namespace cluster_factory {
       terraswap_factory: HumanAddr;
       nebula_token: HumanAddr;
       staking_contract: HumanAddr;
-      oracle_contract: HumanAddr;
       commission_collector: HumanAddr;
     };
   }

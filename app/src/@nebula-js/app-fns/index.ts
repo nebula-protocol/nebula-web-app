@@ -35,6 +35,7 @@ export * from './queries/clusters/penaltyParams';
 export * from './queries/clusters/redeem';
 export * from './queries/clusters/state';
 export * from './queries/clusters/stateList';
+export * from './queries/community/config';
 export * from './queries/gov/config';
 export * from './queries/gov/myPolls';
 export * from './queries/gov/poll';

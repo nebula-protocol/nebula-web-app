@@ -8,7 +8,7 @@ export namespace community {
   export interface UpdateConfig {
     update_config: {
       owner?: HumanAddr;
-      spend_limit?: rs.Uint128;
+      spend_limit?: u<NEB<rs.Uint128>>;
     };
   }
 
@@ -29,7 +29,6 @@ export namespace community {
   export interface ConfigResponse {
     owner: HumanAddr;
     nebula_token: HumanAddr;
-    // TODO is this token amount?
-    spend_limit: rs.Uint128;
+    spend_limit: u<NEB<rs.Uint128>>;
   }
 }
