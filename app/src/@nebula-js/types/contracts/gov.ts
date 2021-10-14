@@ -86,10 +86,6 @@ export namespace gov {
     withdraw_voting_rewards: {};
   }
 
-  export interface StakeVotingRewards {
-    stake_voting_rewards: {};
-  }
-
   export interface EndPoll {
     end_poll: {
       poll_id: rs.u64;
@@ -222,6 +218,21 @@ export namespace gov {
       voter: HumanAddr;
       vote: VoteOption;
       balance: u<NEB<rs.Uint128>>;
+    }>;
+  }
+
+  export interface Shares {
+    shares: {
+      start_after?: HumanAddr;
+      limit?: rs.u32;
+      order_by?: OrderBy;
+    };
+  }
+
+  export interface SharesResponse {
+    stakers: Array<{
+      staker: HumanAddr;
+      share: rs.Uint128;
     }>;
   }
 }

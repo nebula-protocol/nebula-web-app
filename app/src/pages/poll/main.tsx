@@ -38,7 +38,7 @@ function PollMainBase({ className }: PollMainProps) {
             <ul>
               <li>
                 <Link to="/polls/create/cluster-parameter-change">
-                  <s>Cluster Parameter Change</s>
+                  Cluster Parameter Change
                   <ChevronRightRounded />
                 </Link>
               </li>

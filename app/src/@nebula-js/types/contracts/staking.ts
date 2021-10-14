@@ -3,6 +3,21 @@ import { NEB } from '../tokens';
 
 export namespace staking {
   // ---------------------------------------------
+  // CW20 HookMsg
+  // ---------------------------------------------
+  export interface Bond {
+    bond: {
+      asset_token: HumanAddr;
+    };
+  }
+
+  export interface DepositReward {
+    deposit_reward: {
+      rewards: Array<[HumanAddr, rs.Uint128]>;
+    };
+  }
+
+  // ---------------------------------------------
   // HandleMsg
   // ---------------------------------------------
   export interface Unbond {

@@ -1,4 +1,4 @@
-import { DateTime, HumanAddr, rs, terraswap } from '@libs/types';
+import { DateTime, HumanAddr, rs, terraswap, Token } from '@libs/types';
 
 export namespace cluster_factory {
   export interface Params {
@@ -7,6 +7,9 @@ export namespace cluster_factory {
 
     /** Symbol of cluster */
     symbol: string;
+
+    /** Description of cluster */
+    description: string;
 
     /** Distribution weight (default is 30, which is 1/10 of NEB distribution weight) */
     weight?: rs.u32;
@@ -18,11 +21,10 @@ export namespace cluster_factory {
     pricing_oracle: HumanAddr;
 
     /** Composition oracle address */
-    composition_oracle: HumanAddr;
+    target_oracle: HumanAddr;
 
-    assets: terraswap.AssetInfo[];
-
-    target: rs.u32[];
+    /** Target assets and weights */
+    target: terraswap.Asset<Token>[];
   }
 
   // ---------------------------------------------
@@ -94,7 +96,6 @@ export namespace cluster_factory {
     staking_contract: HumanAddr;
     commission_collector: HumanAddr;
     protocol_fee_rate: string;
-    oracle_contract: HumanAddr;
     terraswap_factory: HumanAddr;
     token_code_id: rs.u64;
     cluster_code_id: rs.u64;

@@ -1,24 +1,16 @@
-import { useTerraTokenInfo } from '@libs/app-provider';
-import { formatPercentage } from '@libs/formatter';
-import { HumanAddr, Percent, terraswap } from '@libs/types';
+import { HumanAddr, terraswap, Token } from '@libs/types';
 import {
   BytesValid,
   useValidateStringBytes,
 } from '@libs/use-string-bytes-length';
-import { InputAdornment } from '@material-ui/core';
 import { useNebulaApp } from '@nebula-js/app-provider';
 import { cluster_factory, gov } from '@nebula-js/types';
-import { FormLabel, NumberInput, TextInput } from '@nebula-js/ui';
+import { FormLabel, TextInput } from '@nebula-js/ui';
 import { AccAddress } from '@terra-money/terra.js';
-import big, { Big } from 'big.js';
-import { useTokenSearchDialog } from 'components/dialogs/useTokenSearchDialog';
+import big from 'big.js';
 import React, { useCallback, useMemo, useState } from 'react';
+import { ClusterAssetsForm } from './ClusterAssetsForm';
 import { PollCreateBase } from './PollCreateBase';
-
-interface Asset {
-  asset: terraswap.AssetInfo;
-  allocation: Percent;
-}
 
 export default function PollWhitelistCluster() {
   const { contractAddress } = useNebulaApp();
@@ -26,42 +18,40 @@ export default function PollWhitelistCluster() {
   // ---------------------------------------------
   // states
   // ---------------------------------------------
-  const [symbol, setSymbol] = useState<string>('');
+  const [clusterSymbol, setClusterSymbol] = useState<string>('');
   const [clusterName, setClusterName] = useState<string>('');
+  const [clusterDescription, setClusterDescription] = useState<string>('');
   const [priceOracleAddress, setPriceOracleAddress] = useState<string>('');
-  const [compositionOracleAddress, setCompositionOracleAddress] =
-    useState<string>('');
+  const [targetOracleAddress, setTargetOracleAddress] = useState<string>('');
   const [penaltyAddress, setPenaltyAddress] = useState<string>('');
-  const [assets, setAssets] = useState<Asset[]>(() => []);
+  const [assets, setAssets] = useState<terraswap.Asset<Token>[]>(() => []);
 
   // ---------------------------------------------
   // logics
   // ---------------------------------------------
-  const { totalPercentage, validAssets } = useMemo(() => {
-    let total = big(0);
+  const { validAssets } = useMemo(() => {
     let valid = true;
 
-    for (const { allocation } of assets) {
-      if (allocation.length > 0 && big(allocation).gt(0)) {
-        total = total.plus(allocation);
-      } else {
+    for (const { amount } of assets) {
+      if (amount.length === 0 || big(amount).lte(0)) {
         valid = false;
       }
     }
 
-    if (!total.eq(100)) {
-      valid = false;
-    }
-
     return {
-      totalPercentage: total as Percent<Big>,
       validAssets: valid,
     };
   }, [assets]);
 
-  const invalidSymbol = useValidateStringBytes(symbol, 4, 64);
+  const invalidSymbol = useValidateStringBytes(clusterSymbol, 4, 64);
 
   const invalidClusterName = useValidateStringBytes(clusterName, 4, 64);
+
+  const invalidClusterDescription = useValidateStringBytes(
+    clusterDescription,
+    4,
+    1024,
+  );
 
   const invalidPriceOracleAddress = useMemo(() => {
     if (priceOracleAddress.length === 0) {
@@ -72,14 +62,14 @@ export default function PollWhitelistCluster() {
       : undefined;
   }, [priceOracleAddress]);
 
-  const invalidCompositionOracleAddress = useMemo(() => {
-    if (compositionOracleAddress.length === 0) {
+  const invalidTargetOracleAddress = useMemo(() => {
+    if (targetOracleAddress.length === 0) {
       return undefined;
     }
-    return !AccAddress.validate(compositionOracleAddress)
+    return !AccAddress.validate(targetOracleAddress)
       ? 'Invalid terra address'
       : undefined;
-  }, [compositionOracleAddress]);
+  }, [targetOracleAddress]);
 
   const invalidPenaltyAddress = useMemo(() => {
     if (penaltyAddress.length === 0) {
@@ -97,13 +87,13 @@ export default function PollWhitelistCluster() {
     const clusterFactoryCreateCluster: cluster_factory.CreateCluster = {
       create_cluster: {
         params: {
-          assets: assets.map(({ asset }) => asset),
-          target: assets.map(({ allocation }) => parseInt(allocation)),
           name: clusterName,
-          symbol: symbol,
-          composition_oracle: compositionOracleAddress as HumanAddr,
-          pricing_oracle: priceOracleAddress as HumanAddr,
+          symbol: clusterSymbol,
+          description: clusterDescription,
           penalty: penaltyAddress as HumanAddr,
+          pricing_oracle: priceOracleAddress as HumanAddr,
+          target_oracle: targetOracleAddress as HumanAddr,
+          target: assets,
         },
       },
     };
@@ -117,13 +107,14 @@ export default function PollWhitelistCluster() {
 
     return executeMsg;
   }, [
-    assets,
     clusterName,
-    compositionOracleAddress,
-    contractAddress.gov,
+    clusterSymbol,
+    clusterDescription,
     penaltyAddress,
     priceOracleAddress,
-    symbol,
+    targetOracleAddress,
+    assets,
+    contractAddress.gov,
   ]);
 
   // ---------------------------------------------
@@ -135,16 +126,18 @@ export default function PollWhitelistCluster() {
       description="Register a new cluster on Nebula Protocol"
       onCreateMsg={createMsg}
       submitButtonStatus={
-        symbol.length > 0 &&
+        clusterSymbol.length > 0 &&
         clusterName.length > 0 &&
+        clusterDescription.length > 0 &&
         priceOracleAddress.length > 0 &&
-        compositionOracleAddress.length > 0 &&
+        targetOracleAddress.length > 0 &&
         penaltyAddress.length > 0 &&
         validAssets &&
         !invalidSymbol &&
         !invalidClusterName &&
+        !invalidClusterDescription &&
         !invalidPriceOracleAddress &&
-        !invalidCompositionOracleAddress &&
+        !invalidTargetOracleAddress &&
         !invalidPenaltyAddress
           ? true
           : 'disabled'
@@ -169,14 +162,33 @@ export default function PollWhitelistCluster() {
       <FormLabel label="Symbol" className="form-label">
         <TextInput
           fullWidth
-          value={symbol}
-          onChange={({ target }) => setSymbol(target.value)}
+          value={clusterSymbol}
+          onChange={({ target }) => setClusterSymbol(target.value)}
           error={!!invalidClusterName}
           helperText={
             invalidSymbol === BytesValid.LESS
               ? 'Symbol must be at least 4 bytes.'
               : invalidSymbol === BytesValid.MUCH
               ? 'Symbol cannot be longer than 64 bytes.'
+              : undefined
+          }
+        />
+      </FormLabel>
+
+      <FormLabel label="Cluster Description" className="form-label">
+        <TextInput
+          fullWidth
+          multiline
+          minRows={4}
+          maxRows={10}
+          value={clusterDescription}
+          onChange={({ target }) => setClusterDescription(target.value)}
+          error={!!invalidClusterDescription}
+          helperText={
+            invalidClusterDescription === BytesValid.LESS
+              ? 'Clusterster description must be at least 4 bytes.'
+              : invalidClusterDescription === BytesValid.MUCH
+              ? 'Clusterster description cannot be longer than 1024 bytes.'
               : undefined
           }
         />
@@ -193,14 +205,14 @@ export default function PollWhitelistCluster() {
         />
       </FormLabel>
 
-      <FormLabel label="Composition Oracle Address" className="form-label">
+      <FormLabel label="Target Oracle Address" className="form-label">
         <TextInput
           placeholder="terra1..."
           fullWidth
-          value={compositionOracleAddress}
-          onChange={({ target }) => setCompositionOracleAddress(target.value)}
-          error={!!invalidCompositionOracleAddress}
-          helperText={invalidCompositionOracleAddress}
+          value={targetOracleAddress}
+          onChange={({ target }) => setTargetOracleAddress(target.value)}
+          error={!!invalidTargetOracleAddress}
+          helperText={invalidTargetOracleAddress}
         />
       </FormLabel>
 
@@ -215,121 +227,9 @@ export default function PollWhitelistCluster() {
         />
       </FormLabel>
 
-      <FormLabel
-        label="Tokens"
-        className="form-label"
-        aside={<span>{formatPercentage(totalPercentage)}%</span>}
-      >
+      <FormLabel label="Tokens" className="form-label">
         <ClusterAssetsForm assets={assets} onAssetsChange={setAssets} />
       </FormLabel>
     </PollCreateBase>
-  );
-}
-
-interface ClusterAssetsFormProps {
-  assets: Asset[];
-  onAssetsChange: (
-    nextAssets: Asset[] | ((prevAssets: Asset[]) => Asset[]),
-  ) => void;
-}
-
-function ClusterAssetsForm({ assets, onAssetsChange }: ClusterAssetsFormProps) {
-  const [search, searchDialogElement] = useTokenSearchDialog();
-
-  const openSearch = useCallback(async () => {
-    const existsAssets = assets.map(({ asset }) => asset);
-    const selectedAsset = await search({ existsAssets });
-
-    if (selectedAsset) {
-      onAssetsChange((prev) => {
-        return [
-          ...prev,
-          {
-            asset: selectedAsset,
-            allocation: '' as Percent,
-          },
-        ];
-      });
-    }
-  }, [assets, onAssetsChange, search]);
-
-  const onAllocationChange = useCallback(
-    (asset: terraswap.AssetInfo, nextAllocation: Percent) => {
-      onAssetsChange((prev) => {
-        const assetIndex = prev.findIndex(
-          (targetAsset) => targetAsset.asset === asset,
-        );
-        const next = [...prev];
-        next[assetIndex] = {
-          asset,
-          allocation: nextAllocation,
-        };
-        return next;
-      });
-    },
-    [onAssetsChange],
-  );
-
-  const onRemoveAsset = useCallback(
-    (asset: terraswap.AssetInfo) => {
-      onAssetsChange((prev) => {
-        return prev.filter((targetAsset) => targetAsset.asset !== asset);
-      });
-    },
-    [onAssetsChange],
-  );
-
-  return (
-    <section>
-      <table>
-        <thead>
-          <tr>
-            <th>Token Name</th>
-            <th>Allocation</th>
-            <th />
-          </tr>
-        </thead>
-        <tbody>
-          {assets.map(({ asset, allocation }, i) => (
-            <tr key={`asset-${i}`}>
-              <ClusterAssetLabel asset={asset} />
-              <td>
-                <NumberInput
-                  value={allocation}
-                  type="integer"
-                  maxIntegerPoints={2}
-                  onChange={(nextAllocation) =>
-                    onAllocationChange(asset, nextAllocation)
-                  }
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">%</InputAdornment>
-                    ),
-                  }}
-                />
-              </td>
-              <td>
-                <button onClick={() => onRemoveAsset(asset)}>Remove</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <button onClick={openSearch}>Token Search</button>
-      {searchDialogElement}
-    </section>
-  );
-}
-
-function ClusterAssetLabel({ asset }: { asset: terraswap.AssetInfo }) {
-  const { data: tokenInfo } = useTerraTokenInfo(asset);
-
-  return tokenInfo ? (
-    <td>
-      <p>{tokenInfo.symbol}</p>
-      <p>{tokenInfo.symbol !== tokenInfo.name ? tokenInfo.name : null}</p>
-    </td>
-  ) : (
-    <td />
   );
 }

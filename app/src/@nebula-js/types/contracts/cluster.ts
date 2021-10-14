@@ -12,7 +12,7 @@ export namespace cluster {
       description?: string;
       cluster_token?: CW20Addr;
       pricing_oracle?: HumanAddr;
-      composition_oracle?: HumanAddr;
+      target_oracle?: HumanAddr;
       penalty?: HumanAddr;
       target?: terraswap.Asset<Token>[]; // recomp oracle
     };
@@ -25,8 +25,8 @@ export namespace cluster {
     };
   }
 
-  export interface RevokeAsset {
-    revoke_asset: {};
+  export interface Decommission {
+    decommission: {};
   }
 
   export interface Mint {
@@ -49,14 +49,14 @@ export namespace cluster {
   // QueryMsg
   // ---------------------------------------------
   export interface ClusterConfig {
-    owner: HumanAddr;
     name: string;
     description: string;
+    owner: HumanAddr;
     cluster_token?: CW20Addr;
-    pricing_oracle: HumanAddr;
-    composition_oracle: HumanAddr;
-    penalty: HumanAddr;
     factory: HumanAddr;
+    pricing_oracle: HumanAddr;
+    target_oracle: HumanAddr;
+    penalty: HumanAddr;
     active: boolean;
   }
 
@@ -73,7 +73,7 @@ export namespace cluster {
   }
 
   export interface TargetResponse {
-    target: rs.u32[];
+    target: terraswap.Asset<Token>[];
   }
 
   export interface ClusterState {

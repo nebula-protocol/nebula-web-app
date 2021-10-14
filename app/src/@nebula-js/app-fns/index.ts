@@ -30,6 +30,7 @@ export * from './queries/clusters/info';
 export * from './queries/clusters/infoList';
 export * from './queries/clusters/list';
 export * from './queries/clusters/mint';
+export * from './queries/clusters/parameter';
 export * from './queries/clusters/penaltyParams';
 export * from './queries/clusters/redeem';
 export * from './queries/clusters/state';
