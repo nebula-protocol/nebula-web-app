@@ -76,12 +76,11 @@ export function govStakeTx(
               amount: $.nebAmount,
               msg: Buffer.from(
                 JSON.stringify({
-                  stake_voting_tokens:
-                    !hasLockEndWeek && $.lockForWeeks > 0
-                      ? {
-                          lock_for_weeks: $.lockForWeeks,
-                        }
-                      : {},
+                  stake_voting_tokens: !hasLockEndWeek
+                    ? {
+                        lock_for_weeks: $.lockForWeeks,
+                      }
+                    : {},
                 } as gov.StakeVotingTokens),
               ).toString('base64'),
             },
@@ -112,10 +111,7 @@ export function govStakeTx(
           value: null,
 
           phase: TxStreamPhase.SUCCEED,
-          receipts: [
-            helper.txHashReceipt(),
-            //helper.txFeeReceipt(txFee),
-          ],
+          receipts: [helper.txHashReceipt()],
         } as TxResultRendering;
       } catch (error) {
         return helper.failedToParseTxResult();

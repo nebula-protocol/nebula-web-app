@@ -29,13 +29,17 @@ export async function lcdFetch<WasmQueries>({
     }),
   );
 
-  return wasmKeys.reduce((resultObject, key, i) => {
-    const { result, height } = rawData[i];
+  const result = wasmKeys.reduce((resultObject, key, i) => {
+    const lcdResult = rawData[i];
+
+    if (!('result' in lcdResult)) {
+      throw new Error('!!!!');
+    }
 
     //@ts-ignore
-    resultObject[key] = result;
+    resultObject[key] = lcdResult.result;
 
-    const blockHeight: number = +height;
+    const blockHeight: number = +lcdResult.height;
 
     if (
       typeof resultObject.$blockHeight !== 'number' ||
@@ -46,4 +50,6 @@ export async function lcdFetch<WasmQueries>({
 
     return resultObject;
   }, {} as WasmQueryData<WasmQueries>);
+
+  return result;
 }

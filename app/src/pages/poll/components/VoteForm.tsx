@@ -1,20 +1,20 @@
-import { formatUToken, microfy } from '@libs/formatter';
-import { useNebBalance } from '@nebula-js/app-provider';
-import { useGovVoteTx } from '@nebula-js/app-provider/tx/gov/vote';
+import { demicrofy, formatToken, microfy } from '@libs/formatter';
+import { useGovStakerQuery, useGovVoteTx } from '@nebula-js/app-provider';
 import { WalletIcon } from '@nebula-js/icons';
 import { gov, NEB, u } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
-  EmptyButton,
+  TextButton,
   TokenInput,
   TokenSpan,
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
+import big from 'big.js';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 export interface VoteFormProps {
@@ -33,8 +33,15 @@ function VoteFormBase({ className, pollId, onVoteComplete }: VoteFormProps) {
   const [vote, setVote] = useState<gov.VoteOption | null>(null);
   const [amount, setAmount] = useState<NEB>('' as NEB);
 
-  //const { tokenBalances } = useBank<NebulaTokenBalances>();
-  const uNEB = useNebBalance(connectedWallet?.walletAddress);
+  const { data: { govStaker } = {} } = useGovStakerQuery(
+    connectedWallet?.walletAddress,
+  );
+
+  const userStakedBalance = useMemo<NEB>(() => {
+    return (
+      govStaker?.balance ? demicrofy(govStaker.balance).toFixed() : '0'
+    ) as NEB;
+  }, [govStaker?.balance]);
 
   const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
     mobile: 'medium',
@@ -42,6 +49,13 @@ function VoteFormBase({ className, pollId, onVoteComplete }: VoteFormProps) {
     pc: 'normal',
     monitor: 'normal',
   });
+
+  const invalidAmount = useMemo(() => {
+    if (amount.length === 0) {
+      return null;
+    }
+    return big(amount).gt(userStakedBalance) ? 'Not enough assets' : null;
+  }, [amount, userStakedBalance]);
 
   const proceed = useCallback(
     async (_vote: gov.VoteOption, _amount: NEB) => {
@@ -94,15 +108,19 @@ function VoteFormBase({ className, pollId, onVoteComplete }: VoteFormProps) {
         placeholder="0.00"
         token={<TokenSpan>NEB</TokenSpan>}
         suggest={
-          <EmptyButton onClick={() => setAmount(uNEB)}>
+          <TextButton
+            fontSize={12}
+            onClick={() => setAmount(userStakedBalance)}
+          >
             <WalletIcon
               style={{
-                transform: 'translate(-0.3em, -0.1em)',
+                transform: 'translateX(-0.3em)',
               }}
             />{' '}
-            {formatUToken(uNEB)}
-          </EmptyButton>
+            {formatToken(userStakedBalance)}
+          </TextButton>
         }
+        error={invalidAmount}
       />
 
       <Button
@@ -112,6 +130,7 @@ function VoteFormBase({ className, pollId, onVoteComplete }: VoteFormProps) {
         disabled={
           !vote ||
           amount.length === 0 ||
+          !!invalidAmount ||
           !postTx ||
           !connectedWallet ||
           !connectedWallet.availablePost
