@@ -85,7 +85,7 @@ export function clusterArbMintTx(
             $.walletAddr,
             $.incentivesAddr,
             {
-              arb_cluster_mint: {
+              arb_cluster_create: {
                 cluster_contract: $.clusterAddr,
                 assets: $.assets
                   .map(({ info }, i) => ({
@@ -94,7 +94,7 @@ export function clusterArbMintTx(
                   }))
                   .filter(({ amount }) => big(amount).gt(0)),
               },
-            } as incentives.ArbClusterMint,
+            } as incentives.ArbClusterCreate,
             nativeCoins.length > 0 ? new Coins(nativeCoins) : undefined,
           ),
           //new MsgExecuteContract($.walletAddr, $.incentivesAddr, {

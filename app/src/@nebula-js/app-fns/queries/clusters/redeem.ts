@@ -8,7 +8,10 @@ import {
 import { cluster, CT, penalty, u } from '@nebula-js/types';
 
 interface ClusterRedeemWasmQuery {
-  redeem: WasmQuery<penalty.Redeem, penalty.RedeemResponse>;
+  redeem: WasmQuery<
+    penalty.PenaltyQueryRedeem,
+    penalty.PenaltyQueryRedeemResponse
+  >;
 }
 
 export type ClusterRedeem = WasmQueryData<ClusterRedeemWasmQuery>;
@@ -28,7 +31,7 @@ export async function clusterRedeemQuery(
       redeem: {
         contractAddress: clusterState.penalty,
         query: {
-          redeem: {
+          penalty_query_redeem: {
             block_height: blockHeight,
             cluster_token_supply: clusterState.outstanding_balance_tokens,
             inventory: clusterState.inv,

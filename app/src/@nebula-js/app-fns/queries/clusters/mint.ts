@@ -8,7 +8,10 @@ import {
 import { cluster, penalty, Token, u } from '@nebula-js/types';
 
 interface ClusterMintWasmQuery {
-  mint: WasmQuery<penalty.Mint, penalty.MintResponse>;
+  mint: WasmQuery<
+    penalty.PenaltyQueryCreate,
+    penalty.PenaltyQueryCreateResponse
+  >;
 }
 
 export type ClusterMint = WasmQueryData<ClusterMintWasmQuery>;
@@ -28,11 +31,11 @@ export async function clusterMintQuery(
       mint: {
         contractAddress: clusterState.penalty,
         query: {
-          mint: {
+          penalty_query_create: {
             block_height: blockHeight,
             cluster_token_supply: clusterState.outstanding_balance_tokens,
             inventory: clusterState.inv,
-            mint_asset_amounts: amounts.map(
+            create_asset_amounts: amounts.map(
               (amount) =>
                 (amount.length > 0
                   ? microfy(amount).toFixed()

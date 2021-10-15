@@ -14,7 +14,10 @@ interface SimulationWasmQuery {
 }
 
 interface RedeemWasmQuery {
-  redeem: WasmQuery<penalty.Redeem, penalty.RedeemResponse>;
+  redeem: WasmQuery<
+    penalty.PenaltyQueryRedeem,
+    penalty.PenaltyQueryRedeemResponse
+  >;
 }
 
 export type ClusterArbRedeem = WasmQueryData<
@@ -46,7 +49,7 @@ export async function clusterArbRedeemQuery(
       redeem: {
         contractAddress: '',
         query: {
-          redeem: {} as any,
+          penalty_query_redeem: {} as any,
         },
       },
     },

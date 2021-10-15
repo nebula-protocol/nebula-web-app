@@ -73,7 +73,7 @@ export function clusterMintTx(
           $.walletAddr,
           $.incentivesAddr,
           {
-            mint: {
+            incentives_create: {
               cluster_contract: $.clusterAddr,
               asset_amounts: $.assets
                 .map(({ info }, i) => ({
@@ -82,7 +82,7 @@ export function clusterMintTx(
                 }))
                 .filter(({ amount }) => big(amount).gt(0)),
             },
-          } as incentives.Mint,
+          } as incentives.IncentivesCreate,
           nativeCoins.length > 0 ? new Coins(nativeCoins) : undefined,
         ),
       ],

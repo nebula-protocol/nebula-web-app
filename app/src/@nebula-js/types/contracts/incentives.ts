@@ -13,8 +13,8 @@ export namespace incentives {
   // ---------------------------------------------
   // HandleMsg
   // ---------------------------------------------
-  export interface ArbClusterMint {
-    arb_cluster_mint: {
+  export interface ArbClusterCreate {
+    arb_cluster_create: {
       cluster_contract: HumanAddr;
       assets: Array<terraswap.Asset<Token>>;
       min_ust?: rs.Uint128;
@@ -30,8 +30,8 @@ export namespace incentives {
     };
   }
 
-  export interface Mint {
-    mint: {
+  export interface IncentivesCreate {
+    incentives_create: {
       cluster_contract: HumanAddr;
       // TODO is this type correct?
       asset_amounts: Array<terraswap.Asset<Token>>;
@@ -39,8 +39,8 @@ export namespace incentives {
     };
   }
 
-  export interface Redeem {
-    redeem: {
+  export interface IncentivesRedeem {
+    incentives_redeem: {
       cluster_contract: HumanAddr;
       max_tokens: rs.Uint128;
       // TODO is this type correct?

@@ -3,18 +3,49 @@ import { CT } from '../tokens';
 
 export namespace penalty {
   // ---------------------------------------------
+  // HandleMsg
+  // ---------------------------------------------
+  export interface PenaltyCreate {
+    block_height: rs.u64;
+    // TODO is this token type?
+    cluster_token_supply: rs.Uint128;
+    // TODO is this token type?
+    inventory: rs.Uint128[];
+    // TODO set token type to mint_asset_amounts
+    create_asset_amounts: u<Token<rs.Uint128>>[];
+    // TODO ??? is this string?
+    asset_prices: string[];
+    // TODO is this type correct?
+    target_weights: u<Token<rs.Uint128>>[];
+  }
+
+  export interface PenaltyRedeem {
+    block_height: rs.u64;
+    // TODO is this token type?
+    cluster_token_supply: rs.Uint128;
+    // TODO is this token type?
+    inventory: rs.Uint128[];
+    max_tokens: u<CT<rs.Uint128>>[];
+    // TODO set token type to redeem_asset_amounts
+    redeem_asset_amounts: rs.Uint128[];
+    // TODO ??? is this string?
+    asset_prices: string[];
+    // TODO is this type correct?
+    target_weights: u<Token<rs.Uint128>>[];
+  }
+
+  // ---------------------------------------------
   // QueryMsg
   // ---------------------------------------------
-  // FIXME this type is HandleMsg and QueryMsg both
-  export interface Mint {
-    mint: {
+  export interface PenaltyQueryCreate {
+    penalty_query_create: {
       block_height: rs.u64;
       // TODO is this token type?
       cluster_token_supply: rs.Uint128;
       // TODO is this token type?
       inventory: rs.Uint128[];
       // TODO set token type to mint_asset_amounts
-      mint_asset_amounts: u<Token<rs.Uint128>>[];
+      create_asset_amounts: u<Token<rs.Uint128>>[];
       // TODO ??? is this string?
       asset_prices: string[];
       // TODO is this type correct?
@@ -22,16 +53,16 @@ export namespace penalty {
     };
   }
 
-  export interface MintResponse {
-    mint_tokens: rs.Uint128;
+  export interface PenaltyQueryCreateResponse {
+    create_tokens: rs.Uint128;
     // TODO is this token type?
     penalty: rs.Uint128;
-    log: unknown[]; //LogAttribute[],
+    attributes: unknown[]; //Attribute[],
   }
 
   // FIXME this type is HandleMsg and QueryMsg both
-  export interface Redeem {
-    redeem: {
+  export interface PenaltyQueryRedeem {
+    penalty_query_redeem: {
       block_height: rs.u64;
       // TODO is this token type?
       cluster_token_supply: rs.Uint128;
@@ -47,13 +78,13 @@ export namespace penalty {
     };
   }
 
-  export interface RedeemResponse {
+  export interface PenaltyQueryRedeemResponse {
     redeem_assets: u<Token<rs.Uint128>>[];
     // TODO is this token type?
     penalty: rs.Uint128;
     // TODO is this token type?
     token_cost: u<CT<rs.Uint128>>;
-    log: unknown[]; //LogAttribute[],
+    attributes: unknown[]; //Attribute[],
   }
 
   export interface Params {

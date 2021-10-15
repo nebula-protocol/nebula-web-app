@@ -40,11 +40,11 @@ export function clusterRedeemTx(
           },
         } as cw20.IncreaseAllowance),
         new MsgExecuteContract($.walletAddr, $.incentivesAddr, {
-          redeem: {
+          incentives_redeem: {
             cluster_contract: $.clusterAddr,
             max_tokens: $.amount,
           },
-        } as incentives.Redeem),
+        } as incentives.IncentivesRedeem),
       ],
       fee: new StdFee($.gasWanted, floor($.txFee) + 'uusd'),
       gasAdjustment: $.gasAdjustment + 0.1,

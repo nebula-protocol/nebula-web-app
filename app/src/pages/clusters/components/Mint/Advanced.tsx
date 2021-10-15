@@ -1,14 +1,14 @@
 import { formatUToken, microfy } from '@libs/formatter';
-import { CT, terraswap, Token, u, UST } from '@nebula-js/types';
 import { ClusterInfo } from '@nebula-js/app-fns';
 import {
   useClusterMintAdvancedForm,
   useClusterMintTx,
 } from '@nebula-js/app-provider';
+import { CT, terraswap, Token, u, UST } from '@nebula-js/types';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
-import { TokenForm } from 'pages/clusters/components/Mint/TokenForm';
 import React, { useCallback } from 'react';
+import { TokenForm } from './TokenForm';
 
 export interface MintAdvancedProps {
   clusterInfo: ClusterInfo;

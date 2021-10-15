@@ -169,7 +169,7 @@ export const clusterMintAdvancedForm = (
               txFee = null;
             }
 
-            return { mintedAmount: mint.mint_tokens as u<CT>, txFee };
+            return { mintedAmount: mint.create_tokens as u<CT>, txFee };
           })
         : Promise.resolve({ mintedAmount: undefined, txFee: null });
     }

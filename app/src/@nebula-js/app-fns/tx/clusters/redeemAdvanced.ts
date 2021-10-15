@@ -71,14 +71,14 @@ export function clusterRedeemAdvancedTx(
           $.walletAddr,
           $.incentivesAddr,
           {
-            mint: {
+            incentives_create: {
               cluster_contract: $.clusterAddr,
               asset_amounts: $.assets.map((asset, i) => ({
                 info: asset,
                 amount: $.amounts[i],
               })),
             },
-          } as incentives.Mint,
+          } as incentives.IncentivesCreate,
           nativeCoins.length > 0 ? new Coins(nativeCoins) : undefined,
         ),
       ],
