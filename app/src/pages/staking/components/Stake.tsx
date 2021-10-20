@@ -158,7 +158,7 @@ function StakingStakeBase({
             onClick={() =>
               updateInput({
                 ustAmount: undefined,
-                tokenAmount: states.maxTokenAmount,
+                tokenAmount: formatUInput(states.maxTokenAmount) as CT,
               })
             }
           >
