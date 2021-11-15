@@ -80,15 +80,6 @@ export const ON_PRODUCTION = global.location.host === 'app.nebulaprotocol.com';
 
 export const WALLETCONNECT_BRIDGE_SERVER = 'https://walletconnect.terra.dev/';
 
-// TODO: set ga tracking id
-export const GA_TRACKING_ID = (() => {
-  try {
-    return import.meta.env.GA_TRACKING_ID;
-  } catch {
-    return undefined;
-  }
-})();
-
 export const NEBULA_TX_REFETCH_MAP = {
   [TERRA_TX_KEYS.CW20_BUY]: [
     TERRA_QUERY_KEY.TOKEN_BALANCES,

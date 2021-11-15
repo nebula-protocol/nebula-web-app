@@ -1,6 +1,5 @@
 import { AppProvider } from '@libs/app-provider';
 import { patchReactQueryFocusRefetching } from '@libs/patch-react-query-focus-refetching';
-import { GoogleAnalytics } from '@libs/use-google-analytics';
 import { RouterScrollRestoration } from '@libs/use-router-scroll-restoration';
 import { captureException } from '@sentry/react';
 import { ReadonlyWalletSession } from '@terra-dev/readonly-wallet';
@@ -16,13 +15,12 @@ import React, { ReactNode, useCallback } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter as Router } from 'react-router-dom';
 import {
-  GA_TRACKING_ID,
-  NEBULA_TX_REFETCH_MAP,
   NEBULA_CONSTANTS,
   NEBULA_CONTRACT_ADDRESS,
   NEBULA_DEFAULT_WASM_CLIENT,
+  NEBULA_TX_REFETCH_MAP,
   WALLETCONNECT_BRIDGE_SERVER,
-} from './env';
+} from '../env';
 
 patchReactQueryFocusRefetching();
 
@@ -66,9 +64,6 @@ export function Providers({ children, ...chainOptions }: ProvidersProps) {
             txErrorReporter={errorReporter}
             queryErrorReporter={errorReporter}
           >
-            {typeof GA_TRACKING_ID === 'string' && (
-              <GoogleAnalytics trackingId={GA_TRACKING_ID} />
-            )}
             <RouterScrollRestoration />
             <StyleProviders>
               <TxBroadcastProvider>{children}</TxBroadcastProvider>

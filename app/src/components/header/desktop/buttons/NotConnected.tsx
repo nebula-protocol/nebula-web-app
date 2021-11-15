@@ -82,8 +82,8 @@ function NotConnectedBase({ ...buttonProps }: NotConnectedProps) {
                 <TerraIcon />
               </ConnectButton>
             )}
-            {availableConnectTypes.includes(ConnectType.WEBEXTENSION) && (
-              <ConnectButton onClick={() => connect(ConnectType.WEBEXTENSION)}>
+            {availableConnectTypes.includes(ConnectType.WEB_CONNECT) && (
+              <ConnectButton onClick={() => connect(ConnectType.WEB_CONNECT)}>
                 <span>Terra Station Extension</span>
                 <TerraIcon />
               </ConnectButton>
@@ -96,8 +96,8 @@ function NotConnectedBase({ ...buttonProps }: NotConnectedProps) {
                 <TerraIcon />
               </ConnectButton>
             )}
-            {availableInstallTypes.includes(ConnectType.WEBEXTENSION) && (
-              <ConnectButton onClick={() => install(ConnectType.WEBEXTENSION)}>
+            {availableInstallTypes.includes(ConnectType.WEB_CONNECT) && (
+              <ConnectButton onClick={() => install(ConnectType.WEB_CONNECT)}>
                 <span>Install Station Extension</span>
                 <TerraIcon />
               </ConnectButton>
