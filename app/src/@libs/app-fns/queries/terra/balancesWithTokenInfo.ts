@@ -17,7 +17,11 @@ export async function terraBalancesWithTokenInfoQuery(
   assets: terraswap.AssetInfo[],
   queryClient: QueryClient,
 ): Promise<TerraBalancesWithTokenInfo> {
-  const { balances } = await terraBalancesQuery(walletAddr, assets, queryClient);
+  const { balances } = await terraBalancesQuery(
+    walletAddr,
+    assets,
+    queryClient,
+  );
 
   const tokenInfos = await Promise.all(
     assets.map((asset) => {
