@@ -20,22 +20,22 @@ export function NEBULA_CONTRACT_ADDRESS(
 ): NebulaContractAddress {
   if (network.chainID.startsWith('bombay')) {
     return {
-      airdrop: 'terra19dm5qdxvfkxxxw9kee8655gxkv97y5v3t3yn8d' as HumanAddr,
-      collector: 'terra1g4cquyyua48ua7apvl6qq4u4ghmj4sce5gv46m' as HumanAddr,
-      community: 'terra1nz7mhxttv8tmjh7kq4rttnm6vrcdmcjh8ugz5g' as HumanAddr,
+      airdrop: 'terra179dgjvznfk5x2fsqa3un492l5zu9p9utdncrn7' as HumanAddr,
+      collector: 'terra1qvdf64vhtpjfznysr8uqm28exrekaju7j3mpcw' as HumanAddr,
+      community: 'terra108u9rg6nhltna8ce3teve8lsnahehljr2273m2' as HumanAddr,
       clusterFactory:
-        'terra14dz2cgqtc3ug89vztp5fx8tt99chnts5zusq69' as HumanAddr,
-      gov: 'terra1wymnvrerea4ydar55dftjszcfec0hej0a434s3' as HumanAddr,
-      incentives: 'terra14hetryc3qn0mw7arq8pmvf842jd8dfr4yydptp' as HumanAddr,
+        'terra1q2ft2we9p5p5d624hsamx9k3qc2qkzw4wyg4c6' as HumanAddr,
+      gov: 'terra1qugtk3h7tr8s0ltnpheh7gaf43hv9ax7mlg6jc' as HumanAddr,
+      incentives: 'terra14j87dwkfmjs48hd3skuxnw2fm0z9x90kruspsn' as HumanAddr,
       incentivesCustody:
-        'terra1md4gk73gw5rnlra09gjr7w228h5ghgeu8q9hwy' as HumanAddr,
-      staking: 'terra1zcvr232eyd4s2a56nkpz4sh0uplpwj7k0grcrl' as HumanAddr,
+        'terra16stw0qmz8mj5uzg672x2t8lfdjqgva7xv3fs5q' as HumanAddr,
+      staking: 'terra1n9vdcgkd3dnqdq50kncd7e3vqj3uthg434knrd' as HumanAddr,
       terraswap: {
         factory: 'terra18qpjm4zkvqnpjpw0zn0tdr8gdzvt8au35v45xf' as HumanAddr,
-        nebUstPair: 'terra1xghjhk4u4x49f5lpsz3sgc3a6ta8wh89gnt30t' as HumanAddr,
+        nebUstPair: 'terra17ld5j4588k8w9hhtrllyj0537eqndkhr679m72' as HumanAddr,
       },
       cw20: {
-        NEB: 'terra17rfslz2j8zf9nmfvmzlvr68csjy6x78eyzms7x' as CW20Addr,
+        NEB: 'terra1nknarneeatpm7amzw4rhxhcaqyt3ecx6y7k5yq' as CW20Addr,
       },
     };
   }
