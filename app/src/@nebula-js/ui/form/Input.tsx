@@ -5,7 +5,7 @@ import React, {
   ReactNode,
   useCallback,
 } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { EmptyTextInput } from './EmptyTextInput';
 
 export interface InputProps<T extends string>
@@ -42,7 +42,7 @@ export function Input<T extends string>({
   );
 
   return (
-    <InputContainer className={className} style={style} aria-invalid={!!error}>
+    <InputContainer error={!!error} className={className} style={style}>
       <header>
         {label}
         {suggest}
@@ -62,7 +62,7 @@ export function Input<T extends string>({
   );
 }
 
-export const InputContainer = styled.div`
+export const InputContainer = styled.div<{ error?: boolean }>`
   position: relative;
 
   font-size: 1em;
@@ -129,9 +129,19 @@ export const InputContainer = styled.div`
     bottom: -1.5em;
 
     text-align: right;
+    ${({ error = false }) =>
+      error &&
+      css`
+        color: var(--color-red) !important;
+      `}
   }
 
   &:focus-within {
-    border: 1px solid var(--color-white52);
+    border: 1px solid var(--color-paleblue);
   }
+  ${({ error = false }) =>
+    error &&
+    css`
+      border: 1px solid var(--color-red) !important;
+    `}
 `;
