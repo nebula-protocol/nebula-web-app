@@ -57,7 +57,7 @@ export function TokenInput<T extends string>({
   });
 
   return (
-    <InputContainer error={!!error} className={className} style={style}>
+    <InputContainer className={className} style={style} aria-invalid={!!error}>
       <header>
         {label}
         {suggest}
