@@ -158,8 +158,7 @@ export namespace gov {
     share: u<NEB<rs.Uint128>>;
     /** Array<[ poll_id, VoterInfo ]> */
     locked_balance: Array<[rs.u64, VoterInfo]>;
-    // TODO set token type to pending_voting_rewards
-    pending_voting_rewards: rs.Uint128;
+    pending_voting_rewards: u<NEB<rs.Uint128>>;
     lock_end_week?: rs.u64;
   }
 

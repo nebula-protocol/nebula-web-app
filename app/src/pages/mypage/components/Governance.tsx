@@ -11,9 +11,11 @@ import {
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useGovClaimRewardsTx } from '../../../@nebula-js/app-provider/tx/gov/reward';
+import { useTxBroadcast } from '../../../contexts/tx-broadcast';
 
 export interface GovernanceProps {
   className?: string;
@@ -21,12 +23,15 @@ export interface GovernanceProps {
 
 function GovernanceBase({ className }: GovernanceProps) {
   const connectedWallet = useConnectedWallet();
+  const { broadcast } = useTxBroadcast();
 
   const { data: myPolls = [] } = useGovMyPollsQuery();
 
   const { data: { govStaker } = {} } = useGovStakerQuery(
     connectedWallet?.walletAddress,
   );
+
+  const postTx = useGovClaimRewardsTx();
 
   const tableMinWidth = useScreenSizeValue({
     mobile: 600,
@@ -57,6 +62,14 @@ function GovernanceBase({ className }: GovernanceProps) {
     hook: (w) => (w > 800 && w < 950 ? 'vertical' : null),
   });
 
+  const proceed = useCallback(async () => {
+    const stream = postTx?.();
+
+    if (stream) {
+      broadcast(stream);
+    }
+  }, [broadcast, postTx]);
+
   return (
     <HorizontalScrollTable
       className={className}
@@ -67,14 +80,18 @@ function GovernanceBase({ className }: GovernanceProps) {
         <Table3SectionHeader>
           <h2>Governance</h2>
           <div className="buttons">
-            <TextLink component={Link} to="/send">
+            <TextLink
+              onClick={() => {
+                proceed();
+              }}
+            >
               <SendIcon
                 style={{
                   marginRight: '0.5em',
                   transform: 'translateY(-0.1em)',
                 }}
               />{' '}
-              <s>Claim Rewards</s>
+              Claim Rewards
             </TextLink>
 
             <TextLink component={Link} to="/send">
@@ -100,7 +117,16 @@ function GovernanceBase({ className }: GovernanceProps) {
                 } NEB`,
               },
               { label: 'Staking APR', text: <s>123.12%</s> },
-              { label: 'Voting Reward', text: <s>2,020.06 UST</s> },
+              {
+                label: 'Voting Reward',
+                text: `${
+                  govStaker
+                    ? formatUTokenWithPostfixUnits(
+                        govStaker.pending_voting_rewards,
+                      )
+                    : '-'
+                } NEB`,
+              },
             ]}
           />
         </Table3SectionHeader>
