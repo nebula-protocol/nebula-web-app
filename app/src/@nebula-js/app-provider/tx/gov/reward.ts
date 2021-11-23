@@ -2,7 +2,7 @@ import { useFixedFee, useRefetchQueries } from '@libs/app-provider';
 import { u, UST } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
-import { NEBULA_QUERY_KEYS } from '../..';
+import { NEBULA_TX_KEYS } from '../..';
 import { govClaimRewardsTx } from '../../../app-fns/tx/gov/reward';
 import { useNebulaApp } from '../../hooks/useNebulaApp';
 
@@ -31,7 +31,7 @@ export function useGovClaimRewardsTx() {
       queryClient,
       txErrorReporter,
       onTxSucceed: () => {
-        refetchQueries(NEBULA_QUERY_KEYS.GOV_STAKER);
+        refetchQueries(NEBULA_TX_KEYS.GOV_CLAIM_REWARD);
       },
       network: connectedWallet.network,
       post: connectedWallet.post,
