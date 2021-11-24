@@ -23,7 +23,7 @@ import {
   u,
 } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
-import { Coin, Coins, MsgExecuteContract, StdFee } from '@terra-money/terra.js';
+import { Coin, Coins, MsgExecuteContract, Fee } from '@terra-money/terra.js';
 import big from 'big.js';
 import { Observable } from 'rxjs';
 
@@ -119,7 +119,7 @@ export function clusterArbMintTx(
           //  },
           //} as incentives.SendAll),
         ],
-        fee: new StdFee($.gasWanted, floor($.txFee) + 'uusd'),
+        fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
         gasAdjustment: $.gasAdjustment,
       })(),
     _postTx({ helper, ...$ }),

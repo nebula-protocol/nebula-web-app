@@ -6,7 +6,7 @@ import {
   NebulaContants,
   NebulaContractAddress,
 } from '@nebula-js/app-provider';
-import { NetworkInfo } from '@terra-dev/wallet-types';
+import { NetworkInfo } from '@terra-money/use-wallet';
 
 export function NEBULA_DEFAULT_WASM_CLIENT(
   network: NetworkInfo,

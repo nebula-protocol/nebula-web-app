@@ -4,7 +4,7 @@ import { DialogProps, OpenDialog, useDialog } from '@libs/use-dialog';
 import { Modal } from '@material-ui/core';
 import { useNebulaApp } from '@nebula-js/app-provider';
 import { Dialog, TextInput } from '@nebula-js/ui';
-import { useWallet } from '@terra-dev/use-wallet';
+import { useWallet } from '@terra-money/use-wallet';
 import React, {
   ChangeEvent,
   ReactNode,

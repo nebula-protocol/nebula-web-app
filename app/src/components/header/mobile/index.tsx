@@ -1,6 +1,5 @@
 import { CloseIcon, MenuIcon, WalletIcon } from '@nebula-js/icons';
 import { buttonColorStyle, EmptyButton } from '@nebula-js/ui';
-import { isMathWallet } from '@terra-dev/browser-check';
 import {
   ConnectType,
   useWallet,
@@ -18,7 +17,7 @@ export interface MobileHeaderProps {
 }
 
 function MobileHeaderBase({ className }: MobileHeaderProps) {
-  const { status, connect } = useWallet();
+  const { status, connect, isChromeExtensionCompatibleBrowser } = useWallet();
 
   const [openWalletDetail, walletDetailElement] = useWalletDetailDialog();
 
@@ -35,12 +34,12 @@ function MobileHeaderBase({ className }: MobileHeaderProps) {
       openWalletDetail({});
     } else if (status === WalletStatus.WALLET_NOT_CONNECTED) {
       connect(
-        isMathWallet(navigator.userAgent)
-          ? ConnectType.CHROME_EXTENSION
+        isChromeExtensionCompatibleBrowser()
+          ? ConnectType.EXTENSION
           : ConnectType.WALLETCONNECT,
       );
     }
-  }, [connect, openWalletDetail, status]);
+  }, [connect, isChromeExtensionCompatibleBrowser, openWalletDetail, status]);
 
   const viewAddress = useCallback(() => {
     setOpen(false);

@@ -1,5 +1,5 @@
 import { breakpoints, Tab, TabItem, useScreenSizeValue } from '@nebula-js/ui';
-import { useWallet, WalletStatus } from '@terra-dev/use-wallet';
+import { useWallet, WalletStatus } from '@terra-money/use-wallet';
 import { MainLayout } from 'components/layouts/MainLayout';
 import { fixHMR } from 'fix-hmr';
 import { Governance } from 'pages/mypage/components/Governance';

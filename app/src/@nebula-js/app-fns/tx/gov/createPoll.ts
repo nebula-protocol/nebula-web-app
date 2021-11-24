@@ -15,7 +15,7 @@ import {
 } from '@libs/app-fns/tx/internal';
 import { CW20Addr, gov, HumanAddr, NEB, Rate, u, UST } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
-import { MsgExecuteContract, StdFee } from '@terra-money/terra.js';
+import { MsgExecuteContract, Fee } from '@terra-money/terra.js';
 import { Observable } from 'rxjs';
 
 export function govCreatePollTx(
@@ -55,7 +55,7 @@ export function govCreatePollTx(
           },
         }),
       ],
-      fee: new StdFee($.gasWanted, floor($.txFee) + 'uusd'),
+      fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),

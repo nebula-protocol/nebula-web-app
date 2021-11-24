@@ -1,6 +1,6 @@
 import { truncate } from '@libs/formatter';
 import { Meta } from '@storybook/react';
-import { Timeout, UserDenied } from '@terra-dev/wallet-types';
+import { Timeout, UserDenied } from '@terra-money/use-wallet';
 import {
   CreateTxFailed,
   TxFailed,
