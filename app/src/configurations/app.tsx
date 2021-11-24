@@ -2,8 +2,8 @@ import { AppProvider } from '@libs/app-provider';
 import { patchReactQueryFocusRefetching } from '@libs/patch-react-query-focus-refetching';
 import { RouterScrollRestoration } from '@libs/use-router-scroll-restoration';
 import { captureException } from '@sentry/react';
-import { ReadonlyWalletSession } from '@terra-dev/readonly-wallet';
-import { NetworkInfo } from '@terra-dev/wallet-types';
+import { ReadonlyWalletSession } from '@terra-money/wallet-provider';
+import { NetworkInfo } from '@terra-money/use-wallet';
 import {
   WalletControllerChainOptions,
   WalletProvider,

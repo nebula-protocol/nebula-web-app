@@ -15,7 +15,7 @@ import {
 } from '@libs/app-fns/tx/internal';
 import { HumanAddr, incentives, u, UST } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
-import { Coin, Coins, MsgExecuteContract, StdFee } from '@terra-money/terra.js';
+import { Coin, Coins, MsgExecuteContract, Fee } from '@terra-money/terra.js';
 import { Observable } from 'rxjs';
 
 export function clusterArbRedeemTx(
@@ -52,7 +52,7 @@ export function clusterArbRedeemTx(
             new Coins([new Coin('uusd', $.amount)]),
           ),
         ],
-        fee: new StdFee($.gasWanted, floor($.txFee) + 'uusd'),
+        fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
         gasAdjustment: $.gasAdjustment,
       })();
     },

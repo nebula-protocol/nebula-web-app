@@ -4,8 +4,8 @@ import {
   LcdQueryClient,
   QueryClient,
 } from '@libs/query-client';
-import { useWallet } from '@terra-dev/use-wallet';
-import { NetworkInfo } from '@terra-dev/wallet-types';
+import { useWallet } from '@terra-money/use-wallet';
+import { NetworkInfo } from '@terra-money/use-wallet';
 import React, {
   Consumer,
   Context,
