@@ -43,11 +43,21 @@ const NotConnected = () => {
               <TerraIcon />
             </ConnectButton>
           )}
+          <Divider />
+          {availableConnectTypes.includes(ConnectType.READONLY) && (
+            <AddressButton onClick={() => connect(ConnectType.READONLY)}>
+              View Address
+            </AddressButton>
+          )}
         </div>
       </StyledSection>
     </MainLayout>
   );
 };
+
+const Divider = styled.hr`
+  border-color: var(--color-gray08);
+`;
 
 const StyledSection = styled(Section)`
   text-align: center;
@@ -80,6 +90,11 @@ const ConnectButton = styled.section`
   font-size: var(--font-size16-14);
   color: var(--color-blue01);
   font-weight: 500;
+`;
+
+const AddressButton = styled(ConnectButton)`
+  justify-content: center;
+  color: var(--color-white64);
 `;
 
 export { NotConnected };
