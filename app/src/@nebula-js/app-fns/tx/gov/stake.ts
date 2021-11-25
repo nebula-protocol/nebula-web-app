@@ -15,7 +15,7 @@ import {
 import { floor } from '@libs/big-math';
 import { cw20, CW20Addr, gov, HumanAddr, NEB, u } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
-import { MsgExecuteContract, StdFee } from '@terra-money/terra.js';
+import { MsgExecuteContract, Fee } from '@terra-money/terra.js';
 import { Observable } from 'rxjs';
 import { govStakerQuery } from '../../queries/gov/staker';
 
@@ -86,7 +86,7 @@ export function govStakeTx(
             },
           } as cw20.Send<NEB>),
         ],
-        fee: new StdFee($.gasWanted, floor($.txFee) + 'uusd'),
+        fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
         gasAdjustment: $.gasAdjustment,
       })();
     },

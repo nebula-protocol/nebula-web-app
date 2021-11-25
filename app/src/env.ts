@@ -6,7 +6,7 @@ import {
   NebulaContants,
   NebulaContractAddress,
 } from '@nebula-js/app-provider';
-import { NetworkInfo } from '@terra-dev/wallet-types';
+import { NetworkInfo } from '@terra-money/use-wallet';
 
 export function NEBULA_DEFAULT_WASM_CLIENT(
   network: NetworkInfo,
@@ -154,4 +154,5 @@ export const NEBULA_TX_REFETCH_MAP = {
     NEBULA_QUERY_KEYS.GOV_VOTERS,
     NEBULA_QUERY_KEYS.GOV_STAKER,
   ],
+  [NEBULA_TX_KEYS.GOV_CLAIM_REWARD]: [NEBULA_QUERY_KEYS.GOV_STAKER],
 };

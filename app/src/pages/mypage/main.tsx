@@ -1,4 +1,5 @@
 import { breakpoints, Tab, TabItem, useScreenSizeValue } from '@nebula-js/ui';
+import { useWallet, WalletStatus } from '@terra-money/use-wallet';
 import { MainLayout } from 'components/layouts/MainLayout';
 import { fixHMR } from 'fix-hmr';
 import { Governance } from 'pages/mypage/components/Governance';
@@ -7,6 +8,7 @@ import { Holdings } from 'pages/mypage/components/Holdings';
 import { Staking } from 'pages/mypage/components/Staking';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { NotConnected } from './components/NotConnected';
 
 export interface MyPageMainProps {
   className?: string;
@@ -21,6 +23,7 @@ const tabItems: TabItem[] = [
 ];
 
 function MyPageMainBase({ className }: MyPageMainProps) {
+  const { status } = useWallet();
   const [tab, setTab] = useState<TabItem>(() => tabItems[0]);
 
   const showAll = useScreenSizeValue<boolean>({
@@ -29,6 +32,12 @@ function MyPageMainBase({ className }: MyPageMainProps) {
     pc: false,
     monitor: false,
   });
+
+  if (status === WalletStatus.INITIALIZING) return null;
+
+  if (status === WalletStatus.WALLET_NOT_CONNECTED) {
+    return <NotConnected />;
+  }
 
   return (
     <MainLayout className={className}>

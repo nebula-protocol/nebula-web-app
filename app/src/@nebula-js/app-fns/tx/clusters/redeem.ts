@@ -15,7 +15,7 @@ import {
 } from '@libs/app-fns/tx/internal';
 import { CT, cw20, CW20Addr, HumanAddr, incentives, u } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
-import { MsgExecuteContract, StdFee } from '@terra-money/terra.js';
+import { MsgExecuteContract, Fee } from '@terra-money/terra.js';
 import { Observable } from 'rxjs';
 
 export function clusterRedeemTx(
@@ -46,7 +46,7 @@ export function clusterRedeemTx(
           },
         } as incentives.IncentivesRedeem),
       ],
-      fee: new StdFee($.gasWanted, floor($.txFee) + 'uusd'),
+      fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
       gasAdjustment: $.gasAdjustment + 0.1,
     }),
     _postTx({ helper, ...$ }),

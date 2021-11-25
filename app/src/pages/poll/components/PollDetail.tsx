@@ -14,7 +14,7 @@ import {
   HumanAddr,
 } from '@nebula-js/types';
 import { Section } from '@nebula-js/ui';
-import { useWallet } from '@terra-dev/use-wallet';
+import { useWallet } from '@terra-money/use-wallet';
 import { fixHMR } from 'fix-hmr';
 import { TokenLabel } from 'pages/poll/components/TokenLabel';
 import React from 'react';

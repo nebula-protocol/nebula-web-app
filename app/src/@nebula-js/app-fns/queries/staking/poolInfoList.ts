@@ -17,11 +17,10 @@ export async function stakingPoolInfoListQuery(
     queryClient,
   );
 
-  // TODO add NEB
   const tokenAddrs = [
+    nebTokenAddr,
     ...clusterStates.map(({ cluster_token }) => cluster_token),
   ];
-  //const tokenAddrs = [nebTokenAddr, ...clusterTokenAddrs];
 
   return await Promise.all(
     tokenAddrs.map((tokenAddr) => {

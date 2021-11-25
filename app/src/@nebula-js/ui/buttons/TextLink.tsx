@@ -20,7 +20,7 @@ function TextLinkBase<C extends React.ElementType>({
 
 const StyledTextLink = styled(TextLinkBase)`
   ${({ color = 'paleblue' }) => textButtonColorStyle(color)};
-
+  cursor: pointer;
   text-decoration: none;
 `;
 

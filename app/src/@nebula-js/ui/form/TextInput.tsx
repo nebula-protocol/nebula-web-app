@@ -1,6 +1,6 @@
 import { TextField, TextFieldProps } from '@material-ui/core';
 import { ComponentType } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 /**
  * Styled component of the `<TextField/>` of the Material-UI
@@ -11,6 +11,11 @@ export const TextInput: ComponentType<TextFieldProps> = styled(TextField)`
   border-radius: 8px;
 
   border: 1px solid var(--color-gray34);
+  ${({ error }) =>
+    error &&
+    css`
+      border: 1px solid var(--color-red);
+    `}
 
   .MuiFormLabel-root {
     opacity: 1;

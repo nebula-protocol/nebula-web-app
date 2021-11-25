@@ -132,6 +132,13 @@ export const InputContainer = styled.div`
   }
 
   &:focus-within {
-    border: 1px solid var(--color-white52);
+    border: 1px solid var(--color-paleblue);
+  }
+
+  &[aria-invalid='true'] {
+    border: 1px solid var(--color-red) !important;
+    > aside {
+      color: var(--color-red) !important;
+    }
   }
 `;

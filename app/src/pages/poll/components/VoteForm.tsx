@@ -16,6 +16,10 @@ import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
 import React, { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
+import {
+  computeRemainingLockedWeeks,
+  computeVotingPower,
+} from '../../../@nebula-js/app-fns/logics/gov/computeVotingPower';
 
 export interface VoteFormProps {
   className?: string;
@@ -37,11 +41,14 @@ function VoteFormBase({ className, pollId, onVoteComplete }: VoteFormProps) {
     connectedWallet?.walletAddress,
   );
 
-  const userStakedBalance = useMemo<NEB>(() => {
-    return (
-      govStaker?.balance ? demicrofy(govStaker.balance).toFixed() : '0'
-    ) as NEB;
-  }, [govStaker?.balance]);
+  const userVotingPower = useMemo<NEB>(() => {
+    const balance = demicrofy(govStaker?.balance ?? ('0' as u<NEB>)).toNumber();
+    const votingPower = computeVotingPower(
+      balance,
+      computeRemainingLockedWeeks(govStaker?.lock_end_week),
+    );
+    return votingPower as NEB;
+  }, [govStaker?.balance, govStaker?.lock_end_week]);
 
   const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
     mobile: 'medium',
@@ -54,8 +61,8 @@ function VoteFormBase({ className, pollId, onVoteComplete }: VoteFormProps) {
     if (amount.length === 0) {
       return null;
     }
-    return big(amount).gt(userStakedBalance) ? 'Not enough assets' : null;
-  }, [amount, userStakedBalance]);
+    return big(amount).gt(userVotingPower) ? 'Not enough assets' : null;
+  }, [amount, userVotingPower]);
 
   const proceed = useCallback(
     async (_vote: gov.VoteOption, _amount: NEB) => {
@@ -108,16 +115,13 @@ function VoteFormBase({ className, pollId, onVoteComplete }: VoteFormProps) {
         placeholder="0.00"
         token={<TokenSpan>NEB</TokenSpan>}
         suggest={
-          <TextButton
-            fontSize={12}
-            onClick={() => setAmount(userStakedBalance)}
-          >
+          <TextButton fontSize={12} onClick={() => setAmount(userVotingPower)}>
             <WalletIcon
               style={{
                 transform: 'translateX(-0.3em)',
               }}
             />{' '}
-            {formatToken(userStakedBalance)}
+            {formatToken(userVotingPower)}
           </TextButton>
         }
         error={invalidAmount}

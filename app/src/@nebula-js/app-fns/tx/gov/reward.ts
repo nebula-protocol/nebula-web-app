@@ -13,18 +13,15 @@ import {
   _postTx,
   TxHelper,
 } from '@libs/app-fns/tx/internal';
-import { gov, HumanAddr, NEB, u } from '@nebula-js/types';
+import { HumanAddr } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
 import { MsgExecuteContract, Fee } from '@terra-money/terra.js';
 import { Observable } from 'rxjs';
 
-export function govVoteTx(
+export function govClaimRewardsTx(
   $: {
     walletAddr: HumanAddr;
     govAddr: HumanAddr;
-    vote: gov.VoteOption;
-    pollId: number;
-    amount: u<NEB>;
     onTxSucceed?: () => void;
   } & TxCommonParams,
 ): Observable<TxResultRendering> {
@@ -34,12 +31,8 @@ export function govVoteTx(
     _createTxOptions({
       msgs: [
         new MsgExecuteContract($.walletAddr, $.govAddr, {
-          cast_vote: {
-            poll_id: $.pollId,
-            vote: $.vote,
-            amount: $.amount,
-          },
-        } as gov.CastVote),
+          withdraw_voting_rewards: {},
+        }),
       ],
       fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
       gasAdjustment: $.gasAdjustment,
@@ -65,10 +58,7 @@ export function govVoteTx(
           value: null,
 
           phase: TxStreamPhase.SUCCEED,
-          receipts: [
-            helper.txHashReceipt(),
-            //helper.txFeeReceipt(txFee),
-          ],
+          receipts: [helper.txHashReceipt()],
         } as TxResultRendering;
       } catch (error) {
         return helper.failedToParseTxResult();

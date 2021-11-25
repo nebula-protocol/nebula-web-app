@@ -74,7 +74,8 @@ function TopClustersBase({ className }: TopClustersProps) {
 
   const tabItems = useMemo(() => {
     return topClusters.map((_, i) => {
-      return { id: i.toString(), label: i.toString() };
+      const label = (i + 1).toString();
+      return { id: i.toString(), label };
     });
   }, [topClusters]);
 
