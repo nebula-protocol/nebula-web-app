@@ -33,10 +33,10 @@ export function useGovStakeForm() {
       nebBalance: uNEB,
       ustBalance: uUST,
       fixedFee,
-      minLockForWeeks: lockEndWeeks ?? 0,
+      minLockForWeeks: lockEndWeeks ?? 1,
       connected: !!connectedWallet,
       govStaker,
     },
-    () => ({ nebAmount: '' as NEB, lockForWeeks: 0 } as GovStakeFormInput),
+    () => ({ nebAmount: '' as NEB, lockForWeeks: 1 } as GovStakeFormInput),
   );
 }
