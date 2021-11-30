@@ -1,4 +1,5 @@
-import { NoMicro, Token, u } from '@libs/types';
+import { NoMicro, Token, u, rs } from '@libs/types';
+import { NEB } from '@nebula-js/types';
 import big, { BigSource } from 'big.js';
 import { demicrofy, MICRO } from './currency';
 import { formatDemimal, formatInteger } from './unit.format';
@@ -94,4 +95,10 @@ export function formatUTokenInteger(n: u<Token<BigSource>>): string {
 
 export function formatTokenInteger(n: u<Token<BigSource>>): string {
   return iFormatter(n);
+}
+
+export function formatVotingPower(votingPower: rs.FPDecimal): NEB {
+  return big(Math.floor(votingPower as any))
+    .div(MICRO)
+    .toFixed() as NEB;
 }

@@ -162,6 +162,17 @@ export namespace gov {
     lock_end_week?: rs.u64;
   }
 
+  export interface VotingPower {
+    voting_power: {
+      address: HumanAddr;
+    };
+  }
+
+  export interface VotingPowerResponse {
+    staker: HumanAddr;
+    voting_power: rs.FPDecimal;
+  }
+
   export interface Poll {
     poll: {
       poll_id: rs.u64;

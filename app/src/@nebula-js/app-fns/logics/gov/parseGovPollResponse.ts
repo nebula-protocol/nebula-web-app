@@ -114,7 +114,7 @@ export function parseGovPollResponse(
         ? 'Executed'
         : poll.status === 'expired'
         ? 'Expired'
-        : 'Unknown Status',
+        : 'Failed',
 
     inProgressTimeover: inProgressOver,
 

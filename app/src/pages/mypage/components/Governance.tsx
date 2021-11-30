@@ -91,17 +91,7 @@ function GovernanceBase({ className }: GovernanceProps) {
                   transform: 'translateY(-0.1em)',
                 }}
               />{' '}
-              Claim Rewards
-            </TextLink>
-
-            <TextLink component={Link} to="/send">
-              <SendIcon
-                style={{
-                  marginRight: '0.5em',
-                  transform: 'translateY(-0.1em)',
-                }}
-              />{' '}
-              <s>Restake Reward</s>
+              Claim All Rewards
             </TextLink>
           </div>
           <Descriptions

@@ -7,9 +7,7 @@ import styled from 'styled-components';
 import { ClusterDistribution } from './components/ClusterDistribution';
 import { NEBPrice } from './components/NEBPrice';
 import { TopClusters } from './components/TopClusters';
-import { TotalProvided } from './components/TotalProvided';
 import { TotalValueLocked } from './components/TotalValueLocked';
-import { TradingVolume } from './components/TradingVolume';
 
 export interface DashboardMainProps {
   className?: string;
@@ -50,21 +48,9 @@ function DashboardMainBase({ className }: DashboardMainProps) {
         </Section>
         <Section>
           <h3>
-            Total Provided <InfoTooltip>Test tooltip...</InfoTooltip>
-          </h3>
-          <TotalProvided />
-        </Section>
-        <Section>
-          <h3>
             Cluster Distribution <InfoTooltip>Test tooltip...</InfoTooltip>
           </h3>
           <ClusterDistribution />
-        </Section>
-        <Section>
-          <h3>
-            Trading Volume <InfoTooltip>Test tooltip...</InfoTooltip>
-          </h3>
-          <TradingVolume />
         </Section>
       </Masonry>
     </MainLayout>

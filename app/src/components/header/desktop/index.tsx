@@ -24,7 +24,13 @@ function DesktopHeaderBase({ className }: DesktopHeaderProps) {
         <div />
 
         <EmptyButton size={18}>
-          <DocsIcon />
+          <StyledA
+            href="https://docs.neb.finance"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <DocsIcon />
+          </StyledA>
         </EmptyButton>
 
         <EmptyButton
@@ -52,6 +58,10 @@ function DesktopHeaderBase({ className }: DesktopHeaderProps) {
     </header>
   );
 }
+
+const StyledA = styled.a`
+  color: inherit;
+`;
 
 export const DesktopHeader = styled(DesktopHeaderBase)`
   background-color: var(--color-gray08);

@@ -21,24 +21,28 @@ function FooterBase({ className }: FooterProps) {
 
   return (
     <div className={className}>
-      <a href="https://discord.gg/9aUYgpKZ9c" target="_blank" rel="noreferrer">
-        <FooterMediumIcon />
-      </a>
-      <a href="https://discord.gg/9aUYgpKZ9c" target="_blank" rel="noreferrer">
-        <FooterDiscordIcon />
-      </a>
       <a
-        href="https://twitter.com/anchor_protocol"
+        href="https://medium.com/nebula-protocol"
         target="_blank"
         rel="noreferrer"
       >
+        <FooterMediumIcon />
+      </a>
+      <a href="https://discord.gg/rSdww7c7Vn" target="_blank" rel="noreferrer">
+        <FooterDiscordIcon />
+      </a>
+      <a href="https://t.me/nebula_protocol " target="_blank" rel="noreferrer">
         <FooterTelegramIcon />
       </a>
-      <a href="https://t.me/anchor_official" target="_blank" rel="noreferrer">
+      <a
+        href="https://twitter.com/nebula_protocol"
+        target="_blank"
+        rel="noreferrer"
+      >
         <FooterTwitterIcon />
       </a>
       <a
-        href="https://github.com/Anchor-Protocol"
+        href="https://github.com/nebula-protocol"
         target="_blank"
         rel="noreferrer"
       >
@@ -47,7 +51,10 @@ function FooterBase({ className }: FooterProps) {
       <div />
       <div className="buttons">
         <EmptyButton>
-          <DocsIcon /> Docs
+          {/* <DocsIcon /> Docs */}
+          <a href="https://docs.neb.finance" target="_blank" rel="noreferrer">
+            <DocsIcon /> Docs
+          </a>
         </EmptyButton>
         <EmptyButton
           onClick={() =>
@@ -71,7 +78,7 @@ export const Footer = styled(FooterBase)`
 
   a {
     font-size: 18px;
-
+    text-decoration: none;
     margin-right: 20px;
 
     color: var(--color-white44);
@@ -94,6 +101,16 @@ export const Footer = styled(FooterBase)`
 
       svg {
         font-size: 16px;
+      }
+
+      > a {
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        margin-right: 0px;
+        &:hover {
+          color: var(--color-white44);
+        }
       }
 
       &:first-child {
