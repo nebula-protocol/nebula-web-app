@@ -1,27 +1,23 @@
 import { formatRate, formatUTokenDecimal2 } from '@libs/formatter';
-import { HumanAddr, JSDateTime, Rate, u, UST } from '@nebula-js/types';
+import { HumanAddr, Rate } from '@nebula-js/types';
 import {
   BarGraph,
   breakpoints,
   Descriptions,
-  DiffSpan,
   HorizontalScrollTable,
   IconAndLabels,
   InfoTooltip,
-  PartitionBarGraph,
-  PartitionLabels,
   Section,
   Sub,
   Tab,
   TabItem,
-  TabSection,
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { useClusterInfoQuery } from '@nebula-js/app-provider';
 import { MainLayout } from 'components/layouts/MainLayout';
 import { fixHMR } from 'fix-hmr';
 import { toClusterView } from 'pages/clusters/models/clusters';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
   Redirect,
   Route,
@@ -29,13 +25,11 @@ import {
   Switch,
   useRouteMatch,
 } from 'react-router-dom';
-import { useStyle } from '@libs/style-router';
 import styled from 'styled-components';
-import useResizeObserver from 'use-resize-observer/polyfilled';
 import { ClusterBurn } from './components/Burn';
 import { ClusterBuy } from './components/Buy';
 import { ClusterMint } from './components/Mint';
-import { PriceChart } from './components/PriceChart';
+import { PriceCard } from './components/PriceCard';
 import { ClusterSell } from './components/Sell';
 
 export interface ClustersDetailProps
@@ -49,24 +43,6 @@ const tabItems: TabItem[] = [
   { id: 'mint', label: 'Mint' },
   { id: 'burn', label: 'Burn' },
 ];
-
-const chartTabItems: TabItem[] = [
-  { id: 'day', label: 'D' },
-  { id: 'week', label: 'W' },
-  { id: 'month', label: 'M' },
-  { id: 'year', label: 'Y' },
-];
-
-const chartData = Array.from(
-  { length: Math.floor(Math.random() * 30) + 30 },
-  (_, i) => {
-    return {
-      y: 10 * i + 10 - Math.random() * 20,
-      amount: i.toString() as u<UST>,
-      date: Date.now() as JSDateTime,
-    };
-  },
-);
 
 function ClustersDetailBase({
   className,
@@ -96,10 +72,6 @@ function ClustersDetailBase({
     [history, match.url],
   );
 
-  const { width = 300, ref } = useResizeObserver();
-
-  const { color } = useStyle();
-
   const descriptionDisplay = useScreenSizeValue<'horizontal' | 'vertical'>({
     mobile: 'vertical',
     tablet: 'horizontal',
@@ -120,8 +92,6 @@ function ClustersDetailBase({
     pc: 1000,
     monitor: 1000,
   });
-
-  const [chartTab, setChartTab] = useState<TabItem>(chartTabItems[0]);
 
   return (
     <MainLayout className={className}>
@@ -158,42 +128,6 @@ function ClustersDetailBase({
         />
       </header>
 
-      <section className="about">
-        <Section>
-          <article>
-            <p>{clusterView?.description}</p>
-          </article>
-
-          {clusterView?.assets && (
-            <section className="graph" ref={ref}>
-              <PartitionLabels
-                data={clusterView.assets
-                  .slice(0, 5)
-                  .map(({ token, color: assetColor, portfolioRatio }) => ({
-                    label: token.symbol,
-                    color: assetColor,
-                    value: formatRate(portfolioRatio as Rate<number>) + '%',
-                  }))}
-              >
-                {clusterView.assets.length - 5 > 0 && (
-                  <li>+{clusterView.assets.length - 5} more</li>
-                )}
-              </PartitionLabels>
-              <PartitionBarGraph
-                data={clusterView.assets.map(
-                  ({ color: assetColor, portfolioRatio }) => ({
-                    color: assetColor,
-                    value: portfolioRatio,
-                  }),
-                )}
-                width={width}
-                height={5}
-              />
-            </section>
-          )}
-        </Section>
-      </section>
-
       <section className="main">
         <div>
           <MainTab
@@ -222,14 +156,7 @@ function ClustersDetailBase({
           </MainSection>
         </div>
 
-        <TabSection
-          emptyMain
-          items={chartTabItems}
-          selectedItem={chartTab}
-          onChange={setChartTab}
-        >
-          <PriceChart data={chartData} color={color} />
-        </TabSection>
+        <PriceCard price={clusterView?.price} desc={clusterView?.description} />
       </section>
 
       <section className="provided-tokens">
@@ -284,7 +211,6 @@ function ClustersDetailBase({
                   <s>
                     0 UST
                     <br />
-                    <DiffSpan diff={0.5}>0%</DiffSpan>
                   </s>
                 </td>
                 <td className="portfolio-ratio">

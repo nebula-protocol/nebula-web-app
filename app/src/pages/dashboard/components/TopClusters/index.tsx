@@ -9,7 +9,6 @@ import { useClustersInfoListQuery } from '@nebula-js/app-provider';
 import { Rate, u, UST } from '@nebula-js/types';
 import {
   Carousel,
-  DiffSpan,
   InfoTooltip,
   MiniTab,
   PartitionBarGraph,
@@ -106,18 +105,7 @@ function TopClustersBase({ className }: TopClustersProps) {
                       {clusterTokenInfo.name} <ChevronRight />
                     </Link>
                   </h4>
-                  <p>
-                    {formatUTokenWithPostfixUnits(marketCap)} UST{' '}
-                    <s>
-                      <DiffSpan
-                        diff={10}
-                        translateIconY="0.15em"
-                        style={{ fontSize: 12 }}
-                      >
-                        10.00%
-                      </DiffSpan>
-                    </s>
-                  </p>
+                  <p>{formatUTokenWithPostfixUnits(marketCap)} UST </p>
                 </div>
               </section>
 

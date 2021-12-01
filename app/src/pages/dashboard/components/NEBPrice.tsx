@@ -3,7 +3,7 @@ import { formatToken } from '@libs/formatter';
 import { AnimateNumber } from '@libs/ui';
 import { useNebulaApp } from '@nebula-js/app-provider';
 import { NEB } from '@nebula-js/types';
-import { DiffSpan, Sub, VerticalLabelAndValue } from '@nebula-js/ui';
+import { Sub, VerticalLabelAndValue } from '@nebula-js/ui';
 import { fixHMR } from 'fix-hmr';
 import React from 'react';
 import styled from 'styled-components';
@@ -28,14 +28,6 @@ function NEBPriceBase({ className }: NEBPriceProps) {
             : (0 as NEB<number>)}
         </AnimateNumber>{' '}
         <Sub>UST</Sub>
-      </p>
-
-      <p className="diff">
-        <s>
-          <DiffSpan diff={123.12} translateIconY="0.15em">
-            123.12%
-          </DiffSpan>
-        </s>
       </p>
 
       <VerticalLabelAndValue
