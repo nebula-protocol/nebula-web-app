@@ -34,7 +34,7 @@ const TotalRewards = () => {
       />
       <StyledButton fullWidth>
         <ClaimIcon />
-        Claim All Rewards
+        <s>Claim All Rewards</s>
       </StyledButton>
     </Container>
   );
