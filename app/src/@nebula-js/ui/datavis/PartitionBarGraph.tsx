@@ -20,7 +20,8 @@ function PartitionBarGraphBase({
 
     return data.reduce(
       ({ elements, x }, { value, color }, i) => {
-        const w = (value / total) * (width - gap * data.length);
+        const computedWidth = (value / total) * (width - gap * data.length);
+        const w = isNaN(computedWidth) ? 1 : computedWidth;
 
         elements.push(
           <rect

@@ -1,9 +1,9 @@
-import { Sub } from '@nebula-js/ui';
 import React from 'react';
 import styled from 'styled-components';
 import { UST } from '@libs/types';
 import { Big } from 'big.js';
 import { formatToken } from '@libs/formatter';
+import { DisplayNumber } from '../../../components/common/DisplayNumber';
 
 export interface PriceCardProps {
   price: UST<Big> | undefined;
@@ -12,24 +12,17 @@ export interface PriceCardProps {
 
 export const PriceCard = ({ price, desc }: PriceCardProps) => {
   if (!price || !desc) return null;
-  const splitPrice = formatToken(price).split('.');
 
   return (
     <Container>
       <h3>CURRENT PRICE</h3>
-      <DisplayNumber>
-        {splitPrice[0]}
-        <Sub>.{splitPrice[1]} UST</Sub>
-      </DisplayNumber>
+      <StyledDisplayNumber price={formatToken(price)} currency="UST" />
       <section>{desc}</section>
     </Container>
   );
 };
 
-const DisplayNumber = styled.p`
-  color: var(--color-white92);
-  font-size: 32px;
-  font-weight: 500;
+const StyledDisplayNumber = styled(DisplayNumber)`
   margin-top: 5px;
   margin-bottom: 32px;
 `;

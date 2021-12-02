@@ -8,6 +8,7 @@ import { Staking } from 'pages/mypage/components/Staking';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { NotConnected } from './components/NotConnected';
+import { TotalInfo } from './components/TotalInfo';
 
 export interface MyPageMainProps {
   className?: string;
@@ -40,6 +41,7 @@ function MyPageMainBase({ className }: MyPageMainProps) {
   return (
     <MainLayout className={className}>
       <h1>My Page</h1>
+      <TotalInfo></TotalInfo>
       {!showAll && (
         <Tab
           className="tab"
