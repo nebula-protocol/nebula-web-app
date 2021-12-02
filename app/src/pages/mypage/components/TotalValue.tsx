@@ -18,6 +18,7 @@ import { useTotalValue } from '../hooks/useTotalValue';
 import { Big } from 'big.js';
 import { u, UST } from '@nebula-js/types';
 import useResizeObserver from 'use-resize-observer';
+import { Header } from './Header';
 
 const TotalValue = () => {
   const {
@@ -35,7 +36,7 @@ const TotalValue = () => {
   const { width = 200, ref } = useResizeObserver();
 
   return (
-    <Container ref={ref}>
+    <Container>
       <Header>
         <h3>Total Value</h3>
         <StyledTextLink component={Link} to="/send">
@@ -52,8 +53,8 @@ const TotalValue = () => {
         price={formatUToken(totalValues)}
         currency="UST"
         style={{ marginTop: 8, marginBottom: 94 }}
-      ></DisplayNumber>
-      <section>
+      />
+      <section ref={ref}>
         <VerticalPartitionLabels
           data={[
             {
@@ -110,19 +111,10 @@ const Container = styled.div`
   padding: 40px 32px;
   border-radius: 8px;
   background-color: var(--color-gray14);
+  min-width: 0;
   @media (max-width: ${breakpoints.tablet.max}px) {
     margin-top: 11px;
     padding: 1rem;
-  }
-`;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  h3 {
-    font-size: var(--font-size16-14);
-    font-weight: 500;
   }
 `;
 

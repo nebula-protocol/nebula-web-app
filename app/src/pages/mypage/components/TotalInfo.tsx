@@ -8,7 +8,7 @@ const TotalInfo = () => {
   return (
     <Container>
       <TotalValue />
-      <TotalRewards></TotalRewards>
+      <TotalRewards />
     </Container>
   );
 };

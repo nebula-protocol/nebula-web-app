@@ -112,10 +112,6 @@ const useTotalValue = () => {
     );
   }, [stakings]);
 
-  // ? big(rewardInfo.pending_reward).mul(
-  //   nebInfo.terraswapPoolInfo.tokenPrice,
-  // )
-
   const govValues = {
     stakedNeb: big(govStaker?.balance || '0') as u<NEB<Big>>,
     votingReward: big(govStaker?.pending_voting_rewards || '0') as u<NEB<Big>>,
@@ -130,6 +126,9 @@ const useTotalValue = () => {
     totalGovValue: big(govStaker?.balance || '0').mul(
       nebInfo?.terraswapPoolInfo?.tokenPrice || '1',
     ) as u<UST<Big>>,
+    totalReward: stakingsTotal.reward.plus(govValues.votingReward) as u<
+      NEB<Big>
+    >,
     totalRewardValue: stakingsTotal.rewardValue.plus(govVotingRewardValue) as u<
       UST<Big>
     >,

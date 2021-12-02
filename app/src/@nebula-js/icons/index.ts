@@ -15,6 +15,7 @@ import { ReactComponent as SendSvg } from './assets/send.svg';
 import { ReactComponent as TerraSvg } from './assets/terra.svg';
 import { ReactComponent as WalletSvg } from './assets/wallet.svg';
 import { ReactComponent as WalletconnectSvg } from './assets/walletconnect.svg';
+import { ReactComponent as ClaimSvg } from './assets/claim.svg';
 import { createMaterialIcon } from './createMaterialIcon';
 
 export const DocsIcon = createMaterialIcon(DocsSvg);
@@ -34,3 +35,4 @@ export const FooterDiscordIcon = createMaterialIcon(FooterDiscordSvg);
 export const FooterTelegramIcon = createMaterialIcon(FooterTelegramSvg);
 export const FooterTwitterIcon = createMaterialIcon(FooterTwitterSvg);
 export const FooterGithubIcon = createMaterialIcon(FooterGithubSvg);
+export const ClaimIcon = createMaterialIcon(ClaimSvg);
