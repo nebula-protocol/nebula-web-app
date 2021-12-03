@@ -37,23 +37,25 @@ const TotalValue = () => {
 
   return (
     <Container>
-      <Header>
-        <h3>Total Value</h3>
-        <StyledTextLink component={Link} to="/send">
-          <SendIcon
-            style={{
-              marginRight: '0.5em',
-              transform: 'translateY(-0.1em)',
-            }}
-          />{' '}
-          Send
-        </StyledTextLink>
-      </Header>
-      <DisplayNumber
-        price={formatUToken(totalValues)}
-        currency="UST"
-        style={{ marginTop: 8, marginBottom: 94 }}
-      />
+      <section>
+        <Header>
+          <h3>Total Value</h3>
+          <StyledTextLink component={Link} to="/send">
+            <SendIcon
+              style={{
+                marginRight: '0.5em',
+                transform: 'translateY(-0.1em)',
+              }}
+            />{' '}
+            Send
+          </StyledTextLink>
+        </Header>
+        <DisplayNumber
+          price={formatUToken(totalValues)}
+          currency="UST"
+          style={{ marginTop: 8, marginBottom: 94 }}
+        />
+      </section>
       <section ref={ref}>
         <VerticalPartitionLabels
           data={[
@@ -112,6 +114,9 @@ const Container = styled.div`
   border-radius: 8px;
   background-color: var(--color-gray14);
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   @media (max-width: ${breakpoints.tablet.max}px) {
     margin-top: 11px;
     padding: 1rem;
