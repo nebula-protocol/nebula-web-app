@@ -41,7 +41,7 @@ function MyPageMainBase({ className }: MyPageMainProps) {
   return (
     <MainLayout className={className}>
       <h1>My Page</h1>
-      <TotalInfo></TotalInfo>
+      <TotalInfo />
       {!showAll && (
         <Tab
           className="tab"
