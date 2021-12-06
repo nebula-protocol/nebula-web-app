@@ -3,7 +3,7 @@ import { terraswap } from '@libs/types';
 import { DialogProps, OpenDialog, useDialog } from '@libs/use-dialog';
 import { Modal } from '@material-ui/core';
 import { useNebulaApp } from '@nebula-js/app-provider';
-import { Dialog, TextInput } from '@nebula-js/ui';
+import { Dialog } from '@nebula-js/ui';
 import { useWallet } from '@terra-money/use-wallet';
 import React, {
   ChangeEvent,
@@ -13,6 +13,7 @@ import React, {
   useState,
 } from 'react';
 import styled from 'styled-components';
+import { SearchIcon } from '../../@nebula-js/icons';
 
 interface FormParams {
   className?: string;
@@ -68,24 +69,30 @@ function ComponentBase({
   return (
     <Modal open onClose={() => closeDialog(null)}>
       <Dialog className={className} onClose={() => closeDialog(null)}>
-        <h1>Search Token</h1>
+        <h1>Search tokens</h1>
         <div>
-          <TextInput
-            fullWidth
-            placeholder="Search symbol or address..."
-            onChange={onSearch}
-          />
+          <SearchBox>
+            <StyledSearchIcon />
+            <SearchInput
+              placeholder="Search tokens to add"
+              onChange={onSearch}
+            />
+          </SearchBox>
 
           <ul className="token-list">
-            {filteredSearchResult.map(({ icon, protocol, symbol, asset }) => (
-              <ListItem
-                key={symbol}
-                onClick={() => closeDialog(asset)}
-                icon={icon}
-                symbol={symbol}
-                description={protocol}
-              />
-            ))}
+            {filteredSearchResult.length < 1 ? (
+              <Empty>No results found.</Empty>
+            ) : (
+              filteredSearchResult.map(({ icon, protocol, symbol, asset }) => (
+                <ListItem
+                  key={symbol}
+                  onClick={() => closeDialog(asset)}
+                  icon={icon}
+                  symbol={symbol}
+                  description={protocol}
+                />
+              ))
+            )}
           </ul>
         </div>
       </Dialog>
@@ -120,7 +127,7 @@ const Component = styled(ComponentBase)`
   h1 {
     font-size: 1.42857143em;
     text-align: center;
-    margin-bottom: 2.28571429em;
+    margin-bottom: 28px;
   }
 
   .address {
@@ -133,16 +140,64 @@ const Component = styled(ComponentBase)`
 
   .token-list {
     padding: 0;
+    min-height: 130px;
     max-height: 50vh;
     overflow-x: hidden;
     overflow-y: auto;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border: solid 1px var(--color-gray34);
+    border-top: none;
 
     li {
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 20px 26px;
+      &:hover {
+        background-color: var(--color-gray22);
+      }
     }
 
     img {
       max-width: 30px;
+      margin-right: 12px;
     }
   }
+`;
+
+const SearchBox = styled.div`
+  display: flex;
+  align-items: center;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  background-color: var(--color-gray14);
+  padding: 20px;
+  border: solid 1px var(--color-gray34);
+  border-bottom: none;
+`;
+
+const SearchInput = styled.input`
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  font-size: 100%;
+  font: inherit;
+  width: 100%;
+  background-color: inherit;
+  color: var(--color-white92);
+  font-size: var(--font-size16-14);
+`;
+
+const StyledSearchIcon = styled(SearchIcon)`
+  font-size: 14px;
+  margin-right: 12px;
+  color: var(--color-blue01);
+`;
+
+const Empty = styled.li`
+  cursor: none;
+  justify-content: center;
+  padding-top: 32px;
 `;

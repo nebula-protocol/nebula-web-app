@@ -34,21 +34,17 @@ function TokenLabelBase({ className, assetInfo }: TokenLabelProps) {
 }
 
 export const StyledTokenLabel = styled(TokenLabelBase)`
-  height: 40px;
-
   display: flex;
   align-items: center;
-
+  font-weight: 500;
   > :first-child {
-    width: 40px;
-
     margin-right: 8px;
 
     display: grid;
     place-content: center;
 
     img {
-      max-width: 30px;
+      max-width: 26px;
     }
   }
 
