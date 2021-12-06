@@ -101,7 +101,6 @@ function PollsTableBase({ className }: PollsTableProps) {
                 <option label="Passed" value={gov.PollStatus.Passed} />
                 <option label="Executed" value={gov.PollStatus.Executed} />
                 <option label="Rejected" value={gov.PollStatus.Rejected} />
-                <option label="Expired" value={gov.PollStatus.Expired} />
               </EmptySelect>
             </div>
           </TableHeader>

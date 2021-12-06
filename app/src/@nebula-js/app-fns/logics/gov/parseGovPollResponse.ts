@@ -114,7 +114,7 @@ export function parseGovPollResponse(
         ? 'Executed'
         : poll.status === 'expired'
         ? 'Expired'
-        : 'Unknown Status',
+        : 'Failed',
 
     inProgressTimeover: inProgressOver,
 
@@ -155,7 +155,10 @@ export function parseGovPollResponse(
 }
 
 function parseExecuteMsg(executeMsg: gov.ExecuteMsg): ParsedExecuteMsg {
-  const msg = JSON.parse(atob(executeMsg.msg)) as any;
+  let msg: any = {};
+  try {
+    msg = JSON.parse(atob(executeMsg.msg));
+  } catch (error) {}
 
   return {
     contract: executeMsg.contract,

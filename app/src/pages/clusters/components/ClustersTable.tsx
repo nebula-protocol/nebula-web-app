@@ -1,6 +1,5 @@
 import { formatRate, formatToken, formatUTokenDecimal2 } from '@libs/formatter';
 import {
-  DiffSpan,
   HorizontalScrollTable,
   HorizontalScrollTableProps,
   IconAndLabels,
@@ -108,16 +107,7 @@ function ClustersTableBase({
                 />
               </td>
               <td>
-                <TwoLine
-                  text={formatToken(price) + ' UST'}
-                  subText={
-                    <s>
-                      <DiffSpan diff={hr24diff}>
-                        {formatRate(hr24diff)}%
-                      </DiffSpan>
-                    </s>
-                  }
-                />
+                <TwoLine text={formatToken(price) + ' UST'} />
               </td>
               <td>{formatUTokenDecimal2(marketCap)} UST</td>
               <td>{formatUTokenDecimal2(totalProvided)} UST</td>

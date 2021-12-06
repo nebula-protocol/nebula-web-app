@@ -3,12 +3,12 @@ import { useWallet, WalletStatus } from '@terra-money/use-wallet';
 import { MainLayout } from 'components/layouts/MainLayout';
 import { fixHMR } from 'fix-hmr';
 import { Governance } from 'pages/mypage/components/Governance';
-import { History } from 'pages/mypage/components/History';
 import { Holdings } from 'pages/mypage/components/Holdings';
 import { Staking } from 'pages/mypage/components/Staking';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { NotConnected } from './components/NotConnected';
+import { TotalInfo } from './components/TotalInfo';
 
 export interface MyPageMainProps {
   className?: string;
@@ -19,7 +19,6 @@ const tabItems: TabItem[] = [
   { id: 'holdings', label: 'Holdings' },
   { id: 'staking', label: 'Staking' },
   { id: 'governance', label: 'Governance' },
-  { id: 'history', label: 'Tx History' },
 ];
 
 function MyPageMainBase({ className }: MyPageMainProps) {
@@ -42,6 +41,7 @@ function MyPageMainBase({ className }: MyPageMainProps) {
   return (
     <MainLayout className={className}>
       <h1>My Page</h1>
+      <TotalInfo />
       {!showAll && (
         <Tab
           className="tab"
@@ -55,7 +55,6 @@ function MyPageMainBase({ className }: MyPageMainProps) {
       {(showAll || tab.id === 'all' || tab.id === 'governance') && (
         <Governance />
       )}
-      {(showAll || tab.id === 'all' || tab.id === 'history') && <History />}
     </MainLayout>
   );
 }

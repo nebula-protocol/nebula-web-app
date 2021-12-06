@@ -1,5 +1,5 @@
-import { demicrofy, formatToken, microfy } from '@libs/formatter';
-import { useGovStakerQuery, useGovVoteTx } from '@nebula-js/app-provider';
+import { formatToken, formatVotingPower, microfy } from '@libs/formatter';
+import { useGovVoteTx, useGovVotingPowerQuery } from '@nebula-js/app-provider';
 import { WalletIcon } from '@nebula-js/icons';
 import { gov, NEB, u } from '@nebula-js/types';
 import {
@@ -16,10 +16,6 @@ import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
 import React, { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import {
-  computeRemainingLockedWeeks,
-  computeVotingPower,
-} from '../../../@nebula-js/app-fns/logics/gov/computeVotingPower';
 
 export interface VoteFormProps {
   className?: string;
@@ -37,18 +33,15 @@ function VoteFormBase({ className, pollId, onVoteComplete }: VoteFormProps) {
   const [vote, setVote] = useState<gov.VoteOption | null>(null);
   const [amount, setAmount] = useState<NEB>('' as NEB);
 
-  const { data: { govStaker } = {} } = useGovStakerQuery(
+  const { data: { govVotingPower } = {} } = useGovVotingPowerQuery(
     connectedWallet?.walletAddress,
   );
 
   const userVotingPower = useMemo<NEB>(() => {
-    const balance = demicrofy(govStaker?.balance ?? ('0' as u<NEB>)).toNumber();
-    const votingPower = computeVotingPower(
-      balance,
-      computeRemainingLockedWeeks(govStaker?.lock_end_week),
-    );
-    return votingPower as NEB;
-  }, [govStaker?.balance, govStaker?.lock_end_week]);
+    return govVotingPower?.voting_power
+      ? formatVotingPower(govVotingPower?.voting_power)
+      : ('0' as NEB);
+  }, [govVotingPower?.voting_power]);
 
   const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
     mobile: 'medium',

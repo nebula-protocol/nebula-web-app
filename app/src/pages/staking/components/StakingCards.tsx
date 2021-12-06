@@ -55,7 +55,7 @@ function StakingCardsBase({ staking, ...sectionProps }: StakingCardsProps) {
                   <AnimateNumber format={formatUTokenWithPostfixUnits}>
                     {totalStaked}
                   </AnimateNumber>{' '}
-                  <Sub>{symbol}</Sub>
+                  <Sub>UST</Sub>
                 </>
               }
             />

@@ -1,4 +1,4 @@
-import { formatTokenWithPostfixUnits } from '@libs/formatter';
+import { formatUTokenWithPostfixUnits } from '@libs/formatter';
 import {
   Button,
   CoupledIconsHolder,
@@ -51,7 +51,7 @@ function StakingTableBase({ staking, ...tableProps }: StakingTableProps) {
       </thead>
 
       <tbody>
-        {staking.map(({ index, id, name, apr, totalStaked }) => (
+        {staking.map(({ index, id, name, apr, totalStaked, symbol }) => (
           <tr key={'row' + index}>
             <td>
               <CoupledIconsHolder radiusEm={1.1}>
@@ -63,7 +63,7 @@ function StakingTableBase({ staking, ...tableProps }: StakingTableProps) {
             <td>
               <s>{apr}%</s>
             </td>
-            <td>${formatTokenWithPostfixUnits(totalStaked)}</td>
+            <td>{`${formatUTokenWithPostfixUnits(totalStaked)} UST`}</td>
             <td>
               <Button
                 size={buttonSize}

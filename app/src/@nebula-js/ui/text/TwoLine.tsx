@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export interface TwoLineProps {
   className?: string;
   text: ReactNode;
-  subText: ReactNode;
+  subText?: ReactNode;
 }
 
 function TwoLineBase({ className, text, subText }: TwoLineProps) {

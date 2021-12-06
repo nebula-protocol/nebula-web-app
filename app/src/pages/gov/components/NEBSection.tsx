@@ -77,15 +77,6 @@ function NEBSectionBase({ className }: NEBSectionProps) {
           }
         />
       </section>
-      <section className="apr">
-        <div>APR</div>
-        <div>
-          <s>
-            <span>80</span>
-            <Sub>.8%</Sub>
-          </s>
-        </div>
-      </section>
     </Section>
   );
 }

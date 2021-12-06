@@ -36,7 +36,7 @@ function GovStakeBase({ className }: GovStakeProps) {
   const initForm = useCallback(() => {
     updateInput({
       nebAmount: '' as NEB,
-      lockForWeeks: 0,
+      lockForWeeks: 1,
     });
   }, [updateInput]);
 
@@ -111,17 +111,17 @@ function GovStakeBase({ className }: GovStakeProps) {
                   ),
                 });
               } else {
-                updateInput({ lockForWeeks: 0 });
+                updateInput({ lockForWeeks: 1 });
               }
             }}
-            placeholder="0"
+            placeholder="1"
             label="LOCK-UP WEEKS"
           />
 
           <Slider
             className="lockup-weeks-slider"
             value={states.lockForWeeks}
-            min={0}
+            min={1}
             max={states.maxLockForWeeks}
             marks={[
               {

@@ -2,7 +2,6 @@ import { formatRate, formatToken, formatUTokenDecimal2 } from '@libs/formatter';
 import { Rate } from '@nebula-js/types';
 import {
   breakpoints,
-  DiffSpan,
   IconAndLabels,
   PartitionBarGraph,
   PartitionLabels,
@@ -57,20 +56,7 @@ function ClustersCardsBase({
           >
             <IconAndLabels
               text={name}
-              subtext={
-                <>
-                  {formatToken(price)} UST{' '}
-                  <s>
-                    <DiffSpan
-                      diff={hr24diff}
-                      translateIconY={1}
-                      style={{ fontSize: '0.85714286em' }}
-                    >
-                      {formatRate(hr24diff)}%
-                    </DiffSpan>
-                  </s>
-                </>
-              }
+              subtext={<>{formatToken(price)} UST </>}
               iconSize="4.28571429em"
               textSize="1.42857143em"
               subtextSize="1em"
