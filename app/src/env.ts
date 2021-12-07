@@ -46,8 +46,8 @@ export function NEBULA_CONTRACT_ADDRESS(
 export function NEBULA_CONSTANTS(network: NetworkInfo): NebulaContants {
   if (network.chainID.startsWith('bombay')) {
     return {
-      gasWanted: 1_000_000 as Gas,
-      fixedGas: 1_671_053 as Gas,
+      gasWanted: 2_000_000 as Gas,
+      fixedGas: 2_000_000 as Gas,
       blocksPerYear: 4_656_810,
       gasAdjustment: 1.6 as Rate<number>,
       nebula: {
