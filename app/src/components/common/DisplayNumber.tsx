@@ -24,10 +24,12 @@ const DisplayNumber = ({ price, currency, size = 'md', ...props }: Props) => {
   return (
     <DisplayNumberBase size={size} {...props}>
       {big}
-      {small && (
+      {small ? (
         <Sub>
           .{small} {currency}
         </Sub>
+      ) : (
+        <Sub style={{ marginLeft: 4 }}>{currency}</Sub>
       )}
     </DisplayNumberBase>
   );

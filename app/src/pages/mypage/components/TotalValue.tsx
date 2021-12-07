@@ -81,28 +81,30 @@ const TotalValue = () => {
             },
           ]}
         />
-        <PartitionBarGraph
-          data={[
-            {
-              value: Number(totalHoldingsValue.div(divideValue).toFixed(2)),
-              color: partitionColor[0],
-            },
-            {
-              value: Number(totalStakingValue.div(divideValue).toFixed(2)),
-              color: partitionColor[1],
-            },
-            {
-              value: Number(totalGovValue.div(divideValue).toFixed(2)),
-              color: partitionColor[2],
-            },
-            {
-              value: Number(totalRewardValue.div(divideValue).toFixed(2)),
-              color: partitionColor[3],
-            },
-          ]}
-          width={width}
-          height={5}
-        />
+        {totalValues.toNumber() > 0 && (
+          <PartitionBarGraph
+            data={[
+              {
+                value: Number(totalHoldingsValue.div(divideValue).toFixed(2)),
+                color: partitionColor[0],
+              },
+              {
+                value: Number(totalStakingValue.div(divideValue).toFixed(2)),
+                color: partitionColor[1],
+              },
+              {
+                value: Number(totalGovValue.div(divideValue).toFixed(2)),
+                color: partitionColor[2],
+              },
+              {
+                value: Number(totalRewardValue.div(divideValue).toFixed(2)),
+                color: partitionColor[3],
+              },
+            ]}
+            width={width}
+            height={5}
+          />
+        )}
       </section>
     </Container>
   );
