@@ -60,9 +60,7 @@ function StakingTableBase({ staking, ...tableProps }: StakingTableProps) {
               </CoupledIconsHolder>
               {name}
             </td>
-            <td>
-              <s>{apr}%</s>
-            </td>
+            <td>{apr}%</td>
             <td>{`${formatUTokenWithPostfixUnits(totalStaked)} UST`}</td>
             <td>
               <Button
