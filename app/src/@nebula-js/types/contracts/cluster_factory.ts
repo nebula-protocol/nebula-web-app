@@ -143,13 +143,12 @@ export namespace cluster_factory {
     contract_infos: Array<[HumanAddr, boolean]>;
   }
 
-  // TODO there is no this type
   export interface DistributionInfo {
     distribution_info: {};
   }
 
   export interface DistributionInfoResponse {
-    weights: Array<[HumanAddr, rs.u32]>;
+    weights: Array<[CW20Addr, rs.u32]>;
     last_distributed: rs.u64;
   }
 }

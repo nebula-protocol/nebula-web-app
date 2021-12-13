@@ -30,6 +30,7 @@ export * from './queries/gov/votingPower';
 export * from './queries/mypage/holdings';
 export * from './queries/mypage/staking';
 export * from './queries/neb/nebPool';
+export * from './queries/staking/distributionSchedule';
 export * from './queries/staking/poolInfo';
 export * from './queries/staking/poolInfoList';
 export * from './queries/staking/rewardInfo';

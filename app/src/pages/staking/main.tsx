@@ -1,6 +1,7 @@
 import { List, ViewModule } from '@material-ui/icons';
 import { breakpoints, EmptyButton, Search } from '@nebula-js/ui';
 import {
+  useDistributionScheduleQuery,
   useNEBPoolQuery,
   useStakingPoolInfoListQuery,
 } from '@nebula-js/app-provider';
@@ -27,13 +28,13 @@ function StakingMainBase({ className }: StakingMainProps) {
   const { data: nebPool } = useNEBPoolQuery();
 
   const { data: poolInfoList = [] } = useStakingPoolInfoListQuery();
-
+  const { data: distributionSchedule } = useDistributionScheduleQuery();
   // ---------------------------------------------
   // computes
   // ---------------------------------------------
   const data = useMemo(() => {
-    return toStakingView(nebPool, poolInfoList);
-  }, [nebPool, poolInfoList]);
+    return toStakingView(nebPool, poolInfoList, distributionSchedule);
+  }, [nebPool, poolInfoList, distributionSchedule]);
 
   const filteredData = useMemo(() => {
     if (!value || value.length === 0) {
