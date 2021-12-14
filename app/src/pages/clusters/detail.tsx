@@ -202,16 +202,14 @@ function ClustersDetailBase({
           </thead>
 
           <tbody>
-            {clusterView?.assets.map(({ token, portfolioRatio }) => (
+            {clusterView?.assets.map(({ token, portfolioRatio }, index) => (
               <tr key={'row' + token.symbol}>
                 <td>
                   <IconAndLabels text={token.name} subtext={token.symbol} />
                 </td>
                 <td className="price">
-                  <s>
-                    0 UST
-                    <br />
-                  </s>
+                  {`${clusterInfo?.clusterState.prices[index]} UST`}
+                  <br />
                 </td>
                 <td className="portfolio-ratio">
                   {formatRate(portfolioRatio as Rate<number>)}%{' '}
