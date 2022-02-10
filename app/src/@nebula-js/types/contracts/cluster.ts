@@ -83,13 +83,10 @@ export namespace cluster {
 
   export interface ClusterStateResponse {
     outstanding_balance_tokens: u<CT<rs.Uint128>>;
-    // TODO is this UST? (not u<UST>)
     prices: UST[];
     inv: u<Token<rs.Uint128>>[];
     penalty: HumanAddr;
-    // TODO is this CW20Addr or HumanAddr?
     cluster_token: CW20Addr;
-    // TODO is this Token type CT?
     target: terraswap.Asset<Token>[];
     cluster_contract_address: HumanAddr;
     active: boolean;
