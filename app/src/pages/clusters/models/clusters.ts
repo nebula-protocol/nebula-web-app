@@ -1,4 +1,4 @@
-import { sum, vectorMultiply } from '@libs/big-math';
+import { sum, divWithDefault, vectorMultiply } from '@libs/big-math';
 import { ClusterInfo, getAssetAmount } from '@nebula-js/app-fns';
 import {
   CT,
@@ -75,12 +75,12 @@ export function toClusterView({
         oraclePrice: big(0) as UST<Big>,
         token: assetTokenInfos[j].tokenInfo,
         amount: clusterState.inv[j],
-        targetRatio: targetSum.eq(0)
-          ? 0
-          : big(asset.amount).div(targetSum).toNumber(),
-        portfolioRatio: invSum.eq(0)
-          ? 0
-          : big(clusterState.inv[j]).div(invSum).toNumber(),
+        targetRatio: divWithDefault(asset.amount, targetSum, 0).toNumber(),
+        portfolioRatio: divWithDefault(
+          clusterState.inv[j],
+          invSum,
+          0,
+        ).toNumber(),
         color: partitionColor[j % partitionColor.length],
       })),
     };
@@ -123,12 +123,8 @@ export function toClusterView({
       oraclePrice: big(clusterState.prices[j]) as UST<Big>,
       token: assetTokenInfos[j].tokenInfo,
       amount: clusterState.inv[j],
-      targetRatio: targetSum.eq(0)
-        ? 0
-        : big(asset.amount).div(targetSum).toNumber(),
-      portfolioRatio: invSum.eq(0)
-        ? 0
-        : big(clusterState.inv[j]).div(invSum).toNumber(),
+      targetRatio: divWithDefault(asset.amount, targetSum, 0).toNumber(),
+      portfolioRatio: divWithDefault(clusterState.inv[j], invSum, 0).toNumber(),
       color: partitionColor[j % partitionColor.length],
     })),
   };

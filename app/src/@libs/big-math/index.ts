@@ -45,6 +45,14 @@ export function floor(number: BigSource): Big {
   return integer.length > 0 ? big(integer) : big('0');
 }
 
+export function divWithDefault(
+  a: BigSource,
+  b: BigSource,
+  _default: BigSource,
+): Big {
+  return big(b).eq(0) ? big(_default) : big(a).div(b);
+}
+
 export function vectorizeAB(
   a: BigSource[] | BigSource,
   b: BigSource[] | BigSource,
