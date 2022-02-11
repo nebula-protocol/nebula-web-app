@@ -48,7 +48,7 @@ export async function clusterInfoQuery(
   const { clusterState, clusterConfig } =
     await wasmFetch<ClusterStateWasmQuery>({
       ...queryClient,
-      id: `cluster--state=${clusterAddr}`,
+      id: `cluster--state--info=${clusterAddr}`,
       wasmQuery: {
         clusterState: {
           contractAddress: clusterAddr,

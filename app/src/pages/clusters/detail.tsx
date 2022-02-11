@@ -1,4 +1,4 @@
-import { formatRate, formatUTokenDecimal2 } from '@libs/formatter';
+import { formatRate, formatUTokenDecimal2, d2Formatter } from '@libs/formatter';
 import { HumanAddr, Rate } from '@nebula-js/types';
 import {
   BarGraph,
@@ -202,31 +202,38 @@ function ClustersDetailBase({
           </thead>
 
           <tbody>
-            {clusterView?.assets.map(({ token, portfolioRatio }) => (
-              <tr key={'row' + token.symbol}>
-                <td>
-                  <IconAndLabels text={token.name} subtext={token.symbol} />
-                </td>
-                <td className="price">
-                  <s>
-                    0 UST
-                    <br />
-                  </s>
-                </td>
-                <td className="portfolio-ratio">
-                  {formatRate(portfolioRatio as Rate<number>)}%{' '}
-                  <Sub>
-                    <s>({0}%)</s>
-                  </Sub>
-                </td>
-                <td className="graph">
-                  <BarGraph ratio={Math.random()} width={300} height={8} />
-                  <div>
-                    <s>100,000</s> {token.symbol}
-                  </div>
-                </td>
-              </tr>
-            ))}
+            {clusterView?.assets.map(
+              ({
+                oraclePrice,
+                token,
+                amount,
+                portfolioRatio,
+                targetRatio,
+                color,
+              }) => (
+                <tr key={'row' + token.symbol}>
+                  <td>
+                    <IconAndLabels text={token.name} subtext={token.symbol} />
+                  </td>
+                  <td className="price">{d2Formatter(oraclePrice)} UST</td>
+                  <td className="portfolio-ratio">
+                    {formatRate(portfolioRatio as Rate<number>)}%{' '}
+                    <Sub>({formatRate(targetRatio as Rate<number>)}%)</Sub>
+                  </td>
+                  <td className="graph">
+                    <BarGraph
+                      ratio={portfolioRatio}
+                      width={300}
+                      height={8}
+                      railColor={color}
+                    />
+                    <div>
+                      {formatUTokenDecimal2(amount)} {token.symbol}
+                    </div>
+                  </td>
+                </tr>
+              ),
+            )}
           </tbody>
         </Table>
       </section>

@@ -1,4 +1,4 @@
-import { sum, vectorMultiply } from '@libs/big-math';
+import { sum, divWithDefault, vectorMultiply } from '@libs/big-math';
 import { ClusterInfo, getAssetAmount } from '@nebula-js/app-fns';
 import {
   CT,
@@ -15,7 +15,10 @@ import big, { Big } from 'big.js';
 
 export interface AssetView {
   asset: terraswap.Asset<Token>;
+  oraclePrice: UST<Big>;
   token: cw20.TokenInfoResponse<Token>;
+  amount: u<Token<string>>;
+  targetRatio: number;
   portfolioRatio: number;
   color: string;
 }
@@ -49,6 +52,10 @@ export function toClusterView({
 
   const ustAmount = getAssetAmount<UST>(terraswapPool.assets, 'uusd');
 
+  const targetSum = sum(...clusterState.target.map(({ amount }) => amount));
+
+  const invSum = sum(...clusterState.inv);
+
   if (big(ctAmount).eq(0) || big(ustAmount).eq(0)) {
     return {
       addr: clusterState.cluster_contract_address,
@@ -65,8 +72,15 @@ export function toClusterView({
       volume: big(0) as u<UST<Big>>,
       assets: clusterState.target.map((asset, j) => ({
         asset,
+        oraclePrice: big(0) as UST<Big>,
         token: assetTokenInfos[j].tokenInfo,
-        portfolioRatio: 1 / clusterState.target.length,
+        amount: clusterState.inv[j],
+        targetRatio: divWithDefault(asset.amount, targetSum, 0).toNumber(),
+        portfolioRatio: divWithDefault(
+          clusterState.inv[j],
+          invSum,
+          0,
+        ).toNumber(),
         color: partitionColor[j % partitionColor.length],
       })),
     };
@@ -88,10 +102,6 @@ export function toClusterView({
       : big(big(marketCap).minus(totalProvided)).div(totalProvided)
   ) as Rate<Big>;
 
-  const invPricesSum = sum(
-    ...vectorMultiply(clusterState.inv, clusterState.prices),
-  );
-
   return {
     addr: clusterState.cluster_contract_address,
     tokenInfo: clusterTokenInfo,
@@ -110,10 +120,11 @@ export function toClusterView({
     volume: big(111) as u<UST<Big>>,
     assets: clusterState.target.map((asset, j) => ({
       asset,
+      oraclePrice: big(clusterState.prices[j]) as UST<Big>,
       token: assetTokenInfos[j].tokenInfo,
-      portfolioRatio: big(big(clusterState.inv[j]).mul(clusterState.prices[j]))
-        .div(invPricesSum)
-        .toNumber(),
+      amount: clusterState.inv[j],
+      targetRatio: divWithDefault(asset.amount, targetSum, 0).toNumber(),
+      portfolioRatio: divWithDefault(clusterState.inv[j], invSum, 0).toNumber(),
       color: partitionColor[j % partitionColor.length],
     })),
   };
