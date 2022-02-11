@@ -36,9 +36,11 @@ export function toAssetView(
       portfolioRatio: portfolioRatio.toNumber(),
       color: partitionColor[j % partitionColor.length],
       targetColor: getTargetColor(targetRatio, portfolioRatio),
-      targetAmount: big(clusterState.inv[j])
-        .div(portfolioRatio)
-        .mul(targetRatio) as u<Token<Big>>,
+      targetAmount: divWithDefault(
+        big(clusterState.inv[j]),
+        portfolioRatio,
+        0,
+      ).mul(targetRatio) as u<Token<Big>>,
     };
   });
 }
