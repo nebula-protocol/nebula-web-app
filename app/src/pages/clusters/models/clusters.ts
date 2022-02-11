@@ -1,27 +1,8 @@
-import { sum, divWithDefault, vectorMultiply } from '@libs/big-math';
+import { sum, vectorMultiply } from '@libs/big-math';
 import { ClusterInfo, getAssetAmount } from '@nebula-js/app-fns';
-import {
-  CT,
-  cw20,
-  HumanAddr,
-  Rate,
-  terraswap,
-  Token,
-  u,
-  UST,
-} from '@nebula-js/types';
-import { partitionColor } from '@nebula-js/ui';
+import { CT, cw20, HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
+import { AssetView, toAssetView } from './assets';
 import big, { Big } from 'big.js';
-
-export interface AssetView {
-  asset: terraswap.Asset<Token>;
-  oraclePrice: UST<Big>;
-  token: cw20.TokenInfoResponse<Token>;
-  amount: u<Token<string>>;
-  targetRatio: number;
-  portfolioRatio: number;
-  color: string;
-}
 
 export interface ClusterView {
   addr: HumanAddr;
@@ -52,10 +33,6 @@ export function toClusterView({
 
   const ustAmount = getAssetAmount<UST>(terraswapPool.assets, 'uusd');
 
-  const targetSum = sum(...clusterState.target.map(({ amount }) => amount));
-
-  const invSum = sum(...clusterState.inv);
-
   if (big(ctAmount).eq(0) || big(ustAmount).eq(0)) {
     return {
       addr: clusterState.cluster_contract_address,
@@ -70,19 +47,7 @@ export function toClusterView({
       totalProvided: big(0) as u<UST<Big>>,
       premium: big(0) as Rate<Big>,
       volume: big(0) as u<UST<Big>>,
-      assets: clusterState.target.map((asset, j) => ({
-        asset,
-        oraclePrice: big(0) as UST<Big>,
-        token: assetTokenInfos[j].tokenInfo,
-        amount: clusterState.inv[j],
-        targetRatio: divWithDefault(asset.amount, targetSum, 0).toNumber(),
-        portfolioRatio: divWithDefault(
-          clusterState.inv[j],
-          invSum,
-          0,
-        ).toNumber(),
-        color: partitionColor[j % partitionColor.length],
-      })),
+      assets: toAssetView(clusterState, assetTokenInfos),
     };
   }
 
@@ -118,14 +83,6 @@ export function toClusterView({
     premium,
     // TODO indexer data
     volume: big(111) as u<UST<Big>>,
-    assets: clusterState.target.map((asset, j) => ({
-      asset,
-      oraclePrice: big(clusterState.prices[j]) as UST<Big>,
-      token: assetTokenInfos[j].tokenInfo,
-      amount: clusterState.inv[j],
-      targetRatio: divWithDefault(asset.amount, targetSum, 0).toNumber(),
-      portfolioRatio: divWithDefault(clusterState.inv[j], invSum, 0).toNumber(),
-      color: partitionColor[j % partitionColor.length],
-    })),
+    assets: toAssetView(clusterState, assetTokenInfos),
   };
 }

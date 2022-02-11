@@ -13,6 +13,7 @@ export * from './forms/staking/unstake';
 export * from './logics/clusters/computeClusterTxFee';
 export * from './logics/clusters/computeMarketCap';
 export * from './logics/clusters/computeProvided';
+export * from './logics/clusters/getTargetColor';
 export * from './logics/clusters/easyMint/ClusterSimulatorWithPenalty';
 export * from './logics/clusters/easyMint/EasyMintOptimizer';
 export * from './logics/clusters/easyMint/TerraswapPoolSimulation';

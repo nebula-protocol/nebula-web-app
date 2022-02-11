@@ -1,4 +1,8 @@
-import { demicrofy, formatUTokenInteger } from '@libs/formatter';
+import {
+  demicrofy,
+  formatUTokenInteger,
+  formatUTokenDecimal2,
+} from '@libs/formatter';
 import { FormInput, FormStates } from '@libs/use-form';
 import {
   ClusterInfo,
@@ -21,8 +25,9 @@ import big from 'big.js';
 import { AddAssetBadges } from 'components/form/AddAssetBadges';
 import { TokenInputRemoveTool } from 'components/form/TokenInputRemoveTool';
 import { fixHMR } from 'fix-hmr';
-import React, { ReactNode, useCallback } from 'react';
+import React, { ReactNode, useCallback, useMemo } from 'react';
 import styled from 'styled-components';
+import { toAssetView, AssetView } from 'pages/clusters/models/assets';
 
 export interface TokenFormProps {
   clusterInfo: ClusterInfo;
@@ -52,6 +57,10 @@ function TokenFormBase({
     pc: 'normal',
     monitor: 'normal',
   });
+
+  const assetView = useMemo<AssetView[]>(() => {
+    return toAssetView(clusterState, assetTokenInfos);
+  }, [clusterState, assetTokenInfos]);
 
   // ---------------------------------------------
   // callbacks
@@ -166,8 +175,15 @@ function TokenFormBase({
                     error={states.invalidAmounts[i]}
                   >
                     <TokenInputRemoveTool onDelete={() => removeAsset(asset)}>
-                      Target:{' '}
-                      <s>1,000,000 {assetTokenInfos[i].tokenInfo.symbol}</s>
+                      <span
+                        style={{
+                          color: assetView[i].targetColor,
+                        }}
+                      >
+                        Target:{' '}
+                        {formatUTokenDecimal2(assetView[i].targetAmount)}{' '}
+                        {assetTokenInfos[i].tokenInfo.symbol}
+                      </span>
                     </TokenInputRemoveTool>
                   </TokenInput>
                 </li>
