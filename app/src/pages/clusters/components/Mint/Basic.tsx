@@ -21,6 +21,7 @@ import { fixHMR } from 'fix-hmr';
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { ProvidedTokenTable } from './ProvidedTokenTable';
+import { BasicSteps, BasicStepsEnum } from './BasicSteps';
 
 export interface MintBasicProps {
   className?: string;
@@ -73,6 +74,7 @@ function MintBasicBase({
 
   return (
     <div className={className}>
+      <BasicSteps className="BasicSteps" step={BasicStepsEnum.MINT} />
       <TokenInput<UST>
         className="token-input"
         maxDecimalPoints={6}

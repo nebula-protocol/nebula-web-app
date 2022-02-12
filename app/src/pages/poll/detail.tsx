@@ -177,8 +177,14 @@ function PollDetailBase({ className }: PollDetailProps) {
           <div ref={ref} className="voters-table">
             <PartitionBarGraph
               data={[
-                { value: +(parsedPoll?.votes.yesRatio ?? 0), color: '#23bed9' },
-                { value: +(parsedPoll?.votes.noRatio ?? 0), color: '#f15e7e' },
+                {
+                  value: +(parsedPoll?.votes.yesRatio ?? 0),
+                  color: 'var(--color-blue01)',
+                },
+                {
+                  value: +(parsedPoll?.votes.noRatio ?? 0),
+                  color: 'var(--color-red01)',
+                },
                 {
                   value: +(parsedPoll?.votes.abstainRatio ?? 0),
                   color: '#a4a4a4',
