@@ -209,7 +209,7 @@ function ClustersDetailBase({
                 amount,
                 portfolioRatio,
                 targetRatio,
-                color,
+                targetColor,
               }) => (
                 <tr key={'row' + token.symbol}>
                   <td>
@@ -225,7 +225,7 @@ function ClustersDetailBase({
                       ratio={portfolioRatio}
                       width={300}
                       height={8}
-                      railColor={color}
+                      railColor={targetColor}
                     />
                     <div>
                       {formatUTokenDecimal2(amount)} {token.symbol}
