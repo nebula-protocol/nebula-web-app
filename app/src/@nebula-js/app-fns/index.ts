@@ -5,6 +5,7 @@ export * from './forms/clusters/mintAdvanced';
 export * from './forms/clusters/mintBasic';
 export * from './forms/clusters/mintTerraswapArbitrage';
 export * from './forms/clusters/redeemBasic';
+export * from './forms/clusters/redeemAdvanced';
 export * from './forms/clusters/redeemTerraswapArbitrage';
 export * from './forms/gov/stake';
 export * from './forms/gov/unstake';

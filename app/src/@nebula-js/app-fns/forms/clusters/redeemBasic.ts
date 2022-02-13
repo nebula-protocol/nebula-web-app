@@ -89,6 +89,7 @@ export const clusterRedeemBasicForm = (
     ) {
       asyncStates = clusterRedeemQuery(
         input.tokenAmount,
+        [], // redeem_asset_amounts = []
         dependency.clusterState,
         dependency.lastSyncedHeight,
         dependency.queryClient,

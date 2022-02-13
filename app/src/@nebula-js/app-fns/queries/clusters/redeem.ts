@@ -5,7 +5,7 @@ import {
   WasmQuery,
   WasmQueryData,
 } from '@libs/query-client';
-import { cluster, CT, penalty, u } from '@nebula-js/types';
+import { cluster, CT, penalty, u, Token } from '@nebula-js/types';
 
 interface ClusterRedeemWasmQuery {
   redeem: WasmQuery<
@@ -18,6 +18,7 @@ export type ClusterRedeem = WasmQueryData<ClusterRedeemWasmQuery>;
 
 export async function clusterRedeemQuery(
   clusterTokenAmount: CT,
+  redeemAssetAmount: Token[],
   clusterState: cluster.ClusterStateResponse,
   lastSyncedHeight: () => Promise<number>,
   queryClient: QueryClient,
@@ -39,7 +40,10 @@ export async function clusterRedeemQuery(
             asset_prices: clusterState.prices,
             target_weights: clusterState.target.map(({ amount }) => amount),
             // TODO this field not optional
-            redeem_asset_amounts: [],
+            redeem_asset_amounts: redeemAssetAmount.map((amount) =>
+              microfy(amount).toFixed(),
+            ),
+            // redeem_asset_amounts: ["340", "162441", "1032542"]
           },
         },
       },

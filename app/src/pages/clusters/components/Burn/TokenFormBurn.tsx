@@ -1,54 +1,50 @@
-import {
-  demicrofy,
-  formatUTokenInteger,
-  formatUTokenDecimal2,
-} from '@libs/formatter';
 import { FormInput, FormStates } from '@libs/use-form';
 import {
   ClusterInfo,
-  ClusterMintAdvancedFormAsyncStates,
-  ClusterMintAdvancedFormInput,
-  ClusterMintAdvancedFormStates,
+  ClusterRedeemAdvancedFormAsyncStates,
+  ClusterRedeemAdvancedFormStates,
+  ClusterRedeemAdvancedFormInput,
 } from '@nebula-js/app-fns';
-import { WalletIcon } from '@nebula-js/icons';
-import { terraswap, Token, u, UST } from '@nebula-js/types';
+import { terraswap, Token, u, UST, CT } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
-  TextButton,
-  TokenInput,
+  TokenInputMinimal,
   TokenSpan,
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import big from 'big.js';
 import { AddAssetBadges } from 'components/form/AddAssetBadges';
 import { TokenInputRemoveTool } from 'components/form/TokenInputRemoveTool';
 import { fixHMR } from 'fix-hmr';
-import React, { ReactNode, useCallback, useMemo } from 'react';
+import React, {
+  ReactNode,
+  useCallback,
+  // useMemo
+} from 'react';
 import styled from 'styled-components';
-import { toAssetView, AssetView } from 'pages/clusters/models/assets';
+// import { toAssetView, AssetView } from 'pages/clusters/models/assets';
 
-export interface TokenFormProps {
+export interface TokenFormBurnProps {
   clusterInfo: ClusterInfo;
-  updateInput: FormInput<ClusterMintAdvancedFormInput>;
+  updateInput: FormInput<ClusterRedeemAdvancedFormInput>;
   states: FormStates<
-    ClusterMintAdvancedFormStates,
-    ClusterMintAdvancedFormAsyncStates
+    ClusterRedeemAdvancedFormStates,
+    ClusterRedeemAdvancedFormAsyncStates
   >;
-  onProceed: (amounts: Token[], txFee: u<UST>) => void;
+  onProceed: (amounts: CT, txFee: u<UST>) => void;
   children: ReactNode;
   className?: string;
 }
 
-function TokenFormBase({
+function TokenFormBurnBase({
   clusterInfo: { clusterState, assetTokenInfos },
   updateInput,
   states,
   children,
   onProceed,
   className,
-}: TokenFormProps) {
+}: TokenFormBurnProps) {
   const connectedWallet = useConnectedWallet();
 
   const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
@@ -58,9 +54,9 @@ function TokenFormBase({
     monitor: 'normal',
   });
 
-  const assetView = useMemo<AssetView[]>(() => {
-    return toAssetView(clusterState, assetTokenInfos);
-  }, [clusterState, assetTokenInfos]);
+  // const assetView = useMemo<AssetView[]>(() => {
+  //   return toAssetView(clusterState, assetTokenInfos);
+  // }, [clusterState, assetTokenInfos]);
 
   // ---------------------------------------------
   // callbacks
@@ -128,64 +124,46 @@ function TokenFormBase({
 
   return (
     <div className={className}>
-      <ul className="added-tokens">
+      <ul className="added-tokens" style={{ gap: '2em' }}>
         {clusterState.target.length > 0 &&
           clusterState.target.map(
             (asset, i) =>
               states.addedAssets.has(asset) && (
                 <li key={'added-asset' + i}>
-                  <TokenInput<Token>
+                  <TokenInputMinimal<Token>
+                    style={{
+                      padding: '0em',
+                      display: 'flex',
+                      alignItems: 'center',
+                      minHeight: '4.28572em',
+                    }}
                     maxDecimalPoints={6}
                     value={states.amounts[i]}
                     onChange={(nextAmount) => updateAmount(asset, nextAmount)}
                     placeholder="0.00"
-                    label={assetTokenInfos[i].tokenInfo.symbol}
                     token={
-                      <TokenSpan>
+                      <TokenSpan style={{ marginLeft: '1.42857em' }}>
                         {assetTokenInfos[i].tokenInfo.symbol ?? ''}
                       </TokenSpan>
                     }
-                    suggest={
-                      big(states.balances?.balances[i].balance ?? 0).gt(0) && (
-                        <TextButton
-                          fontSize={12}
-                          onClick={() =>
-                            states.balances?.balances &&
-                            updateAmount(
-                              asset,
-                              demicrofy(
-                                states.balances.balances[i].balance,
-                              ).toFixed() as Token,
-                            )
-                          }
-                        >
-                          <WalletIcon
-                            style={{
-                              transform: 'translate(-0.3em, 0)',
-                            }}
-                          />{' '}
-                          {formatUTokenInteger(
-                            (states.balances?.balances[i].balance ??
-                              '0') as u<Token>,
-                          )}{' '}
-                          {assetTokenInfos[i].tokenInfo.symbol ?? ''}
-                        </TextButton>
-                      )
-                    }
                     error={states.invalidAmounts[i]}
                   >
-                    <TokenInputRemoveTool onDelete={() => removeAsset(asset)}>
-                      <span
-                        style={{
-                          color: assetView[i].targetColor,
-                        }}
-                      >
-                        Target:{' '}
-                        {formatUTokenDecimal2(assetView[i].targetAmount)}{' '}
-                        {assetTokenInfos[i].tokenInfo.symbol}
-                      </span>
-                    </TokenInputRemoveTool>
-                  </TokenInput>
+                    <div
+                      style={{
+                        borderLeft: '1px solid var(--color-gray34)',
+                        padding: '0.8em 1.42857em 0.8em 1.42857em',
+                        marginLeft: '1.42857em',
+                        minHeight: '4.28572em',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <TokenInputRemoveTool onDelete={() => removeAsset(asset)}>
+                        {}
+                      </TokenInputRemoveTool>
+                    </div>
+                  </TokenInputMinimal>
                 </li>
               ),
           )}
@@ -198,6 +176,7 @@ function TokenFormBase({
           assetTokenInfos={assetTokenInfos}
           addedAssets={states.addedAssets}
           onAdd={addAsset}
+          style={{ marginTop: '2em' }}
         />
       )}
 
@@ -214,15 +193,17 @@ function TokenFormBase({
           !states.txFee ||
           states.amounts.every((amount) => amount.length === 0)
         }
-        onClick={() => states.txFee && onProceed(states.amounts, states.txFee)}
+        onClick={() =>
+          states.txFee && onProceed(states.tokenBalance, states.txFee)
+        }
       >
-        Mint
+        Burn
       </Button>
     </div>
   );
 }
 
-const StyledTokenForm = styled(TokenFormBase)`
+const StyledTokenFormBurn = styled(TokenFormBurnBase)`
   .added-tokens {
     list-style: none;
     padding: 0;
@@ -259,4 +240,4 @@ const StyledTokenForm = styled(TokenFormBase)`
   }
 `;
 
-export const TokenForm = fixHMR(StyledTokenForm);
+export const TokenFormBurn = fixHMR(StyledTokenFormBurn);

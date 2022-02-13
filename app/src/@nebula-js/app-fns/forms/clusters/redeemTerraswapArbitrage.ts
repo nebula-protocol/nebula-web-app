@@ -143,6 +143,7 @@ export const clusterRedeemTerraswapArbitrageForm = (
 
           return clusterRedeemQuery(
             demicrofy(return_amount as u<CT>).toFixed() as CT,
+            [], // redeem_asset_amounts = []
             dependency.clusterState,
             dependency.lastSyncedHeight,
             dependency.queryClient,

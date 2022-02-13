@@ -8,7 +8,7 @@ import { CT, terraswap, Token, u, UST } from '@nebula-js/types';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
 import React, { useCallback } from 'react';
-import { TokenForm } from './TokenForm';
+import { TokenFormMint } from './TokenFormMint';
 
 export interface MintAdvancedProps {
   clusterInfo: ClusterInfo;
@@ -53,7 +53,7 @@ export function MintAdvanced({ clusterInfo }: MintAdvancedProps) {
   );
 
   return (
-    <TokenForm
+    <TokenFormMint
       clusterInfo={clusterInfo}
       updateInput={updateInput}
       states={states}
@@ -79,6 +79,6 @@ export function MintAdvanced({ clusterInfo }: MintAdvancedProps) {
           </li>
         )}
       </FeeBox>
-    </TokenForm>
+    </TokenFormMint>
   );
 }
