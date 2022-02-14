@@ -57,9 +57,6 @@ function ClustersTableBase({
           <th>
             <span>Premium</span>
           </th>
-          <th>
-            <span>Volume</span>
-          </th>
         </tr>
       </thead>
 
@@ -113,9 +110,6 @@ function ClustersTableBase({
               <td>
                 {premium.gt(0) && '+'}
                 {formatRate(premium)}%
-              </td>
-              <td>
-                <s>{formatUTokenDecimal2(volume)} UST</s>
               </td>
             </tr>
           ),

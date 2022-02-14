@@ -64,10 +64,6 @@ function ClustersCardsBase({
               <VerticalLabelAndValue label="PREMIUM">
                 {formatRate(premium)}%
               </VerticalLabelAndValue>
-
-              <VerticalLabelAndValue label="VOLUME">
-                <s>{formatUTokenDecimal2(volume)} UST</s>
-              </VerticalLabelAndValue>
             </div>
 
             <Partition>
