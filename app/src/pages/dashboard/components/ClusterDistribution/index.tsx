@@ -36,7 +36,7 @@ function ClusterDistributionBase({ className }: ClusterDistributionProps) {
         return {
           name: clusterTokenInfo.name,
           symbol: clusterTokenInfo.symbol,
-          provided: provided,
+          provided,
           color: colors[i % colors.length],
           ratio: '0' as Rate,
         };
