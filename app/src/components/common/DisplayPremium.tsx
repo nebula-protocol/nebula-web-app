@@ -7,12 +7,18 @@ import { formatRate } from '@libs/formatter';
 interface Props extends HTMLAttributes<HTMLParagraphElement> {
   premium: Rate<Big>;
   isColored?: boolean;
+  showSign?: boolean;
 }
 
-const DisplayPremium = ({ premium, isColored = true, ...props }: Props) => {
+const DisplayPremium = ({
+  premium,
+  isColored = true,
+  showSign = true,
+  ...props
+}: Props) => {
   return (
     <DisplayPremiumBase premium={premium} isColored={isColored} {...props}>
-      {premium.gt(0) ? '+' : ''}
+      {showSign && premium.gt(0) ? '+' : ''}
       {formatRate(premium)}%
     </DisplayPremiumBase>
   );

@@ -99,7 +99,11 @@ function ClustersTableBase({
             <td>{formatUTokenDecimal2(marketCap)} UST</td>
             <td>{formatUTokenDecimal2(provided)} UST</td>
             <td>
-              <DisplayPremium premium={prices.premium} isColored={false} />
+              <DisplayPremium
+                premium={prices.premium}
+                isColored={false}
+                showSign={false}
+              />
             </td>
           </tr>
         ))}

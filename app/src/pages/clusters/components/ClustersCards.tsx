@@ -8,6 +8,7 @@ import {
   sectionStyle,
   VerticalLabelAndValue,
 } from '@nebula-js/ui';
+import { DisplayPremium } from 'components/common/DisplayPremium';
 import { fixHMR } from 'fix-hmr';
 import React, { DetailedHTMLProps } from 'react';
 import styled from 'styled-components';
@@ -59,7 +60,11 @@ function ClustersCardsBase({
               </VerticalLabelAndValue>
 
               <VerticalLabelAndValue label="PREMIUM">
-                {formatRate(prices.premium)}%
+                <DisplayPremium
+                  premium={prices.premium}
+                  isColored={false}
+                  showSign={false}
+                />
               </VerticalLabelAndValue>
             </div>
 
