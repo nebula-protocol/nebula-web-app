@@ -8,7 +8,6 @@ import {
 import { cw20, HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
 import { AssetView, toAssetView } from './assets';
 import big, { Big } from 'big.js';
-import { divWithDefault } from '@libs/big-math';
 
 export interface ClusterView {
   addr: HumanAddr;
@@ -20,7 +19,6 @@ export interface ClusterView {
   hr24: Rate<Big>;
   hr24diff: Rate<Big>;
   provided: u<UST<Big>>;
-  premium: Rate<Big>;
   marketCap: u<UST<Big>>;
   volume: u<UST<Big>>;
   assets: AssetView[];
@@ -39,12 +37,6 @@ export function toClusterView({
 
   const provided = computeProvided(clusterState);
 
-  const premium = divWithDefault(
-    big(marketCap).minus(provided),
-    provided,
-    0,
-  ) as Rate<Big>;
-
   return {
     addr: clusterState.cluster_contract_address,
     tokenInfo: clusterTokenInfo,
@@ -58,7 +50,6 @@ export function toClusterView({
     hr24diff: big(0.00999) as Rate<Big>,
     marketCap,
     provided,
-    premium,
     // TODO indexer data
     volume: big(111) as u<UST<Big>>,
     assets: toAssetView(clusterState, assetTokenInfos),

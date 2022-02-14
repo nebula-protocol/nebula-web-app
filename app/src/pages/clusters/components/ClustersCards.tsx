@@ -33,10 +33,7 @@ function ClustersCardsBase({
   return (
     <ul {...sectionProps}>
       {clusters.map(
-        (
-          { addr, name, prices, marketCap, volume, premium, provided, assets },
-          i,
-        ) => (
+        ({ addr, name, prices, marketCap, provided, assets }, i) => (
           <li
             key={'row' + addr}
             ref={i === 0 ? ref : undefined}
@@ -62,7 +59,7 @@ function ClustersCardsBase({
               </VerticalLabelAndValue>
 
               <VerticalLabelAndValue label="PREMIUM">
-                {formatRate(premium)}%
+                {formatRate(prices.premium)}%
               </VerticalLabelAndValue>
             </div>
 
