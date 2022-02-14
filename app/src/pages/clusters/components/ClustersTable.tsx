@@ -43,7 +43,7 @@ function ClustersTableBase({
           </th>
           <th>
             <span>
-              Price <InfoTooltip>Test tooltip...</InfoTooltip>
+              Cluster Price <InfoTooltip>Test tooltip...</InfoTooltip>
             </span>
           </th>
           <th>
@@ -68,12 +68,11 @@ function ClustersTableBase({
           ({
             addr,
             name,
-            price,
-            hr24diff,
+            prices,
             marketCap,
             volume,
             premium,
-            totalProvided,
+            provided,
             assets,
           }) => (
             <tr key={'row' + addr} onClick={() => onClusterClick(addr)}>
@@ -107,10 +106,10 @@ function ClustersTableBase({
                 />
               </td>
               <td>
-                <TwoLine text={formatToken(price) + ' UST'} />
+                <TwoLine text={formatToken(prices.clusterPrice) + ' UST'} />
               </td>
               <td>{formatUTokenDecimal2(marketCap)} UST</td>
-              <td>{formatUTokenDecimal2(totalProvided)} UST</td>
+              <td>{formatUTokenDecimal2(provided)} UST</td>
               <td>
                 {premium.gt(0) && '+'}
                 {formatRate(premium)}%

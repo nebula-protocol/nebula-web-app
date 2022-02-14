@@ -33,8 +33,8 @@ export class PieChart extends Component<PieChartProps> {
   componentDidUpdate(prevProps: Readonly<PieChartProps>) {
     if (this.props.data !== prevProps.data) {
       this.chart.data.labels = this.props.data.map(({ symbol }) => symbol);
-      this.chart.data.datasets[0].data = this.props.data.map(({ marketCap }) =>
-        big(marketCap).toNumber(),
+      this.chart.data.datasets[0].data = this.props.data.map(({ provided }) =>
+        big(provided).toNumber(),
       );
       this.chart.data.datasets[0].backgroundColor = this.props.data.map(
         ({ color }) => color,
@@ -80,8 +80,8 @@ export class PieChart extends Component<PieChartProps> {
         labels: this.props.data.map(({ symbol }) => symbol),
         datasets: [
           {
-            data: this.props.data.map(({ marketCap }) =>
-              big(marketCap).toNumber(),
+            data: this.props.data.map(({ provided }) =>
+              big(provided).toNumber(),
             ),
             backgroundColor: this.props.data.map(({ color }) => color),
             borderWidth: 0,

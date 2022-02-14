@@ -1,5 +1,4 @@
-import { sum } from '@libs/big-math';
-import { computeMarketCap } from '@nebula-js/app-fns';
+import { computeProvided, computeTotalProvided } from '@nebula-js/app-fns';
 import { useClustersInfoListQuery } from '@nebula-js/app-provider';
 import { Rate, u, UST } from '@nebula-js/types';
 import { VerticalLabelAndValue } from '@nebula-js/ui';
@@ -10,6 +9,7 @@ import styled, { useTheme } from 'styled-components';
 import { PieChart } from './PieChart';
 import { Table } from './Table';
 import { Item } from './types';
+import { formatUTokenWithPostfixUnits } from '@libs/formatter';
 
 export interface ClusterDistributionProps {
   className?: string;
@@ -22,60 +22,55 @@ function ClusterDistributionBase({ className }: ClusterDistributionProps) {
 
   const { data: clusterInfos = [] } = useClustersInfoListQuery();
 
+  const totalProvided = computeTotalProvided(clusterInfos);
+
   const data = useMemo<Item[]>(() => {
     if (clusterInfos.length === 0) {
       return [];
     }
 
     const distributions = clusterInfos.map<Item>(
-      ({ clusterState, terraswapPool, clusterTokenInfo }, i) => {
-        const marketCap = computeMarketCap(
-          clusterState,
-          terraswapPool,
-        ).toFixed() as u<UST>;
+      ({ clusterState, clusterTokenInfo }, i) => {
+        const provided = computeProvided(clusterState).toFixed() as u<UST>;
 
         return {
           name: clusterTokenInfo.name,
           symbol: clusterTokenInfo.symbol,
-          marketCap: marketCap,
+          provided: provided,
           color: colors[i % colors.length],
           ratio: '0' as Rate,
         };
       },
     );
 
-    const marketCapTotal = sum(
-      ...distributions.map(({ marketCap }) => marketCap),
-    );
-
     for (const distribution of distributions) {
-      distribution.ratio = big(distribution.marketCap)
-        .div(marketCapTotal)
+      distribution.ratio = big(distribution.provided)
+        .div(totalProvided)
         .toFixed() as Rate;
     }
 
     const sortedDistributions = distributions.sort((a, b) => {
-      return big(b.marketCap).minus(a.marketCap).toNumber();
+      return big(b.provided).minus(a.provided).toNumber();
     });
 
     const top3 = sortedDistributions.slice(0, 3);
     const others = sortedDistributions.slice(3).reduce(
-      (o, { marketCap, ratio }) => {
-        o.marketCap = big(o.marketCap).plus(marketCap).toFixed() as u<UST>;
+      (o, { provided, ratio }) => {
+        o.provided = big(o.provided).plus(provided).toFixed() as u<UST>;
         o.ratio = big(o.ratio).plus(ratio).toFixed() as Rate;
         return o;
       },
       {
-        marketCap: '0' as u<UST>,
-        ratio: '0' as Rate,
-        color: colors[3],
         name: 'Others',
+        color: colors[3],
+        provided: '0' as u<UST>,
         symbol: 'others',
+        ratio: '0' as Rate,
       } as Item,
     );
 
     return [...top3, others];
-  }, [clusterInfos]);
+  }, [clusterInfos, totalProvided]);
 
   return (
     <div className={className}>
@@ -83,7 +78,7 @@ function ClusterDistributionBase({ className }: ClusterDistributionProps) {
         className="inventory-value"
         label="INVENTORY VALUE"
       >
-        <s>1,000 UST</s>
+        {formatUTokenWithPostfixUnits(totalProvided)} UST
       </VerticalLabelAndValue>
 
       <PieChart data={data} theme={theme} />

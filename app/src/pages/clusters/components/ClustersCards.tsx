@@ -34,18 +34,7 @@ function ClustersCardsBase({
     <ul {...sectionProps}>
       {clusters.map(
         (
-          {
-            addr,
-            name,
-            price,
-            hr24,
-            hr24diff,
-            marketCap,
-            volume,
-            premium,
-            totalProvided,
-            assets,
-          },
+          { addr, name, prices, marketCap, volume, premium, provided, assets },
           i,
         ) => (
           <li
@@ -56,7 +45,7 @@ function ClustersCardsBase({
           >
             <IconAndLabels
               text={name}
-              subtext={<>{formatToken(price)} UST </>}
+              subtext={<>{formatToken(prices.clusterPrice)} UST </>}
               iconSize="4.28571429em"
               textSize="1.42857143em"
               subtextSize="1em"
@@ -69,7 +58,7 @@ function ClustersCardsBase({
               </VerticalLabelAndValue>
 
               <VerticalLabelAndValue label="TOTAL PROVIDED">
-                {formatUTokenDecimal2(totalProvided)} UST
+                {formatUTokenDecimal2(provided)} UST
               </VerticalLabelAndValue>
 
               <VerticalLabelAndValue label="PREMIUM">
