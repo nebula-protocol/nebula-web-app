@@ -1,6 +1,11 @@
-import { sum, vectorMultiply } from '@libs/big-math';
-import { ClusterInfo, getAssetAmount } from '@nebula-js/app-fns';
-import { CT, cw20, HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
+import {
+  ClusterInfo,
+  computeCTPrices,
+  computeMarketCap,
+  computeProvided,
+  ClusterTokenPrices,
+} from '@nebula-js/app-fns';
+import { cw20, HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
 import { AssetView, toAssetView } from './assets';
 import big, { Big } from 'big.js';
 
@@ -10,11 +15,10 @@ export interface ClusterView {
   name: string;
   nameLowerCase: string;
   description: string;
-  price: UST<Big>;
+  prices: ClusterTokenPrices;
   hr24: Rate<Big>;
   hr24diff: Rate<Big>;
-  totalProvided: u<UST<Big>>;
-  premium: Rate<Big>;
+  provided: u<UST<Big>>;
   marketCap: u<UST<Big>>;
   volume: u<UST<Big>>;
   assets: AssetView[];
@@ -27,45 +31,11 @@ export function toClusterView({
   assetTokenInfos,
   clusterTokenInfo,
 }: ClusterInfo): ClusterView {
-  const ctAmount = getAssetAmount<CT>(terraswapPool.assets, {
-    token: { contract_addr: clusterState.cluster_token },
-  });
+  const prices = computeCTPrices(clusterState, terraswapPool);
 
-  const ustAmount = getAssetAmount<UST>(terraswapPool.assets, 'uusd');
+  const marketCap = computeMarketCap(clusterState, terraswapPool);
 
-  if (big(ctAmount).eq(0) || big(ustAmount).eq(0)) {
-    return {
-      addr: clusterState.cluster_contract_address,
-      tokenInfo: clusterTokenInfo,
-      name: clusterConfig.config.name,
-      nameLowerCase: clusterConfig.config.name.toLowerCase(),
-      description: clusterConfig.config.description,
-      price: big(0) as UST<Big>,
-      hr24: big(0) as Rate<Big>,
-      hr24diff: big(0) as Rate<Big>,
-      marketCap: big(0) as u<UST<Big>>,
-      totalProvided: big(0) as u<UST<Big>>,
-      premium: big(0) as Rate<Big>,
-      volume: big(0) as u<UST<Big>>,
-      assets: toAssetView(clusterState, assetTokenInfos),
-    };
-  }
-
-  const price = big(ustAmount).div(ctAmount) as UST<Big>;
-
-  const marketCap = big(clusterState.outstanding_balance_tokens).mul(
-    price,
-  ) as u<UST<Big>>;
-
-  const totalProvided = sum(
-    ...vectorMultiply(clusterState.prices, clusterState.inv),
-  ) as u<UST<Big>>;
-
-  const premium = (
-    totalProvided.eq(0)
-      ? big(0)
-      : big(big(marketCap).minus(totalProvided)).div(totalProvided)
-  ) as Rate<Big>;
+  const provided = computeProvided(clusterState);
 
   return {
     addr: clusterState.cluster_contract_address,
@@ -73,14 +43,13 @@ export function toClusterView({
     name: clusterConfig.config.name,
     nameLowerCase: clusterConfig.config.name.toLowerCase(),
     description: clusterConfig.config.description,
-    price,
+    prices,
     // TODO indexer data
     hr24: big(999) as Rate<Big>,
     // TODO indexer data
     hr24diff: big(0.00999) as Rate<Big>,
     marketCap,
-    totalProvided,
-    premium,
+    provided,
     // TODO indexer data
     volume: big(111) as u<UST<Big>>,
     assets: toAssetView(clusterState, assetTokenInfos),

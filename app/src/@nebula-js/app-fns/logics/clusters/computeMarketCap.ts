@@ -1,19 +1,16 @@
 import { cluster, CT, terraswap, u, UST } from '@nebula-js/types';
 import big, { Big } from 'big.js';
+import { computeCTPrices } from './computeCTPrices';
 
+// marketcap in pool (not cluster!!)
+// marketcap = totalsupply of CT in cluster * price in pool
 export function computeMarketCap(
   clusterState: cluster.ClusterStateResponse,
   terraswapPool: terraswap.pair.PoolResponse<CT, UST>,
 ): u<UST<Big>> {
-  const ustIndex = terraswapPool.assets.findIndex(
-    (asset) => 'native_token' in asset.info,
-  );
-  const ust = terraswapPool.assets[ustIndex].amount as u<UST>;
-  const token = terraswapPool.assets[ustIndex === 0 ? 1 : 0].amount as u<CT>;
+  const poolPrice = computeCTPrices(clusterState, terraswapPool).poolPrice;
 
-  return (
-    big(token).gt(0)
-      ? big(clusterState.outstanding_balance_tokens).mul(big(ust).div(token))
-      : big(0)
-  ) as u<UST<Big>>;
+  return big(clusterState.outstanding_balance_tokens).mul(poolPrice) as u<
+    UST<Big>
+  >;
 }

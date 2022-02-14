@@ -156,7 +156,10 @@ function ClustersDetailBase({
           </MainSection>
         </div>
 
-        <PriceCard price={clusterView?.price} desc={clusterView?.description} />
+        <PriceCard
+          prices={clusterView?.prices}
+          desc={clusterView?.description}
+        />
       </section>
 
       <section className="provided-tokens">
@@ -173,8 +176,8 @@ function ClustersDetailBase({
                   </>
                 ),
                 text:
-                  (clusterView?.totalProvided
-                    ? formatUTokenDecimal2(clusterView.totalProvided)
+                  (clusterView?.provided
+                    ? formatUTokenDecimal2(clusterView.provided)
                     : '0') + ' UST',
               },
             ]}

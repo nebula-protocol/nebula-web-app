@@ -1,26 +1,53 @@
 import React from 'react';
 import styled from 'styled-components';
-import { UST } from '@libs/types';
+import { UST } from '@nebula-js/types';
 import { Big } from 'big.js';
+import { ClusterTokenPrices } from '@nebula-js/app-fns';
 import { formatToken } from '@libs/formatter';
-import { DisplayNumber } from '../../../components/common/DisplayNumber';
+import { DisplayNumber } from 'components/common/DisplayNumber';
+import { DisplayPremium } from 'components/common/DisplayPremium';
 
 export interface PriceCardProps {
-  price: UST<Big> | undefined;
+  prices: ClusterTokenPrices | undefined;
   desc: string | undefined;
 }
 
-export const PriceCard = ({ price, desc }: PriceCardProps) => {
-  if (!price || !desc) return null;
+export const PriceCard = ({ prices, desc }: PriceCardProps) => {
+  if (!prices || !desc) return null;
 
   return (
     <Container>
-      <h3>CURRENT PRICE</h3>
-      <StyledDisplayNumber price={formatToken(price)} currency="UST" />
+      <h3>CURRENT PRICE (CLUSTER)</h3>
+      <StyledDisplayNumber
+        price={formatToken(prices.clusterPrice)}
+        currency="UST"
+      />
+      <h3>CURRENT PRICE (ASTROPORT)</h3>
+      <StyledDisplayNumber
+        price={formatToken(prices.poolPrice)}
+        currency="UST"
+      />
+      <h3>PREMIUM</h3>
+      <StyledPremium>
+        <span>
+          {formatToken(prices.poolPrice.minus(prices.clusterPrice) as UST<Big>)}{' '}
+          UST
+        </span>
+        <span>
+          (<DisplayPremium premium={prices.premium} />)
+        </span>
+      </StyledPremium>
       <section>{desc}</section>
     </Container>
   );
 };
+
+const StyledPremium = styled.div`
+  margin-top: 5px;
+  margin-bottom: 32px;
+  font-weight: 500;
+  font-size: var(--font-size12);
+`;
 
 const StyledDisplayNumber = styled(DisplayNumber)`
   margin-top: 5px;

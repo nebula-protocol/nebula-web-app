@@ -1,12 +1,8 @@
 import { formatRate, formatUTokenWithPostfixUnits } from '@libs/formatter';
 import { ChevronRight } from '@material-ui/icons';
-import {
-  ClusterInfo,
-  computeMarketCap,
-  computeProvided,
-} from '@nebula-js/app-fns';
+import { ClusterInfo } from '@nebula-js/app-fns';
 import { useClustersInfoListQuery } from '@nebula-js/app-provider';
-import { Rate, u, UST } from '@nebula-js/types';
+import { Rate } from '@nebula-js/types';
 import {
   Carousel,
   InfoTooltip,
@@ -16,7 +12,6 @@ import {
   useScreenSizeValue,
   VerticalLabelAndValue,
 } from '@nebula-js/ui';
-import { Big } from 'big.js';
 import { ClusterView, toClusterView } from 'pages/clusters/models/clusters';
 import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -24,8 +19,6 @@ import styled from 'styled-components';
 import useResizeObserver from 'use-resize-observer/polyfilled';
 
 interface TopCluster extends ClusterInfo {
-  marketCap: u<UST<Big>>;
-  provided: u<UST<Big>>;
   view: ClusterView;
 }
 
@@ -48,27 +41,14 @@ function TopClustersBase({ className }: TopClustersProps) {
   const topClusters = useMemo<TopCluster[]>(() => {
     return clusterInfos
       .map((clusterInfo) => {
-        const marketCap = computeMarketCap(
-          clusterInfo.clusterState,
-          clusterInfo.terraswapPool,
-        ) as u<UST<Big>>;
-
-        return { ...clusterInfo, marketCap };
-      })
-      .sort((a, b) => {
-        return b.marketCap.minus(a.marketCap).toNumber();
-      })
-      .slice(0, 3)
-      .map((clusterInfo) => {
-        const provided = computeProvided(clusterInfo.clusterState);
         const view = toClusterView(clusterInfo);
 
-        return {
-          ...clusterInfo,
-          provided,
-          view,
-        };
-      });
+        return { ...clusterInfo, view };
+      })
+      .sort((a, b) => {
+        return b.view.marketCap.minus(a.view.marketCap).toNumber();
+      })
+      .slice(0, 3);
   }, [clusterInfos]);
 
   const tabItems = useMemo(() => {
@@ -88,9 +68,7 @@ function TopClustersBase({ className }: TopClustersProps) {
             {
               clusterState,
               clusterTokenInfo,
-              marketCap,
-              provided,
-              view: { assets },
+              view: { assets, marketCap, provided },
             },
             i,
           ) => (
@@ -105,9 +83,20 @@ function TopClustersBase({ className }: TopClustersProps) {
                       {clusterTokenInfo.name} <ChevronRight />
                     </Link>
                   </h4>
-                  <p>{formatUTokenWithPostfixUnits(marketCap)} UST </p>
+                  <p>{clusterTokenInfo.symbol}</p>
                 </div>
               </section>
+
+              <VerticalLabelAndValue
+                className="marketcap-asset"
+                label={
+                  <>
+                    MARKET CAP <InfoTooltip>Test tooltip...</InfoTooltip>
+                  </>
+                }
+              >
+                {formatUTokenWithPostfixUnits(marketCap)} UST
+              </VerticalLabelAndValue>
 
               <VerticalLabelAndValue
                 className="provided-asset"
@@ -210,6 +199,7 @@ const Content = styled.div`
     margin-bottom: 4em;
   }
 
+  > .marketcap-asset,
   > .provided-asset,
   > .supply {
     margin-bottom: 1.5em;

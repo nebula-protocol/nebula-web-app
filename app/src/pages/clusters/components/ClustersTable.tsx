@@ -1,4 +1,4 @@
-import { formatRate, formatToken, formatUTokenDecimal2 } from '@libs/formatter';
+import { formatToken, formatUTokenDecimal2 } from '@libs/formatter';
 import {
   HorizontalScrollTable,
   HorizontalScrollTableProps,
@@ -9,6 +9,7 @@ import {
   TwoLine,
   useScreenSizeValue,
 } from '@nebula-js/ui';
+import { DisplayPremium } from 'components/common/DisplayPremium';
 import { fixHMR } from 'fix-hmr';
 import React from 'react';
 import styled from 'styled-components';
@@ -43,7 +44,7 @@ function ClustersTableBase({
           </th>
           <th>
             <span>
-              Price <InfoTooltip>Test tooltip...</InfoTooltip>
+              Cluster Price <InfoTooltip>Test tooltip...</InfoTooltip>
             </span>
           </th>
           <th>
@@ -57,70 +58,55 @@ function ClustersTableBase({
           <th>
             <span>Premium</span>
           </th>
-          <th>
-            <span>Volume</span>
-          </th>
         </tr>
       </thead>
 
       <tbody>
-        {clusters.map(
-          ({
-            addr,
-            name,
-            price,
-            hr24diff,
-            marketCap,
-            volume,
-            premium,
-            totalProvided,
-            assets,
-          }) => (
-            <tr key={'row' + addr} onClick={() => onClusterClick(addr)}>
-              <td>
-                <IconAndLabels
-                  text={name}
-                  subtext={
-                    <Partition>
-                      <PartitionBarGraph
-                        height={5}
-                        data={assets.map(({ color, portfolioRatio }) => ({
-                          color,
-                          value: portfolioRatio,
-                        }))}
-                        width={150}
-                      />
-                      <PartitionLabels
-                        columnGap="0.5em"
-                        data={assets.slice(0, 2).map(({ token, color }) => ({
-                          label: token.symbol,
-                          color,
-                        }))}
-                      >
-                        {assets.length - 2 > 0 && (
-                          <li>+{assets.length - 2} more</li>
-                        )}
-                      </PartitionLabels>
-                    </Partition>
-                  }
-                  textGap="0.3em"
-                />
-              </td>
-              <td>
-                <TwoLine text={formatToken(price) + ' UST'} />
-              </td>
-              <td>{formatUTokenDecimal2(marketCap)} UST</td>
-              <td>{formatUTokenDecimal2(totalProvided)} UST</td>
-              <td>
-                {premium.gt(0) && '+'}
-                {formatRate(premium)}%
-              </td>
-              <td>
-                <s>{formatUTokenDecimal2(volume)} UST</s>
-              </td>
-            </tr>
-          ),
-        )}
+        {clusters.map(({ addr, name, prices, marketCap, provided, assets }) => (
+          <tr key={'row' + addr} onClick={() => onClusterClick(addr)}>
+            <td>
+              <IconAndLabels
+                text={name}
+                subtext={
+                  <Partition>
+                    <PartitionBarGraph
+                      height={5}
+                      data={assets.map(({ color, portfolioRatio }) => ({
+                        color,
+                        value: portfolioRatio,
+                      }))}
+                      width={150}
+                    />
+                    <PartitionLabels
+                      columnGap="0.5em"
+                      data={assets.slice(0, 2).map(({ token, color }) => ({
+                        label: token.symbol,
+                        color,
+                      }))}
+                    >
+                      {assets.length - 2 > 0 && (
+                        <li>+{assets.length - 2} more</li>
+                      )}
+                    </PartitionLabels>
+                  </Partition>
+                }
+                textGap="0.3em"
+              />
+            </td>
+            <td>
+              <TwoLine text={formatToken(prices.clusterPrice) + ' UST'} />
+            </td>
+            <td>{formatUTokenDecimal2(marketCap)} UST</td>
+            <td>{formatUTokenDecimal2(provided)} UST</td>
+            <td>
+              <DisplayPremium
+                premium={prices.premium}
+                isColored={false}
+                showSign={false}
+              />
+            </td>
+          </tr>
+        ))}
       </tbody>
     </HorizontalScrollTable>
   );

@@ -8,6 +8,7 @@ import {
   sectionStyle,
   VerticalLabelAndValue,
 } from '@nebula-js/ui';
+import { DisplayPremium } from 'components/common/DisplayPremium';
 import { fixHMR } from 'fix-hmr';
 import React, { DetailedHTMLProps } from 'react';
 import styled from 'styled-components';
@@ -33,21 +34,7 @@ function ClustersCardsBase({
   return (
     <ul {...sectionProps}>
       {clusters.map(
-        (
-          {
-            addr,
-            name,
-            price,
-            hr24,
-            hr24diff,
-            marketCap,
-            volume,
-            premium,
-            totalProvided,
-            assets,
-          },
-          i,
-        ) => (
+        ({ addr, name, prices, marketCap, provided, assets }, i) => (
           <li
             key={'row' + addr}
             ref={i === 0 ? ref : undefined}
@@ -56,7 +43,7 @@ function ClustersCardsBase({
           >
             <IconAndLabels
               text={name}
-              subtext={<>{formatToken(price)} UST </>}
+              subtext={<>{formatToken(prices.clusterPrice)} UST </>}
               iconSize="4.28571429em"
               textSize="1.42857143em"
               subtextSize="1em"
@@ -69,15 +56,15 @@ function ClustersCardsBase({
               </VerticalLabelAndValue>
 
               <VerticalLabelAndValue label="TOTAL PROVIDED">
-                {formatUTokenDecimal2(totalProvided)} UST
+                {formatUTokenDecimal2(provided)} UST
               </VerticalLabelAndValue>
 
               <VerticalLabelAndValue label="PREMIUM">
-                {formatRate(premium)}%
-              </VerticalLabelAndValue>
-
-              <VerticalLabelAndValue label="VOLUME">
-                <s>{formatUTokenDecimal2(volume)} UST</s>
+                <DisplayPremium
+                  premium={prices.premium}
+                  isColored={false}
+                  showSign={false}
+                />
               </VerticalLabelAndValue>
             </div>
 

@@ -3,6 +3,7 @@ import { AnimateNumber } from '@libs/ui';
 import React from 'react';
 import styled from 'styled-components';
 import { Item } from './types';
+import { fixHMR } from 'fix-hmr';
 
 export interface TableProps {
   className?: string;
@@ -12,18 +13,31 @@ export interface TableProps {
 function TableBase({ className, data }: TableProps) {
   return (
     <table className={className} cellPadding="0" cellSpacing="0">
+      <thead>
+        <tr>
+          <th>
+            <span>Cluster</span>
+          </th>
+          <th>
+            <span>Provided Asset</span>
+          </th>
+          <th>
+            <span>Ratio</span>
+          </th>
+        </tr>
+      </thead>
       <tbody>
-        {data.map(({ name, marketCap, ratio, color }) => (
+        {data.map(({ name, provided, ratio, color }) => (
           <tr key={name}>
             <th style={{ color }}>{name}</th>
             <td>
               <AnimateNumber format={formatUTokenWithPostfixUnits}>
-                {marketCap}
+                {provided}
               </AnimateNumber>{' '}
               UST
             </td>
             <td>
-              <AnimateNumber format={formatRate}>{ratio}</AnimateNumber> %
+              <AnimateNumber format={formatRate}>{ratio}</AnimateNumber>%
             </td>
           </tr>
         ))}
@@ -32,7 +46,7 @@ function TableBase({ className, data }: TableProps) {
   );
 }
 
-export const Table = styled(TableBase)`
+const StyledTable = styled(TableBase)`
   table-layout: auto;
   width: 100%;
 
@@ -70,4 +84,16 @@ export const Table = styled(TableBase)`
       padding-left: 2em;
     }
   }
+
+  thead {
+    tr {
+      th {
+        color: var(--color-white44);
+        font-weight: 500;
+        border-bottom: 1px solid var(--color-gray24);
+      }
+    }
+  }
 `;
+
+export const Table = fixHMR(StyledTable);
