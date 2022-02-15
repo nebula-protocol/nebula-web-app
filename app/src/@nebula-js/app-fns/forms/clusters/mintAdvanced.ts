@@ -1,8 +1,9 @@
 import { GasPrice, TerraBalances } from '@libs/app-fns';
-import { max, min } from '@libs/big-math';
+import { max, min, vectorDot } from '@libs/big-math';
 import { microfy } from '@libs/formatter';
 import { QueryClient } from '@libs/query-client';
 import { FormReturn } from '@libs/use-form';
+import { computeCTPrices } from '@nebula-js/app-fns';
 import { cluster, CT, Rate, terraswap, Token, u, UST } from '@nebula-js/types';
 import big, { Big, BigSource } from 'big.js';
 import { computeClusterTxFee } from '../../logics/clusters/computeClusterTxFee';
@@ -19,6 +20,7 @@ export interface ClusterMintAdvancedFormDependency {
   balances: TerraBalances | undefined;
   lastSyncedHeight: () => Promise<number>;
   clusterState: cluster.ClusterStateResponse;
+  terraswapPool: terraswap.pair.PoolResponse<CT, UST>;
   gasPrice: GasPrice;
   clusterFee: NebulaClusterFee;
   fixedFee: u<UST<BigSource>>;
@@ -36,6 +38,8 @@ export interface ClusterMintAdvancedFormStates
 
 export interface ClusterMintAdvancedFormAsyncStates {
   mintedAmount: u<CT> | undefined;
+  totalInputValue: u<UST<Big>> | undefined;
+  pnl: u<UST> | undefined;
 }
 
 export const clusterMintAdvancedForm = (
@@ -53,6 +57,7 @@ export const clusterMintAdvancedForm = (
     ClusterMintAdvancedFormStates,
     ClusterMintAdvancedFormAsyncStates
   > => {
+    // validate inputAmount > balance
     if (
       !invalidAmounts ||
       dependency.clusterState !== prevDependency?.clusterState ||
@@ -69,6 +74,7 @@ export const clusterMintAdvancedForm = (
       });
     }
 
+    // update remainAssets
     if (
       !remainAssets ||
       dependency.clusterState !== prevDependency?.clusterState ||
@@ -120,6 +126,7 @@ export const clusterMintAdvancedForm = (
       dependency.queryClient !== prevDependency?.queryClient ||
       dependency.lastSyncedHeight !== prevDependency?.lastSyncedHeight ||
       dependency.clusterState !== prevDependency?.clusterState ||
+      dependency.terraswapPool !== prevDependency?.terraswapPool ||
       dependency.clusterFee !== prevDependency?.clusterFee ||
       dependency.gasPrice !== prevDependency?.gasPrice ||
       input.amounts !== prevInput?.amounts
@@ -139,6 +146,23 @@ export const clusterMintAdvancedForm = (
               dependency.clusterState.target.length,
               dependency.clusterState.target.length,
             );
+
+            const clusterPrice = computeCTPrices(
+              dependency.clusterState,
+              dependency.terraswapPool,
+            ).clusterPrice;
+
+            // totalMintValue = createToken * clusterPrice
+            const totalMintValue: u<UST<Big>> = big(mint.create_tokens).mul(
+              clusterPrice,
+            ) as u<UST<Big>>;
+
+            const totalInputValue: u<UST<Big>> = vectorDot(
+              input.amounts.map((amount) =>
+                amount.length > 0 ? microfy(amount).toFixed() : '0',
+              ),
+              dependency.clusterState.prices,
+            ) as u<UST<Big>>;
 
             let txFee: u<UST> | null;
 
@@ -169,9 +193,19 @@ export const clusterMintAdvancedForm = (
               txFee = null;
             }
 
-            return { mintedAmount: mint.create_tokens as u<CT>, txFee };
+            return {
+              mintedAmount: mint.create_tokens as u<CT>,
+              pnl: totalMintValue.minus(totalInputValue).toFixed() as u<UST>,
+              totalInputValue,
+              txFee,
+            };
           })
-        : Promise.resolve({ mintedAmount: undefined, txFee: null });
+        : Promise.resolve({
+            mintedAmount: undefined,
+            pnl: undefined,
+            totalInputValue: undefined,
+            txFee: null,
+          });
     }
 
     return [

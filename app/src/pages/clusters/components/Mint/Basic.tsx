@@ -57,7 +57,7 @@ function MintBasicBase({
       });
 
       if (stream) {
-        console.log('Advanced.tsx..()', stream);
+        console.log('Basic.tsx..()', stream);
         broadcast(stream);
       }
     },

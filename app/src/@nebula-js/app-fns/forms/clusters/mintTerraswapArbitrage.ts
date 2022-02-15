@@ -8,6 +8,7 @@ import {
   ClusterMintAdvancedFormInput,
   ClusterMintAdvancedFormStates,
 } from './mintAdvanced';
+import big from 'big.js';
 
 export interface ClusterMintTerraswapArbitrageFormInput
   extends ClusterMintAdvancedFormInput {}
@@ -54,9 +55,15 @@ export const clusterMintTerraswapArbitrageForm = (
           },
           dependency.queryClient,
         ).then(({ simulation }) => {
+          // pnl = returnAmount - dot(inputAmounts, prices)
+          const pnl = big(simulation.return_amount)
+            .minus(advancedAsyncStates.totalInputValue!)
+            .toFixed() as u<UST>;
+
           return {
             ...advancedAsyncStates,
             returnedAmount: simulation.return_amount as u<UST>,
+            pnl,
           } as ClusterMintTerraswapArbitrageFormAsyncStates;
         });
       } else {

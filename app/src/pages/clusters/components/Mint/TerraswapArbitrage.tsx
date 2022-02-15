@@ -19,6 +19,7 @@ export function MintTerraswapArbitrage({
 }: MintTerraswapArbitrageProps) {
   const [updateInput, states] = useClusterMintTerraswapArbitrageForm({
     clusterState: clusterInfo.clusterState,
+    terraswapPool: clusterInfo.terraswapPool,
     terraswapPair: clusterInfo.terraswapPair,
   });
 
@@ -49,7 +50,7 @@ export function MintTerraswapArbitrage({
       });
 
       if (stream) {
-        console.log('Advanced.tsx..()', stream);
+        console.log('TerraswapArbitrage.tsx..()', stream);
         broadcast(stream);
       }
     },
@@ -72,6 +73,13 @@ export function MintTerraswapArbitrage({
               <span>{formatUToken(states.returnedAmount)} UST</span>
             </li>
           )}
+
+        {clusterInfo.clusterTokenInfo && 'pnl' in states && states.pnl && (
+          <li>
+            <span>PNL</span>
+            <span>{formatUToken(states.pnl)} UST</span>
+          </li>
+        )}
 
         {states.txFee !== null && (
           <li>
