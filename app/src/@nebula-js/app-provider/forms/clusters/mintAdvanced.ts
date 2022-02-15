@@ -5,16 +5,18 @@ import {
 } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
 import { clusterMintAdvancedForm } from '@nebula-js/app-fns';
-import { cluster, terraswap, Token } from '@nebula-js/types';
+import { cluster, CT, terraswap, Token, UST } from '@nebula-js/types';
 import { useMemo } from 'react';
 import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export interface ClusterMintAdvancedFormParams {
   clusterState: cluster.ClusterStateResponse;
+  terraswapPool: terraswap.pair.PoolResponse<CT, UST>;
 }
 
 export function useClusterMintAdvancedForm({
   clusterState,
+  terraswapPool,
 }: ClusterMintAdvancedFormParams) {
   const { queryClient, lastSyncedHeight, gasPrice, constants } = useNebulaApp();
 
@@ -33,6 +35,7 @@ export function useClusterMintAdvancedForm({
     {
       queryClient,
       clusterState,
+      terraswapPool,
       lastSyncedHeight,
       balances,
       taxRate,

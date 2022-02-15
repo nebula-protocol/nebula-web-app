@@ -17,6 +17,7 @@ export interface MintAdvancedProps {
 export function MintAdvanced({ clusterInfo }: MintAdvancedProps) {
   const [updateInput, states] = useClusterMintAdvancedForm({
     clusterState: clusterInfo.clusterState,
+    terraswapPool: clusterInfo.terraswapPool,
   });
 
   const { broadcast } = useTxBroadcast();
@@ -71,6 +72,13 @@ export function MintAdvanced({ clusterInfo }: MintAdvancedProps) {
               </span>
             </li>
           )}
+
+        {clusterInfo.clusterTokenInfo && 'pnl' in states && states.pnl && (
+          <li>
+            <span>PNL</span>
+            <span>{formatUToken(states.pnl)} UST</span>
+          </li>
+        )}
 
         {states.txFee !== null && (
           <li>
