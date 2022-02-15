@@ -153,11 +153,11 @@ export const clusterMintAdvancedForm = (
             ).clusterPrice;
 
             // totalMintValue = createToken * clusterPrice
-            const totalMintValue: u<UST<Big>> = big(mint.create_tokens).mul(
+            const totalMintValue = big(mint.create_tokens).mul(
               clusterPrice,
             ) as u<UST<Big>>;
 
-            const totalInputValue: u<UST<Big>> = vectorDot(
+            const totalInputValue = vectorDot(
               input.amounts.map((amount) =>
                 amount.length > 0 ? microfy(amount).toFixed() : '0',
               ),
