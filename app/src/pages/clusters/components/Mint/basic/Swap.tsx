@@ -1,6 +1,7 @@
 import { WalletIcon } from '@nebula-js/icons';
 import { formatUInput, formatUToken } from '@libs/formatter';
-import { Token, u, UST } from '@nebula-js/types';
+import { u, UST } from '@nebula-js/types';
+import { RotateSpinner } from 'react-spinners-kit';
 import {
   breakpoints,
   Button,
@@ -9,10 +10,10 @@ import {
   TokenSpan,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { ClusterInfo } from '@nebula-js/app-fns';
+import { SwapTokenInfo, ClusterInfo } from '@nebula-js/app-fns';
 import {
-  useClusterMintBasicForm,
-  useClusterMintTx,
+  useClusterSwapForm,
+  useCW20BuyTokenChuckTx,
 } from '@nebula-js/app-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { FeeBox } from 'components/boxes/FeeBox';
@@ -20,27 +21,25 @@ import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { ProvidedTokenTable } from './ProvidedTokenTable';
+import { TokenTable } from '../TokenTable';
+import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
 
-export interface MintBasicProps {
+export interface SwapProps {
   className?: string;
   clusterInfo: ClusterInfo;
 }
 
-function MintBasicBase({
+function SwapBase({
   className,
-  clusterInfo: { clusterState, assetTokenInfos, clusterTokenInfo },
-}: MintBasicProps) {
+  clusterInfo: { clusterState, assetTokenInfos },
+}: SwapProps) {
   const connectedWallet = useConnectedWallet();
 
   const { broadcast } = useTxBroadcast();
 
-  const postTx = useClusterMintTx(
-    clusterState.cluster_contract_address,
-    clusterState.target,
-  );
+  const postTx = useCW20BuyTokenChuckTx();
 
-  const [updateInput, states] = useClusterMintBasicForm({ clusterState });
+  const [updateInput, states] = useClusterSwapForm({ clusterState });
 
   const initForm = useCallback(() => {
     updateInput({
@@ -49,15 +48,17 @@ function MintBasicBase({
   }, [updateInput]);
 
   const proceed = useCallback(
-    (amounts: u<Token>[], txFee: u<UST>) => {
+    (buyTokens: SwapTokenInfo[], txFee: u<UST>) => {
       const stream = postTx?.({
-        amounts,
+        buyTokens,
         txFee,
-        onTxSucceed: initForm,
+        onTxSucceed: () => {
+          initForm();
+        },
       });
 
       if (stream) {
-        console.log('Basic.tsx..()', stream);
+        console.log('Swap.tsx..()', stream);
         broadcast(stream);
       }
     },
@@ -99,23 +100,22 @@ function MintBasicBase({
         token={<TokenSpan>UST</TokenSpan>}
       />
 
-      {'providedAmounts' in states && Array.isArray(states.providedAmounts) && (
-        <ProvidedTokenTable
-          providedAmounts={states.providedAmounts}
+      {/* loading state */}
+      {states.ustAmount.length > 0 && !('boughtTokens' in states) && (
+        <div className="loading-container">
+          <RotateSpinner color="var(--color-paleblue)" />
+        </div>
+      )}
+
+      {'boughtTokens' in states && Array.isArray(states.boughtTokens) && (
+        <TokenTable
+          name="Bought Amount"
+          amounts={states.boughtTokens.map(({ returnAmount }) => returnAmount)}
           assetTokenInfos={assetTokenInfos}
         />
       )}
 
       <FeeBox className="feebox">
-        {'mintedAmount' in states && states.mintedAmount && (
-          <li>
-            <span>Burnt {clusterTokenInfo.symbol}</span>
-            <span>
-              {formatUToken(states.mintedAmount)} {clusterTokenInfo.symbol}
-            </span>
-          </li>
-        )}
-
         {states.txFee !== null && (
           <li>
             <span>Tx Fee</span>
@@ -123,6 +123,12 @@ function MintBasicBase({
           </li>
         )}
       </FeeBox>
+
+      {states.invalidUstAmount ? (
+        <WarningMessageBox level="critical" className="warning">
+          {states.invalidUstAmount}
+        </WarningMessageBox>
+      ) : null}
 
       <Button
         className="submit"
@@ -132,33 +138,41 @@ function MintBasicBase({
           !connectedWallet ||
           !connectedWallet.availablePost ||
           !states ||
-          //!!states.invalidTokenAmount ||
-          !(
-            'providedAmounts' in states && Array.isArray(states.providedAmounts)
-          ) ||
+          !!states.invalidUstAmount ||
+          !('boughtTokens' in states && Array.isArray(states.boughtTokens)) ||
           states.ustAmount.length === 0 ||
           !states.txFee
         }
         onClick={() =>
-          'providedAmounts' in states &&
-          Array.isArray(states.providedAmounts) &&
+          'boughtTokens' in states &&
+          Array.isArray(states.boughtTokens) &&
           states.txFee &&
-          proceed(states.providedAmounts, states.txFee)
+          proceed(states.boughtTokens, states.txFee)
         }
       >
-        Mint
+        Swap
       </Button>
     </div>
   );
 }
 
-export const StyledMintBasic = styled(MintBasicBase)`
+export const StyledMintBasic = styled(SwapBase)`
   .token-input {
     margin-bottom: 2.28571429em;
   }
 
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
   .feebox {
     margin-top: 2.8em;
+  }
+
+  .warning {
+    margin-top: 2.14285714em;
   }
 
   .submit {
@@ -180,4 +194,4 @@ export const StyledMintBasic = styled(MintBasicBase)`
   }
 `;
 
-export const MintBasic = fixHMR(StyledMintBasic);
+export const Swap = fixHMR(StyledMintBasic);

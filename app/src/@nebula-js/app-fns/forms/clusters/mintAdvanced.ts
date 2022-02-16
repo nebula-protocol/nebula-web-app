@@ -135,7 +135,12 @@ export const clusterMintAdvancedForm = (
 
       asyncStates = hasAmounts
         ? clusterMintQuery(
-            input.amounts,
+            input.amounts.map(
+              (amount) =>
+                (amount.length > 0
+                  ? microfy(amount).toFixed()
+                  : '0') as u<Token>,
+            ),
             dependency.clusterState,
             dependency.lastSyncedHeight,
             dependency.queryClient,

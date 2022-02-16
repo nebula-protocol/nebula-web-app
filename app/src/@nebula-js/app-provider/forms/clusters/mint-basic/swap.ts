@@ -1,16 +1,17 @@
 import { useFixedFee, useUstBalance, useUstTax } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
-import { clusterMintBasicForm } from '@nebula-js/app-fns';
+import { clusterSwapForm } from '@nebula-js/app-fns';
 import { cluster, UST } from '@nebula-js/types';
-import { useNebulaApp } from '../../hooks/useNebulaApp';
+import { useConnectedWallet } from '@terra-money/use-wallet';
+import { useNebulaApp } from '../../../hooks/useNebulaApp';
 
-export interface ClusterMintBasicFormParams {
+export interface ClusterSwapFormParams {
   clusterState: cluster.ClusterStateResponse;
 }
 
-export function useClusterMintBasicForm({
-  clusterState,
-}: ClusterMintBasicFormParams) {
+export function useClusterSwapForm({ clusterState }: ClusterSwapFormParams) {
+  const connectedWallet = useConnectedWallet();
+
   const { queryClient, gasPrice, constants, contractAddress } = useNebulaApp();
 
   const fixedFee = useFixedFee();
@@ -20,7 +21,7 @@ export function useClusterMintBasicForm({
   const uUST = useUstBalance();
 
   return useForm(
-    clusterMintBasicForm,
+    clusterSwapForm,
     {
       queryClient,
       ustBalance: uUST,
@@ -31,6 +32,7 @@ export function useClusterMintBasicForm({
       fixedFee,
       clusterFee: constants.nebula.clusterFee,
       gasPrice,
+      connected: !!connectedWallet,
     },
     () => {
       return {

@@ -11,7 +11,7 @@ export function getTargetColor(targetRatio: Big, portfolioRatio: Big): string {
 
   return diff.abs().gte(DIFF_THRESHOLD)
     ? diff.gt(0)
-      ? '#f15e7e'
-      : '#23bed9'
+      ? 'var(--color-red01)'
+      : 'var(--color-blue01)'
     : 'var(--color-white80)';
 }
