@@ -20,22 +20,23 @@ export function NEBULA_CONTRACT_ADDRESS(
 ): NebulaContractAddress {
   if (network.chainID.startsWith('bombay')) {
     return {
+      // TODO change it
       airdrop: 'terra179dgjvznfk5x2fsqa3un492l5zu9p9utdncrn7' as HumanAddr,
-      collector: 'terra1qvdf64vhtpjfznysr8uqm28exrekaju7j3mpcw' as HumanAddr,
-      community: 'terra108u9rg6nhltna8ce3teve8lsnahehljr2273m2' as HumanAddr,
+      collector: 'terra1xk7a2yhm2a7ylkns73e0vg50lv6l7cv0n02rhq' as HumanAddr,
+      community: 'terra1acmfgylk8chxw7lxwmkzv3gzdesk4vfjpng0d5' as HumanAddr,
       clusterFactory:
-        'terra1q2ft2we9p5p5d624hsamx9k3qc2qkzw4wyg4c6' as HumanAddr,
-      gov: 'terra1qugtk3h7tr8s0ltnpheh7gaf43hv9ax7mlg6jc' as HumanAddr,
-      incentives: 'terra14j87dwkfmjs48hd3skuxnw2fm0z9x90kruspsn' as HumanAddr,
+        'terra144wvr259rwvmg37x7k4y8sd9k6uzykl3s6dmt7' as HumanAddr,
+      gov: 'terra13psqttx8wzmedtmd7g4mhtyqdvujnryzgwuy84' as HumanAddr,
+      incentives: 'terra19lrxyn8ps7w733y69a05ulkseg4dlh649yag86' as HumanAddr,
       incentivesCustody:
-        'terra16stw0qmz8mj5uzg672x2t8lfdjqgva7xv3fs5q' as HumanAddr,
-      staking: 'terra1n9vdcgkd3dnqdq50kncd7e3vqj3uthg434knrd' as HumanAddr,
+        'terra1cn985mqxtk9hxlc67a5nh52pkx2vcvtt2jzwdz' as HumanAddr,
+      staking: 'terra1tzjhck0r8c0np7yazhj9jr5cmn53uut6u7rh67' as HumanAddr,
       terraswap: {
-        factory: 'terra18qpjm4zkvqnpjpw0zn0tdr8gdzvt8au35v45xf' as HumanAddr,
-        nebUstPair: 'terra17ld5j4588k8w9hhtrllyj0537eqndkhr679m72' as HumanAddr,
+        factory: 'terra15jsahkaf9p0qu8ye873p0u5z6g07wdad0tdq43' as HumanAddr,
+        nebUstPair: 'terra1k78f55ch47anypyqw7yvcp37ra8hrgkn6962xm' as HumanAddr,
       },
       cw20: {
-        NEB: 'terra1nknarneeatpm7amzw4rhxhcaqyt3ecx6y7k5yq' as CW20Addr,
+        NEB: 'terra1hwts6pfqyj8c833m6f9djzwtlhzvdc9yx2ve5e' as CW20Addr,
       },
     };
   }
@@ -51,22 +52,23 @@ export function NEBULA_CONSTANTS(network: NetworkInfo): NebulaContants {
       blocksPerYear: 4_656_810,
       gasAdjustment: 1.6 as Rate<number>,
       nebula: {
+        // TODO revisit gas estimation
         clusterFee: {
           default: {
-            txFeeBase: 2_000_000 as Gas,
+            txFeeBase: 7_000_000 as Gas,
             txFeePerInventory: 600_000 as Gas,
             txFeePerAsset: 400_000 as Gas,
-            gasWantedBase: 1_000_000 as Gas,
+            gasWantedBase: 7_000_000 as Gas,
             gasWantedPerInventory: 400_000 as Gas,
-            gasWantedPerAsset: 280_000 as Gas,
+            gasWantedPerAsset: 300_000 as Gas,
           },
           arbMint: {
             txFeeBase: 2_000_000 as Gas,
             txFeePerInventory: 800_000 as Gas,
             txFeePerAsset: 400_000 as Gas,
-            gasWantedBase: 1_000_000 as Gas,
+            gasWantedBase: 12_000_000 as Gas,
             gasWantedPerInventory: 600_000 as Gas,
-            gasWantedPerAsset: 280_000 as Gas,
+            gasWantedPerAsset: 300_000 as Gas,
           },
         },
       },
@@ -92,6 +94,11 @@ export const NEBULA_TX_REFETCH_MAP = {
     TERRA_QUERY_KEY.TERRA_BALANCES,
   ],
   [TERRA_TX_KEYS.SEND]: [
+    TERRA_QUERY_KEY.TOKEN_BALANCES,
+    TERRA_QUERY_KEY.CW20_BALANCE,
+    TERRA_QUERY_KEY.TERRA_BALANCES,
+  ],
+  [NEBULA_TX_KEYS.CLUSTER_CHUCK_SWAP]: [
     TERRA_QUERY_KEY.TOKEN_BALANCES,
     TERRA_QUERY_KEY.CW20_BALANCE,
     TERRA_QUERY_KEY.TERRA_BALANCES,
