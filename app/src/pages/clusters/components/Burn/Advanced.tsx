@@ -130,7 +130,11 @@ function BurnAdvancedBase({ className, clusterInfo }: BurnAdvancedProps) {
           )}
         </FeeBox>
 
-        {states.invalidBurntAmount ? (
+        {states.invalidRedeemQuery ? (
+          <WarningMessageBox level="critical" className="warning">
+            {states.invalidRedeemQuery}
+          </WarningMessageBox>
+        ) : states.invalidBurntAmount ? (
           <WarningMessageBox level="critical" className="warning">
             {states.invalidBurntAmount}
           </WarningMessageBox>

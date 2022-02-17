@@ -43,6 +43,7 @@ export interface ClusterRedeemAdvancedFormStates
   extends ClusterRedeemAdvancedFormInput {
   invalidTokenAmount: string | null;
   invalidBurntAmount: string | null;
+  invalidRedeemQuery: string | null;
   remainAssets: terraswap.Asset<Token>[];
   tokenBalance: u<CT>;
   balances: TerraBalances | undefined;
@@ -61,6 +62,8 @@ export const clusterRedeemAdvancedForm = (
 ) => {
   let invalidTokenAmount: string | null;
   let invalidBurntAmount: string | null;
+  let invalidRedeemQuery: string | null;
+
   let remainAssets: terraswap.Asset<Token>[];
   let asyncStates: Promise<ClusterRedeemAdvancedFormAsyncStates>;
 
@@ -88,6 +91,7 @@ export const clusterRedeemAdvancedForm = (
           balances: dependency.balances,
           invalidTokenAmount: null,
           invalidBurntAmount: null,
+          invalidRedeemQuery: null,
           txFee: null,
         },
         Promise.resolve({}),
@@ -134,35 +138,48 @@ export const clusterRedeemAdvancedForm = (
         dependency.clusterState,
         dependency.lastSyncedHeight,
         dependency.queryClient,
-      ).then(({ redeem }) => {
-        const clusterTxFee = computeClusterTxFee(
-          dependency.gasPrice,
-          dependency.clusterFee.default,
-          dependency.clusterState.target.length,
-          dependency.clusterState.target.length,
-        );
+      )
+        .then(({ redeem }) => {
+          invalidRedeemQuery = null;
 
-        invalidBurntAmount = big(redeem.token_cost).gt(
-          microfy(input.tokenAmount),
-        )
-          ? 'Burnt Token Amount exceed.'
-          : big(redeem.token_cost).eq(0)
-          ? 'Invalid Mint Amount'
-          : null;
+          const clusterTxFee = computeClusterTxFee(
+            dependency.gasPrice,
+            dependency.clusterFee.default,
+            dependency.clusterState.target.length,
+            dependency.clusterState.target.length,
+          );
 
-        return {
-          burntTokenAmount: redeem.token_cost,
-          redeemTokenAmounts: redeem.redeem_assets,
-          redeemValue: sum(
-            ...vectorMultiply(
-              redeem.redeem_assets,
-              dependency.clusterState.prices,
-            ),
-          ).toFixed() as u<UST>,
-          invalidBurntAmount,
-          txFee: clusterTxFee as u<UST>,
-        };
-      });
+          invalidBurntAmount = big(redeem.token_cost).gt(
+            microfy(input.tokenAmount),
+          )
+            ? 'Burnt Token Amount exceed.'
+            : big(redeem.token_cost).eq(0)
+            ? 'Invalid Mint Amount'
+            : null;
+
+          return {
+            burntTokenAmount: redeem.token_cost,
+            redeemTokenAmounts: redeem.redeem_assets,
+            redeemValue: sum(
+              ...vectorMultiply(
+                redeem.redeem_assets,
+                dependency.clusterState.prices,
+              ),
+            ).toFixed() as u<UST>,
+            invalidBurntAmount,
+            txFee: clusterTxFee as u<UST>,
+          };
+        })
+        .catch((err) => {
+          invalidRedeemQuery = err.message;
+
+          return {
+            burntTokenAmount: undefined,
+            redeemTokenAmounts: undefined,
+            redeemValue: undefined,
+            invalidRedeemQuery,
+          };
+        });
     }
 
     return [
@@ -170,6 +187,7 @@ export const clusterRedeemAdvancedForm = (
         ...input,
         invalidTokenAmount,
         invalidBurntAmount,
+        invalidRedeemQuery,
         remainAssets,
         balances: dependency.balances,
         tokenBalance: dependency.tokenBalance,
