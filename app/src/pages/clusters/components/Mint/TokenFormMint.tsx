@@ -24,7 +24,7 @@ import { fixHMR } from 'fix-hmr';
 import React, { ReactNode, useCallback } from 'react';
 import styled from 'styled-components';
 
-export interface TokenFormProps {
+export interface TokenFormMintProps {
   clusterInfo: ClusterInfo;
   updateInput: FormInput<ClusterMintAdvancedFormInput>;
   states: FormStates<
@@ -36,14 +36,14 @@ export interface TokenFormProps {
   className?: string;
 }
 
-function TokenFormBase({
+function TokenFormMintBase({
   clusterInfo: { clusterState, assetTokenInfos },
   updateInput,
   states,
   children,
   onProceed,
   className,
-}: TokenFormProps) {
+}: TokenFormMintProps) {
   const connectedWallet = useConnectedWallet();
 
   const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
@@ -219,7 +219,7 @@ function TokenFormBase({
   );
 }
 
-const StyledTokenForm = styled(TokenFormBase)`
+const StyledTokenFormMint = styled(TokenFormMintBase)`
   .added-tokens {
     list-style: none;
     padding: 0;
@@ -256,4 +256,4 @@ const StyledTokenForm = styled(TokenFormBase)`
   }
 `;
 
-export const TokenForm = fixHMR(StyledTokenForm);
+export const TokenFormMint = fixHMR(StyledTokenFormMint);

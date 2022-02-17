@@ -8,3 +8,4 @@ export * from './Slider';
 export * from './FormLabel';
 export * from './Input';
 export * from './SwitchInput';
+export * from './TokenInputMinimal';
