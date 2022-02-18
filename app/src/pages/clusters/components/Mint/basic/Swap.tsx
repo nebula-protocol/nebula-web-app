@@ -128,6 +128,10 @@ function SwapBase({
         <WarningMessageBox level="critical" className="warning">
           {states.invalidUstAmount}
         </WarningMessageBox>
+      ) : states.invalidQuery ? (
+        <WarningMessageBox level="critical" className="warning">
+          {states.invalidQuery}
+        </WarningMessageBox>
       ) : null}
 
       <Button
@@ -139,6 +143,7 @@ function SwapBase({
           !connectedWallet.availablePost ||
           !states ||
           !!states.invalidUstAmount ||
+          !!states.invalidQuery ||
           !('boughtTokens' in states && Array.isArray(states.boughtTokens)) ||
           states.ustAmount.length === 0 ||
           !states.txFee

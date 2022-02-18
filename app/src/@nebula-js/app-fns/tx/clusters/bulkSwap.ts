@@ -44,14 +44,14 @@ export function cw20BuyTokenChuckTx(
   return pipe(
     _createTxOptions({
       msgs: buyTokensWithoutUST.map(
-        ({ tokenUstPairAddr, buyUstAmount, beliefPrice }) =>
+        ({ tokenUstPairAddr, buyUustAmount, beliefPrice }) =>
           new MsgExecuteContract(
             $.buyerAddr,
             tokenUstPairAddr,
             {
               swap: {
                 offer_asset: {
-                  amount: buyUstAmount,
+                  amount: buyUustAmount,
                   info: {
                     native_token: {
                       denom: 'uusd',
@@ -62,7 +62,7 @@ export function cw20BuyTokenChuckTx(
                 max_spread: $.maxSpread,
               },
             } as terraswap.pair.Swap<UST>,
-            buyUstAmount + 'uusd',
+            buyUustAmount + 'uusd',
           ),
       ),
       fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
@@ -111,7 +111,7 @@ export function cw20BuyTokenChuckTx(
 
         returnAmounts = [
           ...returnAmounts.slice(0, ustIndex),
-          $.buyTokens[ustIndex].buyUstAmount,
+          $.buyTokens[ustIndex].buyUustAmount,
           ...returnAmounts.slice(ustIndex),
         ];
 

@@ -74,7 +74,7 @@ function MintBasicBase({
       <FeeBox className="feebox">
         {'mintedAmount' in states && states.mintedAmount && (
           <li>
-            <span>Burnt {clusterTokenInfo.symbol}</span>
+            <span>Minted {clusterTokenInfo.symbol}</span>
             <span>
               {formatUToken(states.mintedAmount)} {clusterTokenInfo.symbol}
             </span>

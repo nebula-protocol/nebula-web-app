@@ -19,7 +19,7 @@ export interface NebulaClusterFee {
 
 export interface SwapTokenInfo {
   // ust amount to buy token
-  buyUstAmount: u<Token>;
+  buyUustAmount: u<UST>;
   returnAmount: u<Token>;
   tokenUstPairAddr: HumanAddr;
   beliefPrice: UST;
