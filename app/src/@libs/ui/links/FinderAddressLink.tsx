@@ -14,7 +14,7 @@ export function FinderAddressLink({
 }: FinderAddressLinkProps) {
   return (
     <a
-      href={`https://finder.terra.money/${chainID}/address/${address}`}
+      href={`https://finder.extraterrestrial.money/${chainID}/address/${address}`}
       target="_blank"
       rel="noreferrer"
     >
