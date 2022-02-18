@@ -182,6 +182,7 @@ function TokenFormBurnBase({
           !states ||
           !states.txFee ||
           !!states.invalidBurntAmount ||
+          !!states.invalidTokenAmount ||
           states.amounts.every((amount) => amount.length === 0)
         }
         onClick={() =>

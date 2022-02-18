@@ -167,6 +167,7 @@ export const clusterRedeemAdvancedForm = (
               ),
             ).toFixed() as u<UST>,
             invalidBurntAmount,
+            invalidRedeemQuery,
             txFee: clusterTxFee as u<UST>,
           };
         })
