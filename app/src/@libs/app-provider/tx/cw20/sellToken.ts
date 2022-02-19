@@ -1,6 +1,6 @@
 import { cw20SellTokenTx } from '@libs/app-fns';
 import { useFixedFee } from '@libs/app-provider/hooks/useFixedFee';
-import { divWithDefault } from '@libs/big-math';
+import big from 'big.js';
 import { formatExecuteMsgNumber } from '@libs/formatter';
 import { CW20Addr, HumanAddr, Rate, Token, u, UST } from '@libs/types';
 import { useConnectedWallet } from '@terra-money/use-wallet';
@@ -56,7 +56,7 @@ export function useCW20SellTokenTx<T extends Token>(
         txFee,
         sellAmount,
         beliefPrice: formatExecuteMsgNumber(
-          divWithDefault(1, terraswapPoolInfo.tokenPrice, 0),
+          big(1).div(terraswapPoolInfo.tokenPrice),
         ) as T,
         tokenAddr,
         tokenUstPairAddr,
