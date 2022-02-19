@@ -6,27 +6,29 @@ import { fixHMR } from 'fix-hmr';
 import React from 'react';
 import styled from 'styled-components';
 
-export interface ProvidedTokenTableProps {
+export interface TokenTableProps {
   className?: string;
-  providedAmounts: u<Token>[];
+  name: string;
+  amounts: u<Token>[];
   assetTokenInfos: AssetTokenInfo[];
 }
 
-function ProvidedTokenTableBase({
+function TokenTableBase({
   className,
-  providedAmounts,
+  name,
+  amounts,
   assetTokenInfos,
-}: ProvidedTokenTableProps) {
+}: TokenTableProps) {
   return (
     <table className={className}>
       <thead>
         <tr>
           <th>Token</th>
-          <th>Provided Amount</th>
+          <th>{name}</th>
         </tr>
       </thead>
       <tbody>
-        {providedAmounts.map((amount, i) => (
+        {amounts.map((amount, i) => (
           <tr key={assetTokenInfos[i].tokenInfo.symbol}>
             <td>
               <TokenSpan>{assetTokenInfos[i].tokenInfo.symbol}</TokenSpan>
@@ -41,7 +43,7 @@ function ProvidedTokenTableBase({
   );
 }
 
-export const StyledProvidedTokenTable = styled(ProvidedTokenTableBase)`
+export const StyledTokenTable = styled(TokenTableBase)`
   table-layout: auto;
   width: 100%;
 
@@ -78,4 +80,4 @@ export const StyledProvidedTokenTable = styled(ProvidedTokenTableBase)`
   }
 `;
 
-export const ProvidedTokenTable = fixHMR(StyledProvidedTokenTable);
+export const TokenTable = fixHMR(StyledTokenTable);

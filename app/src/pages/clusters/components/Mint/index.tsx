@@ -5,7 +5,7 @@ import { useLocalStorage } from '@libs/use-local-storage';
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { MintAdvanced } from './Advanced';
-import { MintBasic } from './Basic';
+import { MintBasic } from './basic';
 import { MintTerraswapArbitrage } from './TerraswapArbitrage';
 
 export interface ClusterMintProps {
@@ -22,10 +22,10 @@ const tabItems: TabItem[] = [
 const TAB_KEY = '__nebula_mint_tab__';
 
 function ClusterMintBase({ className, clusterInfo }: ClusterMintProps) {
-  const [tabId, setTabId] = useLocalStorage(TAB_KEY, () => tabItems[1].id);
+  const [tabId, setTabId] = useLocalStorage(TAB_KEY, () => tabItems[0].id);
 
   const tab = useMemo(() => {
-    return tabItems.find(({ id }) => tabId === id) ?? tabItems[1];
+    return tabItems.find(({ id }) => tabId === id) ?? tabItems[0];
   }, [tabId]);
 
   return (

@@ -1,4 +1,3 @@
-import { microfy } from '@libs/formatter';
 import {
   QueryClient,
   wasmFetch,
@@ -17,7 +16,7 @@ interface ClusterMintWasmQuery {
 export type ClusterMint = WasmQueryData<ClusterMintWasmQuery>;
 
 export async function clusterMintQuery(
-  amounts: Token[],
+  amounts: u<Token>[],
   clusterState: cluster.ClusterStateResponse,
   lastSyncedHeight: () => Promise<number>,
   queryClient: QueryClient,
@@ -35,12 +34,7 @@ export async function clusterMintQuery(
             block_height: blockHeight,
             cluster_token_supply: clusterState.outstanding_balance_tokens,
             inventory: clusterState.inv,
-            create_asset_amounts: amounts.map(
-              (amount) =>
-                (amount.length > 0
-                  ? microfy(amount).toFixed()
-                  : '0') as u<Token>,
-            ),
+            create_asset_amounts: amounts,
             asset_prices: clusterState.prices,
             target_weights: clusterState.target.map(({ amount }) => amount),
           },

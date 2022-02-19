@@ -2,7 +2,8 @@
 // @see ~/scripts/create-index.ts
 export * from './types';
 export * from './forms/clusters/mintAdvanced';
-export * from './forms/clusters/mintBasic';
+export * from './forms/clusters/mint-basic/mintBasic';
+export * from './forms/clusters/mint-basic/swap';
 export * from './forms/clusters/mintTerraswapArbitrage';
 export * from './forms/clusters/redeemBasic';
 export * from './forms/clusters/redeemTerraswapArbitrage';

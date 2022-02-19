@@ -1,9 +1,9 @@
 import { cw20SellTokenTx } from '@libs/app-fns';
 import { useFixedFee } from '@libs/app-provider/hooks/useFixedFee';
+import big from 'big.js';
 import { formatExecuteMsgNumber } from '@libs/formatter';
 import { CW20Addr, HumanAddr, Rate, Token, u, UST } from '@libs/types';
 import { useConnectedWallet } from '@terra-money/use-wallet';
-import big from 'big.js';
 import { useCallback } from 'react';
 import { useApp } from '../../contexts/app';
 import { TERRA_TX_KEYS } from '../../env';
@@ -34,7 +34,7 @@ export function useCW20SellTokenTx<T extends Token>(
 
   const { taxRate, maxTax } = useUstTax();
 
-  const { data: { terraswapPool } = {} } =
+  const { data: { terraswapPoolInfo } = {} } =
     useTerraswapPoolQuery<Token>(tokenUstPairAddr);
 
   const stream = useCallback(
@@ -47,19 +47,16 @@ export function useCW20SellTokenTx<T extends Token>(
       if (
         !connectedWallet ||
         !connectedWallet.availablePost ||
-        !terraswapPool
+        !terraswapPoolInfo
       ) {
         throw new Error(`Can't post!`);
       }
-
-      const tokenPoolSize = terraswapPool.assets[0]?.amount as u<Token>;
-      const ustPoolSize = terraswapPool.assets[1]?.amount as u<UST>;
 
       return cw20SellTokenTx<T>({
         txFee,
         sellAmount,
         beliefPrice: formatExecuteMsgNumber(
-          big(tokenPoolSize).div(ustPoolSize),
+          big(1).div(terraswapPoolInfo.tokenPrice),
         ) as T,
         tokenAddr,
         tokenUstPairAddr,
@@ -89,7 +86,7 @@ export function useCW20SellTokenTx<T extends Token>(
       maxTax,
       refetchQueries,
       taxRate,
-      terraswapPool,
+      terraswapPoolInfo,
       tokenAddr,
       tokenSymbol,
       tokenUstPairAddr,

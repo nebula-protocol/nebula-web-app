@@ -3,7 +3,8 @@
 export * from './env';
 export * from './types';
 export * from './forms/clusters/mintAdvanced';
-export * from './forms/clusters/mintBasic';
+export * from './forms/clusters/mint-basic/mintBasic';
+export * from './forms/clusters/mint-basic/swap';
 export * from './forms/clusters/mintTerraswapArbitrage';
 export * from './forms/clusters/redeemBasic';
 export * from './forms/clusters/redeemTerraswapArbitrage';
@@ -36,6 +37,7 @@ export * from './queries/staking/poolInfoList';
 export * from './queries/staking/rewardInfo';
 export * from './tx/clusters/arbMint';
 export * from './tx/clusters/arbRedeem';
+export * from './tx/clusters/bulkSwap';
 export * from './tx/clusters/mint';
 export * from './tx/clusters/redeem';
 export * from './tx/gov/createPoll';
