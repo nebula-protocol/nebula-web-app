@@ -36,18 +36,11 @@ export function MintBasicProvider({ children }: MintBasicProps) {
 
   const [clusterAddr, setClusterAddr] = useState<string | null>(null);
 
-  const resetProvidedAmounts = useCallback(
-    () => setProvidedAmounts([]),
-    [setProvidedAmounts],
-  );
-
-  const goToMint = () => setStep(BasicStepsEnum.MINT);
-
   const resetAndBackToSwap = useCallback(() => {
+    setProvidedAmounts([]);
     setClusterAddr(null);
     setStep(BasicStepsEnum.SWAP);
-    resetProvidedAmounts();
-  }, [setClusterAddr, setStep, resetProvidedAmounts]);
+  }, [setClusterAddr, setStep, setProvidedAmounts]);
 
   const { pathname } = useLocation();
 
@@ -58,9 +51,9 @@ export function MintBasicProvider({ children }: MintBasicProps) {
   });
 
   const onSwapSucceed = (amounts: u<Token>[]) => {
-    goToMint();
     setProvidedAmounts(amounts);
     setClusterAddr(match!.params.address);
+    setStep(BasicStepsEnum.MINT);
   };
 
   useEffect(() => {

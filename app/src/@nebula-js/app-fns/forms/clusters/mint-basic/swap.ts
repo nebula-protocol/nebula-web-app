@@ -147,8 +147,9 @@ export const clusterSwapForm = ({
                 };
               });
 
-              invalidUstAmount = boughtTokens.find(({ returnAmount }) =>
-                big(returnAmount).eq(0),
+              invalidUstAmount = boughtTokens.find(
+                ({ returnAmount, buyUustAmount }) =>
+                  big(returnAmount).eq(0) || big(buyUustAmount).eq(0),
               )
                 ? 'Insufficient UST to swap the underlying assets.'
                 : null;
