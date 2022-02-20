@@ -7,7 +7,7 @@ import styled from 'styled-components';
 export interface TokenInputRemoveToolProps {
   className?: string;
   onDelete: () => void;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 function TokenInputRemoveToolBase({

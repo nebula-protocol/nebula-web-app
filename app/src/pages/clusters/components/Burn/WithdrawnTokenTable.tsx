@@ -22,7 +22,6 @@ function WithdrawnTokenTableBase({
       <thead>
         <tr>
           <th>Withdrawn Token</th>
-          <th>Amount per CT</th>
           <th>Returned Amount</th>
         </tr>
       </thead>
@@ -31,9 +30,6 @@ function WithdrawnTokenTableBase({
           <tr key={assetTokenInfos[i].tokenInfo.symbol}>
             <td>
               <TokenSpan>{assetTokenInfos[i].tokenInfo.symbol}</TokenSpan>
-            </td>
-            <td>
-              <s>100 {assetTokenInfos[i].tokenInfo.symbol}</s>
             </td>
             <td>
               {formatUToken(amount)} {assetTokenInfos[i].tokenInfo.symbol}

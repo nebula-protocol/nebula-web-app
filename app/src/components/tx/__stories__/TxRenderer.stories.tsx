@@ -33,7 +33,7 @@ const receipts = [
   {
     name: 'Tx Fee',
     value: {
-      html: `<a href="https://finder.terra.money/mainnet/tx/AA3CE57592814E092D3247F6CE7E8DECCA9164DB2087C53434AF6B74F59FB71E" target="_blank" rel="noreferrer">${truncate(
+      html: `<a href="https://finder.extraterrestrial.money/mainnet/tx/AA3CE57592814E092D3247F6CE7E8DECCA9164DB2087C53434AF6B74F59FB71E" target="_blank" rel="noreferrer">${truncate(
         'AA3CE57592814E092D3247F6CE7E8DECCA9164DB2087C53434AF6B74F59FB71E',
       )}</a>`,
     },

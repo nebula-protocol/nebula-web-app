@@ -15,14 +15,16 @@ import {
 } from '@libs/app-fns/tx/internal';
 import {
   cw20,
+  CW20Addr,
   HumanAddr,
   incentives,
   terraswap,
+  CT,
   Token,
   u,
 } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
-import { Coin, Coins, MsgExecuteContract, Fee } from '@terra-money/terra.js';
+import { MsgExecuteContract, Fee } from '@terra-money/terra.js';
 import big from 'big.js';
 import { Observable } from 'rxjs';
 
@@ -31,59 +33,39 @@ export function clusterRedeemAdvancedTx(
     walletAddr: HumanAddr;
     incentivesAddr: HumanAddr;
     clusterAddr: HumanAddr;
-    assets: terraswap.AssetInfo[];
-    amounts: u<Token>[];
+    clusterTokenAddr: CW20Addr;
+    tokenAmount: u<CT>;
+    assets: terraswap.Asset<Token>[];
+    assetAmounts: u<Token>[];
     onTxSucceed?: () => void;
   } & TxCommonParams,
 ): Observable<TxResultRendering> {
   const helper = new TxHelper($);
 
-  const increaseAllownance = $.assets
-    .map((asset, i) => {
-      if ('token' in asset) {
-        return new MsgExecuteContract($.walletAddr, asset.token.contract_addr, {
-          increase_allowance: {
-            spender: $.incentivesAddr,
-            amount: $.amounts[i],
-          },
-        } as cw20.IncreaseAllowance);
-      } else {
-        return undefined;
-      }
-    })
-    .filter((contract): contract is MsgExecuteContract => !!contract);
-
-  const nativeCoins = $.assets
-    .map((asset, i) => {
-      if ('native_token' in asset && big($.amounts[i]).gt(0)) {
-        return new Coin(asset.native_token.denom, $.amounts[i]);
-      } else {
-        return undefined;
-      }
-    })
-    .filter((coin): coin is Coin => !!coin);
-
   return pipe(
     _createTxOptions({
       msgs: [
-        ...increaseAllownance,
-        new MsgExecuteContract(
-          $.walletAddr,
-          $.incentivesAddr,
-          {
-            incentives_create: {
-              cluster_contract: $.clusterAddr,
-              asset_amounts: $.assets.map((asset, i) => ({
-                info: asset,
-                amount: $.amounts[i],
-              })),
-            },
-          } as incentives.IncentivesCreate,
-          nativeCoins.length > 0 ? new Coins(nativeCoins) : undefined,
-        ),
+        new MsgExecuteContract($.walletAddr, $.clusterTokenAddr, {
+          increase_allowance: {
+            spender: $.incentivesAddr,
+            amount: $.tokenAmount,
+          },
+        } as cw20.IncreaseAllowance),
+        new MsgExecuteContract($.walletAddr, $.incentivesAddr, {
+          incentives_redeem: {
+            cluster_contract: $.clusterAddr,
+            max_tokens: $.tokenAmount,
+            asset_amounts: $.assets
+              .map(({ info }, i) => ({
+                info,
+                amount: $.assetAmounts[i],
+              }))
+              .filter(({ amount }) => big(amount).gt(0)),
+          },
+        } as incentives.IncentivesRedeem),
       ],
       fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
-      gasAdjustment: $.gasAdjustment,
+      gasAdjustment: $.gasAdjustment + 0.1,
     }),
     _postTx({ helper, ...$ }),
     _pollTxInfo({ helper, ...$ }),

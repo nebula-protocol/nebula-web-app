@@ -8,7 +8,7 @@ import {
 import { FeeBox } from 'components/boxes/FeeBox';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
 import React, { useCallback } from 'react';
-import { TokenForm } from './TokenForm';
+import { TokenFormMint } from './TokenFormMint';
 
 export interface MintTerraswapArbitrageProps {
   clusterInfo: ClusterInfo;
@@ -58,7 +58,7 @@ export function MintTerraswapArbitrage({
   );
 
   return (
-    <TokenForm
+    <TokenFormMint
       clusterInfo={clusterInfo}
       updateInput={updateInput}
       states={states}
@@ -88,6 +88,6 @@ export function MintTerraswapArbitrage({
           </li>
         )}
       </FeeBox>
-    </TokenForm>
+    </TokenFormMint>
   );
 }

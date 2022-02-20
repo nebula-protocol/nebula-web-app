@@ -63,10 +63,10 @@ export function NEBULA_CONSTANTS(network: NetworkInfo): NebulaContants {
             gasWantedPerAsset: 300_000 as Gas,
           },
           arbMint: {
-            txFeeBase: 2_000_000 as Gas,
+            txFeeBase: 15_000_000 as Gas,
             txFeePerInventory: 800_000 as Gas,
             txFeePerAsset: 400_000 as Gas,
-            gasWantedBase: 12_000_000 as Gas,
+            gasWantedBase: 15_000_000 as Gas,
             gasWantedPerInventory: 600_000 as Gas,
             gasWantedPerAsset: 300_000 as Gas,
           },

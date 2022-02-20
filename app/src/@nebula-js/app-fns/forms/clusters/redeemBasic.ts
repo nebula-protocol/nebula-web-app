@@ -89,6 +89,7 @@ export const clusterRedeemBasicForm = (
     ) {
       asyncStates = clusterRedeemQuery(
         input.tokenAmount,
+        [],
         dependency.clusterState,
         dependency.lastSyncedHeight,
         dependency.queryClient,
