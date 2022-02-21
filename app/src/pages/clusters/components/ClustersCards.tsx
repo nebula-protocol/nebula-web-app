@@ -34,7 +34,7 @@ function ClustersCardsBase({
   return (
     <ul {...sectionProps}>
       {clusters.map(
-        ({ addr, name, prices, marketCap, provided, assets }, i) => (
+        ({ addr, name, prices, marketCap, provided, assets, isActive }, i) => (
           <li
             key={'row' + addr}
             ref={i === 0 ? ref : undefined}
@@ -44,6 +44,7 @@ function ClustersCardsBase({
             <IconAndLabels
               text={name}
               subtext={<>{formatToken(prices.clusterPrice)} UST </>}
+              isActive={isActive}
               iconSize="4.28571429em"
               textSize="1.42857143em"
               subtextSize="1em"

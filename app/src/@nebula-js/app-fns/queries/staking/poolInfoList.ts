@@ -3,7 +3,7 @@ import { CW20Addr, HumanAddr } from '@nebula-js/types';
 import { clusterStateListQuery } from '../clusters/stateList';
 import { StakingPoolInfo, stakingPoolInfoQuery } from './poolInfo';
 
-export type StakingPoolInfoList = StakingPoolInfo[];
+export type StakingPoolInfoList = (StakingPoolInfo & { isActive: boolean })[];
 
 export async function stakingPoolInfoListQuery(
   nebTokenAddr: CW20Addr,
@@ -22,7 +22,9 @@ export async function stakingPoolInfoListQuery(
     ...clusterStates.map(({ cluster_token }) => cluster_token),
   ];
 
-  return await Promise.all(
+  const isActiveList = [true, ...clusterStates.map(({ active }) => active)];
+
+  const stakingPoolInfoList = await Promise.all(
     tokenAddrs.map((tokenAddr) => {
       return stakingPoolInfoQuery(
         tokenAddr,
@@ -32,4 +34,9 @@ export async function stakingPoolInfoListQuery(
       );
     }),
   );
+
+  return stakingPoolInfoList.map((stakingPoolInfo, idx) => ({
+    ...stakingPoolInfo,
+    isActive: isActiveList[idx],
+  }));
 }
