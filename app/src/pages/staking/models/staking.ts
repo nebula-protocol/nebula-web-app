@@ -2,6 +2,7 @@ import { TerraswapPool } from '@libs/app-fns';
 import { CW20Addr, NEB, Rate, u, UST } from '@nebula-js/types';
 import { DistributionSchedule, StakingPoolInfoList } from '@nebula-js/app-fns';
 import big, { Big } from 'big.js';
+import { divWithDefault } from '@libs/big-math';
 
 export type StakingView = Array<{
   index: number;
@@ -11,6 +12,7 @@ export type StakingView = Array<{
   nameLowerCase: string;
   apr: Rate;
   totalStaked: u<UST<Big>>;
+  isActive: boolean;
 }>;
 
 export function toStakingView(
@@ -27,24 +29,17 @@ export function toStakingView(
             terraswapPoolInfo,
             tokenInfo,
             tokenAddr,
-            terraswapPair,
+            isActive,
           },
           i,
         ) => {
           const now = new Date();
 
-          const weightSum =
-            distributionSchedule.distributionInfo.weights.reduce((p, v) => [
-              'sum' as CW20Addr,
-              p[1] + v[1],
-            ])[1];
-          const liquidityValue = big(
-            big(nebPool.terraswapPoolInfo.tokenPrice).mul(
-              terraswapPoolInfo.tokenPoolSize,
-            ),
-          ).plus(terraswapPoolInfo.ustPoolSize) as u<UST<Big>>;
+          const liquidityValue = big(terraswapPoolInfo.tokenPrice)
+            .mul(terraswapPoolInfo.tokenPoolSize)
+            .plus(terraswapPoolInfo.ustPoolSize) as u<UST<Big>>;
 
-          const totalStaked = liquidityValue.mul(
+          const stakedLiquidityValue = liquidityValue.mul(
             big(poolInfo.total_bond_amount).div(
               +terraswapPool.total_share === 0 ? 1 : terraswapPool.total_share,
             ),
@@ -58,22 +53,30 @@ export function toStakingView(
             }
             index++;
           }
+
+          const weightSum =
+            distributionSchedule.distributionInfo.weights.reduce(
+              (acc, cur) => (acc = acc + cur[1]),
+              0,
+            );
+
           let apr = '0' as Rate;
           if (now < distributionSchedule.endTime && index > -1) {
             const weight = distributionSchedule.distributionInfo.weights.find(
               (w) => w[0] === tokenAddr,
             );
-            const computedWeight = weight ? weight[1] : 0;
-            const aps =
-              (distributionSchedule.distribution[index].distributePerSec *
-                Number(nebPool.terraswapPoolInfo.tokenPrice) *
-                (computedWeight / weightSum)) /
-              Number(poolInfo.total_bond_amount);
-            apr = (
-              aps === Infinity
-                ? '0'
-                : (aps * 60 * 60 * 24 * 365).toFixed(2).toString()
-            ) as Rate;
+
+            const computedWeight = (weight ? weight[1] : 0) / weightSum;
+
+            const aps = divWithDefault(
+              big(distributionSchedule.distribution[index].distributePerSec)
+                .mul(computedWeight)
+                .mul(nebPool.terraswapPoolInfo.tokenPrice),
+              stakedLiquidityValue,
+              0,
+            );
+
+            apr = aps.mul(60 * 60 * 24 * 365).toFixed(2) as Rate;
           }
 
           return {
@@ -83,7 +86,8 @@ export function toStakingView(
             name: `${tokenInfo.symbol}-UST LP`,
             nameLowerCase: `${tokenInfo.symbol}-UST LP`.toLowerCase(),
             apr,
-            totalStaked,
+            totalStaked: stakedLiquidityValue,
+            isActive,
           };
         },
       )

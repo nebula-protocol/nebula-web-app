@@ -109,20 +109,12 @@ function ClustersDetailBase({
           direction={descriptionDisplay}
           descriptions={[
             {
-              label: (
-                <>
-                  VOLUME (24H) <InfoTooltip>Test tooltip...</InfoTooltip>
-                </>
-              ),
-              text: `${
-                clusterView?.volume
-                  ? formatUTokenDecimal2(clusterView.volume)
-                  : 0
-              } UST`,
-            },
-            {
               label: 'TOTAL SUPPLY',
-              text: <s>123,456 {clusterView?.tokenInfo.symbol ?? '-'}</s>,
+              text: `${
+                clusterView
+                  ? formatUTokenDecimal2(clusterView.totalSupply)
+                  : '0'
+              } ${clusterView?.tokenInfo.symbol ?? '-'}`,
             },
           ]}
         />

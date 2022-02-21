@@ -1,6 +1,7 @@
 import { fixedSizeStyle } from '../internal/fixedSizeStyle';
 import React, { DetailedHTMLProps, HTMLAttributes, ReactNode } from 'react';
 import styled from 'styled-components';
+import { DelistedBadge } from './DelistedBadge';
 
 export interface IconAndLabelsProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
@@ -8,6 +9,7 @@ export interface IconAndLabelsProps
   icon?: ReactNode;
   text: ReactNode;
   subtext: ReactNode;
+  isActive?: boolean;
   iconSize?: `${number}em`;
   textSize?: `${number}em`;
   subtextSize?: `${number}em`;
@@ -25,6 +27,7 @@ function IconAndLabelsBase({
   icon,
   text,
   subtext,
+  isActive = true,
   iconSize = _iconSize,
   textSize = _textSize,
   subtextSize = _subtextSize,
@@ -36,8 +39,11 @@ function IconAndLabelsBase({
     <div {...divProps}>
       <i>{icon}</i>
       <div>
-        <span>{text}</span>
-        <span>{subtext}</span>
+        <div>
+          {!isActive && <DelistedBadge />}
+          <span className="text">{text}</span>
+        </div>
+        <span className="subtext">{subtext}</span>
       </div>
     </div>
   );
@@ -60,20 +66,25 @@ export const IconAndLabels = styled(IconAndLabelsBase)`
       iconMarginRight};
   }
 
-  > div {
-    > :first-child {
-      display: block;
-      font-size: ${({ textSize = _textSize }) => textSize};
-      font-weight: 500;
-      color: var(--color-white92);
-      margin-bottom: ${({ textGap = _textGap }) => textGap};
-    }
+  .text {
+    display: block;
+    font-size: ${({ textSize = _textSize }) => textSize};
+    font-weight: 500;
+    color: var(--color-white92);
+  }
 
-    > :last-child {
-      display: block;
-      font-size: max(${({ subtextSize = _subtextSize }) => subtextSize}, 12px);
-      font-weight: 500;
-      color: var(--color-white44);
+  .subtext {
+    display: block;
+    font-size: max(${({ subtextSize = _subtextSize }) => subtextSize}, 12px);
+    font-weight: 500;
+    color: var(--color-white44);
+  }
+
+  > div {
+    > div {
+      display: flex;
+      align-items: center;
+      margin-bottom: ${({ textGap = _textGap }) => textGap};
     }
   }
 `;

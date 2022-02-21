@@ -1,4 +1,4 @@
-import { formatUTokenWithPostfixUnits } from '@libs/formatter';
+import { formatRate, formatUTokenWithPostfixUnits } from '@libs/formatter';
 import {
   Button,
   CoupledIconsHolder,
@@ -6,6 +6,7 @@ import {
   HorizontalScrollTableProps,
   useScreenSizeValue,
 } from '@nebula-js/ui';
+import { DelistedBadge } from '@nebula-js/ui/text/DelistedBadge';
 import { fixHMR } from 'fix-hmr';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -51,16 +52,19 @@ function StakingTableBase({ staking, ...tableProps }: StakingTableProps) {
       </thead>
 
       <tbody>
-        {staking.map(({ index, id, name, apr, totalStaked, symbol }) => (
+        {staking.map(({ index, id, name, apr, totalStaked, isActive }) => (
           <tr key={'row' + index}>
             <td>
               <CoupledIconsHolder radiusEm={1.1}>
                 <figure />
                 <figure />
               </CoupledIconsHolder>
-              {name}
+              <div className="name-container">
+                {!isActive && <DelistedBadge />}
+                {name}
+              </div>
             </td>
-            <td>{apr}%</td>
+            <td>{formatRate(apr)}%</td>
             <td>{`${formatUTokenWithPostfixUnits(totalStaked)} UST`}</td>
             <td>
               <Button
@@ -146,6 +150,11 @@ export const StyledStakingTable = styled(StakingTableBase)`
         border-bottom: 1px solid var(--color-gray11);
       }
     }
+  }
+
+  .name-container {
+    display: flex;
+    align-items: center;
   }
 `;
 

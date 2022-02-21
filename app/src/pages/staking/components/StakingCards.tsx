@@ -1,4 +1,4 @@
-import { formatUTokenWithPostfixUnits } from '@libs/formatter';
+import { formatRate, formatUTokenWithPostfixUnits } from '@libs/formatter';
 import { AnimateNumber } from '@libs/ui';
 import {
   breakpoints,
@@ -8,9 +8,11 @@ import {
   Sub,
   TitledLabel,
 } from '@nebula-js/ui';
+import { DelistedBadge } from '@nebula-js/ui/text/DelistedBadge';
 import { fixHMR } from 'fix-hmr';
 import React, { DetailedHTMLProps } from 'react';
 import { Link } from 'react-router-dom';
+import { Rate } from '@nebula-js/types';
 import styled from 'styled-components';
 import { StakingView } from '../models/staking';
 
@@ -23,28 +25,50 @@ export interface StakingCardsProps
   staking: StakingView;
 }
 
+function DisplayAPR({ apr }: { apr: Rate }) {
+  const formatAPR = formatRate(apr);
+  const [big, small] = formatAPR.split('.');
+
+  return (
+    <div>
+      <span>{big}</span>
+      {small ? <Sub>.{small}%</Sub> : <Sub>%</Sub>}
+    </div>
+  );
+}
+
 function StakingCardsBase({ staking, ...sectionProps }: StakingCardsProps) {
   return (
     <ul {...sectionProps}>
       {staking.map(
-        ({ id, totalStaked, apr, index, symbol, nameLowerCase, name }, i) => (
+        (
+          {
+            id,
+            totalStaked,
+            apr,
+            index,
+            symbol,
+            nameLowerCase,
+            name,
+            isActive,
+          },
+          i,
+        ) => (
           <li key={'row' + id}>
             <h3>
               <CoupledIconsHolder radiusEm={1}>
                 <figure />
                 <figure />
               </CoupledIconsHolder>
-              {name}
+              <div className="name-container">
+                {!isActive && <DelistedBadge />}
+                {name}
+              </div>
             </h3>
 
             <section className="apr">
               <div>APR</div>
-              <div>
-                <s>
-                  <span>80</span>
-                  <Sub>.8%</Sub>
-                </s>
-              </div>
+              <DisplayAPR apr={apr} />
             </section>
 
             <TitledLabel
@@ -161,6 +185,11 @@ export const StyledStakingCards = styled(StakingCardsBase)`
     a {
       flex: 1;
     }
+  }
+
+  .name-container {
+    display: flex;
+    align-items: center;
   }
 
   @media (max-width: ${breakpoints.tablet.max}px) {

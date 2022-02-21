@@ -62,51 +62,54 @@ function ClustersTableBase({
       </thead>
 
       <tbody>
-        {clusters.map(({ addr, name, prices, marketCap, provided, assets }) => (
-          <tr key={'row' + addr} onClick={() => onClusterClick(addr)}>
-            <td>
-              <IconAndLabels
-                text={name}
-                subtext={
-                  <Partition>
-                    <PartitionBarGraph
-                      height={5}
-                      data={assets.map(({ color, portfolioRatio }) => ({
-                        color,
-                        value: portfolioRatio,
-                      }))}
-                      width={150}
-                    />
-                    <PartitionLabels
-                      columnGap="0.5em"
-                      data={assets.slice(0, 2).map(({ token, color }) => ({
-                        label: token.symbol,
-                        color,
-                      }))}
-                    >
-                      {assets.length - 2 > 0 && (
-                        <li>+{assets.length - 2} more</li>
-                      )}
-                    </PartitionLabels>
-                  </Partition>
-                }
-                textGap="0.3em"
-              />
-            </td>
-            <td>
-              <TwoLine text={formatToken(prices.clusterPrice) + ' UST'} />
-            </td>
-            <td>{formatUTokenDecimal2(marketCap)} UST</td>
-            <td>{formatUTokenDecimal2(provided)} UST</td>
-            <td>
-              <DisplayPremium
-                premium={prices.premium}
-                isColored={false}
-                showSign={false}
-              />
-            </td>
-          </tr>
-        ))}
+        {clusters.map(
+          ({ isActive, addr, name, prices, marketCap, provided, assets }) => (
+            <tr key={'row' + addr} onClick={() => onClusterClick(addr)}>
+              <td>
+                <IconAndLabels
+                  text={name}
+                  subtext={
+                    <Partition>
+                      <PartitionBarGraph
+                        height={5}
+                        data={assets.map(({ color, portfolioRatio }) => ({
+                          color,
+                          value: portfolioRatio,
+                        }))}
+                        width={150}
+                      />
+                      <PartitionLabels
+                        columnGap="0.5em"
+                        data={assets.slice(0, 2).map(({ token, color }) => ({
+                          label: token.symbol,
+                          color,
+                        }))}
+                      >
+                        {assets.length - 2 > 0 && (
+                          <li>+{assets.length - 2} more</li>
+                        )}
+                      </PartitionLabels>
+                    </Partition>
+                  }
+                  isActive={isActive}
+                  textGap="0.3em"
+                />
+              </td>
+              <td>
+                <TwoLine text={formatToken(prices.clusterPrice) + ' UST'} />
+              </td>
+              <td>{formatUTokenDecimal2(marketCap)} UST</td>
+              <td>{formatUTokenDecimal2(provided)} UST</td>
+              <td>
+                <DisplayPremium
+                  premium={prices.premium}
+                  isColored={false}
+                  showSign={false}
+                />
+              </td>
+            </tr>
+          ),
+        )}
       </tbody>
     </HorizontalScrollTable>
   );
