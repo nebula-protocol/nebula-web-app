@@ -13,6 +13,7 @@ export * from './forms/gov/unstake';
 export * from './forms/staking/stake';
 export * from './forms/staking/unstake';
 export * from './logics/clusters/computeClusterTxFee';
+export * from './logics/clusters/computeBulkSwapTxFee';
 export * from './logics/clusters/computeCTPrices';
 export * from './logics/clusters/computeMarketCap';
 export * from './logics/clusters/computeProvided';

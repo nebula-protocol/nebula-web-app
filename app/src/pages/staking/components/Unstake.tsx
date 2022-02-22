@@ -130,7 +130,7 @@ function StakingUnstakeBase({
           <li>
             <span>Returned</span>
             <span>
-              {formatUToken(states.returnedTokenAmount)} NEB +{' '}
+              {formatUToken(states.returnedTokenAmount)} {tokenInfo.symbol} +{' '}
               {formatUToken(states.returnedUstAmount)} UST
             </span>
           </li>

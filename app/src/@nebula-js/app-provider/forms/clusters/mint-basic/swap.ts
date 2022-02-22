@@ -30,7 +30,7 @@ export function useClusterSwapForm({ clusterState }: ClusterSwapFormParams) {
       clusterState,
       terraswapFactoryAddr: contractAddress.terraswap.factory,
       fixedFee,
-      clusterFee: constants.nebula.clusterFee,
+      swapGasWantedPerAsset: constants.swapGasWantedPerAsset,
       gasPrice,
       connected: !!connectedWallet,
     },

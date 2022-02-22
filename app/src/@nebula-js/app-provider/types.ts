@@ -1,5 +1,5 @@
 import { AppConstants, AppContractAddress } from '@libs/app-provider';
-import { CW20Addr, HumanAddr } from '@libs/types';
+import { CW20Addr, HumanAddr, Gas } from '@libs/types';
 import { NebulaClusterFee } from '@nebula-js/app-fns';
 
 export interface NebulaContractAddress extends AppContractAddress {
@@ -23,6 +23,7 @@ export interface NebulaContractAddress extends AppContractAddress {
 }
 
 export interface NebulaContants extends AppConstants {
+  swapGasWantedPerAsset: Gas;
   nebula: {
     clusterFee: NebulaClusterFee;
   };
