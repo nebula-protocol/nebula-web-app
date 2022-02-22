@@ -9,6 +9,7 @@ import {
   ClusterMintAdvancedFormStates,
 } from './mintAdvanced';
 import big from 'big.js';
+import { computeClusterTxFee } from '@nebula-js/app-fns';
 
 export interface ClusterMintTerraswapArbitrageFormInput
   extends ClusterMintAdvancedFormInput {}
@@ -40,6 +41,12 @@ export const clusterMintTerraswapArbitrageForm = (
     ClusterMintTerraswapArbitrageFormAsyncStates
   > => {
     const [states, _asyncStates] = dep(input, prevInput);
+    const clusterTxFee = computeClusterTxFee(
+      dependency.gasPrice,
+      dependency.clusterFee.arbMint,
+      dependency.clusterState.target.length,
+      dependency.clusterState.target.length,
+    );
 
     const asyncStates = _asyncStates?.then((advancedAsyncStates) => {
       if (advancedAsyncStates.mintedAmount) {
@@ -64,6 +71,7 @@ export const clusterMintTerraswapArbitrageForm = (
             ...advancedAsyncStates,
             returnedAmount: simulation.return_amount as u<UST>,
             pnl,
+            txFee: clusterTxFee,
           } as ClusterMintTerraswapArbitrageFormAsyncStates;
         });
       } else {

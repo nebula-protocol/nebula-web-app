@@ -7,10 +7,10 @@ import {
 import { formatExecuteMsgNumber, microfy } from '@libs/formatter';
 import { QueryClient } from '@libs/query-client';
 import { FormReturn } from '@libs/use-form';
-import { cluster, HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
+import { cluster, Gas, HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
 import big, { Big, BigSource } from 'big.js';
-import { computeClusterTxFee } from '../../../logics/clusters/computeClusterTxFee';
-import { SwapTokenInfo, NebulaClusterFee } from '../../../types';
+import { computeBulkSwapTxFee } from '@nebula-js/app-fns';
+import { SwapTokenInfo } from '../../../types';
 import { divWithDefault, sum, vectorDot } from '@libs/big-math';
 
 export interface ClusterSwapFormInput {
@@ -18,6 +18,7 @@ export interface ClusterSwapFormInput {
 }
 
 export interface ClusterSwapFormDependency {
+  connected: boolean;
   queryClient: QueryClient;
   clusterState: cluster.ClusterStateResponse;
   terraswapFactoryAddr: HumanAddr;
@@ -26,8 +27,7 @@ export interface ClusterSwapFormDependency {
   maxTaxUUSD: u<UST>;
   fixedFee: u<UST<BigSource>>;
   gasPrice: GasPrice;
-  clusterFee: NebulaClusterFee;
-  connected: boolean;
+  swapGasWantedPerAsset: Gas;
 }
 
 export interface ClusterSwapFormStates extends ClusterSwapFormInput {
@@ -49,8 +49,8 @@ export const clusterSwapForm = ({
   taxRate,
   maxTaxUUSD,
   fixedFee,
+  swapGasWantedPerAsset,
   gasPrice,
-  clusterFee,
 }: ClusterSwapFormDependency) => {
   const maxUstAmount = computeMaxUstBalanceForUstTransfer(
     ustBalance,
@@ -68,10 +68,9 @@ export const clusterSwapForm = ({
     let invalidUstAmount: string | null;
     let invalidQuery: string | null;
 
-    const clusterTxFee = computeClusterTxFee(
+    const swapTxFee = computeBulkSwapTxFee(
       gasPrice,
-      clusterFee.default,
-      clusterState.target.length,
+      swapGasWantedPerAsset,
       clusterState.target.length,
     );
 
@@ -164,7 +163,7 @@ export const clusterSwapForm = ({
 
               return Promise.resolve({
                 boughtTokens,
-                txFee: clusterTxFee,
+                txFee: swapTxFee,
                 invalidUstAmount,
                 invalidQuery,
               });

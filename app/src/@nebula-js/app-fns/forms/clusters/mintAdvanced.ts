@@ -1,5 +1,5 @@
 import { GasPrice, TerraBalances } from '@libs/app-fns';
-import { max, min, vectorDot } from '@libs/big-math';
+import { vectorDot } from '@libs/big-math';
 import { microfy } from '@libs/formatter';
 import { QueryClient } from '@libs/query-client';
 import { FormReturn } from '@libs/use-form';
@@ -85,42 +85,6 @@ export const clusterMintAdvancedForm = (
       });
     }
 
-    //if (
-    //  !txFee ||
-    //  dependency.clusterState !== prevDependency?.clusterState ||
-    //  dependency.fixedGas !== prevDependency?.fixedGas ||
-    //  dependency.tax !== prevDependency?.tax ||
-    //  input.addedAssets !== prevInput?.addedAssets ||
-    //  input.amounts !== prevInput?.amounts
-    //) {
-    //  if (input.addedAssets.size > 0) {
-    //    const ustIndex = dependency.clusterState.target.findIndex(
-    //      ({ info }) => {
-    //        return (
-    //          'native_token' in info &&
-    //          (info.native_token.denom === 'uusd' ||
-    //            info.native_token.denom === 'uust')
-    //        );
-    //      },
-    //    );
-    //
-    //    if (ustIndex === -1 || input.amounts[ustIndex].length === 0) {
-    //      txFee = big(dependency.fixedGas).toFixed() as u<UST>;
-    //    } else {
-    //      const uust = microfy(input.amounts[ustIndex]) as u<UST<Big>>;
-    //      const ratioTxFee = big(uust.minus(dependency.fixedGas))
-    //        .div(big(1).plus(dependency.tax.taxRate))
-    //        .mul(dependency.tax.taxRate);
-    //
-    //      txFee = max(min(ratioTxFee, dependency.tax.maxTaxUUSD), 0)
-    //        .plus(dependency.fixedGas)
-    //        .toFixed() as u<UST>;
-    //    }
-    //  } else {
-    //    txFee = null;
-    //  }
-    //}
-
     if (
       !asyncStates ||
       dependency.queryClient !== prevDependency?.queryClient ||
@@ -169,40 +133,40 @@ export const clusterMintAdvancedForm = (
               dependency.clusterState.prices,
             ) as u<UST<Big>>;
 
-            let txFee: u<UST> | null;
+            // let txFee: u<UST> | null;
 
-            if (input.addedAssets.size > 0) {
-              const ustIndex = dependency.clusterState.target.findIndex(
-                ({ info }) => {
-                  return (
-                    'native_token' in info &&
-                    (info.native_token.denom === 'uusd' ||
-                      info.native_token.denom === 'uust')
-                  );
-                },
-              );
+            // if (input.addedAssets.size > 0) {
+            //   const ustIndex = dependency.clusterState.target.findIndex(
+            //     ({ info }) => {
+            //       return (
+            //         'native_token' in info &&
+            //         (info.native_token.denom === 'uusd' ||
+            //           info.native_token.denom === 'uust')
+            //       );
+            //     },
+            //   );
 
-              if (ustIndex === -1 || input.amounts[ustIndex].length === 0) {
-                txFee = clusterTxFee;
-              } else {
-                const uust = microfy(input.amounts[ustIndex]) as u<UST<Big>>;
-                const ratioTxFee = big(uust.minus(dependency.fixedFee))
-                  .div(big(1).plus(dependency.taxRate))
-                  .mul(dependency.taxRate);
+            //   if (ustIndex === -1 || input.amounts[ustIndex].length === 0) {
+            //     txFee = clusterTxFee;
+            //   } else {
+            //     const uust = microfy(input.amounts[ustIndex]) as u<UST<Big>>;
+            //     const ratioTxFee = big(uust.minus(dependency.fixedFee))
+            //       .div(big(1).plus(dependency.taxRate))
+            //       .mul(dependency.taxRate);
 
-                txFee = max(min(ratioTxFee, dependency.maxTaxUUSD), 0)
-                  .plus(clusterTxFee)
-                  .toFixed() as u<UST>;
-              }
-            } else {
-              txFee = null;
-            }
+            //     txFee = max(min(ratioTxFee, dependency.maxTaxUUSD), 0)
+            //       .plus(clusterTxFee)
+            //       .toFixed() as u<UST>;
+            //   }
+            // } else {
+            //   txFee = null;
+            // }
 
             return {
               mintedAmount: mint.create_tokens as u<CT>,
               pnl: totalMintValue.minus(totalInputValue).toFixed() as u<UST>,
               totalInputValue,
-              txFee,
+              txFee: clusterTxFee,
             };
           })
         : Promise.resolve({

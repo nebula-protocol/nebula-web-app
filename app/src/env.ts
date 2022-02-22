@@ -47,12 +47,12 @@ export function NEBULA_CONTRACT_ADDRESS(
 export function NEBULA_CONSTANTS(network: NetworkInfo): NebulaContants {
   if (network.chainID.startsWith('bombay')) {
     return {
-      gasWanted: 2_000_000 as Gas,
-      fixedGas: 2_000_000 as Gas,
+      gasWanted: 1_000_000 as Gas,
+      fixedGas: 1_700_000 as Gas,
       blocksPerYear: 4_656_810,
       gasAdjustment: 1.6 as Rate<number>,
+      swapGasWantedPerAsset: 600_000 as Gas,
       nebula: {
-        // TODO revisit gas estimation
         clusterFee: {
           default: {
             txFeeBase: 7_000_000 as Gas,

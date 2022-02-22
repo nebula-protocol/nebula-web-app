@@ -8,6 +8,7 @@ import { NEBULA_TX_KEYS } from '../../env';
 import { useRefetchQueries, useUstTax } from '@libs/app-provider';
 import { SwapTokenInfo } from '@nebula-js/app-fns';
 import { useMintBasic } from 'contexts/mint-basic';
+import { computeBulkSwapGasWanted } from '@nebula-js/app-fns';
 
 export interface CW20BuyTokenChuckTxParams {
   buyTokens: SwapTokenInfo[];
@@ -45,7 +46,10 @@ export function useCW20BuyTokenChuckTx() {
         maxSpread: '0.01' as Rate,
         buyerAddr: connectedWallet.walletAddress,
         fixedFee,
-        gasWanted: constants.gasWanted,
+        gasWanted: computeBulkSwapGasWanted(
+          constants.swapGasWantedPerAsset,
+          buyTokens.length,
+        ),
         gasAdjustment: constants.gasAdjustment,
         queryClient,
         txErrorReporter,
@@ -60,7 +64,7 @@ export function useCW20BuyTokenChuckTx() {
     [
       connectedWallet,
       constants.gasAdjustment,
-      constants.gasWanted,
+      constants.swapGasWantedPerAsset,
       onSwapSucceed,
       fixedFee,
       maxTax,
