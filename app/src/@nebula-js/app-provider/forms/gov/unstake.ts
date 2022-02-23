@@ -1,6 +1,7 @@
-import { useFixedFee, useUstBalance } from '@libs/app-provider';
+import { useUstBalance } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
 import { govUnstakeForm, GovUnstakeFormInput } from '@nebula-js/app-fns';
+import { useGovFee } from '@nebula-js/app-provider';
 import { useNebBalance } from '@nebula-js/app-provider/hooks/useNebBalance';
 import { NEB } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
@@ -9,7 +10,7 @@ import { useGovStakerQuery } from '../../queries/gov/staker';
 export function useGovUnstakeForm() {
   const connectedWallet = useConnectedWallet();
 
-  const fixedFee = useFixedFee();
+  const fixedFee = useGovFee();
 
   const uUST = useUstBalance(connectedWallet?.walletAddress);
 

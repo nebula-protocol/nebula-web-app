@@ -18,7 +18,6 @@ import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { UnstakeLock } from './UnstakeLock';
 
 export interface GovUnstakeProps {
   className?: string;
@@ -63,15 +62,6 @@ function GovUnstakeBase({ className }: GovUnstakeProps) {
     pc: 'normal',
     monitor: 'normal',
   });
-
-  if (states.remainLockWeeks > 0) {
-    return (
-      <UnstakeLock
-        lockedWeek={states.remainLockWeeks}
-        lockedAmount={formatUToken(states.maxNebAmount) as NEB}
-      />
-    );
-  }
 
   return (
     <div className={className}>

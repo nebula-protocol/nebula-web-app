@@ -183,7 +183,7 @@ export namespace gov {
     id: rs.u64;
     creator: HumanAddr;
     status: PollStatus;
-    end_height: rs.u64;
+    end_time: rs.u64;
     title: string;
     description: string;
     link?: string;

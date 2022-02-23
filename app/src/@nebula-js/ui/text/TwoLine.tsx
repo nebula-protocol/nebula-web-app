@@ -7,7 +7,7 @@ export interface TwoLineProps {
   subText?: ReactNode;
 }
 
-function TwoLineBase({ className, text, subText }: TwoLineProps) {
+export function TwoLineBase({ className, text, subText }: TwoLineProps) {
   return (
     <div className={className}>
       <p>{text}</p>

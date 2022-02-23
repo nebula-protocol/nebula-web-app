@@ -5,7 +5,6 @@ import { NEB, u, UST } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
-  Slider,
   TextButton,
   TokenInput,
   TokenSpan,
@@ -17,7 +16,7 @@ import { FeeBox } from 'components/boxes/FeeBox';
 import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
-import React, { ChangeEvent, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
 export interface GovStakeProps {
@@ -36,15 +35,13 @@ function GovStakeBase({ className }: GovStakeProps) {
   const initForm = useCallback(() => {
     updateInput({
       nebAmount: '' as NEB,
-      lockForWeeks: 1,
     });
   }, [updateInput]);
 
   const proceed = useCallback(
-    async (nebAmount: NEB, lockForWeeks: number, txFee: u<UST<BigSource>>) => {
+    async (nebAmount: NEB, txFee: u<UST<BigSource>>) => {
       const stream = postTx?.({
         nebAmount: microfy(nebAmount).toFixed() as u<NEB>,
-        lockForWeeks,
         txFee: big(txFee).toFixed() as u<UST>,
         onTxSucceed: initForm,
       });
@@ -95,58 +92,6 @@ function GovStakeBase({ className }: GovStakeProps) {
         error={states.invalidNebAmount}
       />
 
-      {states.minLockForWeeks + 10 < states.maxLockForWeeks && (
-        <>
-          <TokenInput
-            className="lockup-weeks"
-            maxIntegerPoints={3}
-            maxDecimalPoints={0}
-            value={states.lockForWeeks.toString()}
-            onChange={(nextLockForWeeks) => {
-              if (nextLockForWeeks.length > 0) {
-                updateInput({
-                  lockForWeeks: Math.min(
-                    +nextLockForWeeks,
-                    states.maxLockForWeeks,
-                  ),
-                });
-              } else {
-                updateInput({ lockForWeeks: 1 });
-              }
-            }}
-            placeholder="1"
-            label="LOCK-UP WEEKS"
-          />
-
-          <Slider
-            className="lockup-weeks-slider"
-            value={states.lockForWeeks}
-            min={1}
-            max={states.maxLockForWeeks}
-            marks={[
-              {
-                value: states.minLockForWeeks,
-                label: `${states.minLockForWeeks} Week${
-                  states.minLockForWeeks > 1 ? 's' : ''
-                }`,
-              },
-              {
-                value: states.maxLockForWeeks,
-                label: `${Math.round(states.maxLockForWeeks / 52)} Years`,
-              },
-            ]}
-            onChange={(
-              _: ChangeEvent<{}>,
-              nextLockForWeeks: number | number[],
-            ) => {
-              if (typeof nextLockForWeeks === 'number') {
-                updateInput({ lockForWeeks: nextLockForWeeks });
-              }
-            }}
-          />
-        </>
-      )}
-
       <FeeBox className="feebox">
         {states.stakedNebAfterTx && (
           <li>
@@ -182,7 +127,7 @@ function GovStakeBase({ className }: GovStakeProps) {
         onClick={() =>
           states.nebAmount &&
           states.txFee &&
-          proceed(states.nebAmount, states.lockForWeeks, states.txFee)
+          proceed(states.nebAmount, states.txFee)
         }
       >
         Stake
@@ -193,14 +138,6 @@ function GovStakeBase({ className }: GovStakeProps) {
 
 export const StyledGovStake = styled(GovStakeBase)`
   font-size: 1rem;
-
-  .lockup-weeks {
-    margin-top: 2.28571429em;
-  }
-
-  .lockup-weeks-slider {
-    margin-top: 3.57142857em;
-  }
 
   .feebox {
     margin-top: 2.4em;

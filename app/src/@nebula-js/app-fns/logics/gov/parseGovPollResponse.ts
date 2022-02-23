@@ -92,7 +92,7 @@ export function parseGovPollResponse(
     .div(votesTotal)
     .toFixed() as Rate;
 
-  const endsIn = new Date((poll.end_height - blockHeight) * 6000 + Date.now());
+  const endsIn = new Date(poll.end_time * 1000);
 
   const inProgressOver = poll.status === 'in_progress' && endsIn <= new Date();
 
@@ -105,7 +105,9 @@ export function parseGovPollResponse(
 
     status:
       poll.status === 'in_progress'
-        ? 'In Progress'
+        ? endsIn <= new Date()
+          ? 'Poll Ended'
+          : 'In Progress'
         : poll.status === 'passed'
         ? 'Passed'
         : poll.status === 'rejected'

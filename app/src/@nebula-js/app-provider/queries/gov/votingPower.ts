@@ -7,6 +7,7 @@ import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 const queryFn = createQueryFn(govVotingPowerQuery);
 
+// TODO: remove it, it doesn't use any more
 export function useGovVotingPowerQuery(
   walletAddr: HumanAddr | undefined,
 ): UseQueryResult<GovVotingPower | undefined> {

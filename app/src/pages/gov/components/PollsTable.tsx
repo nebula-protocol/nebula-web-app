@@ -1,6 +1,7 @@
+import { CircleExclamationIcon } from '@nebula-js/icons';
 import { formatRate } from '@libs/formatter';
 import { ExpandMore } from '@material-ui/icons';
-import { GovPolls, ParsedPoll } from '@nebula-js/app-fns';
+import { getPollStatusColor, GovPolls, ParsedPoll } from '@nebula-js/app-fns';
 import { useGovPollsQuery } from '@nebula-js/app-provider';
 import { gov } from '@nebula-js/types';
 import {
@@ -15,6 +16,7 @@ import { fixHMR } from 'fix-hmr';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import big from 'big.js';
 
 export interface PollsTableProps {
   className?: string;
@@ -145,16 +147,31 @@ function PollsTableBase({ className }: PollsTableProps) {
                   {title}
                 </td>
                 <td>
-                  <p>
+                  <p
+                    style={{
+                      color: big(quorum.current).lt(quorum.gov)
+                        ? 'var(--color-red01)'
+                        : 'var(--color-white92)',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {big(quorum.current).lt(quorum.gov) && (
+                      <CircleExclamationIcon id="circle-exclamation" />
+                    )}
                     Quorum {formatRate(quorum.current)}% /{' '}
                     {formatRate(quorum.gov)}%
                   </p>
                   <p>
-                    YES {formatRate(votes.yesRatio)}% NO{' '}
-                    {formatRate(votes.noRatio)}%
+                    <span id="yes-amount">
+                      YES {formatRate(votes.yesRatio)}%{' '}
+                    </span>
+                    <span id="no-amount">NO {formatRate(votes.noRatio)}%</span>
                   </p>
                 </td>
-                <td data-in-progress-over={inProgressTimeover}>{status}</td>
+                <td style={{ color: getPollStatusColor(status) }}>
+                  <p>{status}</p>
+                </td>
               </tr>
             ),
           )}
@@ -195,10 +212,6 @@ const More = styled.footer`
 const StyledPollsTable = styled(PollsTableBase)`
   background-color: var(--color-gray14);
   border-radius: 8px;
-
-  [data-in-progress-over='true'] {
-    text-decoration: line-through;
-  }
 
   select {
     color: var(--color-paleblue);
@@ -249,6 +262,19 @@ const StyledPollsTable = styled(PollsTableBase)`
         border-bottom: 1px solid var(--color-gray11);
       }
     }
+  }
+
+  #yes-amount {
+    color: var(--color-blue01);
+  }
+
+  #no-amount {
+    color: var(--color-red01);
+  }
+
+  #circle-exclamation {
+    font-size: 1.3333em;
+    margin-right: 3px;
   }
 `;
 

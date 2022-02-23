@@ -5,12 +5,9 @@ import big, { Big, BigSource } from 'big.js';
 
 export interface GovStakeFormInput {
   nebAmount: NEB;
-  lockForWeeks: number;
 }
 
 export interface GovStakeFormDependency {
-  minLockForWeeks?: number;
-  maxLockForWeeks?: number;
   nebBalance: u<NEB>;
   ustBalance: u<UST<BigSource>>;
   fixedFee: u<UST<BigSource>>;
@@ -19,8 +16,6 @@ export interface GovStakeFormDependency {
 }
 
 export interface GovStakeFormStates extends GovStakeFormInput {
-  minLockForWeeks: number;
-  maxLockForWeeks: number;
   maxNebAmount: u<NEB>;
   invalidTxFee: string | null;
   invalidNebAmount: string | null;
@@ -35,8 +30,6 @@ export type GovStakeFormAsyncStates = {};
 export const govStakeForm = ({
   nebBalance,
   ustBalance,
-  minLockForWeeks = 1,
-  maxLockForWeeks = 104,
   fixedFee,
   connected,
   govStaker,
@@ -46,7 +39,6 @@ export const govStakeForm = ({
 
   return ({
     nebAmount,
-    lockForWeeks,
   }: GovStakeFormInput): FormReturn<
     GovStakeFormStates,
     GovStakeFormAsyncStates
@@ -58,12 +50,6 @@ export const govStakeForm = ({
         {
           nebAmount,
           maxNebAmount: maxAmount,
-          lockForWeeks: Math.max(
-            minLockForWeeks,
-            Math.min(maxLockForWeeks, lockForWeeks),
-          ),
-          minLockForWeeks,
-          maxLockForWeeks,
           txFee: null,
           invalidNebAmount: null,
           invalidTxFee: null,
@@ -92,12 +78,6 @@ export const govStakeForm = ({
       {
         nebAmount,
         maxNebAmount: maxAmount,
-        lockForWeeks: Math.max(
-          minLockForWeeks,
-          Math.min(maxLockForWeeks, lockForWeeks),
-        ),
-        minLockForWeeks,
-        maxLockForWeeks,
         txFee,
         invalidTxFee,
         invalidNebAmount,

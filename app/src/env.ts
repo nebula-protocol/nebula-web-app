@@ -48,9 +48,10 @@ export function NEBULA_CONSTANTS(network: NetworkInfo): NebulaContants {
   if (network.chainID.startsWith('bombay')) {
     return {
       gasWanted: 1_000_000 as Gas,
-      fixedGas: 1_700_000 as Gas,
+      fixedGas: 1_671_053 as Gas,
       blocksPerYear: 4_656_810,
       gasAdjustment: 1.6 as Rate<number>,
+      govGas: 500_000 as Gas,
       swapGasWantedPerAsset: 600_000 as Gas,
       nebula: {
         clusterFee: {

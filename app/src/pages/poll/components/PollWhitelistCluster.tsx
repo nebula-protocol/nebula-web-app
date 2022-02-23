@@ -44,7 +44,7 @@ export default function PollWhitelistCluster() {
     };
   }, [assets]);
 
-  const invalidSymbol = useValidateStringBytes(clusterSymbol, 3, 64);
+  const invalidSymbol = useValidateStringBytes(clusterSymbol, 2, 13);
 
   const invalidClusterName = useValidateStringBytes(clusterName, 4, 64);
 
@@ -170,12 +170,12 @@ export default function PollWhitelistCluster() {
           fullWidth
           value={clusterSymbol}
           onChange={({ target }) => setClusterSymbol(target.value)}
-          error={!!invalidClusterName}
+          error={!!invalidSymbol}
           helperText={
             invalidSymbol === BytesValid.LESS
-              ? 'Symbol must be at least 4 bytes.'
+              ? 'Symbol must be at least 3 bytes.'
               : invalidSymbol === BytesValid.MUCH
-              ? 'Symbol cannot be longer than 64 bytes.'
+              ? 'Symbol cannot be longer than 12 bytes.'
               : undefined
           }
         />
