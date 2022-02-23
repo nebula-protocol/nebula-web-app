@@ -54,7 +54,11 @@ function VoteFormBase({ className, pollId, onVoteComplete }: VoteFormProps) {
     if (amount.length === 0) {
       return null;
     }
-    return big(amount).gt(userVotingPower) ? 'Not enough assets' : null;
+    return big(amount).gt(userVotingPower)
+      ? 'Not enough assets'
+      : big(amount).eq(0)
+      ? 'Amount must be greater than 0'
+      : null;
   }, [amount, userVotingPower]);
 
   const proceed = useCallback(
@@ -127,7 +131,6 @@ function VoteFormBase({ className, pollId, onVoteComplete }: VoteFormProps) {
         disabled={
           !vote ||
           amount.length === 0 ||
-          (amount.length > 0 && big(amount).eq(0)) ||
           !!invalidAmount ||
           !postTx ||
           !connectedWallet ||
