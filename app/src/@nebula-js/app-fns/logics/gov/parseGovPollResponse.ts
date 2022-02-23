@@ -18,7 +18,7 @@ export interface ParsedExecuteMsg {
   msg:
     | cluster_factory.CreateCluster // whitelist cluster
     | cluster_factory.DecommissionCluster // blacklist cluster
-    | cluster.UpdateConfig // cluster parameter change
+    | cluster_factory.PassCommand<cluster.UpdateConfig> // cluster parameter change
     | gov.UpdateConfig // governance parameter change
     | community.Spend; // community pool spend
 }
@@ -106,7 +106,7 @@ export function parseGovPollResponse(
     status:
       poll.status === 'in_progress'
         ? endsIn <= new Date()
-          ? 'End Poll'
+          ? 'Poll Ended'
           : 'In Progress'
         : poll.status === 'passed'
         ? 'Passed'
@@ -159,8 +159,17 @@ export function parseGovPollResponse(
 function parseExecuteMsg(executeMsg: gov.ExecuteMsg): ParsedExecuteMsg {
   let msg: any = {};
   try {
-    msg = JSON.parse(atob(executeMsg.msg));
-  } catch (error) {}
+    msg = JSON.parse(Buffer.from(executeMsg.msg, 'base64').toString('binary'));
+
+    // for cluster parameter changes
+    if ('pass_command' in msg) {
+      msg['pass_command']['msg'] = JSON.parse(
+        Buffer.from(msg['pass_command']['msg'], 'base64').toString('binary'),
+      );
+    }
+  } catch (error) {
+    console.error('parseExecuteMsg()...', error);
+  }
 
   return {
     contract: executeMsg.contract,
@@ -185,6 +194,11 @@ function parsePollType(
   ) {
     return 'Blacklist Cluster';
   } else if (
+    executeMsg.contract === address.clusterFactory &&
+    'pass_command' in executeMsg.msg
+  ) {
+    return 'Cluster Parameter Change';
+  } else if (
     executeMsg.contract === address.gov &&
     'update_config' in executeMsg.msg
   ) {
@@ -194,11 +208,6 @@ function parsePollType(
     'spend' in executeMsg.msg
   ) {
     return 'Community Pool spend';
-  } else if (
-    executeMsg.contract !== address.gov &&
-    'update_config' in executeMsg.msg
-  ) {
-    return 'Cluster Parameter Change';
   } else {
     return 'Unknown Poll';
   }

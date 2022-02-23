@@ -68,8 +68,8 @@ function PollDetailBase({ className, parsedPoll }: PollDetailProps) {
         )}
 
       {parsedPoll.executeMsg &&
-        parsedPoll.executeMsg.contract !== contractAddress.gov &&
-        'update_config' in parsedPoll.executeMsg.msg && (
+        parsedPoll.executeMsg.contract === contractAddress.clusterFactory &&
+        'pass_command' in parsedPoll.executeMsg.msg && (
           <ClusterParameterChange
             msg={parsedPoll.executeMsg.msg}
             clusterAddr={parsedPoll.executeMsg.contract}
@@ -305,10 +305,14 @@ function CommunityPoolSpend({ msg: { spend } }: { msg: community.Spend }) {
 }
 
 function ClusterParameterChange({
-  msg: { update_config },
-  clusterAddr,
+  msg: {
+    pass_command: {
+      contract_addr: clusterAddr,
+      msg: { update_config },
+    },
+  },
 }: {
-  msg: cluster.UpdateConfig;
+  msg: cluster_factory.PassCommand<cluster.UpdateConfig>;
   clusterAddr: HumanAddr;
 }) {
   const { network } = useWallet();
@@ -330,9 +334,10 @@ function ClusterParameterChange({
       {update_config.name && (
         <div>
           <h4>Name</h4>
-          <p>
+          {/* TODO: cannot display cluster's state after executing */}
+          {/* <p>
             <s>{clusterConfig?.config.name}</s>
-          </p>
+          </p> */}
           <p>{update_config.name}</p>
         </div>
       )}
@@ -340,9 +345,9 @@ function ClusterParameterChange({
       {update_config.description && (
         <div>
           <h4>Description</h4>
-          <p>
+          {/* <p>
             <s>{clusterConfig?.config.description}</s>
-          </p>
+          </p> */}
           <p>{update_config.description}</p>
         </div>
       )}
@@ -350,7 +355,7 @@ function ClusterParameterChange({
       {update_config.pricing_oracle && (
         <div>
           <h4>Price Oracle Address</h4>
-          {clusterConfig?.config.pricing_oracle && (
+          {/* {clusterConfig?.config.pricing_oracle && (
             <p>
               <s>
                 <FinderAddressLink
@@ -359,7 +364,7 @@ function ClusterParameterChange({
                 />
               </s>
             </p>
-          )}
+          )} */}
           <p>
             <FinderAddressLink
               chainID={network.chainID}
@@ -372,7 +377,7 @@ function ClusterParameterChange({
       {update_config.target_oracle && (
         <div>
           <h4>Target Oracle Address</h4>
-          {clusterConfig?.config.target_oracle && (
+          {/* {clusterConfig?.config.target_oracle && (
             <p>
               <s>
                 <FinderAddressLink
@@ -381,7 +386,7 @@ function ClusterParameterChange({
                 />
               </s>
             </p>
-          )}
+          )} */}
           <p>
             <FinderAddressLink
               chainID={network.chainID}
@@ -394,7 +399,7 @@ function ClusterParameterChange({
       {update_config.penalty && (
         <div>
           <h4>Penalty Address</h4>
-          {clusterConfig?.config.penalty && (
+          {/* {clusterConfig?.config.penalty && (
             <p>
               <s>
                 <FinderAddressLink
@@ -403,7 +408,7 @@ function ClusterParameterChange({
                 />
               </s>
             </p>
-          )}
+          )} */}
           <p>
             <FinderAddressLink
               chainID={network.chainID}

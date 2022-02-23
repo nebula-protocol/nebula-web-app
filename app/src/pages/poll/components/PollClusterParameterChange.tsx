@@ -6,7 +6,7 @@ import {
 } from '@libs/use-string-bytes-length';
 import { ClusterParameter, clusterParameterQuery } from '@nebula-js/app-fns';
 import { useNebulaApp } from '@nebula-js/app-provider';
-import { cluster, gov } from '@nebula-js/types';
+import { cluster, gov, cluster_factory } from '@nebula-js/types';
 import { FormLabel, NativeSelect, TextInput } from '@nebula-js/ui';
 import { AccAddress } from '@terra-money/terra.js';
 import big from 'big.js';
@@ -24,7 +24,7 @@ import { PollCreateBase } from './PollCreateBase';
 export default function PollClusterParameterChange() {
   const { clusters, selectCluster, selectedIndex } = useClusterSelection();
 
-  const { queryClient } = useNebulaApp();
+  const { queryClient, contractAddress } = useNebulaApp();
 
   // ---------------------------------------------
   // states
@@ -170,13 +170,21 @@ export default function PollClusterParameterChange() {
       clusterUpdateConfig.target = nextTarget;
     }
 
+    const passCommandMsg = {
+      pass_command: {
+        contract_addr:
+          clusters[selectedIndex].clusterState.cluster_contract_address,
+        msg: Buffer.from(
+          JSON.stringify({
+            update_config: clusterUpdateConfig,
+          } as cluster.UpdateConfig),
+        ).toString('base64'),
+      },
+    } as cluster_factory.PassCommand;
+
     const executeMsg: gov.ExecuteMsg = {
-      contract: clusters[selectedIndex].clusterState.cluster_contract_address,
-      msg: Buffer.from(
-        JSON.stringify({
-          update_config: clusterUpdateConfig,
-        } as cluster.UpdateConfig),
-      ).toString('base64'),
+      contract: contractAddress.clusterFactory,
+      msg: Buffer.from(JSON.stringify(passCommandMsg)).toString('base64'),
     };
 
     return executeMsg;
@@ -190,6 +198,7 @@ export default function PollClusterParameterChange() {
     priceOracleAddress,
     selectedIndex,
     targetOracleAddress,
+    contractAddress.clusterFactory,
   ]);
 
   // ---------------------------------------------

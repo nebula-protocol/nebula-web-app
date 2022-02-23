@@ -77,11 +77,10 @@ export namespace cluster_factory {
     };
   }
 
-  export interface PassCommand {
+  export interface PassCommand<T = string> {
     pass_command: {
       contract_addr: HumanAddr;
-      // TODO what is Binary type? Base64 encoded string?
-      msg: unknown; // Binary,
+      msg: T; // Base64 or other msgs,
     };
   }
 
