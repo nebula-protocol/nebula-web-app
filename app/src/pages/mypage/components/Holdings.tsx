@@ -45,6 +45,7 @@ function HoldingsBase({ className }: HoldingsProps) {
           const value = big(balance).mul(price) as u<UST<Big>>;
 
           return {
+            id: tokenAddr,
             symbol: tokenInfo.symbol,
             name: tokenInfo.name,
             price,
@@ -144,8 +145,8 @@ function HoldingsBase({ className }: HoldingsProps) {
         </tr>
       </thead>
       <tbody>
-        {holdings.map(({ symbol, name, price, balance, value, to }) => (
-          <tr key={'holdings' + symbol}>
+        {holdings.map(({ id, symbol, name, price, balance, value, to }) => (
+          <tr key={'holdings:' + id}>
             <td>
               <TwoLine text={symbol} subText={name} />
             </td>

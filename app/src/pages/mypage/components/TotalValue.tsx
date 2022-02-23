@@ -23,13 +23,13 @@ import { Header } from './Header';
 const TotalValue = () => {
   const {
     totalHoldingsValue,
-    totalGovValue,
     totalStakingValue,
+    totalGovValue,
     totalRewardValue,
   } = useTotalValue();
   const totalValues = totalHoldingsValue
-    .plus(totalGovValue)
     .plus(totalStakingValue)
+    .plus(totalGovValue)
     .plus(totalRewardValue) as u<UST<Big>>;
   const divideValue = totalValues.eq(0) ? 1 : totalValues;
 
