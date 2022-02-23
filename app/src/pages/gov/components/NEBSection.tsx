@@ -55,22 +55,22 @@ function NEBSectionBase({ className }: NEBSectionProps) {
       </div>
       <section className="labels">
         <TitledLabel
-          title="STAKABLE NEB"
+          title="STAKED NEB"
           text={
             <>
               <AnimateNumber format={formatUTokenWithPostfixUnits}>
-                {uNEB}
+                {govStaker ? govStaker.balance : (0 as u<NEB<number>>)}
               </AnimateNumber>{' '}
               <Sub>NEB</Sub>
             </>
           }
         />
         <TitledLabel
-          title="STAKED NEB"
+          title="STAKABLE NEB"
           text={
             <>
               <AnimateNumber format={formatUTokenWithPostfixUnits}>
-                {govStaker ? govStaker.balance : (0 as u<NEB<number>>)}
+                {uNEB}
               </AnimateNumber>{' '}
               <Sub>NEB</Sub>
             </>

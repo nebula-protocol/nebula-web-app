@@ -1,6 +1,10 @@
 import { formatRate, formatUTokenWithPostfixUnits } from '@libs/formatter';
 import { FinderAddressLink } from '@libs/ui';
-import { GovVoters, pickGovPollVoted } from '@nebula-js/app-fns';
+import {
+  getPollStatusColor,
+  GovVoters,
+  pickGovPollVoted,
+} from '@nebula-js/app-fns';
 import {
   useGovPollQuery,
   useGovStakerQuery,
@@ -11,7 +15,6 @@ import {
   breakpoints,
   Button,
   HorizontalScrollTable,
-  PartitionBarGraph,
   Section,
   TwoLine,
   useScreenSizeValue,
@@ -23,8 +26,8 @@ import { PollDetail } from 'pages/poll/components/PollDetail';
 import React, { useMemo, useState } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
-import useResizeObserver from 'use-resize-observer/polyfilled';
 import { VoteForm } from './components/VoteForm';
+import VotePartitionBarGraph from './VotePartitionBarGraph';
 
 export interface PollDetailProps {
   className?: string;
@@ -38,8 +41,6 @@ function PollDetailBase({ className }: PollDetailProps) {
   const { data: { parsedPoll } = {} } = useGovPollQuery(+match!.params.pollId);
 
   const [startVote, setStartVote] = useState<boolean>(false);
-
-  const { ref, width = 300 } = useResizeObserver();
 
   const {
     data: { pages } = {},
@@ -85,7 +86,9 @@ function PollDetailBase({ className }: PollDetailProps) {
           <Section className="summary">
             <header>
               <div>{parsedPoll?.type}</div>
-              <div data-in-progress-over={parsedPoll?.inProgressTimeover}>
+              <div
+                style={{ color: getPollStatusColor(parsedPoll?.poll.status) }}
+              >
                 {parsedPoll?.status}
               </div>
             </header>
@@ -142,7 +145,7 @@ function PollDetailBase({ className }: PollDetailProps) {
 
         <Section className="voters">
           <header>
-            <TwoLine
+            <YesTwoLine
               text={`Yes ${
                 parsedPoll ? formatRate(parsedPoll?.votes.yesRatio) : '-'
               }%`}
@@ -152,7 +155,7 @@ function PollDetailBase({ className }: PollDetailProps) {
                   : '-'
               } NEB`}
             />
-            <TwoLine
+            <NoTwoLine
               text={`No ${
                 parsedPoll ? formatRate(parsedPoll?.votes.noRatio) : '-'
               }%`}
@@ -174,35 +177,7 @@ function PollDetailBase({ className }: PollDetailProps) {
             />
           </header>
 
-          <div ref={ref} className="voters-table">
-            <PartitionBarGraph
-              data={[
-                {
-                  value: +(parsedPoll?.votes.yesRatio ?? 0),
-                  color: 'var(--color-blue01)',
-                },
-                {
-                  value: +(parsedPoll?.votes.noRatio ?? 0),
-                  color: 'var(--color-red01)',
-                },
-                {
-                  value: +(parsedPoll?.votes.abstainRatio ?? 0),
-                  color: '#a4a4a4',
-                },
-                {
-                  value:
-                    1 -
-                    +(parsedPoll?.votes.yesRatio ?? 0) -
-                    +(parsedPoll?.votes.noRatio ?? 0) -
-                    +(parsedPoll?.votes.abstainRatio ?? 0),
-                  color: '#3d3d3d',
-                },
-              ]}
-              width={width}
-              height={16}
-              gap={0}
-            />
-          </div>
+          <VotePartitionBarGraph parsedPoll={parsedPoll} />
 
           <Table minWidth={300} startPadding="0rem" endPadding="0rem">
             <thead>
@@ -244,6 +219,18 @@ function PollDetailBase({ className }: PollDetailProps) {
   );
 }
 
+const YesTwoLine = styled(TwoLine)`
+  p {
+    color: var(--color-blue01) !important;
+  }
+`;
+
+const NoTwoLine = styled(TwoLine)`
+  p {
+    color: var(--color-red01) !important;
+  }
+`;
+
 const Table = styled(HorizontalScrollTable)`
   td,
   th {
@@ -261,6 +248,13 @@ const Table = styled(HorizontalScrollTable)`
       }
     }
   }
+
+  .no-voters-container {
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const StyledPollDetail = styled(PollDetailBase)`
@@ -270,10 +264,6 @@ const StyledPollDetail = styled(PollDetailBase)`
 
   a {
     color: inherit;
-  }
-
-  [data-in-progress-over='true'] {
-    text-decoration: line-through;
   }
 
   .layout {
@@ -341,10 +331,6 @@ const StyledPollDetail = styled(PollDetailBase)`
         gap: 18px;
 
         margin-bottom: 3rem;
-      }
-
-      .voters-table {
-        margin-bottom: 2rem;
       }
     }
   }

@@ -24,6 +24,7 @@ export interface NebulaContractAddress extends AppContractAddress {
 
 export interface NebulaContants extends AppConstants {
   swapGasWantedPerAsset: Gas;
+  govGas: Gas;
   nebula: {
     clusterFee: NebulaClusterFee;
   };

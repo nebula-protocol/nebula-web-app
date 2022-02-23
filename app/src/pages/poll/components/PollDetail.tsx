@@ -448,6 +448,10 @@ const TokenTable = styled.table`
     text-align: left;
     padding-right: 20px;
   }
+
+  tr {
+    height: 55px;
+  }
 `;
 
 export const StyledPollDetail = styled(PollDetailBase)`

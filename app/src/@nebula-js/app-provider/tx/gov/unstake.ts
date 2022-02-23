@@ -35,7 +35,7 @@ export function useGovUnstakeTx() {
         nebAmount,
         govAddr: contractAddress.gov,
         fixedFee,
-        gasWanted: constants.gasWanted,
+        gasWanted: constants.govGas,
         gasAdjustment: constants.gasAdjustment,
         queryClient,
         txErrorReporter,
@@ -50,7 +50,7 @@ export function useGovUnstakeTx() {
     [
       connectedWallet,
       constants.gasAdjustment,
-      constants.gasWanted,
+      constants.govGas,
       contractAddress.gov,
       fixedFee,
       refetchQueries,

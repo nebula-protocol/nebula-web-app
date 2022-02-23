@@ -1,5 +1,5 @@
 import { formatToken, formatVotingPower, microfy } from '@libs/formatter';
-import { useGovVoteTx, useGovVotingPowerQuery } from '@nebula-js/app-provider';
+import { useGovVoteTx, useGovStakerQuery } from '@nebula-js/app-provider';
 import { WalletIcon } from '@nebula-js/icons';
 import { gov, NEB, u } from '@nebula-js/types';
 import {
@@ -33,15 +33,15 @@ function VoteFormBase({ className, pollId, onVoteComplete }: VoteFormProps) {
   const [vote, setVote] = useState<gov.VoteOption | null>(null);
   const [amount, setAmount] = useState<NEB>('' as NEB);
 
-  const { data: { govVotingPower } = {} } = useGovVotingPowerQuery(
+  const { data: { govStaker } = {} } = useGovStakerQuery(
     connectedWallet?.walletAddress,
   );
 
   const userVotingPower = useMemo<NEB>(() => {
-    return govVotingPower?.voting_power
-      ? formatVotingPower(govVotingPower?.voting_power)
+    return govStaker?.balance
+      ? formatVotingPower(govStaker?.balance)
       : ('0' as NEB);
-  }, [govVotingPower?.voting_power]);
+  }, [govStaker?.balance]);
 
   const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
     mobile: 'medium',
@@ -127,6 +127,7 @@ function VoteFormBase({ className, pollId, onVoteComplete }: VoteFormProps) {
         disabled={
           !vote ||
           amount.length === 0 ||
+          (amount.length > 0 && big(amount).eq(0)) ||
           !!invalidAmount ||
           !postTx ||
           !connectedWallet ||

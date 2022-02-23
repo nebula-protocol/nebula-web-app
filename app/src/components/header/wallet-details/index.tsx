@@ -5,7 +5,7 @@ import { useNebBalance } from '@nebula-js/app-provider';
 import { Button, Tooltip } from '@nebula-js/ui';
 import { useConnectedWallet, useWallet } from '@terra-money/wallet-provider';
 import big from 'big.js';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import useClipboard from 'react-use-clipboard';
 import styled from 'styled-components';
@@ -38,13 +38,12 @@ function WalletDetailsBase({
 
   const uNEB = useNebBalance(connectedWallet?.walletAddress);
 
-  //const uUST = useTerraNativeBalanceQuery<UST>('uusd');
-  //
-  //const uLuna = useTerraNativeBalanceQuery<Luna>('uluna');
-
-  //const {
-  //  tokenBalances: { uUST, uLuna, uNEB },
-  //} = useBank<NebulaTokenBalances>();
+  const viewOnTerraFinder = useCallback(() => {
+    window.open(
+      `https://finder.extraterrestrial.money/${connectedWallet?.network.chainID}/account/${connectedWallet?.walletAddress}`,
+      '_blank',
+    );
+  }, [connectedWallet?.network.chainID, connectedWallet?.walletAddress]);
 
   if (!connectedWallet) {
     return null;
@@ -54,7 +53,7 @@ function WalletDetailsBase({
     <div className={className}>
       <header>
         <Tooltip title="View on Terra Finder" placement="top">
-          <h2>
+          <h2 onClick={viewOnTerraFinder}>
             {truncate(connectedWallet.walletAddress)}
             <CallMade />
           </h2>
