@@ -106,7 +106,7 @@ export function parseGovPollResponse(
     status:
       poll.status === 'in_progress'
         ? endsIn <= new Date()
-          ? 'End Poll'
+          ? 'Poll Ended'
           : 'In Progress'
         : poll.status === 'passed'
         ? 'Passed'
