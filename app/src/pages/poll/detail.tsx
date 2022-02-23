@@ -245,13 +245,6 @@ const Table = styled(HorizontalScrollTable)`
       }
     }
   }
-
-  .no-voters-container {
-    height: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 `;
 
 const StyledPollDetail = styled(PollDetailBase)`
