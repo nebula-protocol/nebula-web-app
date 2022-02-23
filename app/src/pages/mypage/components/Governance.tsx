@@ -106,7 +106,6 @@ function GovernanceBase({ className }: GovernanceProps) {
                     : '-'
                 } NEB`,
               },
-              // { label: 'Staking APR', text: <s>123.12%</s> },
               {
                 label: 'Voting Reward',
                 text: `${
