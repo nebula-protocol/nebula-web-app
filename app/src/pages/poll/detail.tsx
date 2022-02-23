@@ -17,6 +17,7 @@ import {
   HorizontalScrollTable,
   Section,
   TwoLine,
+  TwoLineBase,
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { useConnectedWallet, useWallet } from '@terra-money/wallet-provider';
@@ -215,15 +216,15 @@ function PollDetailBase({ className }: PollDetailProps) {
   );
 }
 
-const YesTwoLine = styled(TwoLine)`
+const YesTwoLine = styled(TwoLineBase)`
   p {
-    color: var(--color-blue01) !important;
+    color: var(--color-blue01);
   }
 `;
 
-const NoTwoLine = styled(TwoLine)`
+const NoTwoLine = styled(TwoLineBase)`
   p {
-    color: var(--color-red01) !important;
+    color: var(--color-red01);
   }
 `;
 
