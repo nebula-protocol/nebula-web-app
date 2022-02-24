@@ -68,7 +68,7 @@ function GovernanceBase({ className }: GovernanceProps) {
 
   const proceed = useCallback(
     async (rewardAmount) => {
-      const stream = postTx?.(rewardAmount);
+      const stream = postTx?.({ rewardAmount });
 
       if (stream) {
         broadcast(stream);
@@ -149,7 +149,7 @@ function GovernanceBase({ className }: GovernanceProps) {
       <tbody>
         {myPolls.map(({ poll, voterInfo }) => (
           <tr key={'poll' + poll.poll.id}>
-            <td data-in-progress-over={poll.inProgressTimeover}>
+            <td>
               <TwoLine text={poll.poll.title} subText={poll.type} />
             </td>
             <td>{voterInfo ? voterInfo.vote.toUpperCase() : '-'}</td>
@@ -180,10 +180,6 @@ function GovernanceBase({ className }: GovernanceProps) {
 export const Governance = styled(GovernanceBase)`
   background-color: var(--color-gray14);
   border-radius: 8px;
-
-  [data-in-progress-over='true'] {
-    text-decoration: line-through;
-  }
 
   td,
   th {

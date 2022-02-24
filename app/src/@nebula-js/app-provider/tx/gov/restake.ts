@@ -38,7 +38,7 @@ export function useGovRestakeRewardsTx() {
         queryClient,
         txErrorReporter,
         onTxSucceed: () => {
-          refetchQueries(NEBULA_TX_KEYS.GOV_CLAIM_REWARD);
+          refetchQueries(NEBULA_TX_KEYS.GOV_RESTAKE_REWARD);
         },
         network: connectedWallet.network,
         post: connectedWallet.post,

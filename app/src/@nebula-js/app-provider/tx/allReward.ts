@@ -39,7 +39,7 @@ export function useClaimAllRewardsTx() {
         queryClient,
         txErrorReporter,
         onTxSucceed: () => {
-          refetchQueries(NEBULA_TX_KEYS.CLIAM_ALL_REWARDS);
+          refetchQueries(NEBULA_TX_KEYS.CLAIM_ALL_REWARDS);
         },
         network: connectedWallet.network,
         post: connectedWallet.post,
