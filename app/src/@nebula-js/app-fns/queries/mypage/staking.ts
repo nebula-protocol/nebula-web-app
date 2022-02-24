@@ -1,10 +1,11 @@
-import { CW20PoolInfo, cw20PoolInfoQuery } from '@libs/app-fns';
+import { StakingPoolInfo } from '@nebula-js/app-fns';
 import { QueryClient } from '@libs/query-client';
-import { HumanAddr, staking, Token } from '@nebula-js/types';
+import { HumanAddr, staking } from '@nebula-js/types';
+import { stakingPoolInfoQuery } from '../staking/poolInfo';
 import { stakingRewardInfoQuery } from '../staking/rewardInfo';
 
 export type MypageStaking = Array<
-  CW20PoolInfo<Token> & {
+  StakingPoolInfo & {
     rewardInfo: staking.RewardInfoResponse['reward_infos'][number];
   }
 >;
@@ -34,8 +35,9 @@ export async function mypageStakingQuery(
 
   return await Promise.all(
     rewardInfo.reward_infos.map((info) => {
-      return cw20PoolInfoQuery(
+      return stakingPoolInfoQuery(
         info.asset_token,
+        stakingAddr,
         terraswapFactoryAddr,
         queryClient,
       ).then((poolInfo) => ({

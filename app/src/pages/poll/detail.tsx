@@ -1,5 +1,6 @@
 import { formatRate, formatUTokenWithPostfixUnits } from '@libs/formatter';
 import { FinderAddressLink } from '@libs/ui';
+import { ExpandMore } from '@material-ui/icons';
 import {
   getPollStatusColor,
   GovVoters,
@@ -18,6 +19,7 @@ import {
   Section,
   TwoLine,
   TwoLineBase,
+  TextButton,
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { useConnectedWallet, useWallet } from '@terra-money/wallet-provider';
@@ -208,7 +210,12 @@ function PollDetailBase({ className }: PollDetailProps) {
           </Table>
 
           {hasNextPage && (
-            <Button onClick={() => fetchNextPage()}>Load More</Button>
+            <TextButton
+              style={{ float: 'right' }}
+              onClick={() => fetchNextPage()}
+            >
+              Load More <ExpandMore className="expand-more" />
+            </TextButton>
           )}
         </Section>
       </div>

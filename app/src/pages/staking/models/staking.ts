@@ -1,8 +1,7 @@
 import { TerraswapPool } from '@libs/app-fns';
 import { CW20Addr, NEB, Rate, u, UST } from '@nebula-js/types';
 import { DistributionSchedule, StakingPoolInfoList } from '@nebula-js/app-fns';
-import big, { Big } from 'big.js';
-import { divWithDefault } from '@libs/big-math';
+import { computeStakedValue, computeAPR } from '@nebula-js/app-fns';
 
 export type StakingView = Array<{
   index: number;
@@ -11,7 +10,7 @@ export type StakingView = Array<{
   name: string;
   nameLowerCase: string;
   apr: Rate;
-  totalStaked: u<UST<Big>>;
+  totalStaked: u<UST>;
   isActive: boolean;
 }>;
 
@@ -20,64 +19,25 @@ export function toStakingView(
   poolInfoList: StakingPoolInfoList,
   distributionSchedule: DistributionSchedule | undefined,
 ): StakingView {
+  // TODO: use useStakingAPR
   return nebPool && distributionSchedule
     ? poolInfoList.map(
         (
-          {
-            poolInfo,
-            terraswapPool,
-            terraswapPoolInfo,
-            tokenInfo,
-            tokenAddr,
-            isActive,
-          },
+          { poolInfo, terraswapPoolInfo, tokenInfo, tokenAddr, isActive },
           i,
         ) => {
-          const now = new Date();
+          const stakedLiquidityValue = computeStakedValue(
+            terraswapPoolInfo,
+            poolInfo,
+          );
 
-          const liquidityValue = big(terraswapPoolInfo.tokenPrice)
-            .mul(terraswapPoolInfo.tokenPoolSize)
-            .plus(terraswapPoolInfo.ustPoolSize) as u<UST<Big>>;
-
-          const stakedLiquidityValue = liquidityValue.mul(
-            big(poolInfo.total_bond_amount).div(
-              +terraswapPool.total_share === 0 ? 1 : terraswapPool.total_share,
-            ),
-          ) as u<UST<Big>>;
-
-          let index = -1;
-
-          for (const schedule of distributionSchedule.distribution) {
-            if (schedule.startTime > now) {
-              break;
-            }
-            index++;
-          }
-
-          const weightSum =
-            distributionSchedule.distributionInfo.weights.reduce(
-              (acc, cur) => (acc = acc + cur[1]),
-              0,
-            );
-
-          let apr = '0' as Rate;
-          if (now < distributionSchedule.endTime && index > -1) {
-            const weight = distributionSchedule.distributionInfo.weights.find(
-              (w) => w[0] === tokenAddr,
-            );
-
-            const computedWeight = (weight ? weight[1] : 0) / weightSum;
-
-            const aps = divWithDefault(
-              big(distributionSchedule.distribution[index].distributePerSec)
-                .mul(computedWeight)
-                .mul(nebPool.terraswapPoolInfo.tokenPrice),
-              stakedLiquidityValue,
-              0,
-            );
-
-            apr = aps.mul(60 * 60 * 24 * 365).toFixed(2) as Rate;
-          }
+          const apr = computeAPR(
+            nebPool,
+            distributionSchedule,
+            tokenAddr,
+            terraswapPoolInfo,
+            poolInfo,
+          );
 
           return {
             index: i,
