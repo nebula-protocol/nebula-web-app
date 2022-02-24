@@ -1,14 +1,35 @@
-import React from 'react';
+import { useClaimAllRewardsTx, useNEBPoolQuery } from '@nebula-js/app-provider';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { formatUToken } from '../../../@libs/formatter';
 import { ClaimIcon } from '../../../@nebula-js/icons';
 import { breakpoints, Button } from '../../../@nebula-js/ui';
 import { DisplayNumber } from '../../../components/common/DisplayNumber';
 import { useTotalValue } from '../hooks/useTotalValue';
 import { Header } from './Header';
+import { useTxBroadcast } from '../../../contexts/tx-broadcast';
+import { d6Formatter, formatUToken } from '@libs/formatter';
 
 const TotalRewards = () => {
-  const { totalReward, totalRewardValue } = useTotalValue();
+  const { totalReward, totalRewardValue, stakingReward, govReward } =
+    useTotalValue();
+
+  const { data: nebPool } = useNEBPoolQuery();
+
+  const { broadcast } = useTxBroadcast();
+
+  const postTx = useClaimAllRewardsTx();
+
+  const proceed = useCallback(async () => {
+    const stream = postTx?.({
+      claimStaking: stakingReward.gt(0),
+      claimGov: govReward.gt(0),
+    });
+
+    if (stream) {
+      broadcast(stream);
+    }
+  }, [broadcast, postTx, stakingReward, govReward]);
+
   return (
     <Container>
       <Header>
@@ -17,24 +38,39 @@ const TotalRewards = () => {
       <DisplayNumber
         style={{
           marginTop: 8,
-          marginBottom: 32,
+          marginBottom: 8,
         }}
         price={formatUToken(totalReward)}
         currency="NEB"
       />
+      <p
+        style={{
+          color: 'var(--color-white44)',
+          fontSize: '14px',
+          marginBottom: '32px',
+        }}
+      >
+        {formatUToken(totalRewardValue)} UST
+      </p>
       <SubTitle>NEB PRICE</SubTitle>
       <DisplayNumber
         style={{
           marginTop: 8,
           marginBottom: 40,
         }}
-        price={formatUToken(totalRewardValue)}
+        price={d6Formatter(nebPool?.terraswapPoolInfo.tokenPrice ?? '0')}
         currency="UST"
         size="sm"
       />
-      <StyledButton fullWidth>
+      <StyledButton
+        fullWidth
+        onClick={() => {
+          proceed();
+        }}
+        disabled={totalReward.eq(0)}
+      >
         <ClaimIcon />
-        <s>Claim All Rewards</s>
+        Claim All Rewards
       </StyledButton>
     </Container>
   );

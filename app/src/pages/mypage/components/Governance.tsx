@@ -1,6 +1,10 @@
 import { formatUTokenWithPostfixUnits } from '@libs/formatter';
-import { useGovMyPollsQuery, useGovStakerQuery } from '@nebula-js/app-provider';
-import { SendIcon } from '@nebula-js/icons';
+import {
+  useGovMyPollsQuery,
+  useGovRestakeRewardsTx,
+  useGovStakerQuery,
+} from '@nebula-js/app-provider';
+import { RestakeIcon } from '@nebula-js/icons';
 import {
   Button,
   Descriptions,
@@ -14,8 +18,8 @@ import { useConnectedWallet } from '@terra-money/wallet-provider';
 import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useGovClaimRewardsTx } from '../../../@nebula-js/app-provider/tx/gov/reward';
 import { useTxBroadcast } from '../../../contexts/tx-broadcast';
+import big from 'big.js';
 
 export interface GovernanceProps {
   className?: string;
@@ -31,7 +35,7 @@ function GovernanceBase({ className }: GovernanceProps) {
     connectedWallet?.walletAddress,
   );
 
-  const postTx = useGovClaimRewardsTx();
+  const postTx = useGovRestakeRewardsTx();
 
   const tableMinWidth = useScreenSizeValue({
     mobile: 600,
@@ -62,13 +66,16 @@ function GovernanceBase({ className }: GovernanceProps) {
     hook: (w) => (w > 800 && w < 950 ? 'vertical' : null),
   });
 
-  const proceed = useCallback(async () => {
-    const stream = postTx?.();
+  const proceed = useCallback(
+    async (rewardAmount) => {
+      const stream = postTx?.(rewardAmount);
 
-    if (stream) {
-      broadcast(stream);
-    }
-  }, [broadcast, postTx]);
+      if (stream) {
+        broadcast(stream);
+      }
+    },
+    [broadcast, postTx],
+  );
 
   return (
     <HorizontalScrollTable
@@ -79,21 +86,23 @@ function GovernanceBase({ className }: GovernanceProps) {
       headerContents={
         <Table3SectionHeader>
           <h2>Governance</h2>
-          <div className="buttons">
-            <TextLink
-              onClick={() => {
-                proceed();
-              }}
-            >
-              <SendIcon
-                style={{
-                  marginRight: '0.5em',
-                  transform: 'translateY(-0.1em)',
+          {govStaker && big(govStaker.pending_voting_rewards).gt(0) && (
+            <div className="buttons">
+              <TextLink
+                onClick={() => {
+                  proceed(govStaker.pending_voting_rewards);
                 }}
-              />{' '}
-              Claim All Rewards
-            </TextLink>
-          </div>
+              >
+                <RestakeIcon
+                  style={{
+                    marginRight: '0.3em',
+                    transform: 'scaleX(1.5) scaleY(1.5) translateY(0.1em)',
+                  }}
+                />{' '}
+                Restake Reward
+              </TextLink>
+            </div>
+          )}
           <Descriptions
             className="descriptions"
             direction={descriptionDisplay}

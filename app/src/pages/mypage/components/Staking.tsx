@@ -1,14 +1,13 @@
 import { useCW20PoolInfoQuery } from '@libs/app-provider';
-import { formatUTokenWithPostfixUnits } from '@libs/formatter';
+import { formatRate, formatUTokenWithPostfixUnits } from '@libs/formatter';
 import { useMypageStakingQuery, useNebulaApp } from '@nebula-js/app-provider';
-import { SendIcon } from '@nebula-js/icons';
+import { useStakingAPR } from '@nebula-js/app-provider';
 import { NEB, Token, u, UST } from '@nebula-js/types';
 import {
   Button,
   Descriptions,
   HorizontalScrollTable,
   Table3SectionHeader,
-  TextLink,
   TwoLine,
   useScreenSizeValue,
 } from '@nebula-js/ui';
@@ -28,9 +27,11 @@ function StakingBase({ className }: StakingProps) {
 
   const { data: nebInfo } = useCW20PoolInfoQuery<NEB>(contractAddress.cw20.NEB);
 
+  const getStakingAPR = useStakingAPR();
+
   const stakings = useMemo(() => {
     return data.map(
-      ({ tokenAddr, tokenInfo, rewardInfo, terraswapPoolInfo }) => {
+      ({ tokenAddr, tokenInfo, rewardInfo, terraswapPoolInfo, poolInfo }) => {
         const withdrawableToken = big(terraswapPoolInfo.tokenPoolSize)
           .mul(rewardInfo.bond_amount)
           .div(
@@ -43,9 +44,9 @@ function StakingBase({ className }: StakingProps) {
             terraswapPoolInfo.lpShare === '0' ? 1 : terraswapPoolInfo.lpShare,
           ) as u<UST<Big>>;
 
-        const withdrawableValue = withdrawableToken.mul(
-          terraswapPoolInfo.tokenPrice,
-        ) as u<UST<Big>>;
+        const withdrawableValue = withdrawableToken
+          .mul(terraswapPoolInfo.tokenPrice)
+          .plus(withdrawableUst) as u<UST<Big>>;
 
         return {
           symbol: tokenInfo.symbol,
@@ -60,10 +61,11 @@ function StakingBase({ className }: StakingProps) {
               )
             : big(0)) as u<UST<Big>>,
           to: `/staking/${tokenAddr}/unstake`,
+          apr: getStakingAPR(tokenAddr, terraswapPoolInfo, poolInfo),
         };
       },
     );
-  }, [data, nebInfo]);
+  }, [data, nebInfo, getStakingAPR]);
 
   const stakingsTotal = useMemo(() => {
     return stakings.reduce(
@@ -123,17 +125,6 @@ function StakingBase({ className }: StakingProps) {
       headerContents={
         <Table3SectionHeader>
           <h2>Staking</h2>
-          <div className="buttons">
-            <TextLink component={Link} to="/send">
-              <SendIcon
-                style={{
-                  marginRight: '0.5em',
-                  transform: 'translateY(-0.1em)',
-                }}
-              />{' '}
-              <s>Claim All Rewards</s>
-            </TextLink>
-          </div>
           <Descriptions
             className="descriptions"
             direction={descriptionDisplay}
@@ -203,10 +194,14 @@ function StakingBase({ className }: StakingProps) {
             rewardAmount,
             rewardAmountValue,
             to,
+            apr,
           }) => (
             <tr key={'staking' + symbol}>
               <td>
-                <TwoLine text={`${symbol}-UST LP`} subText={<s>123.12%</s>} />
+                <TwoLine
+                  text={`${symbol}-UST LP`}
+                  subText={`${formatRate(apr)}%`}
+                />
               </td>
               <td>{formatUTokenWithPostfixUnits(staked)} LP</td>
               <td>

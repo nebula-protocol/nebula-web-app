@@ -126,6 +126,8 @@ const useTotalValue = () => {
     totalGovValue: big(govStaker?.balance || '0').mul(
       nebInfo?.terraswapPoolInfo?.tokenPrice || '1',
     ) as u<UST<Big>>,
+    stakingReward: stakingsTotal.reward,
+    govReward: govValues.votingReward,
     totalReward: stakingsTotal.reward.plus(govValues.votingReward) as u<
       NEB<Big>
     >,
@@ -134,6 +136,7 @@ const useTotalValue = () => {
     >,
     stakingsTotal,
     govValues,
+    nebPrice: nebInfo?.terraswapPoolInfo?.tokenPrice || '0',
   };
 };
 
