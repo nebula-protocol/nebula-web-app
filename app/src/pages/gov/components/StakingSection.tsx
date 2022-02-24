@@ -1,15 +1,12 @@
-import { useCW20TokenInfoQuery } from '@libs/app-provider';
 import { formatRate, formatUTokenWithPostfixUnits } from '@libs/formatter';
 import { AnimateNumber } from '@libs/ui';
 import {
-  useGovStateQuery,
   useNebBalance,
   useNebulaApp,
+  useTotalNebStaked,
 } from '@nebula-js/app-provider';
-import { NEB, Rate, u } from '@nebula-js/types';
 import { breakpoints, Section, Sub, TitledLabel } from '@nebula-js/ui';
-import big, { Big } from 'big.js';
-import React, { useMemo } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 export interface StakingSectionProps {
@@ -19,36 +16,9 @@ export interface StakingSectionProps {
 function StakingSectionBase({ className }: StakingSectionProps) {
   const { contractAddress } = useNebulaApp();
 
-  const govNebBalance = useNebBalance(contractAddress.gov);
+  const { totalStaked, stakingRatio } = useTotalNebStaked();
 
   const communityNebBalance = useNebBalance(contractAddress.community);
-
-  const { data: { govState } = {} } = useGovStateQuery();
-
-  const { data: { tokenInfo } = {} } = useCW20TokenInfoQuery<NEB>(
-    contractAddress.cw20.NEB,
-    true,
-  );
-
-  const { totalStaked, stakingRatio } = useMemo(() => {
-    if (!govNebBalance || !govState || !tokenInfo) {
-      return {
-        totalStaked: big(0) as u<NEB<Big>>,
-        stakingRatio: big(0) as Rate<Big>,
-      };
-    }
-
-    const _totalStaked = big(govNebBalance).minus(govState.total_deposit) as u<
-      NEB<Big>
-    >;
-
-    const _stakingRatio = _totalStaked.div(tokenInfo.total_supply) as Rate<Big>;
-
-    return {
-      totalStaked: _totalStaked,
-      stakingRatio: _stakingRatio,
-    };
-  }, [govNebBalance, govState, tokenInfo]);
 
   return (
     <Section className={className}>

@@ -1,9 +1,16 @@
-import { sum } from '@libs/big-math';
-import { formatUTokenIntegerWithPostfixUnits } from '@libs/formatter';
+import { divWithDefault } from '@libs/big-math';
+import { formatRate, formatUTokenWithPostfixUnits } from '@libs/formatter';
 import { AnimateNumber } from '@libs/ui';
-import { computeMarketCap } from '@nebula-js/app-fns';
-import { useClustersInfoListQuery } from '@nebula-js/app-provider';
-import { u, UST } from '@nebula-js/types';
+import { computeStakedValue, computeTotalProvided } from '@nebula-js/app-fns';
+import {
+  useClustersInfoListQuery,
+  useTotalNebStaked,
+  useNebBalance,
+  useNebulaApp,
+  useNebPrice,
+  useStakingPoolInfoListQuery,
+} from '@nebula-js/app-provider';
+import { u, UST, Rate } from '@nebula-js/types';
 import {
   PartitionBarGraph,
   partitionColor,
@@ -20,28 +27,86 @@ export interface TotalValueLockedProps {
 }
 
 function TotalValueLockedBase({ className }: TotalValueLockedProps) {
+  const { contractAddress } = useNebulaApp();
+
+  // ---------------------------------------------
+  // queries
+  // ---------------------------------------------
+  const nebPrice = useNebPrice();
   const { data: clusterInfos = [] } = useClustersInfoListQuery();
+  const { data: poolInfoList = [] } = useStakingPoolInfoListQuery();
 
-  const marketCapTotal = useMemo(() => {
-    if (clusterInfos.length === 0) {
-      return big(0) as u<UST<Big>>;
-    }
+  const { totalStaked: totalNebStaked } = useTotalNebStaked();
 
-    const marketCaps = clusterInfos.map(({ clusterState, terraswapPool }) => {
-      return computeMarketCap(clusterState, terraswapPool);
-    });
+  const communityNebBalance = useNebBalance(contractAddress.community);
 
-    return sum(...marketCaps) as u<UST<Big>>;
-  }, [clusterInfos]);
+  // ---------------------------------------------
+  // computes
+  // ---------------------------------------------
+  const {
+    tvl,
+    totalProvidedRatio,
+    totalLPStakedRatio,
+    totalNebStakedRatio,
+    communityNebRatio,
+  } = useMemo(() => {
+    const totalProvided = computeTotalProvided(clusterInfos);
 
+    const totalLPStakedValue = poolInfoList.reduce<u<UST<Big>>>(
+      (acc, { terraswapPoolInfo, poolInfo }) =>
+        acc.plus(computeStakedValue(terraswapPoolInfo, poolInfo)) as u<
+          UST<Big>
+        >,
+      big('0') as u<UST<Big>>,
+    );
+
+    const totalNebStakedValue = totalNebStaked.mul(nebPrice);
+
+    const communityNebValue = big(communityNebBalance).mul(nebPrice);
+
+    const _tvl = totalProvided
+      .plus(totalLPStakedValue)
+      .plus(totalNebStakedValue)
+      .plus(communityNebValue) as u<UST<Big>>;
+
+    return {
+      tvl: _tvl,
+      totalProvidedRatio: divWithDefault(totalProvided, _tvl, 0) as Rate<Big>,
+      totalLPStakedRatio: divWithDefault(
+        totalLPStakedValue,
+        _tvl,
+        0,
+      ) as Rate<Big>,
+      totalNebStakedRatio: divWithDefault(
+        totalNebStakedValue,
+        _tvl,
+        0,
+      ) as Rate<Big>,
+      communityNebRatio: divWithDefault(
+        communityNebValue,
+        _tvl,
+        0,
+      ) as Rate<Big>,
+    };
+  }, [
+    totalNebStaked,
+    communityNebBalance,
+    clusterInfos,
+    poolInfoList,
+    nebPrice,
+  ]);
+
+  // ---------------------------------------------
+  // presentation
+  // ---------------------------------------------
   const { width = 300, ref } = useResizeObserver();
 
   return (
     <div className={className} ref={ref}>
       <section className="amount">
         <p>
-          <AnimateNumber format={formatUTokenIntegerWithPostfixUnits}>
-            {marketCapTotal}
+          <AnimateNumber format={formatUTokenWithPostfixUnits}>
+            {tvl}
           </AnimateNumber>{' '}
           <Sub>UST</Sub>
         </p>
@@ -52,22 +117,22 @@ function TotalValueLockedBase({ className }: TotalValueLockedProps) {
           data={[
             {
               label: 'INVENTORY',
-              value: <s>24.4%</s>,
+              value: `${formatRate(totalProvidedRatio)}%`,
               color: partitionColor[0],
             },
             {
               label: 'LP STAKED',
-              value: <s>20.8%</s>,
+              value: `${formatRate(totalLPStakedRatio)}%`,
               color: partitionColor[1],
             },
             {
               label: 'NEB STAKED',
-              value: <s>16.2%</s>,
+              value: `${formatRate(totalNebStakedRatio)}%`,
               color: partitionColor[2],
             },
             {
               label: 'COMMUNITY',
-              value: <s>16.2%</s>,
+              value: `${formatRate(communityNebRatio)}%`,
               color: partitionColor[3],
             },
           ]}
@@ -75,19 +140,19 @@ function TotalValueLockedBase({ className }: TotalValueLockedProps) {
         <PartitionBarGraph
           data={[
             {
-              value: 24.4,
+              value: Number(totalProvidedRatio.mul(100).toFixed(2)),
               color: partitionColor[0],
             },
             {
-              value: 24.4,
+              value: Number(totalLPStakedRatio.mul(100).toFixed(2)),
               color: partitionColor[1],
             },
             {
-              value: 24.4,
+              value: Number(totalNebStakedRatio.mul(100).toFixed(2)),
               color: partitionColor[2],
             },
             {
-              value: 24.4,
+              value: Number(communityNebRatio.mul(100).toFixed(2)),
               color: partitionColor[3],
             },
           ]}

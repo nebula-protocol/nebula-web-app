@@ -27,8 +27,8 @@ function TableBase({ className, data }: TableProps) {
         </tr>
       </thead>
       <tbody>
-        {data.map(({ name, provided, ratio, color }) => (
-          <tr key={name}>
+        {data.map(({ id, name, provided, ratio, color }) => (
+          <tr key={id}>
             <th style={{ color }}>{name}</th>
             <td>
               <AnimateNumber format={formatUTokenWithPostfixUnits}>
