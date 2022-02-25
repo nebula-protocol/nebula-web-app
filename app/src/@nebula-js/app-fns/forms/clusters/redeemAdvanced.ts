@@ -74,14 +74,11 @@ export const clusterRedeemAdvancedForm = (
     ClusterRedeemAdvancedFormStates,
     ClusterRedeemAdvancedFormAsyncStates
   > => {
-    if (
-      input.tokenAmount.trim().length === 0 ||
-      big(input.tokenAmount).eq(0) ||
-      input.addedAssets.size === 0
-    ) {
+    if (input.tokenAmount.trim().length === 0 || big(input.tokenAmount).eq(0)) {
       // reset
       asyncStates = Promise.resolve({});
       invalidBurntAmount = null;
+      invalidRedeemQuery = null;
 
       return [
         {
@@ -108,6 +105,13 @@ export const clusterRedeemAdvancedForm = (
         microfy(input.tokenAmount).gt(dependency.tokenBalance)
           ? 'Not enough assets'
           : null;
+    }
+
+    if (input.addedAssets.size === 0) {
+      // reset
+      asyncStates = Promise.resolve({});
+      invalidBurntAmount = null;
+      invalidRedeemQuery = null;
     }
 
     if (
