@@ -199,7 +199,13 @@ function parsePollType(
     'update_config' in executeMsg.msg
   ) {
     return 'Cluster Parameter Change';
+  } else if (
+    executeMsg.contract === address.clusterFactory &&
+    'update_weight' in executeMsg.msg
+  ) {
+    return 'Cluster Factory Distribution Weight Change';
   } else {
+    console.log(executeMsg, address);
     return 'Unknown Poll';
   }
 }
