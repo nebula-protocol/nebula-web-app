@@ -3,7 +3,7 @@ import { u, UST } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
 import { NEBULA_TX_KEYS } from '../..';
-import { govClaimRewardsTx } from '../../../app-fns/tx/gov/reward';
+import { govClaimRewardsTx } from '../../../app-fns/tx/rewards/govReward';
 import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export function useGovClaimRewardsTx() {
