@@ -1,4 +1,4 @@
-import { useClaimAllRewardsTx, useNEBPoolQuery } from '@nebula-js/app-provider';
+import { useClaimAllRewardsTx, useNebPrice } from '@nebula-js/app-provider';
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { ClaimIcon } from '../../../@nebula-js/icons';
@@ -13,7 +13,7 @@ const TotalRewards = () => {
   const { totalReward, totalRewardValue, stakingReward, govReward } =
     useTotalValue();
 
-  const { data: nebPool } = useNEBPoolQuery();
+  const nebPrice = useNebPrice();
 
   const { broadcast } = useTxBroadcast();
 
@@ -58,7 +58,7 @@ const TotalRewards = () => {
           marginTop: 8,
           marginBottom: 40,
         }}
-        price={d6Formatter(nebPool?.terraswapPoolInfo.tokenPrice ?? '0')}
+        price={d6Formatter(nebPrice)}
         currency="UST"
         size="sm"
       />

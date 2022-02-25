@@ -34,6 +34,7 @@ function ClusterDistributionBase({ className }: ClusterDistributionProps) {
         const provided = computeProvided(clusterState).toFixed() as u<UST>;
 
         return {
+          id: clusterState.cluster_contract_address,
           name: clusterTokenInfo.name,
           symbol: clusterTokenInfo.symbol,
           provided,
@@ -61,6 +62,7 @@ function ClusterDistributionBase({ className }: ClusterDistributionProps) {
         return o;
       },
       {
+        id: 'others',
         name: 'Others',
         color: colors[3],
         provided: '0' as u<UST>,

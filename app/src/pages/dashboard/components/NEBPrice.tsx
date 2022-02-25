@@ -1,9 +1,7 @@
-import { useTerraswapPoolQuery } from '@libs/app-provider';
 import { formatToken } from '@libs/formatter';
 import { AnimateNumber } from '@libs/ui';
-import { useNebulaApp } from '@nebula-js/app-provider';
-import { NEB } from '@nebula-js/types';
-import { Sub, VerticalLabelAndValue } from '@nebula-js/ui';
+import { useNebPrice } from '@nebula-js/app-provider';
+import { Sub } from '@nebula-js/ui';
 import { fixHMR } from 'fix-hmr';
 import React from 'react';
 import styled from 'styled-components';
@@ -13,29 +11,22 @@ export interface NEBPriceProps {
 }
 
 function NEBPriceBase({ className }: NEBPriceProps) {
-  const { contractAddress } = useNebulaApp();
-
-  const { data: { terraswapPoolInfo } = {} } = useTerraswapPoolQuery<NEB>(
-    contractAddress.terraswap.nebUstPair,
-  );
+  const nebPrice = useNebPrice();
 
   return (
     <div className={className}>
       <p className="price">
-        <AnimateNumber format={formatToken}>
-          {terraswapPoolInfo
-            ? terraswapPoolInfo.tokenPrice
-            : (0 as NEB<number>)}
-        </AnimateNumber>{' '}
+        <AnimateNumber format={formatToken}>{nebPrice}</AnimateNumber>{' '}
         <Sub>UST</Sub>
       </p>
 
-      <VerticalLabelAndValue
+      {/* TODO: need indexer */}
+      {/* <VerticalLabelAndValue
         className="circulating-supply"
         label="NEB CIRCULATING SUPPLY"
       >
         <s>100,000.123 NEB</s>
-      </VerticalLabelAndValue>
+      </VerticalLabelAndValue> */}
     </div>
   );
 }
