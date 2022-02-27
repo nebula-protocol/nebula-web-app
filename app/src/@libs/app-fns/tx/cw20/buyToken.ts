@@ -1,7 +1,7 @@
 import { floor, min } from '@libs/big-math';
 import {
+  formatUTokenWithPostfixUnits,
   formatTokenWithPostfixUnits,
-  formatUTokenIntegerWithPostfixUnits,
 } from '@libs/formatter';
 import { HumanAddr, Rate, terraswap, Token, u, UST } from '@libs/types';
 import { pipe } from '@rx-stream/pipe';
@@ -119,13 +119,13 @@ export function cw20BuyTokenTx(
           receipts: [
             return_amount && {
               name: 'Bought',
-              value: `${formatUTokenIntegerWithPostfixUnits(return_amount)} ${
+              value: `${formatUTokenWithPostfixUnits(return_amount)} ${
                 $.tokenSymbol
               }`,
             },
             offer_amount && {
               name: 'Paid',
-              value: `${formatUTokenIntegerWithPostfixUnits(offer_amount)} UST`,
+              value: `${formatUTokenWithPostfixUnits(offer_amount)} UST`,
             },
             pricePerToken && {
               name: 'Paid/Bought',
@@ -133,7 +133,7 @@ export function cw20BuyTokenTx(
             },
             tradingFee && {
               name: 'Trading Fee',
-              value: `${formatUTokenIntegerWithPostfixUnits(tradingFee)} ${
+              value: `${formatUTokenWithPostfixUnits(tradingFee)} ${
                 $.tokenSymbol
               }`,
             },
