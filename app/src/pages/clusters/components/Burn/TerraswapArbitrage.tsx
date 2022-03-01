@@ -16,6 +16,7 @@ import {
 } from '@nebula-js/ui';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { FeeBox } from 'components/boxes/FeeBox';
+import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
 import { WithdrawnTokenTable } from 'pages/clusters/components/Burn/WithdrawnTokenTable';
@@ -142,6 +143,12 @@ function BurnTerraswapArbitrageBase({
         )}
       </FeeBox>
 
+      {states.invalidRedeemQuery ? (
+        <WarningMessageBox level="critical" className="warning">
+          {states.invalidRedeemQuery}
+        </WarningMessageBox>
+      ) : null}
+
       <Button
         className="submit"
         color="paleblue"
@@ -151,8 +158,10 @@ function BurnTerraswapArbitrageBase({
           !connectedWallet.availablePost ||
           !states ||
           !!states.invalidUstAmount ||
+          !!states.invalidRedeemQuery ||
           !!states.invalidTxFee ||
-          states.ustAmount.length === 0
+          states.ustAmount.length === 0 ||
+          Number(states.ustAmount) === 0
         }
         onClick={() =>
           'txFee' in states &&
@@ -169,6 +178,10 @@ function BurnTerraswapArbitrageBase({
 export const StyledBurnTerraswapArbitrage = styled(BurnTerraswapArbitrageBase)`
   .token-input {
     margin-bottom: 2.28571429em;
+  }
+
+  .warning {
+    margin-top: 2.14285714em;
   }
 
   .feebox {

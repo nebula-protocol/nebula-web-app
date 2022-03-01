@@ -16,7 +16,7 @@ export interface ClusterBurnProps {
 const tabItems: TabItem[] = [
   { id: 'basic', label: 'Basic' },
   { id: 'advanced', label: 'Advanced' },
-  { id: 'terraswapArbitrage', label: 'Terraswap Arbitrage' },
+  { id: 'astroportArbitrage', label: 'Astroport Arbitrage' },
 ];
 
 const TAB_KEY = '__nebula_burn_tab__';
@@ -39,7 +39,7 @@ function ClusterBurnBase({ className, clusterInfo }: ClusterBurnProps) {
 
       {tabId === 'advanced' ? (
         <BurnAdvanced clusterInfo={clusterInfo} />
-      ) : tabId === 'terraswapArbitrage' ? (
+      ) : tabId === 'astroportArbitrage' ? (
         <BurnTerraswapArbitrage clusterInfo={clusterInfo} />
       ) : (
         <BurnBasic clusterInfo={clusterInfo} />

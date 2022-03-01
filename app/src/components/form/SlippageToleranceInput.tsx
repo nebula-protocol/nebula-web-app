@@ -29,11 +29,14 @@ function SlippageToleranceInputBase(props: SlippageToleranceInputProps) {
         <EmptyNumberInput<Percent>
           autoFocus
           value={big(input.value).mul(100).toFixed() as Percent}
-          onChange={(percent) =>
-            input.onChange(big(percent).div(100).toFixed() as Rate)
-          }
+          onChange={(value) => {
+            const percent = value.length !== 0 ? value : '0';
+            const percentWithCap = big(percent).gt(50) ? big(50) : big(percent);
+
+            input.onChange(percentWithCap.div(100).toFixed() as Rate);
+          }}
           type="integer"
-          maxIntegerPoints={2}
+          maxIntegerPoints={3}
           placeholder="0.00"
         />
       )}

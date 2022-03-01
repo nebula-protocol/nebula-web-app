@@ -16,7 +16,7 @@ export interface ClusterMintProps {
 const tabItems: TabItem[] = [
   { id: 'basic', label: 'Basic' },
   { id: 'advanced', label: 'Advanced' },
-  { id: 'terraswapArbitrage', label: 'Terraswap Arbitrage' },
+  { id: 'astroportArbitrage', label: 'Astroport Arbitrage' },
 ];
 
 const TAB_KEY = '__nebula_mint_tab__';
@@ -39,7 +39,7 @@ function ClusterMintBase({ className, clusterInfo }: ClusterMintProps) {
 
       {tabId === 'advanced' ? (
         <MintAdvanced clusterInfo={clusterInfo} />
-      ) : tabId === 'terraswapArbitrage' ? (
+      ) : tabId === 'astroportArbitrage' ? (
         <MintTerraswapArbitrage clusterInfo={clusterInfo} />
       ) : (
         <MintBasic clusterInfo={clusterInfo} />

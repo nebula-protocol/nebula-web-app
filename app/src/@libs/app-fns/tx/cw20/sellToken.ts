@@ -6,9 +6,9 @@ import {
 } from '../../queries/txInfo';
 import { floor } from '@libs/big-math';
 import {
-  formatTokenIntegerWithPostfixUnits,
-  formatUTokenIntegerWithPostfixUnits,
   stripUUSD,
+  formatUTokenWithPostfixUnits,
+  formatTokenWithPostfixUnits,
 } from '@libs/formatter';
 import {
   cw20,
@@ -131,23 +131,21 @@ export function cw20SellTokenTx<T extends Token>(
           receipts: [
             offer_amount && {
               name: 'Sold',
-              value: `${formatUTokenIntegerWithPostfixUnits(offer_amount)} ${
+              value: `${formatUTokenWithPostfixUnits(offer_amount)} ${
                 $.tokenSymbol
               }`,
             },
             return_amount && {
               name: 'Earned',
-              value: `${formatUTokenIntegerWithPostfixUnits(
-                return_amount,
-              )} UST`,
+              value: `${formatUTokenWithPostfixUnits(return_amount)} UST`,
             },
             pricePerToken && {
               name: `Price per ${$.tokenSymbol}`,
-              value: `${formatTokenIntegerWithPostfixUnits(pricePerToken)} UST`,
+              value: `${formatTokenWithPostfixUnits(pricePerToken)} UST`,
             },
             tradingFee && {
               name: 'Trading Fee',
-              value: `${formatUTokenIntegerWithPostfixUnits(tradingFee)} UST`,
+              value: `${formatUTokenWithPostfixUnits(tradingFee)} UST`,
             },
             helper.txHashReceipt(),
             helper.txFeeReceipt(txFee),

@@ -31,6 +31,7 @@ export interface ClusterMintAdvancedFormDependency {
 export interface ClusterMintAdvancedFormStates
   extends ClusterMintAdvancedFormInput {
   invalidAmounts: (string | null)[];
+  invalidMintQuery: string | null;
   remainAssets: terraswap.Asset<Token>[];
   balances: TerraBalances | undefined;
   txFee: u<UST> | null;
@@ -47,6 +48,7 @@ export const clusterMintAdvancedForm = (
   prevDependency: ClusterMintAdvancedFormDependency | undefined,
 ) => {
   let invalidAmounts: (string | null)[];
+  let invalidMintQuery: string | null;
   let remainAssets: terraswap.Asset<Token>[];
   let asyncStates: Promise<ClusterMintAdvancedFormAsyncStates>;
 
@@ -108,67 +110,78 @@ export const clusterMintAdvancedForm = (
             dependency.clusterState,
             dependency.lastSyncedHeight,
             dependency.queryClient,
-          ).then(({ mint }) => {
-            const clusterTxFee = computeClusterTxFee(
-              dependency.gasPrice,
-              dependency.clusterFee.default,
-              dependency.clusterState.target.length,
-              dependency.clusterState.target.length,
-            );
+          )
+            .then(({ mint }) => {
+              const clusterTxFee = computeClusterTxFee(
+                dependency.gasPrice,
+                dependency.clusterFee.default,
+                dependency.clusterState.target.length,
+                dependency.clusterState.target.length,
+              );
 
-            const clusterPrice = computeCTPrices(
-              dependency.clusterState,
-              dependency.terraswapPool,
-            ).clusterPrice;
+              const clusterPrice = computeCTPrices(
+                dependency.clusterState,
+                dependency.terraswapPool,
+              ).clusterPrice;
 
-            // totalMintValue = createToken * clusterPrice
-            const totalMintValue = big(mint.create_tokens).mul(
-              clusterPrice,
-            ) as u<UST<Big>>;
+              // totalMintValue = createToken * clusterPrice
+              const totalMintValue = big(mint.create_tokens).mul(
+                clusterPrice,
+              ) as u<UST<Big>>;
 
-            const totalInputValue = vectorDot(
-              input.amounts.map((amount) =>
-                amount.length > 0 ? microfy(amount).toFixed() : '0',
-              ),
-              dependency.clusterState.prices,
-            ) as u<UST<Big>>;
+              const totalInputValue = vectorDot(
+                input.amounts.map((amount) =>
+                  amount.length > 0 ? microfy(amount).toFixed() : '0',
+                ),
+                dependency.clusterState.prices,
+              ) as u<UST<Big>>;
 
-            // let txFee: u<UST> | null;
+              // let txFee: u<UST> | null;
 
-            // if (input.addedAssets.size > 0) {
-            //   const ustIndex = dependency.clusterState.target.findIndex(
-            //     ({ info }) => {
-            //       return (
-            //         'native_token' in info &&
-            //         (info.native_token.denom === 'uusd' ||
-            //           info.native_token.denom === 'uust')
-            //       );
-            //     },
-            //   );
+              // if (input.addedAssets.size > 0) {
+              //   const ustIndex = dependency.clusterState.target.findIndex(
+              //     ({ info }) => {
+              //       return (
+              //         'native_token' in info &&
+              //         (info.native_token.denom === 'uusd' ||
+              //           info.native_token.denom === 'uust')
+              //       );
+              //     },
+              //   );
 
-            //   if (ustIndex === -1 || input.amounts[ustIndex].length === 0) {
-            //     txFee = clusterTxFee;
-            //   } else {
-            //     const uust = microfy(input.amounts[ustIndex]) as u<UST<Big>>;
-            //     const ratioTxFee = big(uust.minus(dependency.fixedFee))
-            //       .div(big(1).plus(dependency.taxRate))
-            //       .mul(dependency.taxRate);
+              //   if (ustIndex === -1 || input.amounts[ustIndex].length === 0) {
+              //     txFee = clusterTxFee;
+              //   } else {
+              //     const uust = microfy(input.amounts[ustIndex]) as u<UST<Big>>;
+              //     const ratioTxFee = big(uust.minus(dependency.fixedFee))
+              //       .div(big(1).plus(dependency.taxRate))
+              //       .mul(dependency.taxRate);
 
-            //     txFee = max(min(ratioTxFee, dependency.maxTaxUUSD), 0)
-            //       .plus(clusterTxFee)
-            //       .toFixed() as u<UST>;
-            //   }
-            // } else {
-            //   txFee = null;
-            // }
+              //     txFee = max(min(ratioTxFee, dependency.maxTaxUUSD), 0)
+              //       .plus(clusterTxFee)
+              //       .toFixed() as u<UST>;
+              //   }
+              // } else {
+              //   txFee = null;
+              // }
 
-            return {
-              mintedAmount: mint.create_tokens as u<CT>,
-              pnl: totalMintValue.minus(totalInputValue).toFixed() as u<UST>,
-              totalInputValue,
-              txFee: clusterTxFee,
-            };
-          })
+              return {
+                mintedAmount: mint.create_tokens as u<CT>,
+                pnl: totalMintValue.minus(totalInputValue).toFixed() as u<UST>,
+                totalInputValue,
+                txFee: clusterTxFee,
+              };
+            })
+            .catch((err) => {
+              invalidMintQuery = err.message;
+
+              return {
+                mintedAmount: undefined,
+                pnl: undefined,
+                totalInputValue: undefined,
+                invalidMintQuery,
+              };
+            })
         : Promise.resolve({
             mintedAmount: undefined,
             pnl: undefined,
@@ -181,6 +194,7 @@ export const clusterMintAdvancedForm = (
       {
         ...input,
         invalidAmounts,
+        invalidMintQuery,
         remainAssets,
         balances: dependency.balances,
         txFee: null,

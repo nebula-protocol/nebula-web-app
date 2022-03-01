@@ -49,13 +49,14 @@ export interface ClusterRedeemTerraswapArbitrageFormStates
   invalidUstAmount: string | null;
   maxUstAmount: u<UST<BigSource>>;
   invalidTxFee: string | null;
+  invalidRedeemQuery: string | null;
+  txFee: u<UST> | null;
 }
 
 export interface ClusterRedeemTerraswapArbitrageFormAsyncStates {
   burntTokenAmount?: u<CT>;
   redeemTokenAmounts?: u<Token>[];
   redeemValue?: u<UST>;
-  txFee?: u<UST>;
 }
 
 export const clusterRedeemTerraswapArbitrageForm = (
@@ -70,6 +71,7 @@ export const clusterRedeemTerraswapArbitrageForm = (
   );
 
   let invalidUstAmount: string | null;
+  let invalidRedeemQuery: string | null;
   let asyncStates: Promise<ClusterRedeemTerraswapArbitrageFormAsyncStates>;
 
   return (
@@ -85,7 +87,9 @@ export const clusterRedeemTerraswapArbitrageForm = (
           ...input,
           maxUstAmount,
           invalidUstAmount: null,
+          invalidRedeemQuery: null,
           invalidTxFee: null,
+          txFee: null,
         },
         Promise.resolve({}),
       ];
@@ -165,11 +169,28 @@ export const clusterRedeemTerraswapArbitrageForm = (
                 ? 'Not enough transaction fees'
                 : null,
           };
+        })
+        .catch((err) => {
+          invalidRedeemQuery = err.message;
+
+          return {
+            burntTokenAmount: undefined,
+            redeemTokenAmounts: undefined,
+            redeemValue: undefined,
+            invalidRedeemQuery,
+          };
         });
     }
 
     return [
-      { ...input, maxUstAmount, invalidUstAmount, invalidTxFee: null },
+      {
+        ...input,
+        maxUstAmount,
+        invalidUstAmount,
+        invalidRedeemQuery,
+        invalidTxFee: null,
+        txFee: null,
+      },
       asyncStates,
     ];
   };

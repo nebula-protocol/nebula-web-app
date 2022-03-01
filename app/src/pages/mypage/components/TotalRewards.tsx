@@ -8,8 +8,11 @@ import { useTotalValue } from '../hooks/useTotalValue';
 import { Header } from './Header';
 import { useTxBroadcast } from '../../../contexts/tx-broadcast';
 import { d6Formatter, formatUToken } from '@libs/formatter';
+import { useConnectedWallet } from '@terra-money/use-wallet';
 
 const TotalRewards = () => {
+  const connectedWallet = useConnectedWallet();
+
   const { totalReward, totalRewardValue, stakingReward, govReward } =
     useTotalValue();
 
@@ -67,7 +70,11 @@ const TotalRewards = () => {
         onClick={() => {
           proceed();
         }}
-        disabled={totalReward.eq(0)}
+        disabled={
+          totalReward.eq(0) ||
+          !connectedWallet ||
+          !connectedWallet.availablePost
+        }
       >
         <ClaimIcon />
         Claim All Rewards

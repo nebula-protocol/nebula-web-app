@@ -98,14 +98,17 @@ function SwapBase({
           </EmptyButton>
         }
         token={<TokenSpan>UST</TokenSpan>}
+        error={states.invalidUstAmount}
       />
 
       {/* loading state */}
-      {states.ustAmount.length > 0 && !('boughtTokens' in states) && (
-        <div className="loading-container">
-          <RotateSpinner color="var(--color-paleblue)" />
-        </div>
-      )}
+      {states.ustAmount.length > 0 &&
+        states.ustAmount !== '0' &&
+        !('boughtTokens' in states) && (
+          <div className="loading-container">
+            <RotateSpinner color="var(--color-paleblue)" />
+          </div>
+        )}
 
       {'boughtTokens' in states && Array.isArray(states.boughtTokens) && (
         <TokenTable
@@ -124,9 +127,9 @@ function SwapBase({
         )}
       </FeeBox>
 
-      {states.invalidUstAmount ? (
+      {states.invalidSwap ? (
         <WarningMessageBox level="critical" className="warning">
-          {states.invalidUstAmount}
+          {states.invalidSwap}
         </WarningMessageBox>
       ) : states.invalidQuery ? (
         <WarningMessageBox level="critical" className="warning">
@@ -144,6 +147,7 @@ function SwapBase({
           !states ||
           !!states.invalidUstAmount ||
           !!states.invalidQuery ||
+          !!states.invalidSwap ||
           !('boughtTokens' in states && Array.isArray(states.boughtTokens)) ||
           states.ustAmount.length === 0 ||
           !states.txFee

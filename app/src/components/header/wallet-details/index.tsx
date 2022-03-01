@@ -115,6 +115,7 @@ function WalletDetailsBase({
 
 export const WalletDetails = styled(WalletDetailsBase)`
   h2 {
+    width: fit-content;
     cursor: pointer;
     user-select: none;
 

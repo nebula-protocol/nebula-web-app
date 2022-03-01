@@ -86,23 +86,26 @@ function GovernanceBase({ className }: GovernanceProps) {
       headerContents={
         <Table3SectionHeader>
           <h2>Governance</h2>
-          {govStaker && big(govStaker.pending_voting_rewards).gt(0) && (
-            <div className="buttons">
-              <TextLink
-                onClick={() => {
-                  proceed(govStaker.pending_voting_rewards);
-                }}
-              >
-                <RestakeIcon
-                  style={{
-                    marginRight: '0.3em',
-                    transform: 'scaleX(1.5) scaleY(1.5) translateY(0.1em)',
+          {govStaker &&
+            big(govStaker.pending_voting_rewards).gt(0) &&
+            connectedWallet &&
+            connectedWallet.availablePost && (
+              <div className="buttons">
+                <TextLink
+                  onClick={() => {
+                    proceed(govStaker.pending_voting_rewards);
                   }}
-                />{' '}
-                Restake Reward
-              </TextLink>
-            </div>
-          )}
+                >
+                  <RestakeIcon
+                    style={{
+                      marginRight: '0.3em',
+                      transform: 'scaleX(1.5) scaleY(1.5) translateY(0.1em)',
+                    }}
+                  />{' '}
+                  Restake Reward
+                </TextLink>
+              </div>
+            )}
           <Descriptions
             className="descriptions"
             direction={descriptionDisplay}
