@@ -10,6 +10,7 @@ import { PieChart } from './PieChart';
 import { Table } from './Table';
 import { Item } from './types';
 import { formatUTokenWithPostfixUnits } from '@libs/formatter';
+import { divWithDefault } from '@libs/big-math';
 
 export interface ClusterDistributionProps {
   className?: string;
@@ -45,9 +46,11 @@ function ClusterDistributionBase({ className }: ClusterDistributionProps) {
     );
 
     for (const distribution of distributions) {
-      distribution.ratio = big(distribution.provided)
-        .div(totalProvided)
-        .toFixed() as Rate;
+      distribution.ratio = divWithDefault(
+        distribution.provided,
+        totalProvided,
+        0,
+      ).toFixed() as Rate;
     }
 
     const sortedDistributions = distributions.sort((a, b) => {

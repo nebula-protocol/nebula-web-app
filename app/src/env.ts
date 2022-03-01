@@ -22,21 +22,21 @@ export function NEBULA_CONTRACT_ADDRESS(
     return {
       // TODO change it
       airdrop: 'terra179dgjvznfk5x2fsqa3un492l5zu9p9utdncrn7' as HumanAddr,
-      collector: 'terra1xk7a2yhm2a7ylkns73e0vg50lv6l7cv0n02rhq' as HumanAddr,
-      community: 'terra1acmfgylk8chxw7lxwmkzv3gzdesk4vfjpng0d5' as HumanAddr,
+      collector: 'terra1nqjfk3uaefzrgecnmxjgcwxxfg4jhrvcupm9nm' as HumanAddr,
+      community: 'terra1fkwn9mmyz2fqyv67qf3z6l9xjya42sdurdfjxn' as HumanAddr,
       clusterFactory:
-        'terra144wvr259rwvmg37x7k4y8sd9k6uzykl3s6dmt7' as HumanAddr,
-      gov: 'terra13psqttx8wzmedtmd7g4mhtyqdvujnryzgwuy84' as HumanAddr,
-      incentives: 'terra19lrxyn8ps7w733y69a05ulkseg4dlh649yag86' as HumanAddr,
+        'terra103srr94gy8zgyey7ncg63gqfgac3y6nkdc28jh' as HumanAddr,
+      gov: 'terra12qsqwjc2f95a93l6kg0k77ldvvptuqg4wujqa3' as HumanAddr,
+      incentives: 'terra120q8hwjm2n0cgy9r5kzhq3l9ghg0lsrxfp00z6' as HumanAddr,
       incentivesCustody:
-        'terra1cn985mqxtk9hxlc67a5nh52pkx2vcvtt2jzwdz' as HumanAddr,
-      staking: 'terra1tzjhck0r8c0np7yazhj9jr5cmn53uut6u7rh67' as HumanAddr,
+        'terra150mx4dnrqls55ws5tff2t2he0etm6u8kd0hrde' as HumanAddr,
+      staking: 'terra1wqc6rek55dnpj2j2h6mc9kqpqxnwnt23l830ey' as HumanAddr,
       terraswap: {
         factory: 'terra15jsahkaf9p0qu8ye873p0u5z6g07wdad0tdq43' as HumanAddr,
-        nebUstPair: 'terra1k78f55ch47anypyqw7yvcp37ra8hrgkn6962xm' as HumanAddr,
+        nebUstPair: 'terra1u6tn733n3hw2gzkhqmqurajxjggfvf45qujq3d' as HumanAddr,
       },
       cw20: {
-        NEB: 'terra1hwts6pfqyj8c833m6f9djzwtlhzvdc9yx2ve5e' as CW20Addr,
+        NEB: 'terra1aj5yepjnmhdvh0xz3dfqeh30wday6tapvaze47' as CW20Addr,
       },
     };
   }
