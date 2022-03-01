@@ -16,6 +16,7 @@ export * from './logics/clusters/computeClusterTxFee';
 export * from './logics/clusters/computeBulkSwapTxFee';
 export * from './logics/clusters/computeCTPrices';
 export * from './logics/clusters/computeMarketCap';
+export * from './logics/clusters/computeMaxUstBalanceForSwap';
 export * from './logics/clusters/computeProvided';
 export * from './logics/clusters/computeTotalProvided';
 export * from './logics/clusters/getTargetColor';

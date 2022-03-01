@@ -28,7 +28,16 @@ export interface MintBasicState {
 const MintBasic: Context<MintBasicState> = createContext<MintBasicState>();
 
 export function MintBasicProvider({ children }: MintBasicProps) {
+  // ---------------------------------------------
+  // dependencies
+  // ---------------------------------------------
   const connectedWallet = useConnectedWallet();
+
+  const { pathname } = useLocation();
+
+  // ---------------------------------------------
+  // states
+  // ---------------------------------------------
 
   const [step, setStep] = useState<BasicStepsEnum>(BasicStepsEnum.SWAP);
 
@@ -36,25 +45,49 @@ export function MintBasicProvider({ children }: MintBasicProps) {
 
   const [clusterAddr, setClusterAddr] = useState<string | null>(null);
 
-  const resetAndBackToSwap = useCallback(() => {
-    setProvidedAmounts([]);
-    setClusterAddr(null);
-    setStep(BasicStepsEnum.SWAP);
-  }, [setClusterAddr, setStep, setProvidedAmounts]);
-
-  const { pathname } = useLocation();
-
+  // ---------------------------------------------
+  // logics
+  // ---------------------------------------------
   const match = matchPath<{ address: string }>(pathname, {
     path: '/clusters/:address',
     exact: false,
     strict: false,
   });
 
+  // ---------------------------------------------
+  // callbacks
+  // ---------------------------------------------
+
+  const resetAndBackToSwap = useCallback(() => {
+    setProvidedAmounts([]);
+    setClusterAddr(null);
+    setStep(BasicStepsEnum.SWAP);
+  }, [setClusterAddr, setStep, setProvidedAmounts]);
+
   const onSwapSucceed = (amounts: u<Token>[]) => {
     setProvidedAmounts(amounts);
     setClusterAddr(match!.params.address);
     setStep(BasicStepsEnum.MINT);
   };
+
+  // ---------------------------------------------
+  // side effects
+  // ---------------------------------------------
+  useEffect(() => {
+    function callback(event: BeforeUnloadEvent) {
+      event.preventDefault();
+      return (event.returnValue =
+        "You're on minting process. Are you sure you want to close?");
+    }
+
+    if (step === BasicStepsEnum.MINT) {
+      window.addEventListener('beforeunload', callback);
+    }
+
+    return () => {
+      window.removeEventListener('beforeunload', callback);
+    };
+  }, [step]);
 
   useEffect(() => {
     if (providedAmounts.length > 0 && !!clusterAddr) {

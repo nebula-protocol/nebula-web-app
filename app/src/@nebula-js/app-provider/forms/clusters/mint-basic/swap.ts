@@ -1,4 +1,4 @@
-import { useFixedFee, useUstBalance, useUstTax } from '@libs/app-provider';
+import { useFixedFee, useUstBalance } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
 import { clusterSwapForm } from '@nebula-js/app-fns';
 import { cluster, UST } from '@nebula-js/types';
@@ -16,8 +16,6 @@ export function useClusterSwapForm({ clusterState }: ClusterSwapFormParams) {
 
   const fixedFee = useFixedFee();
 
-  const { taxRate, maxTax } = useUstTax();
-
   const uUST = useUstBalance();
 
   return useForm(
@@ -25,12 +23,11 @@ export function useClusterSwapForm({ clusterState }: ClusterSwapFormParams) {
     {
       queryClient,
       ustBalance: uUST,
-      taxRate,
-      maxTaxUUSD: maxTax,
       clusterState,
       terraswapFactoryAddr: contractAddress.terraswap.factory,
-      fixedFee,
       swapGasWantedPerAsset: constants.swapGasWantedPerAsset,
+      clusterFee: constants.nebula.clusterFee,
+      fixedFee,
       gasPrice,
       connected: !!connectedWallet,
     },
