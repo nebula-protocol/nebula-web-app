@@ -75,11 +75,6 @@ export const clusterRedeemAdvancedForm = (
     ClusterRedeemAdvancedFormAsyncStates
   > => {
     if (input.tokenAmount.trim().length === 0 || big(input.tokenAmount).eq(0)) {
-      // reset
-      asyncStates = Promise.resolve({});
-      invalidBurntAmount = null;
-      invalidRedeemQuery = null;
-
       return [
         {
           ...input,
@@ -108,7 +103,6 @@ export const clusterRedeemAdvancedForm = (
     }
 
     if (input.addedAssets.size === 0) {
-      // reset
       asyncStates = Promise.resolve({});
       invalidBurntAmount = null;
       invalidRedeemQuery = null;
