@@ -53,11 +53,12 @@ export class PieChart extends Component<PieChartProps> {
 
   private createChart = () => {
     this.chart = new Chart(this.canvasRef.current!, {
-      type: 'pie',
+      type: 'doughnut',
       plugins: [ChartDataLabels],
       options: {
         //@ts-ignore chart.js plugins type infer error
         radius: 100,
+        cutout: 112,
         plugins: {
           legend: {
             display: false,
@@ -69,6 +70,7 @@ export class PieChart extends Component<PieChartProps> {
             font: {
               size: 11,
             },
+            display: false,
             color: 'var(--color-gray14)',
             formatter: (value, context) => {
               return context.chart.data.labels?.[context.dataIndex];
