@@ -22,10 +22,10 @@ const tabItems: TabItem[] = [
 const TAB_KEY = '__nebula_burn_tab__';
 
 function ClusterBurnBase({ className, clusterInfo }: ClusterBurnProps) {
-  const [tabId, setTabId] = useLocalStorage(TAB_KEY, () => tabItems[1].id);
+  const [tabId, setTabId] = useLocalStorage(TAB_KEY, () => tabItems[0].id);
 
   const tab = useMemo(() => {
-    return tabItems.find(({ id }) => tabId === id) ?? tabItems[1];
+    return tabItems.find(({ id }) => tabId === id) ?? tabItems[0];
   }, [tabId]);
 
   return (

@@ -2,6 +2,7 @@ import { floor } from '@libs/big-math';
 import {
   pickEvent,
   pickRawLog,
+  terraswapSimulationQuery,
   TxCommonParams,
   TxResultRendering,
   TxStreamPhase,
@@ -13,17 +14,30 @@ import {
   _postTx,
   TxHelper,
 } from '@libs/app-fns/tx/internal';
-import { HumanAddr, incentives, u, UST } from '@nebula-js/types';
+import {
+  terraswap,
+  HumanAddr,
+  incentives,
+  u,
+  UST,
+  CT,
+  Rate,
+  Token,
+} from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
 import { Coin, Coins, MsgExecuteContract, Fee } from '@terra-money/terra.js';
 import { Observable } from 'rxjs';
+import { computeMinReceivedToken } from '@nebula-js/app-fns';
+import { demicrofy, microfy } from '@libs/formatter';
 
 export function clusterArbRedeemTx(
   $: {
     walletAddr: HumanAddr;
     incentivesAddr: HumanAddr;
     clusterAddr: HumanAddr;
+    terraswapPairAddr: HumanAddr;
     amount: u<UST>;
+    maxSpread: Rate;
     onTxSucceed?: () => void;
   } & TxCommonParams,
 ): Observable<TxResultRendering> {
@@ -31,6 +45,32 @@ export function clusterArbRedeemTx(
 
   return pipe(
     (_: void) => {
+      return terraswapSimulationQuery(
+        $.terraswapPairAddr,
+        {
+          amount: $.amount,
+          info: {
+            native_token: {
+              denom: 'uusd',
+            },
+          },
+        },
+        $.queryClient,
+      ).then(({ simulation }) => {
+        return {
+          value: simulation,
+          phase: TxStreamPhase.POST,
+          receipts: [],
+        } as TxResultRendering<terraswap.pair.SimulationResponse<Token, Token>>;
+      });
+    },
+    ({ value: { return_amount } }) => {
+      const minReceivedCT = computeMinReceivedToken(
+        demicrofy($.amount).toFixed() as UST,
+        return_amount,
+        $.maxSpread,
+      );
+
       return _createTxOptions({
         msgs: [
           new MsgExecuteContract(
@@ -47,6 +87,7 @@ export function clusterArbRedeemTx(
                   },
                   amount: $.amount,
                 },
+                min_cluster: microfy(minReceivedCT).toFixed() as u<CT>,
               },
             } as incentives.ArbClusterRedeem,
             new Coins([new Coin('uusd', $.amount)]),
@@ -77,10 +118,7 @@ export function clusterArbRedeemTx(
           value: null,
 
           phase: TxStreamPhase.SUCCEED,
-          receipts: [
-            helper.txHashReceipt(),
-            //helper.txFeeReceipt(txFee),
-          ],
+          receipts: [helper.txHashReceipt(), helper.txFeeReceipt($.txFee)],
         } as TxResultRendering;
       } catch (error) {
         return helper.failedToParseTxResult();

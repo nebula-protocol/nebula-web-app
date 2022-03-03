@@ -2,7 +2,6 @@ import { floor } from '@libs/big-math';
 import {
   pickEvent,
   pickRawLog,
-  terraswapPoolQuery,
   TxCommonParams,
   TxResultRendering,
   TxStreamPhase,
@@ -20,6 +19,7 @@ import {
   incentives,
   terraswap,
   Token,
+  UST,
   u,
 } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
@@ -35,6 +35,7 @@ export function clusterArbMintTx(
     terraswapPairAddr: HumanAddr;
     assets: terraswap.Asset<Token>[];
     amounts: u<Token>[];
+    minUust: u<UST>;
     onTxSucceed?: () => void;
   } & TxCommonParams,
 ): Observable<TxResultRendering> {
@@ -66,62 +67,30 @@ export function clusterArbMintTx(
     .filter((coin): coin is Coin => !!coin);
 
   return pipe(
-    (_: void) => {
-      return terraswapPoolQuery($.terraswapPairAddr, $.queryClient).then(
-        ({ terraswapPool }) => {
-          return {
-            value: terraswapPool,
-            phase: TxStreamPhase.POST,
-            receipts: [],
-          } as TxResultRendering<terraswap.pair.PoolResponse<Token, Token>>;
-        },
-      );
-    },
-    ({ value }) =>
-      _createTxOptions({
-        msgs: [
-          ...increaseAllownance,
-          new MsgExecuteContract(
-            $.walletAddr,
-            $.incentivesAddr,
-            {
-              arb_cluster_create: {
-                cluster_contract: $.clusterAddr,
-                assets: $.assets
-                  .map(({ info }, i) => ({
-                    info,
-                    amount: $.amounts[i],
-                  }))
-                  .filter(({ amount }) => big(amount).gt(0)),
-              },
-            } as incentives.ArbClusterCreate,
-            nativeCoins.length > 0 ? new Coins(nativeCoins) : undefined,
-          ),
-          //new MsgExecuteContract($.walletAddr, $.incentivesAddr, {
-          //  swap_all: {
-          //    terraswap_pair: $.terraswapPairAddr,
-          //    cluster_token: $.clusterAddr,
-          //    to_ust: true,
-          //  },
-          //} as incentives.SwapAll),
-          //new MsgExecuteContract($.walletAddr, $.incentivesAddr, {
-          //  record_terraswap_impact: {
-          //    arbitrager: $.walletAddr,
-          //    terraswap_pair: $.terraswapPairAddr,
-          //    cluster_contract: $.clusterAddr,
-          //    pool_before: value,
-          //  },
-          //} as incentives.RecordTerraswapImpact),
-          //new MsgExecuteContract($.walletAddr, $.incentivesAddr, {
-          //  send_all: {
-          //    asset_infos: $.assets,
-          //    send_to: $.walletAddr,
-          //  },
-          //} as incentives.SendAll),
-        ],
-        fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
-        gasAdjustment: $.gasAdjustment,
-      })(),
+    _createTxOptions({
+      msgs: [
+        ...increaseAllownance,
+        new MsgExecuteContract(
+          $.walletAddr,
+          $.incentivesAddr,
+          {
+            arb_cluster_create: {
+              cluster_contract: $.clusterAddr,
+              assets: $.assets
+                .map(({ info }, i) => ({
+                  info,
+                  amount: $.amounts[i],
+                }))
+                .filter(({ amount }) => big(amount).gt(0)),
+              min_ust: $.minUust,
+            },
+          } as incentives.ArbClusterCreate,
+          nativeCoins.length > 0 ? new Coins(nativeCoins) : undefined,
+        ),
+      ],
+      fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
+      gasAdjustment: $.gasAdjustment,
+    }),
     _postTx({ helper, ...$ }),
     _pollTxInfo({ helper, ...$ }),
     ({ value: txInfo }) => {
@@ -143,10 +112,7 @@ export function clusterArbMintTx(
           value: null,
 
           phase: TxStreamPhase.SUCCEED,
-          receipts: [
-            helper.txHashReceipt(),
-            //helper.txFeeReceipt(txFee),
-          ],
+          receipts: [helper.txHashReceipt(), helper.txFeeReceipt($.txFee)],
         } as TxResultRendering;
       } catch (error) {
         return helper.failedToParseTxResult();
