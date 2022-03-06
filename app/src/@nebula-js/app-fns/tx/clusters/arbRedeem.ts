@@ -20,15 +20,13 @@ import {
   incentives,
   u,
   UST,
-  CT,
   Rate,
   Token,
 } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
 import { Coin, Coins, MsgExecuteContract, Fee } from '@terra-money/terra.js';
 import { Observable } from 'rxjs';
-import { computeMinReceivedToken } from '@nebula-js/app-fns';
-import { demicrofy, microfy } from '@libs/formatter';
+import { computeMinReceivedAmount } from '@nebula-js/app-fns';
 
 export function clusterArbRedeemTx(
   $: {
@@ -65,8 +63,7 @@ export function clusterArbRedeemTx(
       });
     },
     ({ value: { return_amount } }) => {
-      const minReceivedCT = computeMinReceivedToken(
-        demicrofy($.amount).toFixed() as UST,
+      const minReceivedUCT = computeMinReceivedAmount(
         return_amount,
         $.maxSpread,
       );
@@ -87,7 +84,7 @@ export function clusterArbRedeemTx(
                   },
                   amount: $.amount,
                 },
-                min_cluster: microfy(minReceivedCT).toFixed() as u<CT>,
+                min_cluster: minReceivedUCT,
               },
             } as incentives.ArbClusterRedeem,
             new Coins([new Coin('uusd', $.amount)]),

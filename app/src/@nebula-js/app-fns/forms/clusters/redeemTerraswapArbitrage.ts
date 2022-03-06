@@ -4,10 +4,10 @@ import {
   terraswapSimulationQuery,
 } from '@libs/app-fns';
 import { sum, vectorMultiply } from '@libs/big-math';
-import { microfy } from '@libs/formatter';
+import { demicrofy, microfy } from '@libs/formatter';
 import { QueryClient } from '@libs/query-client';
 import { FormReturn } from '@libs/use-form';
-import { computeMinReceivedToken } from '@nebula-js/app-fns';
+import { computeMinReceivedAmount } from '@nebula-js/app-fns';
 import {
   cluster,
   CT,
@@ -142,11 +142,9 @@ export const clusterRedeemTerraswapArbitrageForm = (
         .then(async ({ simulation: { return_amount } }) => {
           txFee = clusterTxFee;
 
-          const minReceivedCT = computeMinReceivedToken(
-            input.ustAmount,
-            return_amount,
-            input.maxSpread,
-          );
+          const minReceivedCT = demicrofy(
+            computeMinReceivedAmount(return_amount, input.maxSpread),
+          ).toFixed() as CT;
 
           const { redeem } = await clusterRedeemQuery(
             minReceivedCT,

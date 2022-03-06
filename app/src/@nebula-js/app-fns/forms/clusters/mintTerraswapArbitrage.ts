@@ -10,7 +10,7 @@ import {
 } from './mintAdvanced';
 import big from 'big.js';
 import { computeClusterTxFee } from '@nebula-js/app-fns';
-import { computeMinReceivedUUST } from '@nebula-js/app-fns';
+import { computeMinReceivedAmount } from '@nebula-js/app-fns';
 
 export interface ClusterMintTerraswapArbitrageFormInput
   extends ClusterMintAdvancedFormInput {
@@ -69,8 +69,7 @@ export const clusterMintTerraswapArbitrageForm = (
           dependency.queryClient,
         );
 
-        const minReceivedUust = computeMinReceivedUUST(
-          advancedAsyncStates.mintedAmount,
+        const minReceivedUust = computeMinReceivedAmount(
           return_amount as u<UST>,
           input.maxSpread,
         );
