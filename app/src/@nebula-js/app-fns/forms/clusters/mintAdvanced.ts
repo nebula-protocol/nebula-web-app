@@ -136,6 +136,15 @@ export const clusterMintAdvancedForm = (
                 dependency.clusterState.prices,
               ) as u<UST<Big>>;
 
+              if (big(mint.create_tokens).eq(0)) {
+                return {
+                  mintedAmount: undefined,
+                  pnl: undefined,
+                  totalInputValue: undefined,
+                  txFee: null,
+                };
+              }
+
               return {
                 mintedAmount: mint.create_tokens as u<CT>,
                 pnl: totalMintValue.minus(totalInputValue).toFixed() as u<UST>,

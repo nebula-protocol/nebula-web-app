@@ -52,7 +52,6 @@ function MintAdvancedBase({ className, clusterInfo }: MintAdvancedProps) {
   }, [clusterInfo.clusterState.target, updateInput]);
 
   const proceed = useCallback(
-    // ignore minUust
     (amounts: Token[], txFee: u<UST>) => {
       const stream = postTx?.({
         amounts: amounts.map(
