@@ -5,6 +5,7 @@ import {
   rs,
   terraswap,
   Token,
+  Rate,
 } from '@libs/types';
 
 export namespace cluster_factory {
@@ -108,7 +109,7 @@ export namespace cluster_factory {
     nebula_token: HumanAddr;
     staking_contract: HumanAddr;
     commission_collector: HumanAddr;
-    protocol_fee_rate: string;
+    protocol_fee_rate: Rate;
     terraswap_factory: HumanAddr;
     token_code_id: rs.u64;
     cluster_code_id: rs.u64;

@@ -4,8 +4,11 @@ import { microfy } from '@libs/formatter';
 import { QueryClient } from '@libs/query-client';
 import { FormReturn } from '@libs/use-form';
 import { cluster, CT, NoMicro, Rate, Token, u, UST } from '@nebula-js/types';
-import big, { BigSource } from 'big.js';
-import { computeClusterTxFee } from '../../logics/clusters/computeClusterTxFee';
+import big from 'big.js';
+import {
+  computeClusterTxFee,
+  computeTokenWithoutFee,
+} from '@nebula-js/app-fns';
 import { clusterRedeemQuery } from '../../queries/clusters/redeem';
 import { NebulaClusterFee } from '../../types';
 
@@ -18,11 +21,9 @@ export interface ClusterRedeemBasicFormDependency {
   lastSyncedHeight: () => Promise<number>;
   //
   clusterState: cluster.ClusterStateResponse;
+  protocolFee: Rate;
   //
   tokenBalance: u<CT>;
-  taxRate: Rate;
-  maxTaxUUSD: u<UST>;
-  fixedFee: u<UST<BigSource>>;
   gasPrice: GasPrice;
   clusterFee: NebulaClusterFee;
 }
@@ -87,8 +88,13 @@ export const clusterRedeemBasicForm = (
       dependency.gasPrice !== prevDependency?.gasPrice ||
       input.tokenAmount !== prevInput?.tokenAmount
     ) {
-      asyncStates = clusterRedeemQuery(
+      const tokenAmountWithoutFee = computeTokenWithoutFee(
         input.tokenAmount,
+        dependency.protocolFee,
+      );
+
+      asyncStates = clusterRedeemQuery(
+        tokenAmountWithoutFee,
         [],
         dependency.clusterState,
         dependency.lastSyncedHeight,
@@ -102,7 +108,7 @@ export const clusterRedeemBasicForm = (
         );
 
         return {
-          burntTokenAmount: redeem.token_cost,
+          burntTokenAmount: microfy(input.tokenAmount).toFixed() as u<CT>,
           redeemTokenAmounts: redeem.redeem_assets,
           redeemValue: sum(
             ...vectorMultiply(

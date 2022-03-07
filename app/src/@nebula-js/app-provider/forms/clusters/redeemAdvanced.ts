@@ -1,11 +1,7 @@
-import {
-  useCW20Balance,
-  useFixedFee,
-  useTerraBalancesQuery,
-  useUstTax,
-} from '@libs/app-provider';
+import { useCW20Balance, useTerraBalancesQuery } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
 import { clusterRedeemAdvancedForm } from '@nebula-js/app-fns';
+import { useProtocolFee } from '@nebula-js/app-provider';
 import { cluster, terraswap, CT, Token } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useMemo } from 'react';
@@ -26,16 +22,14 @@ export function useClusterRedeemAdvancedForm({
     return clusterState.target.map(({ info }) => info);
   }, [clusterState.target]);
 
-  const fixedFee = useFixedFee();
-
-  const { taxRate, maxTax } = useUstTax();
-
   const { data: balances } = useTerraBalancesQuery(assetInfos);
 
   const uCT = useCW20Balance<CT>(
     clusterState.cluster_token,
     connectedWallet?.terraAddress,
   );
+
+  const protocolFee = useProtocolFee();
 
   return useForm(
     clusterRedeemAdvancedForm,
@@ -45,9 +39,7 @@ export function useClusterRedeemAdvancedForm({
       lastSyncedHeight,
       balances,
       tokenBalance: uCT,
-      taxRate,
-      maxTaxUUSD: maxTax,
-      fixedFee,
+      protocolFee,
       clusterFee: constants.nebula.clusterFee,
       gasPrice,
     },

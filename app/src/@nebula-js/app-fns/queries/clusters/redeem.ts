@@ -36,7 +36,7 @@ export async function clusterRedeemQuery(
             block_height: blockHeight,
             cluster_token_supply: clusterState.outstanding_balance_tokens,
             inventory: clusterState.inv,
-            max_tokens: microfy(clusterTokenAmount).toFixed() as u<CT>,
+            max_tokens: microfy(clusterTokenAmount).toFixed(0) as u<CT>,
             asset_prices: clusterState.prices,
             target_weights: clusterState.target.map(({ amount }) => amount),
             redeem_asset_amounts: redeemAssetAmount.map(
