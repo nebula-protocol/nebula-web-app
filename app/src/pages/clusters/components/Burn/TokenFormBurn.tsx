@@ -40,14 +40,10 @@ function TokenFormBurnBase({
   onProceed,
   className,
 }: TokenFormBurnProps) {
+  // ---------------------------------------------
+  // dependencies
+  // ---------------------------------------------
   const connectedWallet = useConnectedWallet();
-
-  const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
-    mobile: 'medium',
-    tablet: 'normal',
-    pc: 'normal',
-    monitor: 'normal',
-  });
 
   // ---------------------------------------------
   // callbacks
@@ -65,6 +61,16 @@ function TokenFormBurnBase({
     },
     [updateInput],
   );
+
+  // ---------------------------------------------
+  // presentation
+  // ---------------------------------------------
+  const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
+    mobile: 'medium',
+    tablet: 'normal',
+    pc: 'normal',
+    monitor: 'normal',
+  });
 
   const removeAsset = useCallback(
     (asset: terraswap.Asset<Token>) => {

@@ -1,8 +1,4 @@
-import {
-  useFixedFee,
-  useTerraBalancesQuery,
-  useUstTax,
-} from '@libs/app-provider';
+import { useFixedFee, useTerraBalancesQuery } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
 import {
   clusterMintTerraswapArbitrageForm,
@@ -11,6 +7,7 @@ import {
 import { cluster, terraswap, CT, Token, UST, Rate } from '@nebula-js/types';
 import { useMemo } from 'react';
 import { useNebulaApp } from '../../hooks/useNebulaApp';
+import { useProtocolFee } from '@nebula-js/app-provider';
 
 export interface ClusterMintTerraswapArbitrageFormParams {
   clusterState: cluster.ClusterStateResponse;
@@ -31,9 +28,9 @@ export function useClusterMintTerraswapArbitrageForm({
 
   const fixedFee = useFixedFee();
 
-  const tax = useUstTax();
-
   const { data: balances } = useTerraBalancesQuery(assetInfos);
+
+  const protocolFee = useProtocolFee();
 
   return useForm(
     clusterMintTerraswapArbitrageForm,
@@ -44,8 +41,7 @@ export function useClusterMintTerraswapArbitrageForm({
       lastSyncedHeight,
       terraswapPair,
       balances,
-      taxRate: tax.taxRate,
-      maxTaxUUSD: tax.maxTax,
+      protocolFee,
       fixedFee,
       clusterFee: constants.nebula.clusterFee,
       gasPrice,

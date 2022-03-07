@@ -6,7 +6,10 @@ import { FormReturn } from '@libs/use-form';
 import { computeCTPrices } from '@nebula-js/app-fns';
 import { cluster, CT, Rate, terraswap, Token, u, UST } from '@nebula-js/types';
 import big, { Big, BigSource } from 'big.js';
-import { computeClusterTxFee } from '../../logics/clusters/computeClusterTxFee';
+import {
+  computeClusterTxFee,
+  computeUTokenWithoutFee,
+} from '@nebula-js/app-fns';
 import { clusterMintQuery } from '../../queries/clusters/mint';
 import { NebulaClusterFee } from '../../types';
 
@@ -20,12 +23,11 @@ export interface ClusterMintAdvancedFormDependency {
   balances: TerraBalances | undefined;
   lastSyncedHeight: () => Promise<number>;
   clusterState: cluster.ClusterStateResponse;
+  protocolFee: Rate;
   terraswapPool: terraswap.pair.PoolResponse<CT, UST>;
   gasPrice: GasPrice;
   clusterFee: NebulaClusterFee;
   fixedFee: u<UST<BigSource>>;
-  taxRate: Rate;
-  maxTaxUUSD: u<UST>;
 }
 
 export interface ClusterMintAdvancedFormStates
@@ -112,6 +114,20 @@ export const clusterMintAdvancedForm = (
             dependency.queryClient,
           )
             .then(({ mint }) => {
+              if (big(mint.create_tokens).eq(0)) {
+                return {
+                  mintedAmount: undefined,
+                  pnl: undefined,
+                  totalInputValue: undefined,
+                  txFee: null,
+                };
+              }
+
+              const mintedAmountWithoutFee = computeUTokenWithoutFee(
+                mint.create_tokens as u<CT>,
+                dependency.protocolFee,
+              );
+
               const clusterTxFee = computeClusterTxFee(
                 dependency.gasPrice,
                 dependency.clusterFee.default,
@@ -125,7 +141,7 @@ export const clusterMintAdvancedForm = (
               ).clusterPrice;
 
               // totalMintValue = createToken * clusterPrice
-              const totalMintValue = big(mint.create_tokens).mul(
+              const totalMintValue = big(mintedAmountWithoutFee).mul(
                 clusterPrice,
               ) as u<UST<Big>>;
 
@@ -136,17 +152,8 @@ export const clusterMintAdvancedForm = (
                 dependency.clusterState.prices,
               ) as u<UST<Big>>;
 
-              if (big(mint.create_tokens).eq(0)) {
-                return {
-                  mintedAmount: undefined,
-                  pnl: undefined,
-                  totalInputValue: undefined,
-                  txFee: null,
-                };
-              }
-
               return {
-                mintedAmount: mint.create_tokens as u<CT>,
+                mintedAmount: mintedAmountWithoutFee,
                 pnl: totalMintValue.minus(totalInputValue).toFixed() as u<UST>,
                 totalInputValue,
                 txFee: clusterTxFee,

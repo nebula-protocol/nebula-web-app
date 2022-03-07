@@ -7,14 +7,17 @@ import {
   cluster,
   CT,
   NoMicro,
-  Rate,
   terraswap,
+  Rate,
   Token,
   u,
   UST,
 } from '@nebula-js/types';
-import big, { BigSource } from 'big.js';
-import { computeClusterTxFee } from '../../logics/clusters/computeClusterTxFee';
+import big from 'big.js';
+import {
+  computeTokenWithoutFee,
+  computeClusterTxFee,
+} from '@nebula-js/app-fns';
 import { clusterRedeemQuery } from '../../queries/clusters/redeem';
 import { NebulaClusterFee } from '../../types';
 
@@ -28,13 +31,9 @@ export interface ClusterRedeemAdvancedFormDependency {
   queryClient: QueryClient;
   balances: TerraBalances | undefined;
   lastSyncedHeight: () => Promise<number>;
-  //
   clusterState: cluster.ClusterStateResponse;
-  //
+  protocolFee: Rate;
   tokenBalance: u<CT>;
-  taxRate: Rate;
-  maxTaxUUSD: u<UST>;
-  fixedFee: u<UST<BigSource>>;
   gasPrice: GasPrice;
   clusterFee: NebulaClusterFee;
 }
@@ -130,8 +129,13 @@ export const clusterRedeemAdvancedForm = (
         input.amounts !== prevInput.amounts) &&
       input.amounts.find((amount) => amount.length > 0)
     ) {
-      asyncStates = clusterRedeemQuery(
+      const tokenAmountWithoutFee = computeTokenWithoutFee(
         input.tokenAmount,
+        dependency.protocolFee,
+      );
+
+      asyncStates = clusterRedeemQuery(
+        tokenAmountWithoutFee,
         input.amounts,
         dependency.clusterState,
         dependency.lastSyncedHeight,
@@ -148,7 +152,7 @@ export const clusterRedeemAdvancedForm = (
           );
 
           invalidBurntAmount = big(redeem.token_cost).gt(
-            microfy(input.tokenAmount),
+            microfy(tokenAmountWithoutFee),
           )
             ? 'Burnt Token Amount exceed.'
             : big(redeem.token_cost).eq(0)
@@ -156,7 +160,7 @@ export const clusterRedeemAdvancedForm = (
             : null;
 
           return {
-            burntTokenAmount: redeem.token_cost,
+            burntTokenAmount: microfy(input.tokenAmount).toFixed(0) as u<CT>,
             redeemTokenAmounts: redeem.redeem_assets,
             redeemValue: sum(
               ...vectorMultiply(

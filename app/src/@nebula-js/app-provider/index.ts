@@ -24,6 +24,7 @@ export * from './queries/clusters/info';
 export * from './queries/clusters/infoList';
 export * from './queries/clusters/list';
 export * from './queries/clusters/stateList';
+export * from './queries/cluster-factory/config';
 export * from './queries/community/config';
 export * from './queries/gov/config';
 export * from './queries/gov/myPolls';

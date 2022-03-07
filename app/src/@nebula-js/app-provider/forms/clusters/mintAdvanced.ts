@@ -5,6 +5,7 @@ import {
 } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
 import { clusterMintAdvancedForm } from '@nebula-js/app-fns';
+import { useProtocolFee } from '@nebula-js/app-provider';
 import { cluster, CT, terraswap, Token, UST } from '@nebula-js/types';
 import { useMemo } from 'react';
 import { useNebulaApp } from '../../hooks/useNebulaApp';
@@ -30,11 +31,14 @@ export function useClusterMintAdvancedForm({
 
   const { data: balances } = useTerraBalancesQuery(assetInfos);
 
+  const protocolFee = useProtocolFee();
+
   return useForm(
     clusterMintAdvancedForm,
     {
       queryClient,
       clusterState,
+      protocolFee,
       terraswapPool,
       lastSyncedHeight,
       balances,

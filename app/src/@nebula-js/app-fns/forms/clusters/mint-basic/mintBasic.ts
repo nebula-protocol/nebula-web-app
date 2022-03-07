@@ -1,8 +1,11 @@
 import { GasPrice } from '@libs/app-fns';
 import { QueryClient } from '@libs/query-client';
 import { FormReturn } from '@libs/use-form';
-import { cluster, CT, Token, u, UST } from '@nebula-js/types';
-import { computeClusterTxFee } from '../../../logics/clusters/computeClusterTxFee';
+import { cluster, CT, Rate, Token, u, UST } from '@nebula-js/types';
+import {
+  computeClusterTxFee,
+  computeUTokenWithoutFee,
+} from '@nebula-js/app-fns';
 import { NebulaClusterFee } from '../../../types';
 import { clusterMintQuery } from '@nebula-js/app-fns';
 
@@ -13,6 +16,7 @@ export interface ClusterMintBaicFormDependency {
   providedAmounts: u<Token>[];
   lastSyncedHeight: () => Promise<number>;
   clusterState: cluster.ClusterStateResponse;
+  protocolFee: Rate;
   gasPrice: GasPrice;
   clusterFee: NebulaClusterFee;
 }
@@ -29,6 +33,7 @@ export interface ClusterMintBasicFormAsyncStates {
 export const clusterMintBasicForm = ({
   queryClient,
   clusterState,
+  protocolFee,
   providedAmounts,
   lastSyncedHeight,
   gasPrice,
@@ -52,8 +57,13 @@ export const clusterMintBasicForm = ({
       lastSyncedHeight,
       queryClient,
     ).then(({ mint }) => {
+      const mintedAmountWithoutFee = computeUTokenWithoutFee(
+        mint.create_tokens as u<CT>,
+        protocolFee,
+      );
+
       return {
-        mintedAmount: mint.create_tokens as u<CT>,
+        mintedAmount: mintedAmountWithoutFee,
         txFee: clusterTxFee,
       };
     });
