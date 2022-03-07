@@ -3,7 +3,7 @@ import {
   clusterArbRedeemTx,
   computeClusterGasWanted,
 } from '@nebula-js/app-fns';
-import { HumanAddr, terraswap, Token, u, UST } from '@nebula-js/types';
+import { HumanAddr, terraswap, Rate, Token, u, UST } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
 import { NEBULA_TX_KEYS } from '../../env';
@@ -12,12 +12,14 @@ import { useNebulaApp } from '../../hooks/useNebulaApp';
 export interface ClusterArbRedeemTxParams {
   amount: u<UST>;
   txFee: u<UST>;
+  maxSpread: Rate;
 
   onTxSucceed?: () => void;
 }
 
 export function useClusterArbRedeemTx(
   clusterAddr: HumanAddr,
+  terraswapPairAddr: HumanAddr,
   assets: terraswap.Asset<Token>[],
 ) {
   const connectedWallet = useConnectedWallet();
@@ -30,7 +32,7 @@ export function useClusterArbRedeemTx(
   const refetchQueries = useRefetchQueries();
 
   const stream = useCallback(
-    ({ amount, txFee, onTxSucceed }: ClusterArbRedeemTxParams) => {
+    ({ amount, txFee, maxSpread, onTxSucceed }: ClusterArbRedeemTxParams) => {
       if (!connectedWallet || !connectedWallet.availablePost) {
         throw new Error(`Can't post!`);
       }
@@ -40,6 +42,9 @@ export function useClusterArbRedeemTx(
         walletAddr: connectedWallet.walletAddress,
         incentivesAddr: contractAddress.incentives,
         clusterAddr,
+        terraswapPairAddr,
+        amount,
+        maxSpread,
         fixedFee,
         gasWanted: computeClusterGasWanted(
           constants.nebula.clusterFee.default,
@@ -55,7 +60,6 @@ export function useClusterArbRedeemTx(
         },
         network: connectedWallet.network,
         post: connectedWallet.post,
-        amount,
       });
     },
     [
@@ -65,6 +69,7 @@ export function useClusterArbRedeemTx(
       constants.nebula.clusterFee.default,
       constants.gasAdjustment,
       contractAddress.incentives,
+      terraswapPairAddr,
       fixedFee,
       refetchQueries,
       txErrorReporter,

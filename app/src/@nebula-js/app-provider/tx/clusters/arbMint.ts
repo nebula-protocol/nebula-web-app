@@ -10,6 +10,7 @@ import { useNebulaApp } from '../../hooks/useNebulaApp';
 export interface ClusterArbMintTxParams {
   amounts: u<Token>[];
   txFee: u<UST>;
+  minUust: u<UST>;
 
   onTxSucceed?: () => void;
 }
@@ -29,7 +30,7 @@ export function useClusterArbMintTx(
   const refetchQueries = useRefetchQueries();
 
   const stream = useCallback(
-    ({ amounts, txFee, onTxSucceed }: ClusterArbMintTxParams) => {
+    ({ amounts, txFee, minUust, onTxSucceed }: ClusterArbMintTxParams) => {
       if (!connectedWallet || !connectedWallet.availablePost) {
         throw new Error(`Can't post!`);
       }
@@ -50,6 +51,7 @@ export function useClusterArbMintTx(
         terraswapPairAddr,
         assets,
         amounts,
+        minUust,
         fixedFee,
         gasWanted: computeClusterGasWanted(
           constants.nebula.clusterFee.arbMint,

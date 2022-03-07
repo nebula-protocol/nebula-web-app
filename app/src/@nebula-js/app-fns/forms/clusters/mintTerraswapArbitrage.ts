@@ -1,6 +1,6 @@
 import { terraswapSimulationQuery } from '@libs/app-fns';
 import { FormReturn } from '@libs/use-form';
-import { terraswap, u, UST } from '@nebula-js/types';
+import { terraswap, u, UST, Rate } from '@nebula-js/types';
 import {
   clusterMintAdvancedForm,
   ClusterMintAdvancedFormAsyncStates,
@@ -10,9 +10,12 @@ import {
 } from './mintAdvanced';
 import big from 'big.js';
 import { computeClusterTxFee } from '@nebula-js/app-fns';
+import { computeMinReceivedAmount } from '@nebula-js/app-fns';
 
 export interface ClusterMintTerraswapArbitrageFormInput
-  extends ClusterMintAdvancedFormInput {}
+  extends ClusterMintAdvancedFormInput {
+  maxSpread: Rate;
+}
 
 export interface ClusterMintTerraswapArbitrageFormDependency
   extends ClusterMintAdvancedFormDependency {
@@ -20,7 +23,8 @@ export interface ClusterMintTerraswapArbitrageFormDependency
 }
 
 export interface ClusterMintTerraswapArbitrageFormStates
-  extends ClusterMintAdvancedFormStates {}
+  extends ClusterMintAdvancedFormStates,
+    ClusterMintTerraswapArbitrageFormInput {}
 
 export interface ClusterMintTerraswapArbitrageFormAsyncStates
   extends ClusterMintAdvancedFormAsyncStates {
@@ -48,9 +52,11 @@ export const clusterMintTerraswapArbitrageForm = (
       dependency.clusterState.target.length,
     );
 
-    const asyncStates = _asyncStates?.then((advancedAsyncStates) => {
+    const asyncStates = _asyncStates?.then(async (advancedAsyncStates) => {
       if (advancedAsyncStates.mintedAmount) {
-        return terraswapSimulationQuery(
+        const {
+          simulation: { return_amount },
+        } = await terraswapSimulationQuery(
           dependency.terraswapPair.contract_addr,
           {
             amount: advancedAsyncStates.mintedAmount,
@@ -61,19 +67,23 @@ export const clusterMintTerraswapArbitrageForm = (
             },
           },
           dependency.queryClient,
-        ).then(({ simulation }) => {
-          // pnl = returnAmount - dot(inputAmounts, prices)
-          const pnl = big(simulation.return_amount)
-            .minus(advancedAsyncStates.totalInputValue!)
-            .toFixed() as u<UST>;
+        );
 
-          return {
-            ...advancedAsyncStates,
-            returnedAmount: simulation.return_amount as u<UST>,
-            pnl,
-            txFee: clusterTxFee,
-          } as ClusterMintTerraswapArbitrageFormAsyncStates;
-        });
+        const minReceivedUust = computeMinReceivedAmount(
+          return_amount as u<UST>,
+          input.maxSpread,
+        );
+
+        const pnl = big(minReceivedUust)
+          .minus(advancedAsyncStates.totalInputValue!)
+          .toFixed() as u<UST>;
+
+        return {
+          ...advancedAsyncStates,
+          returnedAmount: minReceivedUust,
+          pnl,
+          txFee: clusterTxFee,
+        } as ClusterMintTerraswapArbitrageFormAsyncStates;
       } else {
         return {
           ...advancedAsyncStates,
@@ -82,6 +92,6 @@ export const clusterMintTerraswapArbitrageForm = (
       }
     });
 
-    return [states, asyncStates];
+    return [{ ...states, maxSpread: input.maxSpread }, asyncStates];
   };
 };

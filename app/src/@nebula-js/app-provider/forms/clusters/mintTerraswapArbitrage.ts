@@ -4,8 +4,11 @@ import {
   useUstTax,
 } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
-import { clusterMintTerraswapArbitrageForm } from '@nebula-js/app-fns';
-import { cluster, terraswap, CT, Token, UST } from '@nebula-js/types';
+import {
+  clusterMintTerraswapArbitrageForm,
+  ClusterMintTerraswapArbitrageFormInput,
+} from '@nebula-js/app-fns';
+import { cluster, terraswap, CT, Token, UST, Rate } from '@nebula-js/types';
 import { useMemo } from 'react';
 import { useNebulaApp } from '../../hooks/useNebulaApp';
 
@@ -51,7 +54,8 @@ export function useClusterMintTerraswapArbitrageForm({
       return {
         addedAssets: new Set<terraswap.Asset<Token>>(),
         amounts: assetInfos.map(() => '' as Token),
-      };
+        maxSpread: '0.01' as Rate,
+      } as ClusterMintTerraswapArbitrageFormInput;
     },
   );
 }

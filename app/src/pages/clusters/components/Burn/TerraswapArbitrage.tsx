@@ -5,10 +5,12 @@ import {
   useClusterRedeemTerraswapArbitrageForm,
 } from '@nebula-js/app-provider';
 import { WalletIcon } from '@nebula-js/icons';
-import { u, UST } from '@nebula-js/types';
+import { u, UST, Rate } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
+  Disclosure,
+  FormLabel,
   TextButton,
   TokenInput,
   TokenSpan,
@@ -16,11 +18,12 @@ import {
 } from '@nebula-js/ui';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { FeeBox } from 'components/boxes/FeeBox';
+import { SlippageToleranceInput } from 'components/form/SlippageToleranceInput';
 import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
 import { WithdrawnTokenTable } from 'pages/clusters/components/Burn/WithdrawnTokenTable';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 
 export interface BurnTerraswapArbitrageProps {
@@ -37,19 +40,34 @@ function BurnTerraswapArbitrageBase({
     terraswapPair,
   },
 }: BurnTerraswapArbitrageProps) {
+  // ---------------------------------------------
+  // dependencies
+  // ---------------------------------------------
+
   const connectedWallet = useConnectedWallet();
+
+  const { broadcast } = useTxBroadcast();
+
+  const postTx = useClusterArbRedeemTx(
+    clusterState.cluster_contract_address,
+    terraswapPair.contract_addr,
+    clusterState.target,
+  );
+
+  // ---------------------------------------------
+  // states
+  // ---------------------------------------------
+
+  const [openMoreOptions, setOpenMoreOptions] = useState<boolean>(false);
 
   const [updateInput, states] = useClusterRedeemTerraswapArbitrageForm({
     clusterState,
     terraswapPair,
   });
 
-  const { broadcast } = useTxBroadcast();
-
-  const postTx = useClusterArbRedeemTx(
-    clusterState.cluster_contract_address,
-    clusterState.target,
-  );
+  // ---------------------------------------------
+  // callbacks
+  // ---------------------------------------------
 
   const initForm = useCallback(() => {
     updateInput({
@@ -58,20 +76,24 @@ function BurnTerraswapArbitrageBase({
   }, [updateInput]);
 
   const proceed = useCallback(
-    (ustAmount: UST, txFee: u<UST>) => {
+    (ustAmount: UST, txFee: u<UST>, maxSpread: Rate) => {
       const stream = postTx?.({
         amount: microfy(ustAmount).toFixed() as u<UST>,
         txFee,
+        maxSpread,
         onTxSucceed: initForm,
       });
 
       if (stream) {
-        console.log('TerraswapArbitrage.tsx..()', stream);
         broadcast(stream);
       }
     },
     [broadcast, initForm, postTx],
   );
+
+  // ---------------------------------------------
+  // presentaion
+  // ---------------------------------------------
 
   const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
     mobile: 'medium',
@@ -110,6 +132,23 @@ function BurnTerraswapArbitrageBase({
         error={states.invalidUstAmount}
       />
 
+      <Disclosure
+        className="more-options"
+        title="More Options"
+        open={openMoreOptions}
+        onChange={setOpenMoreOptions}
+      >
+        <FormLabel label="Max Spread">
+          <SlippageToleranceInput
+            initialCustomValue={'0.1' as Rate}
+            value={states.maxSpread}
+            onChange={(nextMaxSpread) =>
+              updateInput({ maxSpread: nextMaxSpread })
+            }
+          />
+        </FormLabel>
+      </Disclosure>
+
       {'redeemTokenAmounts' in states &&
         Array.isArray(states.redeemTokenAmounts) && (
           <WithdrawnTokenTable
@@ -119,18 +158,19 @@ function BurnTerraswapArbitrageBase({
         )}
 
       <FeeBox className="feebox">
-        {'burntTokenAmount' in states && states.burntTokenAmount && (
+        {'minBurntTokenAmount' in states && states.minBurntTokenAmount && (
           <li>
-            <span>Burnt {clusterTokenInfo.symbol}</span>
+            <span>Minimum Burnt {clusterTokenInfo.symbol}</span>
             <span>
-              {formatUToken(states.burntTokenAmount)} {clusterTokenInfo.symbol}
+              {formatUToken(states.minBurntTokenAmount)}{' '}
+              {clusterTokenInfo.symbol}
             </span>
           </li>
         )}
 
         {'redeemValue' in states && states.redeemValue && (
           <li>
-            <span>Redeem Value</span>
+            <span>Minimum Redeem Value</span>
             <span>{formatUToken(states.redeemValue)} UST</span>
           </li>
         )}
@@ -160,13 +200,14 @@ function BurnTerraswapArbitrageBase({
           !!states.invalidUstAmount ||
           !!states.invalidRedeemQuery ||
           !!states.invalidTxFee ||
+          !('minBurntTokenAmount' in states && states.minBurntTokenAmount) ||
           states.ustAmount.length === 0 ||
           Number(states.ustAmount) === 0
         }
         onClick={() =>
           'txFee' in states &&
           states.txFee &&
-          proceed(states.ustAmount, states.txFee)
+          proceed(states.ustAmount, states.txFee, states.maxSpread)
         }
       >
         Burn
@@ -182,6 +223,11 @@ export const StyledBurnTerraswapArbitrage = styled(BurnTerraswapArbitrageBase)`
 
   .warning {
     margin-top: 2.14285714em;
+  }
+
+  .more-options {
+    margin-top: 2.14285714em;
+    margin-bottom: 2.14285714em;
   }
 
   .feebox {

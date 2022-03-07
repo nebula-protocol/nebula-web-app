@@ -1,7 +1,7 @@
 import { useFixedFee, useUstBalance, useUstTax } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
 import { clusterRedeemTerraswapArbitrageForm } from '@nebula-js/app-fns';
-import { cluster, terraswap, UST } from '@nebula-js/types';
+import { cluster, terraswap, UST, Rate } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useNebulaApp } from '../../hooks/useNebulaApp';
 
@@ -42,6 +42,7 @@ export function useClusterRedeemTerraswapArbitrageForm({
     () => {
       return {
         ustAmount: '' as UST,
+        maxSpread: '0.01' as Rate,
       };
     },
   );

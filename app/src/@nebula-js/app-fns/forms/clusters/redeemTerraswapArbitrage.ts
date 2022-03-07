@@ -7,6 +7,7 @@ import { sum, vectorMultiply } from '@libs/big-math';
 import { demicrofy, microfy } from '@libs/formatter';
 import { QueryClient } from '@libs/query-client';
 import { FormReturn } from '@libs/use-form';
+import { computeMinReceivedAmount } from '@nebula-js/app-fns';
 import {
   cluster,
   CT,
@@ -25,6 +26,7 @@ import { NebulaClusterFee } from '../../types';
 
 export interface ClusterRedeemTerraswapArbitrageFormInput {
   ustAmount: UST & NoMicro;
+  maxSpread: Rate;
 }
 
 export interface ClusterRedeemTerraswapArbitrageFormDependency {
@@ -46,15 +48,15 @@ export interface ClusterRedeemTerraswapArbitrageFormDependency {
 
 export interface ClusterRedeemTerraswapArbitrageFormStates
   extends ClusterRedeemTerraswapArbitrageFormInput {
-  invalidUstAmount: string | null;
   maxUstAmount: u<UST<BigSource>>;
+  invalidUstAmount: string | null;
   invalidTxFee: string | null;
   invalidRedeemQuery: string | null;
   txFee: u<UST> | null;
 }
 
 export interface ClusterRedeemTerraswapArbitrageFormAsyncStates {
-  burntTokenAmount?: u<CT>;
+  minBurntTokenAmount?: u<CT>;
   redeemTokenAmounts?: u<Token>[];
   redeemValue?: u<UST>;
 }
@@ -63,11 +65,18 @@ export const clusterRedeemTerraswapArbitrageForm = (
   dependency: ClusterRedeemTerraswapArbitrageFormDependency,
   prevDependency: ClusterRedeemTerraswapArbitrageFormDependency | undefined,
 ) => {
+  const clusterTxFee = computeClusterTxFee(
+    dependency.gasPrice,
+    dependency.clusterFee.default,
+    dependency.clusterState.target.length,
+    dependency.clusterState.target.length,
+  );
+
   const maxUstAmount = computeMaxUstBalanceForUstTransfer(
     dependency.ustBalance,
     dependency.taxRate,
     dependency.maxTaxUUSD,
-    dependency.fixedFee,
+    clusterTxFee,
   );
 
   let invalidUstAmount: string | null;
@@ -113,7 +122,8 @@ export const clusterRedeemTerraswapArbitrageForm = (
       dependency.lastSyncedHeight !== prevDependency?.lastSyncedHeight ||
       dependency.clusterState !== prevDependency?.clusterState ||
       dependency.gasPrice !== prevDependency?.gasPrice ||
-      input.ustAmount !== prevInput?.ustAmount
+      input.ustAmount !== prevInput?.ustAmount ||
+      input.maxSpread !== prevInput?.maxSpread
     ) {
       let txFee: u<UST>;
 
@@ -129,33 +139,23 @@ export const clusterRedeemTerraswapArbitrageForm = (
         },
         dependency.queryClient,
       )
-        .then(({ simulation: { return_amount } }) => {
-          const clusterTxFee = computeClusterTxFee(
-            dependency.gasPrice,
-            dependency.clusterFee.default,
-            dependency.clusterState.target.length,
-            dependency.clusterState.target.length,
-          );
-
-          //const _tax = min(
-          //  microfy(input.ustAmount!).mul(dependency.tax.taxRate),
-          //  dependency.tax.maxTaxUUSD,
-          //) as u<UST<Big>>;
-          //
-          //txFee = _tax.plus(dependency.fixedGas).toFixed() as u<UST>;
+        .then(async ({ simulation: { return_amount } }) => {
           txFee = clusterTxFee;
 
-          return clusterRedeemQuery(
-            demicrofy(return_amount as u<CT>).toFixed() as CT,
+          const minReceivedCT = demicrofy(
+            computeMinReceivedAmount(return_amount, input.maxSpread),
+          ).toFixed() as CT;
+
+          const { redeem } = await clusterRedeemQuery(
+            minReceivedCT,
             [],
             dependency.clusterState,
             dependency.lastSyncedHeight,
             dependency.queryClient,
           );
-        })
-        .then(({ redeem }) => {
+
           return {
-            burntTokenAmount: redeem.token_cost,
+            minBurntTokenAmount: redeem.token_cost,
             redeemTokenAmounts: redeem.redeem_assets,
             redeemValue: sum(
               ...vectorMultiply(
@@ -174,7 +174,7 @@ export const clusterRedeemTerraswapArbitrageForm = (
           invalidRedeemQuery = err.message;
 
           return {
-            burntTokenAmount: undefined,
+            minBurntTokenAmount: undefined,
             redeemTokenAmounts: undefined,
             redeemValue: undefined,
             invalidRedeemQuery,

@@ -5,18 +5,13 @@ import {
   ClusterMintAdvancedFormAsyncStates,
   ClusterMintAdvancedFormInput,
   ClusterMintAdvancedFormStates,
+  ClusterMintTerraswapArbitrageFormAsyncStates,
+  ClusterMintTerraswapArbitrageFormInput,
+  ClusterMintTerraswapArbitrageFormStates,
 } from '@nebula-js/app-fns';
 import { WalletIcon } from '@nebula-js/icons';
-import { terraswap, Token, u, UST } from '@nebula-js/types';
-import {
-  breakpoints,
-  Button,
-  TextButton,
-  TokenInput,
-  TokenSpan,
-  useScreenSizeValue,
-} from '@nebula-js/ui';
-import { useConnectedWallet } from '@terra-money/wallet-provider';
+import { terraswap, Token, u } from '@nebula-js/types';
+import { TextButton, TokenInput, TokenSpan } from '@nebula-js/ui';
 import big from 'big.js';
 import { AddAssetBadges } from 'components/form/AddAssetBadges';
 import { TokenInputRemoveTool } from 'components/form/TokenInputRemoveTool';
@@ -26,12 +21,18 @@ import styled from 'styled-components';
 
 export interface TokenFormMintProps {
   clusterInfo: ClusterInfo;
-  updateInput: FormInput<ClusterMintAdvancedFormInput>;
-  states: FormStates<
-    ClusterMintAdvancedFormStates,
-    ClusterMintAdvancedFormAsyncStates
-  >;
-  onProceed: (amounts: Token[], txFee: u<UST>) => void;
+  updateInput:
+    | FormInput<ClusterMintAdvancedFormInput>
+    | FormInput<ClusterMintTerraswapArbitrageFormInput>;
+  states:
+    | FormStates<
+        ClusterMintAdvancedFormStates,
+        ClusterMintAdvancedFormAsyncStates
+      >
+    | FormStates<
+        ClusterMintTerraswapArbitrageFormStates,
+        ClusterMintTerraswapArbitrageFormAsyncStates
+      >;
   children: ReactNode;
   className?: string;
 }
@@ -41,83 +42,86 @@ function TokenFormMintBase({
   updateInput,
   states,
   children,
-  onProceed,
   className,
 }: TokenFormMintProps) {
-  const connectedWallet = useConnectedWallet();
-
-  const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
-    mobile: 'medium',
-    tablet: 'normal',
-    pc: 'normal',
-    monitor: 'normal',
-  });
-
-  // TODO: confuse to display
-  // const assetView = useMemo<AssetView[]>(() => {
-  //   return toAssetView(clusterState, assetTokenInfos);
-  // }, [clusterState, assetTokenInfos]);
-
   // ---------------------------------------------
   // callbacks
   // ---------------------------------------------
   const addAsset = useCallback(
     (asset: terraswap.Asset<Token>) => {
-      updateInput((prev) => {
-        const nextAddedAssets = new Set(prev.addedAssets);
-        nextAddedAssets.add(asset);
-        return {
-          ...prev,
-          addedAssets: nextAddedAssets,
-        };
-      });
+      updateInput(
+        (
+          prev:
+            | ClusterMintAdvancedFormInput
+            | ClusterMintTerraswapArbitrageFormInput,
+        ) => {
+          const nextAddedAssets = new Set(prev.addedAssets);
+          nextAddedAssets.add(asset);
+          return {
+            ...prev,
+            addedAssets: nextAddedAssets,
+          };
+        },
+      );
     },
     [updateInput],
   );
 
   const removeAsset = useCallback(
     (asset: terraswap.Asset<Token>) => {
-      updateInput((prev) => {
-        const index = clusterState.target.findIndex(
-          ({ info }) => info === asset.info,
-        );
+      updateInput(
+        (
+          prev:
+            | ClusterMintAdvancedFormInput
+            | ClusterMintTerraswapArbitrageFormInput,
+        ) => {
+          const index = clusterState.target.findIndex(
+            ({ info }) => info === asset.info,
+          );
 
-        const nextAmounts = [...prev.amounts];
-        nextAmounts[index] = '' as Token;
+          const nextAmounts = [...prev.amounts];
+          nextAmounts[index] = '' as Token;
 
-        const nextAddedAssets = new Set(prev.addedAssets);
+          const nextAddedAssets = new Set(prev.addedAssets);
 
-        return nextAddedAssets.delete(asset)
-          ? {
-              ...prev,
-              addedAssets: nextAddedAssets,
-              amounts: nextAmounts,
-            }
-          : prev;
-      });
+          return nextAddedAssets.delete(asset)
+            ? {
+                ...prev,
+                addedAssets: nextAddedAssets,
+                amounts: nextAmounts,
+              }
+            : prev;
+        },
+      );
     },
     [clusterState.target, updateInput],
   );
 
   const updateAmount = useCallback(
     (asset: terraswap.Asset<Token>, amount: Token) => {
-      updateInput((prev) => {
-        const index = clusterState.target.findIndex(
-          (targetAsset) => targetAsset === asset,
-        );
+      updateInput(
+        (
+          prev:
+            | ClusterMintAdvancedFormInput
+            | ClusterMintTerraswapArbitrageFormInput,
+        ) => {
+          const index = clusterState.target.findIndex(
+            (targetAsset) => targetAsset === asset,
+          );
 
-        if (prev.amounts[index] === amount) {
-          return prev;
-        }
+          if (prev.amounts[index] === amount) {
+            return prev;
+          }
 
-        const nextAmounts = [...prev.amounts];
-        nextAmounts[index] = amount;
+          const nextAmounts = [...prev.amounts];
+          nextAmounts[index] = amount;
 
-        return {
-          ...prev,
-          amounts: nextAmounts,
-        };
-      });
+          return {
+            ...prev,
+            amounts: nextAmounts,
+          };
+        },
+      );
     },
     [clusterState.target, updateInput],
   );
@@ -170,18 +174,7 @@ function TokenFormMintBase({
                     }
                     error={states.invalidAmounts[i]}
                   >
-                    <TokenInputRemoveTool onDelete={() => removeAsset(asset)}>
-                      {/* TOOD: Confuse to display */}
-                      {/* <span
-                        style={{
-                          color: assetView[i].targetColor,
-                        }}
-                      >
-                        Target:{' '}
-                        {formatUTokenDecimal2(assetView[i].targetAmount)}{' '}
-                        {assetTokenInfos[i].tokenInfo.symbol}
-                      </span> */}
-                    </TokenInputRemoveTool>
+                    <TokenInputRemoveTool onDelete={() => removeAsset(asset)} />
                   </TokenInput>
                 </li>
               ),
@@ -199,22 +192,6 @@ function TokenFormMintBase({
       )}
 
       {children}
-
-      <Button
-        className="submit"
-        color="paleblue"
-        size={buttonSize}
-        disabled={
-          !connectedWallet ||
-          !connectedWallet.availablePost ||
-          !states ||
-          !states.txFee ||
-          states.amounts.every((amount) => amount.length === 0)
-        }
-        onClick={() => states.txFee && onProceed(states.amounts, states.txFee)}
-      >
-        Mint
-      </Button>
     </div>
   );
 }
@@ -231,28 +208,6 @@ const StyledTokenFormMint = styled(TokenFormMintBase)`
 
   .add-token {
     margin-top: 2.57142857em;
-  }
-
-  .feebox {
-    margin-top: 2.8em;
-  }
-
-  .submit {
-    display: block;
-    width: 100%;
-    max-width: 360px;
-    margin: 2.8em auto 0 auto;
-  }
-
-  @media (max-width: ${breakpoints.mobile.max}px) {
-    .feebox {
-      font-size: 0.9em;
-      margin-top: 2.2em;
-    }
-
-    .submit {
-      margin-top: 2.2em;
-    }
   }
 `;
 

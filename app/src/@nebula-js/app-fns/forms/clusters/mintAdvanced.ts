@@ -136,34 +136,14 @@ export const clusterMintAdvancedForm = (
                 dependency.clusterState.prices,
               ) as u<UST<Big>>;
 
-              // let txFee: u<UST> | null;
-
-              // if (input.addedAssets.size > 0) {
-              //   const ustIndex = dependency.clusterState.target.findIndex(
-              //     ({ info }) => {
-              //       return (
-              //         'native_token' in info &&
-              //         (info.native_token.denom === 'uusd' ||
-              //           info.native_token.denom === 'uust')
-              //       );
-              //     },
-              //   );
-
-              //   if (ustIndex === -1 || input.amounts[ustIndex].length === 0) {
-              //     txFee = clusterTxFee;
-              //   } else {
-              //     const uust = microfy(input.amounts[ustIndex]) as u<UST<Big>>;
-              //     const ratioTxFee = big(uust.minus(dependency.fixedFee))
-              //       .div(big(1).plus(dependency.taxRate))
-              //       .mul(dependency.taxRate);
-
-              //     txFee = max(min(ratioTxFee, dependency.maxTaxUUSD), 0)
-              //       .plus(clusterTxFee)
-              //       .toFixed() as u<UST>;
-              //   }
-              // } else {
-              //   txFee = null;
-              // }
+              if (big(mint.create_tokens).eq(0)) {
+                return {
+                  mintedAmount: undefined,
+                  pnl: undefined,
+                  totalInputValue: undefined,
+                  txFee: null,
+                };
+              }
 
               return {
                 mintedAmount: mint.create_tokens as u<CT>,
