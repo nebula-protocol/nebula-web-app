@@ -27,9 +27,9 @@ export function NEBULA_CONTRACT_ADDRESS(
       clusterFactory:
         'terra103srr94gy8zgyey7ncg63gqfgac3y6nkdc28jh' as HumanAddr,
       gov: 'terra12qsqwjc2f95a93l6kg0k77ldvvptuqg4wujqa3' as HumanAddr,
-      incentives: 'terra120q8hwjm2n0cgy9r5kzhq3l9ghg0lsrxfp00z6' as HumanAddr,
+      incentives: 'terra1x7ug3ehdtdz5w2q37l2l9rd0u5ekv2gvzfq0y6' as HumanAddr,
       incentivesCustody:
-        'terra150mx4dnrqls55ws5tff2t2he0etm6u8kd0hrde' as HumanAddr,
+        'terra1nghgqatgz3w2qps598zaf07526l7ye0g0pswz2' as HumanAddr,
       staking: 'terra1wqc6rek55dnpj2j2h6mc9kqpqxnwnt23l830ey' as HumanAddr,
       terraswap: {
         factory: 'terra15jsahkaf9p0qu8ye873p0u5z6g07wdad0tdq43' as HumanAddr,
