@@ -25,6 +25,8 @@ export function useClusterSwapForm({ clusterState }: ClusterSwapFormParams) {
       ustBalance: uUST,
       clusterState,
       terraswapFactoryAddr: contractAddress.terraswap.factory,
+      anchorProxyAddr: contractAddress.anchor.proxy,
+      aUSTAddr: contractAddress.cw20.aUST,
       swapGasWantedPerAsset: constants.swapGasWantedPerAsset,
       clusterFee: constants.nebula.clusterFee,
       fixedFee,

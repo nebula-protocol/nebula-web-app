@@ -19,6 +19,12 @@ export interface NebulaContractAddress extends AppContractAddress {
 
   cw20: {
     NEB: CW20Addr;
+    aUST: CW20Addr;
+  };
+
+  anchor: {
+    proxy: HumanAddr;
+    market: HumanAddr;
   };
 }
 
