@@ -17,6 +17,11 @@ export const TEST_CONTRACT_ADDRESS = {
   },
   cw20: {
     NEB: 'terra1nknarneeatpm7amzw4rhxhcaqyt3ecx6y7k5yq' as CW20Addr,
+    aUST: 'terra1ajt556dpzvjwl0kl5tzku3fc3p3knkg9mkv8jl' as CW20Addr,
+  },
+  anchor: {
+    proxy: 'terra1jqx7xrt6fgf9qa48e9h0cvg6yvhtn4mcfsgqsz' as HumanAddr,
+    market: 'terra15dwd5mj8v59wpj0wvt233mf5efdff808c5tkal' as HumanAddr,
   },
 };
 

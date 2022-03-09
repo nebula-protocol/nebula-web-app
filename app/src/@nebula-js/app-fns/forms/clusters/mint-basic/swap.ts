@@ -1,18 +1,23 @@
-import {
-  GasPrice,
-  terraswapPairQuery,
-  terraswapPoolQuery,
-} from '@libs/app-fns';
+import { GasPrice } from '@libs/app-fns';
 import { formatExecuteMsgNumber, microfy } from '@libs/formatter';
 import { QueryClient } from '@libs/query-client';
 import { FormReturn } from '@libs/use-form';
-import { cluster, Gas, HumanAddr, Token, u, UST } from '@nebula-js/types';
+import {
+  cluster,
+  CW20Addr,
+  Gas,
+  HumanAddr,
+  Token,
+  u,
+  UST,
+} from '@nebula-js/types';
 import { NebulaClusterFee } from '../../../types';
 import big, { Big, BigSource } from 'big.js';
 import {
   computeBulkSwapTxFee,
   computeClusterTxFee,
   computeMaxUstBalanceForSwap,
+  swapPriceListQuery,
 } from '@nebula-js/app-fns';
 import { SwapTokenInfo } from '../../../types';
 import { divWithDefault, sum, vectorDot } from '@libs/big-math';
@@ -26,6 +31,8 @@ export interface ClusterSwapFormDependency {
   queryClient: QueryClient;
   clusterState: cluster.ClusterStateResponse;
   terraswapFactoryAddr: HumanAddr;
+  anchorProxyAddr: HumanAddr;
+  aUSTAddr: CW20Addr;
   ustBalance: u<UST>;
   fixedFee: u<UST<BigSource>>;
   gasPrice: GasPrice;
@@ -51,6 +58,8 @@ export const clusterSwapForm = ({
   ustBalance,
   clusterState,
   terraswapFactoryAddr,
+  anchorProxyAddr,
+  aUSTAddr,
   swapGasWantedPerAsset,
   gasPrice,
   clusterFee,
@@ -106,41 +115,16 @@ export const clusterSwapForm = ({
         : null;
 
     const asyncStates = ustAmountExists
-      ? Promise.all(
-          clusterState.target.map(({ info }) => {
-            if ('native_token' in info && info.native_token.denom === 'uusd')
-              return undefined;
-
-            return terraswapPairQuery(
-              terraswapFactoryAddr,
-              [
-                info,
-                {
-                  native_token: {
-                    denom: 'uusd',
-                  },
-                },
-              ],
-              queryClient,
-            );
-          }),
+      ? swapPriceListQuery(
+          clusterState.target,
+          terraswapFactoryAddr,
+          anchorProxyAddr,
+          aUSTAddr,
+          queryClient,
         )
-          .then(async (pairs) => {
-            const poolInfos = await Promise.all(
-              pairs.map((pair) => {
-                // ignore ust
-                if (!pair) return undefined;
-
-                return terraswapPoolQuery(
-                  pair.terraswapPair.contract_addr,
-                  queryClient,
-                );
-              }),
-            );
-
-            // if there is ust in inv, set tokenPrice to 1
-            const poolPrices: UST[] = poolInfos.map((poolInfo) =>
-              !!poolInfo ? poolInfo.terraswapPoolInfo.tokenPrice : ('1' as UST),
+          .then((priceInfos) => {
+            const poolPrices: UST[] = priceInfos.map(
+              ({ buyTokenPrice }) => buyTokenPrice,
             );
 
             // multiplierRatio = (invSum * ustAmount) / dot(inv,prices)
@@ -155,24 +139,27 @@ export const clusterSwapForm = ({
               0,
             ).round(10, Big.roundDown); // prevent to exceed ustAmount
 
-            const boughtTokens = clusterState.inv.map((inv, idx) => {
-              const uTokenAmount = microfy(
-                divWithDefault(
-                  multiplierInvRatio.mul(inv),
-                  invSum,
-                  0,
-                ) as Token<Big>,
-              ).round(0, Big.roundDown) as u<Token<Big>>;
+            const boughtTokens: SwapTokenInfo[] = clusterState.inv.map(
+              (inv, idx) => {
+                const uTokenAmount = microfy(
+                  divWithDefault(
+                    multiplierInvRatio.mul(inv),
+                    invSum,
+                    0,
+                  ) as Token<Big>,
+                ).round(0, Big.roundDown) as u<Token<Big>>;
 
-              return {
-                buyUustAmount: uTokenAmount
-                  .mul(poolPrices[idx])
-                  .toFixed(0) as u<UST>,
-                returnAmount: uTokenAmount.toFixed() as u<Token>,
-                tokenUstPairAddr: pairs[idx]?.terraswapPair.contract_addr,
-                beliefPrice: formatExecuteMsgNumber(poolPrices[idx]),
-              };
-            });
+                return {
+                  buyUustAmount: uTokenAmount
+                    .mul(poolPrices[idx])
+                    .toFixed(0) as u<UST>,
+                  returnAmount: uTokenAmount.toFixed() as u<Token>,
+                  tokenUstPairAddr: priceInfos[idx].tokenUstPairAddr,
+                  beliefPrice: formatExecuteMsgNumber(poolPrices[idx]) as UST,
+                  info: priceInfos[idx].info,
+                };
+              },
+            );
 
             invalidSwap = boughtTokens.find(
               ({ returnAmount, buyUustAmount }) =>

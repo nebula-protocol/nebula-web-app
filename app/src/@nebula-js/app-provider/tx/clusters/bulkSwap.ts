@@ -5,7 +5,7 @@ import { useConnectedWallet } from '@terra-money/use-wallet';
 import { useCallback } from 'react';
 import { useNebulaApp } from '@nebula-js/app-provider';
 import { NEBULA_TX_KEYS } from '../../env';
-import { useRefetchQueries, useUstTax } from '@libs/app-provider';
+import { useRefetchQueries } from '@libs/app-provider';
 import { SwapTokenInfo } from '@nebula-js/app-fns';
 import { useMintBasic } from 'contexts/mint-basic';
 import { computeBulkSwapGasWanted } from '@nebula-js/app-fns';
@@ -22,13 +22,12 @@ export function useCW20BuyTokenChuckTx() {
 
   const { onSwapSucceed } = useMintBasic();
 
-  const { queryClient, txErrorReporter, constants } = useNebulaApp();
+  const { queryClient, txErrorReporter, constants, contractAddress } =
+    useNebulaApp();
 
   const fixedFee = useFixedFee();
 
   const refetchQueries = useRefetchQueries();
-
-  const { taxRate, maxTax } = useUstTax();
 
   const stream = useCallback(
     ({ buyTokens, txFee, onTxSucceed }: CW20BuyTokenChuckTxParams) => {
@@ -37,11 +36,11 @@ export function useCW20BuyTokenChuckTx() {
       }
 
       return cw20BuyTokenChuckTx({
-        txFee,
         buyTokens,
         onSwapSucceed,
-        taxRate,
-        maxTaxUUSD: maxTax,
+        aUSTTokenAddr: contractAddress.cw20.aUST,
+        ancMarketContractAddr: contractAddress.anchor.market,
+        txFee,
         // TODO: hardcode maxSpread
         maxSpread: '0.01' as Rate,
         buyerAddr: connectedWallet.walletAddress,
@@ -65,11 +64,11 @@ export function useCW20BuyTokenChuckTx() {
       connectedWallet,
       constants.gasAdjustment,
       constants.swapGasWantedPerAsset,
+      contractAddress.anchor.market,
+      contractAddress.cw20.aUST,
       onSwapSucceed,
       fixedFee,
-      maxTax,
       refetchQueries,
-      taxRate,
       txErrorReporter,
       queryClient,
     ],
