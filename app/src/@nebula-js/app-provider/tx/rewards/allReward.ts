@@ -8,6 +8,7 @@ import { useNebulaApp, NEBULA_TX_KEYS } from '@nebula-js/app-provider';
 export interface ClaimAllRewardTxParams {
   claimStaking: boolean;
   claimGov: boolean;
+  claimIncentive: boolean;
 
   onTxSucceed?: () => void;
 }
@@ -23,7 +24,12 @@ export function useClaimAllRewardsTx() {
   const fixedFee = useFixedFee();
 
   const stream = useCallback(
-    ({ claimStaking, claimGov, onTxSucceed }: ClaimAllRewardTxParams) => {
+    ({
+      claimStaking,
+      claimGov,
+      claimIncentive,
+      onTxSucceed,
+    }: ClaimAllRewardTxParams) => {
       if (!connectedWallet || !connectedWallet.availablePost) {
         throw new Error(`Can't post!`);
       }
@@ -32,8 +38,10 @@ export function useClaimAllRewardsTx() {
         txFee: fixedFee.toString() as u<UST>,
         govAddr: contractAddress.gov,
         stakingAddr: contractAddress.staking,
+        incentiveAddr: contractAddress.incentives,
         claimStaking,
         claimGov,
+        claimIncentive,
         walletAddr: connectedWallet.walletAddress,
         fixedFee,
         gasWanted: constants.gasWanted,
@@ -54,6 +62,7 @@ export function useClaimAllRewardsTx() {
       constants.gasWanted,
       contractAddress.gov,
       contractAddress.staking,
+      contractAddress.incentives,
       fixedFee,
       refetchQueries,
       txErrorReporter,

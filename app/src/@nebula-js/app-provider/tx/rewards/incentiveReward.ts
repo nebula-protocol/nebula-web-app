@@ -2,11 +2,10 @@ import { useFixedFee, useRefetchQueries } from '@libs/app-provider';
 import { u, UST } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
-import { NEBULA_TX_KEYS } from '../..';
-import { govClaimRewardsTx } from '../../../app-fns/tx/rewards/govReward';
-import { useNebulaApp } from '../../hooks/useNebulaApp';
+import { claimIncentiveRewardsTx } from '@nebula-js/app-fns';
+import { useNebulaApp, NEBULA_TX_KEYS } from '@nebula-js/app-provider';
 
-export function useGovClaimRewardsTx() {
+export function useClaimIncentiveRewardsTx() {
   const connectedWallet = useConnectedWallet();
 
   const { queryClient, txErrorReporter, constants, contractAddress } =
@@ -21,9 +20,9 @@ export function useGovClaimRewardsTx() {
       throw new Error(`Can't post!`);
     }
 
-    return govClaimRewardsTx({
+    return claimIncentiveRewardsTx({
       txFee: fixedFee.toString() as u<UST>,
-      govAddr: contractAddress.gov,
+      incentiveAddr: contractAddress.incentives,
       walletAddr: connectedWallet.walletAddress,
       fixedFee,
       gasWanted: constants.gasWanted,
@@ -31,7 +30,7 @@ export function useGovClaimRewardsTx() {
       queryClient,
       txErrorReporter,
       onTxSucceed: () => {
-        refetchQueries(NEBULA_TX_KEYS.GOV_CLAIM_REWARD);
+        refetchQueries(NEBULA_TX_KEYS.CLAIM_INCENTIVE_REWARD);
       },
       network: connectedWallet.network,
       post: connectedWallet.post,
@@ -40,7 +39,7 @@ export function useGovClaimRewardsTx() {
     connectedWallet,
     constants.gasAdjustment,
     constants.gasWanted,
-    contractAddress.gov,
+    contractAddress.incentives,
     fixedFee,
     refetchQueries,
     txErrorReporter,
