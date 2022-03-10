@@ -1,34 +1,29 @@
 import React from 'react';
 import styled from 'styled-components';
-import { UST } from '@nebula-js/types';
+import { UST, u } from '@nebula-js/types';
 import { Big } from 'big.js';
 import { ClusterTokenPrices } from '@nebula-js/app-fns';
-import { formatToken } from '@libs/formatter';
+import { formatToken, formatUTokenWithPostfixUnits } from '@libs/formatter';
 import { DisplayNumber } from 'components/common/DisplayNumber';
 import { DisplayPremium } from 'components/common/DisplayPremium';
 
 export interface PriceCardProps {
   prices: ClusterTokenPrices | undefined;
+  liquidity: u<UST<Big>> | undefined;
   desc: string | undefined;
 }
 
-export const PriceCard = ({ prices, desc }: PriceCardProps) => {
-  if (!prices || !desc) return null;
+export const PriceCard = ({ prices, liquidity, desc }: PriceCardProps) => {
+  if (!prices || !liquidity || !desc) return null;
 
   return (
     <Container>
       <h3>CURRENT PRICE (CLUSTER)</h3>
-      <StyledDisplayNumber
-        price={formatToken(prices.clusterPrice)}
-        currency="UST"
-      />
+      <StyledPrice price={formatToken(prices.clusterPrice)} currency="UST" />
       <h3>CURRENT PRICE (ASTROPORT)</h3>
-      <StyledDisplayNumber
-        price={formatToken(prices.poolPrice)}
-        currency="UST"
-      />
+      <StyledPrice price={formatToken(prices.poolPrice)} currency="UST" />
       <h3>PREMIUM</h3>
-      <StyledPremium>
+      <StyledNumber>
         <span>
           {formatToken(prices.poolPrice.minus(prices.clusterPrice) as UST<Big>)}{' '}
           UST
@@ -36,20 +31,24 @@ export const PriceCard = ({ prices, desc }: PriceCardProps) => {
         <span>
           (<DisplayPremium premium={prices.premium} />)
         </span>
-      </StyledPremium>
+      </StyledNumber>
+      <h3>LIQUIDITY</h3>
+      <StyledNumber>
+        <span>{formatUTokenWithPostfixUnits(liquidity)} UST</span>
+      </StyledNumber>
       <section>{desc}</section>
     </Container>
   );
 };
 
-const StyledPremium = styled.div`
+const StyledNumber = styled.div`
   margin-top: 5px;
   margin-bottom: 32px;
   font-weight: 500;
   font-size: var(--font-size12);
 `;
 
-const StyledDisplayNumber = styled(DisplayNumber)`
+const StyledPrice = styled(DisplayNumber)`
   margin-top: 5px;
   margin-bottom: 32px;
 `;

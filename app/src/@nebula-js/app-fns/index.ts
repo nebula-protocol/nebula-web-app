@@ -15,6 +15,7 @@ export * from './forms/staking/unstake';
 export * from './logics/clusters/computeClusterTxFee';
 export * from './logics/clusters/computeBulkSwapTxFee';
 export * from './logics/clusters/computeCTPrices';
+export * from './logics/clusters/computeLiquidity';
 export * from './logics/clusters/computeMarketCap';
 export * from './logics/clusters/computeMaxUstBalanceForSwap';
 export * from './logics/clusters/computeMinReceived';
