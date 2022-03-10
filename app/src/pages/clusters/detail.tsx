@@ -150,13 +150,14 @@ function ClustersDetailBase({
 
         <PriceCard
           prices={clusterView?.prices}
+          liquidity={clusterView?.liquidity}
           desc={clusterView?.description}
         />
       </section>
 
       <section className="provided-tokens">
         <header>
-          <h2>Provided Tokens</h2>
+          <h2>Cluster Inventory</h2>
           <Descriptions
             direction={descriptionDisplay}
             descriptions={[
@@ -187,7 +188,7 @@ function ClustersDetailBase({
               </th>
               <th className="portfolio-ratio">
                 <span>
-                  Portfolio Ratio
+                  Asset Weight
                   <br />
                   <span style={{ opacity: 0.6 }}>Current (Target)</span>
                 </span>
