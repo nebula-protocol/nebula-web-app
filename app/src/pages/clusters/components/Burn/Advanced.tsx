@@ -21,9 +21,12 @@ export interface BurnAdvancedProps {
 }
 
 function BurnAdvancedBase({ className, clusterInfo }: BurnAdvancedProps) {
-  const { clusterState, clusterTokenInfo } = clusterInfo;
+  const { clusterState, clusterTokenInfo, terraswapPool } = clusterInfo;
 
-  const [updateInput, states] = useClusterRedeemAdvancedForm({ clusterState });
+  const [updateInput, states] = useClusterRedeemAdvancedForm({
+    clusterState,
+    terraswapPool,
+  });
 
   const { broadcast } = useTxBroadcast();
 
@@ -107,7 +110,7 @@ function BurnAdvancedBase({ className, clusterInfo }: BurnAdvancedProps) {
         <FeeBox className="feebox">
           {'burntTokenAmount' in states && states.burntTokenAmount && (
             <li>
-              <span>Burnt {clusterTokenInfo.symbol}</span>
+              <span>Estimated Burnt {clusterTokenInfo.symbol}</span>
               <span>
                 {formatUToken(states.burntTokenAmount)}{' '}
                 {clusterTokenInfo.symbol}
@@ -115,10 +118,17 @@ function BurnAdvancedBase({ className, clusterInfo }: BurnAdvancedProps) {
             </li>
           )}
 
-          {'redeemValue' in states && states.redeemValue && (
+          {'totalRedeemValue' in states && states.totalRedeemValue && (
             <li>
-              <span>Redeem Value</span>
-              <span>{formatUToken(states.redeemValue)} UST</span>
+              <span>Total Redeem Value</span>
+              <span>{formatUToken(states.totalRedeemValue)} UST</span>
+            </li>
+          )}
+
+          {'pnl' in states && states.pnl && (
+            <li>
+              <span>PNL</span>
+              <span>{formatUToken(states.pnl)} UST</span>
             </li>
           )}
 

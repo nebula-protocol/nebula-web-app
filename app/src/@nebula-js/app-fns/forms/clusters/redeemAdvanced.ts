@@ -1,5 +1,5 @@
 import { GasPrice, TerraBalances } from '@libs/app-fns';
-import { sum, vectorMultiply } from '@libs/big-math';
+import { vectorDot } from '@libs/big-math';
 import { microfy } from '@libs/formatter';
 import { QueryClient } from '@libs/query-client';
 import { FormReturn } from '@libs/use-form';
@@ -13,10 +13,11 @@ import {
   u,
   UST,
 } from '@nebula-js/types';
-import big from 'big.js';
+import big, { Big } from 'big.js';
 import {
   computeTokenWithoutFee,
   computeClusterTxFee,
+  computeCTPrices,
 } from '@nebula-js/app-fns';
 import { clusterRedeemQuery } from '../../queries/clusters/redeem';
 import { NebulaClusterFee } from '../../types';
@@ -32,6 +33,7 @@ export interface ClusterRedeemAdvancedFormDependency {
   balances: TerraBalances | undefined;
   lastSyncedHeight: () => Promise<number>;
   clusterState: cluster.ClusterStateResponse;
+  terraswapPool: terraswap.pair.PoolResponse<CT, UST>;
   protocolFee: Rate;
   tokenBalance: u<CT>;
   gasPrice: GasPrice;
@@ -52,7 +54,8 @@ export interface ClusterRedeemAdvancedFormStates
 export interface ClusterRedeemAdvancedFormAsyncStates {
   burntTokenAmount?: u<CT>;
   redeemTokenAmounts?: u<Token>[];
-  redeemValue?: u<UST>;
+  totalRedeemValue?: u<UST<Big>>;
+  pnl?: u<UST>;
 }
 
 export const clusterRedeemAdvancedForm = (
@@ -159,15 +162,27 @@ export const clusterRedeemAdvancedForm = (
             ? 'Invalid Mint Amount'
             : null;
 
+          const clusterPrice = computeCTPrices(
+            dependency.clusterState,
+            dependency.terraswapPool,
+          ).clusterPrice;
+
+          // burnCTValue = burnToken * clusterPrice
+          const burnCTValue = big(redeem.token_cost).mul(clusterPrice) as u<
+            UST<Big>
+          >;
+
+          // total redeem assets value
+          const totalRedeemValue = vectorDot(
+            redeem.redeem_assets,
+            dependency.clusterState.prices,
+          ) as u<UST<Big>>;
+
           return {
-            burntTokenAmount: microfy(input.tokenAmount).toFixed(0) as u<CT>,
+            burntTokenAmount: redeem.token_cost,
             redeemTokenAmounts: redeem.redeem_assets,
-            redeemValue: sum(
-              ...vectorMultiply(
-                redeem.redeem_assets,
-                dependency.clusterState.prices,
-              ),
-            ).toFixed() as u<UST>,
+            totalRedeemValue,
+            pnl: totalRedeemValue.minus(burnCTValue).toFixed() as u<UST>,
             invalidBurntAmount,
             invalidRedeemQuery,
             txFee: clusterTxFee as u<UST>,
@@ -179,7 +194,8 @@ export const clusterRedeemAdvancedForm = (
           return {
             burntTokenAmount: undefined,
             redeemTokenAmounts: undefined,
-            redeemValue: undefined,
+            totalRedeemValue: undefined,
+            pnl: undefined,
             invalidRedeemQuery,
           };
         });
