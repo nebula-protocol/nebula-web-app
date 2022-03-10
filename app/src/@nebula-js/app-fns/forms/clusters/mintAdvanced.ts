@@ -40,8 +40,8 @@ export interface ClusterMintAdvancedFormStates
 }
 
 export interface ClusterMintAdvancedFormAsyncStates {
-  mintedAmount: u<CT> | undefined;
-  totalInputValue: u<UST<Big>> | undefined;
+  mintedAmount?: u<CT>;
+  totalInputValue?: u<UST<Big>>;
   pnl: u<UST> | undefined;
 }
 
