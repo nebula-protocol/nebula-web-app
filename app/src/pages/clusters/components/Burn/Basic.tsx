@@ -122,10 +122,10 @@ function BurnBasicBase({
           </li>
         )}
 
-        {'redeemValue' in states && states.redeemValue && (
+        {'totalRedeemValue' in states && states.totalRedeemValue && (
           <li>
-            <span>Redeem Value</span>
-            <span>{formatUToken(states.redeemValue)} UST</span>
+            <span>Total Redeem Value</span>
+            <span>{formatUToken(states.totalRedeemValue)} UST</span>
           </li>
         )}
 

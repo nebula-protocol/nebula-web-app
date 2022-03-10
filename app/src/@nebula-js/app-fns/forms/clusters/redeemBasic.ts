@@ -1,5 +1,5 @@
 import { GasPrice } from '@libs/app-fns';
-import { sum, vectorMultiply } from '@libs/big-math';
+import { vectorDot } from '@libs/big-math';
 import { microfy } from '@libs/formatter';
 import { QueryClient } from '@libs/query-client';
 import { FormReturn } from '@libs/use-form';
@@ -38,7 +38,7 @@ export interface ClusterRedeemBasicFormStates
 export interface ClusterRedeemBasicFormAsyncStates {
   burntTokenAmount?: u<CT>;
   redeemTokenAmounts?: u<Token>[];
-  redeemValue?: u<UST>;
+  totalRedeemValue?: u<UST>;
 }
 
 export const clusterRedeemBasicForm = (
@@ -110,11 +110,9 @@ export const clusterRedeemBasicForm = (
         return {
           burntTokenAmount: microfy(input.tokenAmount).toFixed() as u<CT>,
           redeemTokenAmounts: redeem.redeem_assets,
-          redeemValue: sum(
-            ...vectorMultiply(
-              redeem.redeem_assets,
-              dependency.clusterState.prices,
-            ),
+          totalRedeemValue: vectorDot(
+            redeem.redeem_assets,
+            dependency.clusterState.prices,
           ).toFixed() as u<UST>,
           txFee: clusterTxFee as u<UST>,
         };
