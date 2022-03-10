@@ -60,6 +60,7 @@ function StakingStakeBase({
   const initForm = useCallback(() => {
     updateInput({
       ustAmount: '' as UST,
+      tokenAmount: '' as CT,
     });
   }, [updateInput]);
 
