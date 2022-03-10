@@ -20,6 +20,7 @@ import { SlippageToleranceInput } from 'components/form/SlippageToleranceInput';
 import styled from 'styled-components';
 import { fixHMR } from 'fix-hmr';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
+import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
 
 export interface MintTerraswapArbitrageProps {
   className?: string;
@@ -143,6 +144,12 @@ function MintTerraswapArbitrageBase({
             </li>
           )}
         </FeeBox>
+
+        {states.invalidMintQuery ? (
+          <WarningMessageBox level="critical" className="warning">
+            {states.invalidMintQuery}
+          </WarningMessageBox>
+        ) : null}
 
         <Button
           className="submit"

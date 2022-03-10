@@ -173,6 +173,7 @@ export const clusterMintAdvancedForm = (
             mintedAmount: undefined,
             pnl: undefined,
             totalInputValue: undefined,
+            invalidMintQuery: undefined,
             txFee: null,
           });
     }
