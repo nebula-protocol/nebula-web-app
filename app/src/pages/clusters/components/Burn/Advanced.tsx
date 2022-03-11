@@ -95,7 +95,11 @@ function BurnAdvancedBase({ className, clusterInfo }: BurnAdvancedProps) {
             {formatUToken(states.tokenBalance)}
           </TextButton>
         }
-        token={<TokenSpan>{clusterTokenInfo.symbol}</TokenSpan>}
+        token={
+          <TokenSpan symbol={clusterTokenInfo.symbol}>
+            {clusterTokenInfo.symbol}
+          </TokenSpan>
+        }
         error={states.invalidTokenAmount}
       />
 

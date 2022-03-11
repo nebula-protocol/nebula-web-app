@@ -134,7 +134,7 @@ function ClusterBuyBase({
             {formatUToken(states.maxUstAmount)}
           </TextButton>
         }
-        token={<TokenSpan>UST</TokenSpan>}
+        token={<TokenSpan symbol="UST">UST</TokenSpan>}
         error={states.invalidUstAmount}
       />
 
@@ -150,7 +150,11 @@ function ClusterBuyBase({
         }
         placeholder="0.00"
         label="TO"
-        token={<TokenSpan>{clusterTokenInfo.symbol}</TokenSpan>}
+        token={
+          <TokenSpan symbol={clusterTokenInfo.symbol}>
+            {clusterTokenInfo.symbol}
+          </TokenSpan>
+        }
       />
 
       <Disclosure

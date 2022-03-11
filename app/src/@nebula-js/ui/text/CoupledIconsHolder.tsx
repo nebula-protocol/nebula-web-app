@@ -20,7 +20,7 @@ export const CoupledIconsHolder = styled(CoupledIconsHolderBase)`
   flex-direction: row-reverse;
   justify-content: center;
 
-  > figure {
+  > img {
     margin: 0;
 
     width: ${({ radiusEm = defaultRadiusEm }) => radiusEm * 2}em;

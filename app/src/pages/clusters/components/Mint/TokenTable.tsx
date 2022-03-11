@@ -31,7 +31,9 @@ function TokenTableBase({
         {amounts.map((amount, i) => (
           <tr key={assetTokenInfos[i].tokenInfo.symbol}>
             <td>
-              <TokenSpan>{assetTokenInfos[i].tokenInfo.symbol}</TokenSpan>
+              <TokenSpan symbol={assetTokenInfos[i].tokenInfo.symbol}>
+                {assetTokenInfos[i].tokenInfo.symbol}
+              </TokenSpan>
             </td>
             <td>
               {formatUToken(amount)} {assetTokenInfos[i].tokenInfo.symbol}

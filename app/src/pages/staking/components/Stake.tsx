@@ -137,7 +137,7 @@ function StakingStakeBase({
             {formatUToken(states.maxUstAmount)}
           </TextButton>
         }
-        token={<TokenSpan>UST</TokenSpan>}
+        token={<TokenSpan symbol="UST">UST</TokenSpan>}
         error={states.invalidUstAmount}
       />
 
@@ -171,7 +171,9 @@ function StakingStakeBase({
             {formatUToken(states.maxTokenAmount)}
           </TextButton>
         }
-        token={<TokenSpan>{tokenInfo.symbol}</TokenSpan>}
+        token={
+          <TokenSpan symbol={tokenInfo.symbol}>{tokenInfo.symbol}</TokenSpan>
+        }
         error={states.invalidTokenAmount}
       />
 

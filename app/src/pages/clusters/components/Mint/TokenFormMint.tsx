@@ -141,7 +141,7 @@ function TokenFormMintBase({
                     placeholder="0.00"
                     label={assetTokenInfos[i].tokenInfo.symbol}
                     token={
-                      <TokenSpan>
+                      <TokenSpan symbol={assetTokenInfos[i].tokenInfo.symbol}>
                         {assetTokenInfos[i].tokenInfo.symbol ?? ''}
                       </TokenSpan>
                     }

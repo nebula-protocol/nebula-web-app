@@ -139,7 +139,10 @@ function TokenFormBurnBase({
                     onChange={(nextAmount) => updateAmount(asset, nextAmount)}
                     placeholder="0.00"
                     token={
-                      <TokenSpan style={{ marginLeft: '1.42857em' }}>
+                      <TokenSpan
+                        style={{ marginLeft: '1.42857em' }}
+                        symbol={assetTokenInfos[i].tokenInfo.symbol}
+                      >
                         {assetTokenInfos[i].tokenInfo.symbol ?? ''}
                       </TokenSpan>
                     }

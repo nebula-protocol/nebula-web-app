@@ -128,7 +128,7 @@ function BurnTerraswapArbitrageBase({
             {formatUToken(states.maxUstAmount)}
           </TextButton>
         }
-        token={<TokenSpan>UST</TokenSpan>}
+        token={<TokenSpan symbol="UST">UST</TokenSpan>}
         error={states.invalidUstAmount}
       />
 
