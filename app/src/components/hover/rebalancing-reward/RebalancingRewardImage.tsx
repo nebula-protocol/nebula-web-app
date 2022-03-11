@@ -1,5 +1,5 @@
 import React from 'react';
-import rewardImage from 'components/assets/weekly-reward.svg';
+import rewardImage from 'components/assets/rebalancing-reward.svg';
 
 export interface RebalancingRewardImageProps {
   className?: string;
@@ -8,5 +8,12 @@ export interface RebalancingRewardImageProps {
 export function RebalancingRewardImage({
   className,
 }: RebalancingRewardImageProps) {
-  return <img src={rewardImage} className={className} alt="Weekly Reward!" />;
+  return (
+    <img
+      src={rewardImage}
+      width={50}
+      className={className}
+      alt="Rebalancing Reward!"
+    />
+  );
 }

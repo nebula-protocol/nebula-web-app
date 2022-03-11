@@ -1,3 +1,5 @@
+import { formatUToken } from '@libs/formatter';
+import { u, NEB } from '@nebula-js/types';
 import { IconButton } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import { Button } from '@nebula-js/ui';
@@ -8,13 +10,15 @@ import { RebalancingRewardImage } from './RebalancingRewardImage';
 function RebalancingRewardBase({
   className,
   onClose,
-  isMobileLayout,
   claim,
+  isMobileLayout,
+  rewardAmount,
 }: {
   className?: string;
   onClose: () => void;
   claim: () => void;
   isMobileLayout?: boolean;
+  rewardAmount: u<NEB>;
 }) {
   return (
     <div
@@ -26,7 +30,7 @@ function RebalancingRewardBase({
       </div>
       <div>
         <h2>Rebalancing Reward</h2>
-        <p>Claim your NEB tokens</p>
+        <p>Claim {formatUToken(rewardAmount)} NEB</p>
         <Button className="claim-button" onClick={claim}>
           Claim
         </Button>
@@ -103,10 +107,6 @@ export const RebalancingRewardContent = styled(RebalancingRewardBase)`
       height: 28px;
       font-size: 14px;
       font-weight: 500;
-    }
-
-    img {
-      width: 50px;
     }
 
     .claim-button {

@@ -47,6 +47,7 @@ export function RebalancingReward({
         onClose={() => setRewardClosed(true)}
         isMobileLayout={isMobile}
         claim={proceed}
+        rewardAmount={reward.incentiveReward.pending_rewards}
       />
     </Container>
   ) : null;
