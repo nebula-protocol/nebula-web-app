@@ -42,7 +42,6 @@ export * from './queries/staking/distributionSchedule';
 export * from './queries/staking/poolInfo';
 export * from './queries/staking/poolInfoList';
 export * from './queries/staking/rewardInfo';
-export * from './tx/rewards/allReward';
 export * from './tx/clusters/arbMint';
 export * from './tx/clusters/arbRedeem';
 export * from './tx/clusters/bulkSwap';
