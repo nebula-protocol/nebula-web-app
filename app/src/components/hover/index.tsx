@@ -26,7 +26,7 @@ export const Container = styled.div`
   display: block;
   top: 20px;
   right: 20px;
-  z-index: 0;
+  z-index: 1;
 
   > :not(:last-child) {
     margin-bottom: 15px;

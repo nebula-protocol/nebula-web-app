@@ -51,6 +51,7 @@ function ConnectedBase({ ...buttonProps }: ConnectedProps) {
           anchorEl={anchorElement}
           placement="bottom-end"
           transition
+          style={{ zIndex: 2 }}
         >
           {({ TransitionProps }) => (
             <Grow
