@@ -118,14 +118,6 @@ export const StyledStakingTable = styled(StakingTableBase)`
       gap: 0.6em;
 
       font-weight: 500 !important;
-
-      figure:nth-of-type(1) {
-        border: 1px solid var(--color-gray34);
-      }
-
-      figure:nth-of-type(2) {
-        background-color: var(--color-gray34);
-      }
     }
 
     &:nth-child(4) {
