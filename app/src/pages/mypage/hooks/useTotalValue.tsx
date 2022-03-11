@@ -3,6 +3,7 @@ import { sum } from '@libs/big-math';
 import big, { Big } from 'big.js';
 import {
   useGovStakerQuery,
+  useIncentiveRewardQuery,
   useMypageHoldingsQuery,
   useMypageStakingQuery,
   useNebulaApp,
@@ -20,6 +21,7 @@ const useTotalValue = () => {
   const { data: { govStaker } = {} } = useGovStakerQuery(
     connectedWallet?.walletAddress,
   );
+  const { data: _inventiveReward } = useIncentiveRewardQuery();
 
   const holdings = useMemo(() => {
     return holdingData
@@ -120,6 +122,14 @@ const useTotalValue = () => {
     govStaker?.pending_voting_rewards || '0',
   ).mul(nebInfo?.terraswapPoolInfo?.tokenPrice || '1');
 
+  const incentiveReward = big(
+    _inventiveReward?.incentiveReward.pending_rewards ?? '0',
+  ) as u<NEB<Big>>;
+
+  const incentiveRewardValue = big(incentiveReward).mul(
+    nebInfo?.terraswapPoolInfo?.tokenPrice || '1',
+  );
+
   return {
     totalHoldingsValue,
     totalStakingValue: stakingsTotal.farmValue,
@@ -128,12 +138,13 @@ const useTotalValue = () => {
     ) as u<UST<Big>>,
     stakingReward: stakingsTotal.reward,
     govReward: govValues.votingReward,
-    totalReward: stakingsTotal.reward.plus(govValues.votingReward) as u<
-      NEB<Big>
-    >,
-    totalRewardValue: stakingsTotal.rewardValue.plus(govVotingRewardValue) as u<
-      UST<Big>
-    >,
+    incentiveReward,
+    totalReward: stakingsTotal.reward
+      .plus(govValues.votingReward)
+      .plus(incentiveReward) as u<NEB<Big>>,
+    totalRewardValue: stakingsTotal.rewardValue
+      .plus(govVotingRewardValue)
+      .plus(incentiveRewardValue) as u<UST<Big>>,
     stakingsTotal,
     govValues,
     nebPrice: nebInfo?.terraswapPoolInfo?.tokenPrice || '0',

@@ -13,8 +13,13 @@ import { useConnectedWallet } from '@terra-money/use-wallet';
 const TotalRewards = () => {
   const connectedWallet = useConnectedWallet();
 
-  const { totalReward, totalRewardValue, stakingReward, govReward } =
-    useTotalValue();
+  const {
+    totalReward,
+    totalRewardValue,
+    stakingReward,
+    govReward,
+    incentiveReward,
+  } = useTotalValue();
 
   const nebPrice = useNebPrice();
 
@@ -26,12 +31,13 @@ const TotalRewards = () => {
     const stream = postTx?.({
       claimStaking: stakingReward.gt(0),
       claimGov: govReward.gt(0),
+      claimIncentive: incentiveReward.gt(0),
     });
 
     if (stream) {
       broadcast(stream);
     }
-  }, [broadcast, postTx, stakingReward, govReward]);
+  }, [broadcast, postTx, stakingReward, govReward, incentiveReward]);
 
   return (
     <Container>

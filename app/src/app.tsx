@@ -1,6 +1,7 @@
 import { importColor } from '@libs/style-router';
 import { getChainOptions } from '@terra-money/wallet-provider';
 import { Header } from 'components/header';
+import { HoverPanel } from 'components/hover';
 import { DisableOverflowXStyle } from 'components/styles/DisableOverflowXStyle';
 import { Providers } from 'configurations/app';
 import 'configurations/chartjs';
@@ -32,43 +33,47 @@ function App() {
     <div>
       <Header />
 
-      <Switch>
-        <Route exact path="/" component={DashboardMain} />
-        <Route path="/my" component={MyPageMain} />
-        <Route exact path="/clusters" component={ClustersMain} />
-        <Route path="/clusters/:cluster" component={ClustersDetail} />
-        <Route exact path="/staking" component={StakingMain} />
-        <Route path="/staking/:token" component={StakingStake} />
-        <Route exact path="/gov" component={GovMain} />
-        <Route path="/gov/trade" component={GovTrade} />
-        <Route path="/gov/stake" component={GovStake} />
-        <Route exact path="/polls" component={PollMain} />
-        <Route
-          path="/polls/create/whitelist-cluster"
-          component={PollWhitelistCluster}
-        />
-        <Route
-          path="/polls/create/blacklist-cluster"
-          component={PollBlacklistCluster}
-        />
-        <Route
-          path="/polls/create/cluster-parameter-change"
-          component={PollClusterParameterChange}
-        />
-        <Route
-          path="/polls/create/governance-parameter-change"
-          component={PollGovernanceParameterChange}
-        />
-        <Route
-          path="/polls/create/community-pool-spend"
-          component={PollCommunityPoolSpend}
-        />
-        <Route path="/polls/create/text" component={PollText} />
-        <Route path="/poll/:poll" component={PollDetail} />
-        <Route path="/send" component={Send} />
-        <Route path="/test/style-router" component={StyleRouterTest} />
-        <Redirect to="/" />
-      </Switch>
+      <div style={{ position: 'relative' }}>
+        <HoverPanel />
+
+        <Switch>
+          <Route exact path="/" component={DashboardMain} />
+          <Route path="/my" component={MyPageMain} />
+          <Route exact path="/clusters" component={ClustersMain} />
+          <Route path="/clusters/:cluster" component={ClustersDetail} />
+          <Route exact path="/staking" component={StakingMain} />
+          <Route path="/staking/:token" component={StakingStake} />
+          <Route exact path="/gov" component={GovMain} />
+          <Route path="/gov/trade" component={GovTrade} />
+          <Route path="/gov/stake" component={GovStake} />
+          <Route exact path="/polls" component={PollMain} />
+          <Route
+            path="/polls/create/whitelist-cluster"
+            component={PollWhitelistCluster}
+          />
+          <Route
+            path="/polls/create/blacklist-cluster"
+            component={PollBlacklistCluster}
+          />
+          <Route
+            path="/polls/create/cluster-parameter-change"
+            component={PollClusterParameterChange}
+          />
+          <Route
+            path="/polls/create/governance-parameter-change"
+            component={PollGovernanceParameterChange}
+          />
+          <Route
+            path="/polls/create/community-pool-spend"
+            component={PollCommunityPoolSpend}
+          />
+          <Route path="/polls/create/text" component={PollText} />
+          <Route path="/poll/:poll" component={PollDetail} />
+          <Route path="/send" component={Send} />
+          <Route path="/test/style-router" component={StyleRouterTest} />
+          <Redirect to="/" />
+        </Switch>
+      </div>
     </div>
   );
 }

@@ -18,47 +18,22 @@ import { pipe } from '@rx-stream/pipe';
 import { MsgExecuteContract, Fee } from '@terra-money/terra.js';
 import { Observable } from 'rxjs';
 
-export function claimAllRewardsTx(
+export function claimIncentiveRewardsTx(
   $: {
     walletAddr: HumanAddr;
-    govAddr: HumanAddr;
-    stakingAddr: HumanAddr;
     incentiveAddr: HumanAddr;
-    claimStaking: boolean;
-    claimGov: boolean;
-    claimIncentive: boolean;
     onTxSucceed?: () => void;
   } & TxCommonParams,
 ): Observable<TxResultRendering> {
   const helper = new TxHelper($);
 
-  const stakingClaimMsg = $.claimStaking
-    ? [
-        new MsgExecuteContract($.walletAddr, $.stakingAddr, {
-          withdraw: {},
-        }),
-      ]
-    : [];
-
-  const govClaimMsg = $.claimGov
-    ? [
-        new MsgExecuteContract($.walletAddr, $.govAddr, {
-          withdraw_voting_rewards: {},
-        }),
-      ]
-    : [];
-
-  const incentiveClaimMsg = $.claimIncentive
-    ? [
+  return pipe(
+    _createTxOptions({
+      msgs: [
         new MsgExecuteContract($.walletAddr, $.incentiveAddr, {
           withdraw: {},
         }),
-      ]
-    : [];
-
-  return pipe(
-    _createTxOptions({
-      msgs: [...govClaimMsg, ...stakingClaimMsg, ...incentiveClaimMsg],
+      ],
       fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
       gasAdjustment: $.gasAdjustment,
     }),

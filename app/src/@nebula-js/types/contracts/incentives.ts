@@ -1,5 +1,5 @@
 import { HumanAddr, rs, terraswap, Token, u, UST } from '@libs/types';
-import { CT } from '@nebula-js/types';
+import { CT, NEB } from '@nebula-js/types';
 
 export namespace incentives {
   // ---------------------------------------------
@@ -102,6 +102,6 @@ export namespace incentives {
   }
 
   export interface ContributorPendingRewardsResponse {
-    pending_rewards: rs.Uint128;
+    pending_rewards: u<NEB>;
   }
 }
