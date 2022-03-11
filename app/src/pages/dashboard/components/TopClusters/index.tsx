@@ -9,6 +9,7 @@ import {
   MiniTab,
   PartitionBarGraph,
   PartitionLabels,
+  TokenIcon,
   useScreenSizeValue,
   VerticalLabelAndValue,
 } from '@nebula-js/ui';
@@ -74,7 +75,7 @@ function TopClustersBase({ className }: TopClustersProps) {
           ) => (
             <Content key={'cluster' + i}>
               <section className="summary">
-                <i />
+                <TokenIcon symbol={clusterTokenInfo.symbol} />
                 <div>
                   <h4>
                     <Link
@@ -165,11 +166,9 @@ const Content = styled.div`
     display: flex;
     align-items: center;
 
-    i {
+    img {
       width: 4em;
       height: 4em;
-      background-color: var(--color-gray34);
-      border-radius: 50%;
       margin-right: 1em;
     }
 

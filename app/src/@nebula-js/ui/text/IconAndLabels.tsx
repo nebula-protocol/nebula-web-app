@@ -2,11 +2,12 @@ import { fixedSizeStyle } from '../internal/fixedSizeStyle';
 import React, { DetailedHTMLProps, HTMLAttributes, ReactNode } from 'react';
 import styled from 'styled-components';
 import { DelistedBadge } from './DelistedBadge';
+import { TokenIcon } from '@nebula-js/ui';
 
 export interface IconAndLabelsProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   className?: string;
-  icon?: ReactNode;
+  symbol?: string;
   text: ReactNode;
   subtext: ReactNode;
   isActive?: boolean;
@@ -24,7 +25,7 @@ const _iconMarginRight = '0.9em';
 const _textGap = '0.28571429em';
 
 function IconAndLabelsBase({
-  icon,
+  symbol,
   text,
   subtext,
   isActive = true,
@@ -37,7 +38,7 @@ function IconAndLabelsBase({
 }: IconAndLabelsProps) {
   return (
     <div {...divProps}>
-      <i>{icon}</i>
+      <TokenIcon symbol={symbol} />
       <div>
         <div>
           {!isActive && <DelistedBadge />}
@@ -55,13 +56,9 @@ export const IconAndLabels = styled(IconAndLabelsBase)`
   display: flex;
   align-items: center;
 
-  > i {
+  > img {
     display: inline-block;
     ${({ iconSize = _iconSize }) => fixedSizeStyle(iconSize)};
-    background-color: ${({ icon }) =>
-      !icon ? 'var(--color-gray34)' : 'transparent'};
-    border-radius: 50%;
-
     margin-right: ${({ iconMarginRight = _iconMarginRight }) =>
       iconMarginRight};
   }

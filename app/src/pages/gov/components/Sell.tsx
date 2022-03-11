@@ -115,7 +115,7 @@ function SellBase({ className }: SellProps) {
             {formatUToken(states.tokenBalance)}
           </TextButton>
         }
-        token={<TokenSpan>NEB</TokenSpan>}
+        token={<TokenSpan symbol="NEB">NEB</TokenSpan>}
         error={states.invalidTokenAmount}
       />
 
@@ -131,7 +131,7 @@ function SellBase({ className }: SellProps) {
         }
         placeholder="0.00"
         label="TO"
-        token={<TokenSpan>UST</TokenSpan>}
+        token={<TokenSpan symbol="UST">UST</TokenSpan>}
       />
 
       <Disclosure

@@ -1,15 +1,23 @@
 import React, { DetailedHTMLProps, HTMLAttributes, ReactNode } from 'react';
 import styled from 'styled-components';
+import { TokenIcon } from '../icons';
+import { fixedSizeStyle } from '../internal/fixedSizeStyle';
 
 export interface TokenSpanProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLSpanElement>, HTMLSpanElement> {
+  symbol?: string;
   icon?: ReactNode;
 }
 
-function TokenSpanBase({ icon, children, ...spanProps }: TokenSpanProps) {
+function TokenSpanBase({
+  symbol,
+  icon,
+  children,
+  ...spanProps
+}: TokenSpanProps) {
   return (
     <span {...spanProps}>
-      <i>{icon}</i>
+      {icon ? icon : <TokenIcon symbol={symbol} />}
       <span>{children}</span>
     </span>
   );
@@ -21,16 +29,12 @@ export const TokenSpan = styled(TokenSpanBase)`
 
   font-size: 1em;
 
-  > i {
+  > img {
     margin-right: 0.5em;
+    ${fixedSizeStyle('1.4em')};
   }
 
-  > i:empty {
-    background-color: var(--color-gray34);
-    border-radius: 50%;
-    min-width: 1.4em;
-    min-height: 1.4em;
-    max-width: 1.4em;
-    max-height: 1.4em;
+  > div {
+    margin-right: 0.5em;
   }
 `;

@@ -13,3 +13,4 @@ export * from './datavis';
 export * from './develop';
 export * from './colors';
 export * from './dialogs';
+export * from './icons';

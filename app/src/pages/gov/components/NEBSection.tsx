@@ -31,6 +31,7 @@ function NEBSectionBase({ className }: NEBSectionProps) {
   return (
     <Section className={className}>
       <IconAndLabels
+        symbol="NEB"
         className="token"
         text="NEB"
         subtext="Nebula"

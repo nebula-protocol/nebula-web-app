@@ -7,6 +7,7 @@ import {
   sectionStyle,
   Sub,
   TitledLabel,
+  TokenIcon,
 } from '@nebula-js/ui';
 import { DelistedBadge } from '@nebula-js/ui/text/DelistedBadge';
 import { fixHMR } from 'fix-hmr';
@@ -57,8 +58,8 @@ function StakingCardsBase({ staking, ...sectionProps }: StakingCardsProps) {
           <li key={'row' + id}>
             <h3>
               <CoupledIconsHolder radiusEm={1}>
-                <figure />
-                <figure />
+                <TokenIcon symbol="UST" />
+                <TokenIcon symbol={symbol} />
               </CoupledIconsHolder>
               <div className="name-container">
                 {!isActive && <DelistedBadge />}
@@ -137,14 +138,6 @@ export const StyledStakingCards = styled(StakingCardsBase)`
     font-size: 1.42857142857143em;
 
     font-weight: 500 !important;
-
-    figure:nth-of-type(1) {
-      border: 1px solid var(--color-gray34);
-    }
-
-    figure:nth-of-type(2) {
-      background-color: var(--color-gray34);
-    }
   }
 
   .apr {

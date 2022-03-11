@@ -88,7 +88,7 @@ function GovStakeBase({ className }: GovStakeProps) {
             {formatUToken(states.maxNebAmount)}
           </TextButton>
         }
-        token={<TokenSpan>NEB</TokenSpan>}
+        token={<TokenSpan symbol="NEB">NEB</TokenSpan>}
         error={states.invalidNebAmount}
       />
 

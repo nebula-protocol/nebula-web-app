@@ -116,7 +116,11 @@ function ClusterSellBase({
             {formatUToken(states.tokenBalance)}
           </TextButton>
         }
-        token={<TokenSpan>{clusterTokenInfo.symbol}</TokenSpan>}
+        token={
+          <TokenSpan symbol={clusterTokenInfo.symbol}>
+            {clusterTokenInfo.symbol}
+          </TokenSpan>
+        }
         error={states.invalidTokenAmount}
       />
 
@@ -132,7 +136,7 @@ function ClusterSellBase({
         }
         placeholder="0.00"
         label="TO"
-        token={<TokenSpan>UST</TokenSpan>}
+        token={<TokenSpan symbol="UST">UST</TokenSpan>}
       />
 
       <Disclosure

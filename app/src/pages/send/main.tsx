@@ -177,7 +177,9 @@ function SendMainBase({ className }: SendMainProps) {
             </EmptyButton>
           }
           token={
-            <TokenSpan>{tokens.selectedTokenInfo.tokenInfo.symbol}</TokenSpan>
+            <TokenSpan symbol={tokens.selectedTokenInfo.tokenInfo.symbol}>
+              {tokens.selectedTokenInfo.tokenInfo.symbol}
+            </TokenSpan>
           }
           error={states.invalidAmount}
         />

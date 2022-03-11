@@ -4,6 +4,7 @@ import {
   CoupledIconsHolder,
   HorizontalScrollTable,
   HorizontalScrollTableProps,
+  TokenIcon,
   useScreenSizeValue,
 } from '@nebula-js/ui';
 import { DelistedBadge } from '@nebula-js/ui/text/DelistedBadge';
@@ -52,44 +53,46 @@ function StakingTableBase({ staking, ...tableProps }: StakingTableProps) {
       </thead>
 
       <tbody>
-        {staking.map(({ index, id, name, apr, totalStaked, isActive }) => (
-          <tr key={'row' + index}>
-            <td>
-              <CoupledIconsHolder radiusEm={1.1}>
-                <figure />
-                <figure />
-              </CoupledIconsHolder>
-              <div className="name-container">
-                {!isActive && <DelistedBadge />}
-                {name}
-              </div>
-            </td>
-            <td>{formatRate(apr)}%</td>
-            <td>{`${formatUTokenWithPostfixUnits(totalStaked)} UST`}</td>
-            <td>
-              <Button
-                size={buttonSize}
-                color="paleblue"
-                componentProps={{
-                  component: Link,
-                  to: `/staking/${id}/stake`,
-                }}
-              >
-                Stake
-              </Button>
-              <Button
-                size={buttonSize}
-                color="border"
-                componentProps={{
-                  component: Link,
-                  to: `/staking/${id}/unstake`,
-                }}
-              >
-                Unstake
-              </Button>
-            </td>
-          </tr>
-        ))}
+        {staking.map(
+          ({ index, id, name, apr, totalStaked, isActive, symbol }) => (
+            <tr key={'row' + index}>
+              <td>
+                <CoupledIconsHolder radiusEm={1.1}>
+                  <TokenIcon symbol="UST" />
+                  <TokenIcon symbol={symbol} />
+                </CoupledIconsHolder>
+                <div className="name-container">
+                  {!isActive && <DelistedBadge />}
+                  {name}
+                </div>
+              </td>
+              <td>{formatRate(apr)}%</td>
+              <td>{`${formatUTokenWithPostfixUnits(totalStaked)} UST`}</td>
+              <td>
+                <Button
+                  size={buttonSize}
+                  color="paleblue"
+                  componentProps={{
+                    component: Link,
+                    to: `/staking/${id}/stake`,
+                  }}
+                >
+                  Stake
+                </Button>
+                <Button
+                  size={buttonSize}
+                  color="border"
+                  componentProps={{
+                    component: Link,
+                    to: `/staking/${id}/unstake`,
+                  }}
+                >
+                  Unstake
+                </Button>
+              </td>
+            </tr>
+          ),
+        )}
       </tbody>
     </HorizontalScrollTable>
   );
@@ -115,14 +118,6 @@ export const StyledStakingTable = styled(StakingTableBase)`
       gap: 0.6em;
 
       font-weight: 500 !important;
-
-      figure:nth-of-type(1) {
-        border: 1px solid var(--color-gray34);
-      }
-
-      figure:nth-of-type(2) {
-        background-color: var(--color-gray34);
-      }
     }
 
     &:nth-child(4) {

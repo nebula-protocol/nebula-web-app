@@ -14,8 +14,10 @@ import { CT, LP, u, UST } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
+  CoupledIconsHolder,
   TextButton,
   TokenInput,
+  TokenIcon,
   TokenSpan,
   useScreenSizeValue,
 } from '@nebula-js/ui';
@@ -109,7 +111,18 @@ function StakingUnstakeBase({
             {formatUToken(states.maxLpAmount)}
           </TextButton>
         }
-        token={<TokenSpan>{tokenInfo.symbol}-UST LP</TokenSpan>}
+        token={
+          <TokenSpan
+            icon={
+              <CoupledIconsHolder radiusEm={0.9}>
+                <TokenIcon symbol="UST" />
+                <TokenIcon symbol={tokenInfo.symbol} />
+              </CoupledIconsHolder>
+            }
+          >
+            {tokenInfo.symbol}-UST LP
+          </TokenSpan>
+        }
         error={states.invalidLpAmount}
       />
 

@@ -63,10 +63,20 @@ function ClustersTableBase({
 
       <tbody>
         {clusters.map(
-          ({ isActive, addr, name, prices, marketCap, provided, assets }) => (
+          ({
+            isActive,
+            addr,
+            name,
+            prices,
+            marketCap,
+            provided,
+            assets,
+            tokenInfo,
+          }) => (
             <tr key={'row' + addr} onClick={() => onClusterClick(addr)}>
               <td>
                 <IconAndLabels
+                  symbol={tokenInfo.symbol}
                   text={name}
                   subtext={
                     <Partition>

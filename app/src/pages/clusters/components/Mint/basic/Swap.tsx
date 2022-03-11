@@ -97,7 +97,7 @@ function SwapBase({
             {formatUToken(states.maxUstAmount)}
           </EmptyButton>
         }
-        token={<TokenSpan>UST</TokenSpan>}
+        token={<TokenSpan symbol="UST">UST</TokenSpan>}
         error={states.invalidUstAmount}
       />
 

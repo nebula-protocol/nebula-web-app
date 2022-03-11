@@ -110,7 +110,7 @@ function VoteFormBase({ className, pollId, onVoteComplete }: VoteFormProps) {
         onChange={setAmount}
         label="AMOUNT"
         placeholder="0.00"
-        token={<TokenSpan>NEB</TokenSpan>}
+        token={<TokenSpan symbol="NEB">NEB</TokenSpan>}
         suggest={
           <TextButton fontSize={12} onClick={() => setAmount(userVotingPower)}>
             <WalletIcon

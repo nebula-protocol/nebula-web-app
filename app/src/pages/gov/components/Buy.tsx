@@ -131,7 +131,7 @@ function BuyBase({ className }: BuyProps) {
             {formatUToken(states.maxUstAmount)}
           </TextButton>
         }
-        token={<TokenSpan>UST</TokenSpan>}
+        token={<TokenSpan symbol="UST">UST</TokenSpan>}
         error={states.invalidUstAmount}
       />
 
@@ -147,7 +147,7 @@ function BuyBase({ className }: BuyProps) {
         }
         placeholder="0.00"
         label="NEB AMOUNT"
-        token={<TokenSpan>NEB</TokenSpan>}
+        token={<TokenSpan symbol="NEB">NEB</TokenSpan>}
       />
 
       <Disclosure

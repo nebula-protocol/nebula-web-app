@@ -97,6 +97,7 @@ function ClustersDetailBase({
     <MainLayout className={className}>
       <header className="header">
         <IconAndLabels
+          symbol={clusterView?.tokenInfo.symbol}
           text={clusterView?.name ?? '-'}
           subtext={clusterView?.tokenInfo.symbol ?? '-'}
           iconSize="1.5em"
@@ -209,7 +210,11 @@ function ClustersDetailBase({
               }) => (
                 <tr key={'row' + token.symbol}>
                   <td>
-                    <IconAndLabels text={token.name} subtext={token.symbol} />
+                    <IconAndLabels
+                      symbol={token.symbol}
+                      text={token.name}
+                      subtext={token.symbol}
+                    />
                   </td>
                   <td className="price">{d2Formatter(oraclePrice)} UST</td>
                   <td className="portfolio-ratio">
