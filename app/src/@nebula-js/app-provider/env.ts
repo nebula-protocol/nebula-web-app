@@ -1,3 +1,21 @@
+import { NetworkInfo } from '@terra-money/use-wallet';
+import { defaultLcdFetcher, LcdQueryClient } from '@libs/query-client';
+
+export function NEBULA_DEFAULT_LCD_WASM_CLIENT(
+  network: NetworkInfo,
+): LcdQueryClient {
+  const headers = new Headers();
+  headers.append('cache-control', 'no-cache');
+
+  return {
+    lcdEndpoint: network.lcd,
+    lcdFetcher: defaultLcdFetcher,
+    requestInit: {
+      headers,
+    },
+  };
+}
+
 export enum NEBULA_TX_KEYS {
   CLUSTER_CHUCK_SWAP = 'NEBULA_TX_CLUSTER_CHUCK_SWAP',
   CLUSTER_MINT = 'NEBULA_TX_CLUSTER_MINT',

@@ -11,7 +11,7 @@ import { NetworkInfo } from '@terra-money/use-wallet';
 export function NEBULA_DEFAULT_WASM_CLIENT(
   network: NetworkInfo,
 ): 'lcd' | 'hive' {
-  return 'hive';
+  return 'lcd';
   //return network.chainID.startsWith('testnet') ? 'hive' : 'lcd';
 }
 

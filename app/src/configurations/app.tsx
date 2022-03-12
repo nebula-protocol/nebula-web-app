@@ -22,6 +22,7 @@ import {
   NEBULA_TX_REFETCH_MAP,
   WALLETCONNECT_BRIDGE_SERVER,
 } from '../env';
+import { NEBULA_DEFAULT_LCD_WASM_CLIENT } from '@nebula-js/app-provider';
 
 patchReactQueryFocusRefetching();
 
@@ -59,6 +60,7 @@ export function Providers({ children, ...chainOptions }: ProvidersProps) {
         <QueryClientProvider client={queryClient}>
           <AppProvider
             defaultQueryClient={NEBULA_DEFAULT_WASM_CLIENT}
+            lcdQueryClient={NEBULA_DEFAULT_LCD_WASM_CLIENT}
             contractAddress={NEBULA_CONTRACT_ADDRESS}
             constants={NEBULA_CONSTANTS}
             refetchMap={NEBULA_TX_REFETCH_MAP}
