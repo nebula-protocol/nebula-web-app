@@ -52,7 +52,7 @@ function FooterBase({ className }: FooterProps) {
       <div className="buttons">
         <EmptyButton>
           {/* <DocsIcon /> Docs */}
-          <a href="https://docs.neb.finance" target="_blank" rel="noreferrer">
+          <a href="https://docs.neb.money" target="_blank" rel="noreferrer">
             <DocsIcon /> Docs
           </a>
         </EmptyButton>

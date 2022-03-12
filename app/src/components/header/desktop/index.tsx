@@ -25,7 +25,7 @@ function DesktopHeaderBase({ className }: DesktopHeaderProps) {
 
         <EmptyButton size={18}>
           <StyledA
-            href="https://docs.neb.finance"
+            href="https://docs.neb.money"
             target="_blank"
             rel="noreferrer"
           >

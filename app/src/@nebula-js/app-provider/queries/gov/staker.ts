@@ -13,7 +13,12 @@ export function useGovStakerQuery(
   const { queryClient, queryErrorReporter, contractAddress } = useNebulaApp();
 
   const result = useQuery(
-    [NEBULA_QUERY_KEYS.GOV_STAKER, walletAddr, contractAddress.gov, queryClient],
+    [
+      NEBULA_QUERY_KEYS.GOV_STAKER,
+      walletAddr,
+      contractAddress.gov,
+      queryClient,
+    ],
     queryFn,
     {
       refetchInterval: 1000 * 60 * 5,
