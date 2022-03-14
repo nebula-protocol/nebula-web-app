@@ -1,36 +1,36 @@
-import { ClusterInfo } from '@nebula-js/app-fns';
-import { fixHMR } from 'fix-hmr';
 import React from 'react';
-import { useTwoSteps } from 'contexts/two-steps';
+import { ClusterInfo } from '@nebula-js/app-fns';
 import { MultiBuy } from '../MultiBuy';
-import { Mint } from './Mint';
 import { TwoSteps, TwoStepsEnum } from '../../TwoSteps';
+import { useTwoSteps } from 'contexts/two-steps';
+import { MintArbBasicArbitrage } from './ArbBasicArbitrage';
 
-export interface MintBasicProps {
+export interface MintArbBasicProps {
   className?: string;
   clusterInfo: ClusterInfo;
 }
 
-function MintBasicBase({ className, clusterInfo }: MintBasicProps) {
+export function MintArbBasic({ className, clusterInfo }: MintArbBasicProps) {
   const { step, resetAndBackToStep1 } = useTwoSteps();
 
   return (
     <div className={className}>
       <TwoSteps
-        step={step}
         step1Info={{
           title: 'SWAP',
-          description: '1. Purchase inventory assets to mint with',
+          description: '1. Purchase inventory assets to arbitrage with',
         }}
         step2Info={{
-          title: 'MINT',
-          description: '2. Mint cluster tokens',
+          title: 'ARB',
+          description: '2. Arbitrage on Astroport',
         }}
+        step={step}
       />
+
       {step === TwoStepsEnum.STEP1 ? (
         <MultiBuy clusterInfo={clusterInfo} />
       ) : (
-        <Mint
+        <MintArbBasicArbitrage
           clusterInfo={clusterInfo}
           resetAndBackToSwap={resetAndBackToStep1}
         />
@@ -38,5 +38,3 @@ function MintBasicBase({ className, clusterInfo }: MintBasicProps) {
     </div>
   );
 }
-
-export const MintBasic = fixHMR(MintBasicBase);

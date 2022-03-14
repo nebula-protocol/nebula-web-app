@@ -12,37 +12,37 @@ import big from 'big.js';
 import { computeClusterTxFee } from '@nebula-js/app-fns';
 import { computeMinReceivedAmount } from '@nebula-js/app-fns';
 
-export interface ClusterMintTerraswapArbitrageFormInput
+export interface ClusterMintArbAdvancedFormInput
   extends ClusterMintAdvancedFormInput {
   maxSpread: Rate;
 }
 
-export interface ClusterMintTerraswapArbitrageFormDependency
+export interface ClusterMintArbAdvancedFormDependency
   extends ClusterMintAdvancedFormDependency {
   terraswapPair: terraswap.factory.PairResponse;
 }
 
-export interface ClusterMintTerraswapArbitrageFormStates
+export interface ClusterMintArbAdvancedFormStates
   extends ClusterMintAdvancedFormStates,
-    ClusterMintTerraswapArbitrageFormInput {}
+    ClusterMintArbAdvancedFormInput {}
 
-export interface ClusterMintTerraswapArbitrageFormAsyncStates
+export interface ClusterMintArbAdvancedFormAsyncStates
   extends ClusterMintAdvancedFormAsyncStates {
   returnedAmount: u<UST> | undefined;
 }
 
-export const clusterMintTerraswapArbitrageForm = (
-  dependency: ClusterMintTerraswapArbitrageFormDependency,
-  prevDependency: ClusterMintTerraswapArbitrageFormDependency | undefined,
+export const clusterMintArbAdvancedForm = (
+  dependency: ClusterMintArbAdvancedFormDependency,
+  prevDependency: ClusterMintArbAdvancedFormDependency | undefined,
 ) => {
   const dep = clusterMintAdvancedForm(dependency, prevDependency);
 
   return (
-    input: ClusterMintTerraswapArbitrageFormInput,
-    prevInput: ClusterMintTerraswapArbitrageFormInput | undefined,
+    input: ClusterMintArbAdvancedFormInput,
+    prevInput: ClusterMintArbAdvancedFormInput | undefined,
   ): FormReturn<
-    ClusterMintTerraswapArbitrageFormStates,
-    ClusterMintTerraswapArbitrageFormAsyncStates
+    ClusterMintArbAdvancedFormStates,
+    ClusterMintArbAdvancedFormAsyncStates
   > => {
     const [states, _asyncStates] = dep(input, prevInput);
     const clusterTxFee = computeClusterTxFee(
@@ -83,7 +83,7 @@ export const clusterMintTerraswapArbitrageForm = (
           returnedAmount: minReceivedUust,
           pnl,
           txFee: clusterTxFee,
-        } as ClusterMintTerraswapArbitrageFormAsyncStates;
+        } as ClusterMintArbAdvancedFormAsyncStates;
       } else {
         return {
           ...advancedAsyncStates,

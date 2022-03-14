@@ -2,10 +2,11 @@ import { DocsIcon, ModeIcon } from '@nebula-js/icons';
 import { EmptyButton } from '@nebula-js/ui';
 import logoImage from 'components/assets/nebula-wide.svg';
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useHistory } from 'react-router-dom';
 import { useStyle } from '@libs/style-router';
 import styled from 'styled-components';
 import { Wallet } from './Wallet';
+import { useTwoSteps } from 'contexts/two-steps';
 
 export interface DesktopHeaderProps {
   className?: string;
@@ -14,10 +15,21 @@ export interface DesktopHeaderProps {
 function DesktopHeaderBase({ className }: DesktopHeaderProps) {
   const { updateColor } = useStyle();
 
+  const { validateAndNavigate } = useTwoSteps();
+
+  const history = useHistory();
+
+  const navigate = (event: React.MouseEvent<any, MouseEvent>, path: string) => {
+    // ignore Link, NavLink link behaviour
+    event.preventDefault();
+
+    validateAndNavigate(() => history.push(path));
+  };
+
   return (
     <header className={className + ' dark-color-set'}>
       <div>
-        <Link to="/">
+        <Link to="/" onClick={(e) => navigate(e, '/')}>
           <img src={logoImage} alt="Nebula Protocol" />
         </Link>
 
@@ -47,10 +59,18 @@ function DesktopHeaderBase({ className }: DesktopHeaderProps) {
 
       <div>
         <nav>
-          <NavLink to="/clusters">Clusters</NavLink>
-          <NavLink to="/staking">Staking</NavLink>
-          <NavLink to="/gov">Governance</NavLink>
-          <NavLink to="/my">My Page</NavLink>
+          <NavLink to="/clusters" onClick={(e) => navigate(e, '/clusters')}>
+            Clusters
+          </NavLink>
+          <NavLink to="/staking" onClick={(e) => navigate(e, '/staking')}>
+            Staking
+          </NavLink>
+          <NavLink to="/gov" onClick={(e) => navigate(e, '/gov')}>
+            Governance
+          </NavLink>
+          <NavLink to="/my" onClick={(e) => navigate(e, '/my')}>
+            My Page
+          </NavLink>
         </nav>
 
         <Wallet />

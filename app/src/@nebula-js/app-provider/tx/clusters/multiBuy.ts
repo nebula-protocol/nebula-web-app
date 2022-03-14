@@ -1,4 +1,4 @@
-import { cw20BuyTokenChuckTx } from '@nebula-js/app-fns/tx/clusters/bulkSwap';
+import { cw20MultiBuyTokensTx } from '@nebula-js/app-fns/tx/clusters/multiBuy';
 import { useFixedFee } from '@libs/app-provider/hooks/useFixedFee';
 import { Rate, u, UST } from '@libs/types';
 import { useConnectedWallet } from '@terra-money/use-wallet';
@@ -7,20 +7,20 @@ import { useNebulaApp } from '@nebula-js/app-provider';
 import { NEBULA_TX_KEYS } from '../../env';
 import { useRefetchQueries } from '@libs/app-provider';
 import { SwapTokenInfo } from '@nebula-js/app-fns';
-import { useMintBasic } from 'contexts/mint-basic';
+import { useTwoSteps } from 'contexts/two-steps';
 import { computeBulkSwapGasWanted } from '@nebula-js/app-fns';
 
-export interface CW20BuyTokenChuckTxParams {
+export interface CW20MultiBuyTokenTxParams {
   buyTokens: SwapTokenInfo[];
   txFee: u<UST>;
 
   onTxSucceed?: () => void;
 }
 
-export function useCW20BuyTokenChuckTx() {
+export function useCW20MultiBuyTokensTx() {
   const connectedWallet = useConnectedWallet();
 
-  const { onSwapSucceed } = useMintBasic();
+  const { onStep1Succeed } = useTwoSteps();
 
   const { queryClient, txErrorReporter, constants, contractAddress } =
     useNebulaApp();
@@ -30,14 +30,14 @@ export function useCW20BuyTokenChuckTx() {
   const refetchQueries = useRefetchQueries();
 
   const stream = useCallback(
-    ({ buyTokens, txFee, onTxSucceed }: CW20BuyTokenChuckTxParams) => {
+    ({ buyTokens, txFee, onTxSucceed }: CW20MultiBuyTokenTxParams) => {
       if (!connectedWallet || !connectedWallet.availablePost) {
         throw new Error(`Can't post!`);
       }
 
-      return cw20BuyTokenChuckTx({
+      return cw20MultiBuyTokensTx({
         buyTokens,
-        onSwapSucceed,
+        onSwapSucceed: onStep1Succeed,
         aUSTTokenAddr: contractAddress.cw20.aUST,
         ancMarketContractAddr: contractAddress.anchor.market,
         txFee,
@@ -54,7 +54,7 @@ export function useCW20BuyTokenChuckTx() {
         txErrorReporter,
         onTxSucceed: () => {
           onTxSucceed?.();
-          refetchQueries(NEBULA_TX_KEYS.CLUSTER_CHUCK_SWAP);
+          refetchQueries(NEBULA_TX_KEYS.CLUSTER_MULTI_BUY);
         },
         network: connectedWallet.network,
         post: connectedWallet.post,
@@ -66,7 +66,7 @@ export function useCW20BuyTokenChuckTx() {
       constants.swapGasWantedPerAsset,
       contractAddress.anchor.market,
       contractAddress.cw20.aUST,
-      onSwapSucceed,
+      onStep1Succeed,
       fixedFee,
       refetchQueries,
       txErrorReporter,

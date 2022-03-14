@@ -1,20 +1,26 @@
 import { useFixedFee, useTerraBalancesQuery } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
-import { clusterMintAdvancedForm } from '@nebula-js/app-fns';
-import { useProtocolFee } from '@nebula-js/app-provider';
-import { cluster, CT, terraswap, Token, UST } from '@nebula-js/types';
+import {
+  clusterMintArbAdvancedForm,
+  ClusterMintArbAdvancedFormInput,
+} from '@nebula-js/app-fns';
+import { cluster, terraswap, CT, Token, UST, Rate } from '@nebula-js/types';
 import { useMemo } from 'react';
 import { useNebulaApp } from '../../hooks/useNebulaApp';
+import { useProtocolFee } from '@nebula-js/app-provider';
+import { useTwoSteps } from 'contexts/two-steps';
 
-export interface ClusterMintAdvancedFormParams {
+export interface ClusterMintArbAdvancedFormParams {
   clusterState: cluster.ClusterStateResponse;
   terraswapPool: terraswap.pair.PoolResponse<CT, UST>;
+  terraswapPair: terraswap.factory.PairResponse;
 }
 
-export function useClusterMintAdvancedForm({
+export function useClusterMintArbAdvancedForm({
   clusterState,
   terraswapPool,
-}: ClusterMintAdvancedFormParams) {
+  terraswapPair,
+}: ClusterMintArbAdvancedFormParams) {
   const { queryClient, lastSyncedHeight, gasPrice, constants } = useNebulaApp();
 
   const assetInfos = useMemo(() => {
@@ -25,17 +31,21 @@ export function useClusterMintAdvancedForm({
 
   const { data: balances } = useTerraBalancesQuery(assetInfos);
 
+  const { tokenAmounts } = useTwoSteps();
+
   const protocolFee = useProtocolFee();
 
   return useForm(
-    clusterMintAdvancedForm,
+    clusterMintArbAdvancedForm,
     {
       queryClient,
       clusterState,
-      protocolFee,
       terraswapPool,
       lastSyncedHeight,
+      terraswapPair,
       balances,
+      providedAmounts: tokenAmounts,
+      protocolFee,
       fixedFee,
       clusterFee: constants.nebula.clusterFee,
       gasPrice,
@@ -44,7 +54,8 @@ export function useClusterMintAdvancedForm({
       return {
         addedAssets: new Set<terraswap.Asset<Token>>(),
         amounts: assetInfos.map(() => '' as Token),
-      };
+        maxSpread: '0.01' as Rate,
+      } as ClusterMintArbAdvancedFormInput;
     },
   );
 }

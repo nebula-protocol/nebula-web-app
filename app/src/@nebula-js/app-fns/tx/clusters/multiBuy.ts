@@ -29,7 +29,7 @@ import {
 } from '@libs/app-fns/tx/internal';
 import { SwapTokenInfo } from '@nebula-js/app-fns';
 
-export function cw20BuyTokenChuckTx(
+export function cw20MultiBuyTokensTx(
   $: {
     buyerAddr: HumanAddr;
     buyTokens: SwapTokenInfo[];

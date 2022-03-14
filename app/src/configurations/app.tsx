@@ -11,7 +11,7 @@ import {
 import { useReadonlyWalletDialog } from 'components/dialogs/useReadonlyWalletDialog';
 import { StyleProviders } from 'configurations/style';
 import { TxBroadcastProvider } from 'contexts/tx-broadcast';
-import { MintBasicProvider } from 'contexts/mint-basic';
+import { TwoStepsProvider } from 'contexts/two-steps';
 import React, { ReactNode, useCallback } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -70,7 +70,7 @@ export function Providers({ children, ...chainOptions }: ProvidersProps) {
             <RouterScrollRestoration />
             <StyleProviders>
               <TxBroadcastProvider>
-                <MintBasicProvider>{children}</MintBasicProvider>
+                <TwoStepsProvider>{children}</TwoStepsProvider>
               </TxBroadcastProvider>
               {readonlyWalletSelectorElement}
             </StyleProviders>

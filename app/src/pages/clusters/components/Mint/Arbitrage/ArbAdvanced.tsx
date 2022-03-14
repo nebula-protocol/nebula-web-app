@@ -3,7 +3,7 @@ import { CT, terraswap, Token, u, UST, Rate } from '@nebula-js/types';
 import { ClusterInfo } from '@nebula-js/app-fns';
 import {
   useClusterArbMintTx,
-  useClusterMintTerraswapArbitrageForm,
+  useClusterMintArbAdvancedForm,
 } from '@nebula-js/app-provider';
 import {
   Disclosure,
@@ -15,22 +15,19 @@ import {
 import { FeeBox } from 'components/boxes/FeeBox';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
 import React, { useCallback, useState } from 'react';
-import { TokenFormMint } from './TokenFormMint';
+import { TokenFormMint } from '../TokenFormMint';
 import { SlippageToleranceInput } from 'components/form/SlippageToleranceInput';
 import styled from 'styled-components';
 import { fixHMR } from 'fix-hmr';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
 
-export interface MintTerraswapArbitrageProps {
+export interface MintArbAdvancedProps {
   className?: string;
   clusterInfo: ClusterInfo;
 }
 
-function MintTerraswapArbitrageBase({
-  className,
-  clusterInfo,
-}: MintTerraswapArbitrageProps) {
+function MintArbAdvancedBase({ className, clusterInfo }: MintArbAdvancedProps) {
   // ---------------------------------------------
   // dependencies
   // ---------------------------------------------
@@ -47,10 +44,9 @@ function MintTerraswapArbitrageBase({
   // ---------------------------------------------
   // states
   // ---------------------------------------------
-
   const [openMoreOptions, setOpenMoreOptions] = useState<boolean>(false);
 
-  const [updateInput, states] = useClusterMintTerraswapArbitrageForm({
+  const [updateInput, states] = useClusterMintArbAdvancedForm({
     clusterState: clusterInfo.clusterState,
     terraswapPool: clusterInfo.terraswapPool,
     terraswapPair: clusterInfo.terraswapPair,
@@ -59,7 +55,6 @@ function MintTerraswapArbitrageBase({
   // ---------------------------------------------
   // callbacks
   // ---------------------------------------------
-
   const initForm = useCallback(() => {
     updateInput({
       amounts: clusterInfo.clusterState.target.map(() => '' as CT),
@@ -177,7 +172,7 @@ function MintTerraswapArbitrageBase({
   );
 }
 
-export const StyledMintTerraswapArbitrage = styled(MintTerraswapArbitrageBase)`
+export const StyledMintArbAdvanced = styled(MintArbAdvancedBase)`
   .more-options {
     margin-top: 2.14285714em;
     margin-bottom: 2.14285714em;
@@ -210,4 +205,4 @@ export const StyledMintTerraswapArbitrage = styled(MintTerraswapArbitrageBase)`
   }
 `;
 
-export const MintTerraswapArbitrage = fixHMR(StyledMintTerraswapArbitrage);
+export const MintArbAdvanced = fixHMR(StyledMintArbAdvanced);

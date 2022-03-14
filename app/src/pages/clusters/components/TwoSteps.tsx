@@ -2,42 +2,54 @@ import { fixHMR } from 'fix-hmr';
 import React from 'react';
 import styled from 'styled-components';
 
-export enum BasicStepsEnum {
-  SWAP = 'SWAP',
-  MINT = 'MINT',
+export enum TwoStepsEnum {
+  STEP1 = 'STEP1',
+  STEP2 = 'STEP2',
 }
 
-export interface BasicStepsProps {
+export interface StepInfo {
+  title: string;
+  description: string;
+}
+
+export interface TwoStepsProps {
   className?: string;
-  step: BasicStepsEnum;
+  step: TwoStepsEnum;
+  step1Info: StepInfo;
+  step2Info: StepInfo;
 }
 
-function BasicStepsBase({ className, step }: BasicStepsProps) {
+function TwoStepsBase({
+  className,
+  step,
+  step1Info,
+  step2Info,
+}: TwoStepsProps) {
   return (
     <div className={className}>
       <span>
         <div className="in-between" />
         <span>
-          <div className="span_swap">
-            <span>{step === BasicStepsEnum.SWAP ? '1' : '✓'}</span>
-            <div>Swap</div>
+          <div className="span-step1">
+            <span>{step === TwoStepsEnum.STEP1 ? '1' : '✓'}</span>
+            <div>{step1Info.title}</div>
           </div>
-          <div className="span_mint">
+          <div className="span-step2">
             <span>2</span>
-            <div>Mint</div>
+            <div>{step2Info.title}</div>
           </div>
         </span>
       </span>
       <div className="description">
-        {step === BasicStepsEnum.SWAP
-          ? '1. Purchase inventory assets to mint with'
-          : '2. Mint cluster tokens'}
+        {step === TwoStepsEnum.STEP1
+          ? step1Info.description
+          : step2Info.description}
       </div>
     </div>
   );
 }
 
-export const StyledBasicSteps = styled(BasicStepsBase)`
+export const StyledTwoSteps = styled(TwoStepsBase)`
   width: 100%;
   padding-bottom: 2.28571429em;
   margin-top: 2.28571429em;
@@ -76,7 +88,7 @@ export const StyledBasicSteps = styled(BasicStepsBase)`
       min-height: 0.3571428em;
       ${({ step }) =>
         `background-color: var(${
-          step === BasicStepsEnum.MINT ? '--color-blue01' : '--color-gray34'
+          step === TwoStepsEnum.STEP2 ? '--color-blue01' : '--color-gray34'
         }`});
     }
 
@@ -108,37 +120,37 @@ export const StyledBasicSteps = styled(BasicStepsBase)`
         }
       }
 
-      .span_swap {
+      .span-step1 {
         span {
           background-color: var(--color-blue01);
           ${({ step }) =>
             `color: var(${
-              step === BasicStepsEnum.SWAP ? '--white-100' : '--color-gray11'
+              step === TwoStepsEnum.STEP1 ? '--white-100' : '--color-gray11'
             }`});
         }
         div {
           ${({ step }) =>
             `color: var(${
-              step === BasicStepsEnum.SWAP ? '--color-blue01' : '--color-gray34'
+              step === TwoStepsEnum.STEP1 ? '--color-blue01' : '--color-gray34'
             }`});
         }
       }
 
-      .span_mint {
+      .span-step2 {
         span {
           ${({ step }) =>
             `background-color: var(${
-              step === BasicStepsEnum.MINT ? '--color-blue01' : '--color-gray34'
+              step === TwoStepsEnum.STEP2 ? '--color-blue01' : '--color-gray34'
             }`});
           ${({ step }) =>
             `color: var(${
-              step === BasicStepsEnum.MINT ? '--white-100' : '--color-gray24'
+              step === TwoStepsEnum.STEP2 ? '--white-100' : '--color-gray24'
             }`});
         }
         div {
           ${({ step }) =>
             `color: var(${
-              step === BasicStepsEnum.MINT ? '--color-blue01' : '--color-gray34'
+              step === TwoStepsEnum.STEP2 ? '--color-blue01' : '--color-gray34'
             }`});
         }
       }
@@ -146,4 +158,4 @@ export const StyledBasicSteps = styled(BasicStepsBase)`
   }
 `;
 
-export const BasicSteps = fixHMR(StyledBasicSteps);
+export const TwoSteps = fixHMR(StyledTwoSteps);

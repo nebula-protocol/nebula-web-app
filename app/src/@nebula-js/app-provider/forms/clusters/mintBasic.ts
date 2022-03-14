@@ -2,8 +2,8 @@ import { useForm } from '@libs/use-form';
 import { clusterMintBasicForm } from '@nebula-js/app-fns';
 import { useProtocolFee } from '@nebula-js/app-provider';
 import { cluster } from '@nebula-js/types';
-import { useMintBasic } from 'contexts/mint-basic';
-import { useNebulaApp } from '../../../hooks/useNebulaApp';
+import { useTwoSteps } from 'contexts/two-steps';
+import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export interface ClusterMintBasicFormParams {
   clusterState: cluster.ClusterStateResponse;
@@ -14,7 +14,7 @@ export function useClusterMintBasicForm({
 }: ClusterMintBasicFormParams) {
   const { queryClient, gasPrice, constants, lastSyncedHeight } = useNebulaApp();
 
-  const { providedAmounts } = useMintBasic();
+  const { tokenAmounts } = useTwoSteps();
 
   const protocolFee = useProtocolFee();
 
@@ -22,7 +22,7 @@ export function useClusterMintBasicForm({
     clusterMintBasicForm,
     {
       queryClient,
-      providedAmounts,
+      providedAmounts: tokenAmounts,
       lastSyncedHeight,
       clusterState,
       protocolFee,

@@ -11,7 +11,7 @@ import {
   u,
   UST,
 } from '@nebula-js/types';
-import { NebulaClusterFee } from '../../../types';
+import { NebulaClusterFee } from '../../types';
 import big, { Big, BigSource } from 'big.js';
 import {
   computeBulkSwapTxFee,
@@ -19,7 +19,7 @@ import {
   computeMaxUstBalanceForSwap,
   swapPriceListQuery,
 } from '@nebula-js/app-fns';
-import { SwapTokenInfo } from '../../../types';
+import { SwapTokenInfo } from '../../types';
 import { divWithDefault, sum, vectorDot } from '@libs/big-math';
 
 export interface ClusterSwapFormInput {

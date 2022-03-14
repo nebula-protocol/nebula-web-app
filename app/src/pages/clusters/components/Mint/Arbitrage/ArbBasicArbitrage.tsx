@@ -1,30 +1,43 @@
 import { formatUToken } from '@libs/formatter';
-import { u, UST, Token } from '@nebula-js/types';
-import { breakpoints, Button, useScreenSizeValue } from '@nebula-js/ui';
+import { u, UST, Token, Rate } from '@nebula-js/types';
+import {
+  Disclosure,
+  FormLabel,
+  breakpoints,
+  Button,
+  useScreenSizeValue,
+} from '@nebula-js/ui';
 import { ClusterInfo } from '@nebula-js/app-fns';
 import {
-  useClusterMintBasicForm,
-  useClusterMintTx,
+  useClusterMintArbBasicForm,
+  useClusterArbMintTx,
 } from '@nebula-js/app-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { TokenTable } from '../TokenTable';
+import { SlippageToleranceInput } from 'components/form/SlippageToleranceInput';
 
-export interface MintBasicProps {
+export interface MintArbBasicArbitrageProps {
   className?: string;
   clusterInfo: ClusterInfo;
   resetAndBackToSwap: () => void;
 }
 
-function MintBasicBase({
+function MintArbBasicArbitrageBase({
   className,
-  clusterInfo: { clusterState, assetTokenInfos, clusterTokenInfo },
+  clusterInfo: {
+    clusterState,
+    assetTokenInfos,
+    clusterTokenInfo,
+    terraswapPair,
+    terraswapPool,
+  },
   resetAndBackToSwap,
-}: MintBasicProps) {
+}: MintArbBasicArbitrageProps) {
   // ---------------------------------------------
   // dependencies
   // ---------------------------------------------
@@ -32,33 +45,38 @@ function MintBasicBase({
 
   const { broadcast } = useTxBroadcast();
 
-  const postTx = useClusterMintTx(
+  const postTx = useClusterArbMintTx(
     clusterState.cluster_contract_address,
+    terraswapPair.contract_addr,
     clusterState.target,
   );
 
   // ---------------------------------------------
   // states
   // ---------------------------------------------
-  const [, states] = useClusterMintBasicForm({
+  const [openMoreOptions, setOpenMoreOptions] = useState<boolean>(false);
+
+  const [updateInput, states] = useClusterMintArbBasicForm({
     clusterState,
+    terraswapPool,
+    terraswapPair,
   });
 
   // ---------------------------------------------
   // callbacks
   // ---------------------------------------------
   const proceed = useCallback(
-    (amounts: u<Token>[], txFee: u<UST>) => {
+    (amounts: u<Token>[], txFee: u<UST>, minUust: u<UST>) => {
       const stream = postTx?.({
         amounts,
         txFee,
+        minUust,
         onTxSucceed: () => {
           resetAndBackToSwap();
         },
       });
 
       if (stream) {
-        console.log('Basic Mint', stream);
         broadcast(stream);
       }
     },
@@ -85,20 +103,44 @@ function MintBasicBase({
         />
       )}
 
+      <Disclosure
+        className="more-options"
+        title="More Options"
+        open={openMoreOptions}
+        onChange={setOpenMoreOptions}
+      >
+        <FormLabel label="Max Spread">
+          <SlippageToleranceInput
+            initialCustomValue={'0.1' as Rate}
+            value={states.maxSpread}
+            onChange={(nextMaxSpread) =>
+              updateInput({ maxSpread: nextMaxSpread })
+            }
+          />
+        </FormLabel>
+      </Disclosure>
+
       <FeeBox className="feebox">
-        {'mintedAmount' in states && states.mintedAmount && (
+        {clusterTokenInfo &&
+          'returnedAmount' in states &&
+          states.returnedAmount && (
+            <li>
+              <span>Minimum Returned UST</span>
+              <span>{formatUToken(states.returnedAmount)} UST</span>
+            </li>
+          )}
+
+        {clusterTokenInfo && 'pnl' in states && states.pnl && (
           <li>
-            <span>Minted {clusterTokenInfo.symbol}</span>
-            <span>
-              {formatUToken(states.mintedAmount)} {clusterTokenInfo.symbol}
-            </span>
+            <span>PNL</span>
+            <span>{formatUToken(states.pnl)} UST</span>
           </li>
         )}
 
         {states.txFee !== null && (
           <li>
             <span>Tx Fee</span>
-            <span>{formatUToken(states.txFee)} UST</span>
+            <span>{states.txFee ? formatUToken(states.txFee) : 0} UST</span>
           </li>
         )}
       </FeeBox>
@@ -120,7 +162,9 @@ function MintBasicBase({
           'providedAmounts' in states &&
           Array.isArray(states.providedAmounts) &&
           states.txFee &&
-          proceed(states.providedAmounts, states.txFee)
+          'returnedAmount' in states &&
+          states.returnedAmount &&
+          proceed(states.providedAmounts, states.txFee, states.returnedAmount)
         }
       >
         Mint
@@ -129,23 +173,14 @@ function MintBasicBase({
   );
 }
 
-export const StyledMintBasic = styled(MintBasicBase)`
-  .token-input {
-    margin-bottom: 2.28571429em;
-  }
-
-  .loading-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
+export const StyledMintArbBasicArbitrage = styled(MintArbBasicArbitrageBase)`
+  .more-options {
+    margin-top: 2.14285714em;
+    margin-bottom: 2.14285714em;
   }
 
   .feebox {
     margin-top: 2.8em;
-  }
-
-  .warning {
-    margin-top: 2.14285714em;
   }
 
   .submit {
@@ -167,4 +202,4 @@ export const StyledMintBasic = styled(MintBasicBase)`
   }
 `;
 
-export const Mint = fixHMR(StyledMintBasic);
+export const MintArbBasicArbitrage = fixHMR(StyledMintArbBasicArbitrage);

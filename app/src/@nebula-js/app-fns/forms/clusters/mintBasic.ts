@@ -6,7 +6,7 @@ import {
   computeClusterTxFee,
   computeUTokenWithoutFee,
 } from '@nebula-js/app-fns';
-import { NebulaClusterFee } from '../../../types';
+import { NebulaClusterFee } from '../../types';
 import { clusterMintQuery } from '@nebula-js/app-fns';
 
 export interface ClusterMintBasicFormInput {}
