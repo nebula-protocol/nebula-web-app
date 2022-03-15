@@ -1,5 +1,5 @@
 import { List, ViewModule } from '@material-ui/icons';
-import { breakpoints, EmptyButton, InfoTooltip, Search } from '@nebula-js/ui';
+import { breakpoints, EmptyButton, Search } from '@nebula-js/ui';
 import { useClustersInfoListQuery } from '@nebula-js/app-provider';
 import { useLocalStorage } from '@libs/use-local-storage';
 import { useQueryBoundInput } from '@libs/use-query-bound-input';
@@ -67,9 +67,7 @@ function ClustersMainBase({ className }: ClustersMainProps) {
 
   return (
     <MainLayout className={className}>
-      <h1>
-        Clusters <InfoTooltip>Test tooltip...</InfoTooltip>
-      </h1>
+      <h1>Clusters</h1>
 
       <Search
         className="search"

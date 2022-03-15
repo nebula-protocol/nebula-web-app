@@ -39,17 +39,21 @@ function ClustersTableBase({
         <tr>
           <th>
             <span>
-              Cluster <InfoTooltip>Test tooltip...</InfoTooltip>
+              Cluster <InfoTooltip>Cluster symbol and name</InfoTooltip>
             </span>
           </th>
           <th>
             <span>
-              Cluster Price <InfoTooltip>Test tooltip...</InfoTooltip>
+              Cluster Price <InfoTooltip>Cluster intrinsic price</InfoTooltip>
             </span>
           </th>
           <th>
             <span>
-              Market Cap <InfoTooltip>Test tooltip...</InfoTooltip>
+              Market Cap{' '}
+              <InfoTooltip>
+                Cluster market cap. Calculated from the cluster’s market price
+                and total supply
+              </InfoTooltip>
             </span>
           </th>
           <th>

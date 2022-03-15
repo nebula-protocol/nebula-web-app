@@ -6,6 +6,7 @@ import { ClusterTokenPrices } from '@nebula-js/app-fns';
 import { formatToken, formatUTokenWithPostfixUnits } from '@libs/formatter';
 import { DisplayNumber } from 'components/common/DisplayNumber';
 import { DisplayPremium } from 'components/common/DisplayPremium';
+import { InfoTooltip } from '@nebula-js/ui';
 
 export interface PriceCardProps {
   prices: ClusterTokenPrices | undefined;
@@ -18,9 +19,20 @@ export const PriceCard = ({ prices, liquidity, desc }: PriceCardProps) => {
 
   return (
     <Container>
-      <h3>CURRENT PRICE (CLUSTER)</h3>
+      <h3>
+        CLUSTER PRICE (INTRINSIC){' '}
+        <InfoTooltip>
+          Price of cluster as calculated by total cluster inventory value
+          divided by cluster token total supply
+        </InfoTooltip>
+      </h3>
       <StyledPrice price={formatToken(prices.clusterPrice)} currency="UST" />
-      <h3>CURRENT PRICE (ASTROPORT)</h3>
+      <h3>
+        CLUSTER PRICE (MARKET){' '}
+        <InfoTooltip>
+          Price of cluster as calculated from its Astroport pool
+        </InfoTooltip>
+      </h3>
       <StyledPrice price={formatToken(prices.poolPrice)} currency="UST" />
       <h3>PREMIUM</h3>
       <StyledNumber>

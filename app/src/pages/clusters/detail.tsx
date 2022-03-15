@@ -165,8 +165,10 @@ function ClustersDetailBase({
               {
                 label: (
                   <>
-                    TOTAL TOKEN PROVIDED{' '}
-                    <InfoTooltip>Test tooltip...</InfoTooltip>
+                    TOTAL VALUE PROVIDED{' '}
+                    <InfoTooltip>
+                      Total value of the cluster’s inventory
+                    </InfoTooltip>
                   </>
                 ),
                 text:
