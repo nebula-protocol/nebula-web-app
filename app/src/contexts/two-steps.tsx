@@ -12,6 +12,7 @@ import { useConfirm } from '@nebula-js/ui';
 import { TwoStepsEnum } from 'pages/clusters/components/TwoSteps';
 import { u, Token } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/use-wallet';
+import { useHistory } from 'react-router-dom';
 
 export interface TwoStepsProps {
   children: ReactNode;
@@ -38,14 +39,14 @@ export function TwoStepsProvider({ children }: TwoStepsProps) {
 
   const [openConfirm, confirmElement] = useConfirm();
 
+  const history = useHistory();
+
   // ---------------------------------------------
   // states
   // ---------------------------------------------
   const [step, setStep] = useState<TwoStepsEnum>(TwoStepsEnum.STEP1);
 
-  const [tokenAmounts, setTokenAmounts] = useState<u<Token>[]>([
-    '10230' as u<Token>,
-  ]);
+  const [tokenAmounts, setTokenAmounts] = useState<u<Token>[]>([]);
 
   // ---------------------------------------------
   // callbacks
@@ -104,35 +105,20 @@ export function TwoStepsProvider({ children }: TwoStepsProps) {
   }, [step]);
 
   // warning when user go back or forward
-  // useEffect(() => {
-  //   async function callback(event: PopStateEvent) {
-  //     if (tokenAmounts.length > 0) {
-  //       const confirm = await openConfirm({
-  //         description: WARNING_MESSAGE,
-  //         agree: 'Leave',
-  //         disagree: 'Cancel',
-  //       });
+  useEffect(() => {
+    function callback(e: PopStateEvent) {
+      // TODO: work around to prevent user to back,
+      history.go(1);
+    }
 
-  //       console.log(event);
+    if (step === TwoStepsEnum.STEP2) {
+      window.addEventListener('popstate', callback);
+    }
 
-  //       if (confirm) {
-  //         history.back();
-  //         resetAndBackToStep1();
-  //       } else {
-  //         // Stay on the current page.
-  //         history.pushState(null, '', window.location.pathname);
-  //       }
-  //     }
-  //   }
-
-  //   if (step === TwoStepsEnum.STEP1) {
-  //     window.addEventListener('popstate', callback);
-  //   }
-
-  //   return () => {
-  //     window.removeEventListener('popstate', callback);
-  //   };
-  // }, [step]);
+    return () => {
+      window.removeEventListener('popstate', callback);
+    };
+  }, [history, step]);
 
   // clear the data when user disconnect
   useEffect(() => {
