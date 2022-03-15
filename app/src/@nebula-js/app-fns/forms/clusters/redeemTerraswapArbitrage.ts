@@ -3,11 +3,14 @@ import {
   GasPrice,
   terraswapSimulationQuery,
 } from '@libs/app-fns';
-import { sum, vectorMultiply } from '@libs/big-math';
+import { vectorDot } from '@libs/big-math';
 import { demicrofy, microfy } from '@libs/formatter';
 import { QueryClient } from '@libs/query-client';
 import { FormReturn } from '@libs/use-form';
-import { computeMinReceivedAmount } from '@nebula-js/app-fns';
+import {
+  computeMinReceivedAmount,
+  computeTokenWithoutFee,
+} from '@nebula-js/app-fns';
 import {
   cluster,
   CT,
@@ -19,7 +22,7 @@ import {
   u,
   UST,
 } from '@nebula-js/types';
-import big, { BigSource } from 'big.js';
+import big, { Big, BigSource } from 'big.js';
 import { computeClusterTxFee } from '../../logics/clusters/computeClusterTxFee';
 import { clusterRedeemQuery } from '../../queries/clusters/redeem';
 import { NebulaClusterFee } from '../../types';
@@ -35,6 +38,7 @@ export interface ClusterRedeemTerraswapArbitrageFormDependency {
   //
   clusterState: cluster.ClusterStateResponse;
   terraswapPair: terraswap.factory.PairResponse;
+  protocolFee: Rate;
   //
   ustBalance: u<UST>;
   taxRate: Rate;
@@ -58,7 +62,8 @@ export interface ClusterRedeemTerraswapArbitrageFormStates
 export interface ClusterRedeemTerraswapArbitrageFormAsyncStates {
   minBurntTokenAmount?: u<CT>;
   redeemTokenAmounts?: u<Token>[];
-  redeemValue?: u<UST>;
+  totalRedeemValue?: u<UST<Big>>;
+  pnl?: u<UST>;
 }
 
 export const clusterRedeemTerraswapArbitrageForm = (
@@ -122,6 +127,7 @@ export const clusterRedeemTerraswapArbitrageForm = (
       dependency.lastSyncedHeight !== prevDependency?.lastSyncedHeight ||
       dependency.clusterState !== prevDependency?.clusterState ||
       dependency.gasPrice !== prevDependency?.gasPrice ||
+      dependency.protocolFee !== prevDependency.protocolFee ||
       input.ustAmount !== prevInput?.ustAmount ||
       input.maxSpread !== prevInput?.maxSpread
     ) {
@@ -146,24 +152,34 @@ export const clusterRedeemTerraswapArbitrageForm = (
             computeMinReceivedAmount(return_amount, input.maxSpread),
           ).toFixed() as CT;
 
-          const { redeem } = await clusterRedeemQuery(
+          const tokenAmountWithoutFee = computeTokenWithoutFee(
             minReceivedCT,
+            dependency.protocolFee,
+          );
+
+          const { redeem } = await clusterRedeemQuery(
+            tokenAmountWithoutFee,
             [],
             dependency.clusterState,
             dependency.lastSyncedHeight,
             dependency.queryClient,
           );
 
+          // total redeem assets value
+          const totalRedeemValue = vectorDot(
+            redeem.redeem_assets,
+            dependency.clusterState.prices,
+          ) as u<UST<Big>>;
+
           return {
             minBurntTokenAmount: redeem.token_cost,
             redeemTokenAmounts: redeem.redeem_assets,
-            redeemValue: sum(
-              ...vectorMultiply(
-                redeem.redeem_assets,
-                dependency.clusterState.prices,
-              ),
-            ).toFixed() as u<UST>,
+            totalRedeemValue,
+            pnl: totalRedeemValue
+              .minus(microfy(input.ustAmount))
+              .toFixed() as u<UST>,
             txFee,
+            invalidRedeemQuery: null,
             invalidTxFee:
               dependency.connected && big(txFee).gt(dependency.ustBalance)
                 ? 'Not enough transaction fees'
@@ -176,7 +192,8 @@ export const clusterRedeemTerraswapArbitrageForm = (
           return {
             minBurntTokenAmount: undefined,
             redeemTokenAmounts: undefined,
-            redeemValue: undefined,
+            totalRedeemValue: undefined,
+            pnl: undefined,
             invalidRedeemQuery,
           };
         });

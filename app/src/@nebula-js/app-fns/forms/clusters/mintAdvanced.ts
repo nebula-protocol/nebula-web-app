@@ -42,7 +42,7 @@ export interface ClusterMintAdvancedFormStates
 export interface ClusterMintAdvancedFormAsyncStates {
   mintedAmount?: u<CT>;
   totalInputValue?: u<UST<Big>>;
-  pnl: u<UST> | undefined;
+  pnl?: u<UST>;
 }
 
 export const clusterMintAdvancedForm = (
@@ -157,6 +157,7 @@ export const clusterMintAdvancedForm = (
                 pnl: totalMintValue.minus(totalInputValue).toFixed() as u<UST>,
                 totalInputValue,
                 txFee: clusterTxFee,
+                invalidMintQuery: undefined,
               };
             })
             .catch((err) => {

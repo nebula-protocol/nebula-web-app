@@ -168,10 +168,17 @@ function BurnTerraswapArbitrageBase({
           </li>
         )}
 
-        {'redeemValue' in states && states.redeemValue && (
+        {'totalRedeemValue' in states && states.totalRedeemValue && (
           <li>
             <span>Minimum Redeem Value</span>
-            <span>{formatUToken(states.redeemValue)} UST</span>
+            <span>{formatUToken(states.totalRedeemValue)} UST</span>
+          </li>
+        )}
+
+        {'pnl' in states && states.pnl && (
+          <li>
+            <span>PNL</span>
+            <span>{formatUToken(states.pnl)} UST</span>
           </li>
         )}
 

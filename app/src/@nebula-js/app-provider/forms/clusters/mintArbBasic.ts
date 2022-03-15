@@ -4,7 +4,7 @@ import {
   clusterMintArbBasicForm,
   ClusterMintArbBasicFormInput,
 } from '@nebula-js/app-fns';
-import { cluster, terraswap, CT, Token, UST, Rate } from '@nebula-js/types';
+import { cluster, terraswap, CT, UST, Rate } from '@nebula-js/types';
 import { useMemo } from 'react';
 import { useNebulaApp } from '../../hooks/useNebulaApp';
 import { useProtocolFee } from '@nebula-js/app-provider';
@@ -52,8 +52,6 @@ export function useClusterMintArbBasicForm({
     },
     () => {
       return {
-        addedAssets: new Set<terraswap.Asset<Token>>(),
-        amounts: assetInfos.map(() => '' as Token),
         maxSpread: '0.01' as Rate,
       } as ClusterMintArbBasicFormInput;
     },
