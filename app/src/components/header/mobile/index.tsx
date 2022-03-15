@@ -8,9 +8,10 @@ import {
 import logoImage from 'components/assets/nebula-wide.svg';
 import { ViewAddressButton } from 'components/header/mobile/ViewAddressButton';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation, useHistory } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import { useWalletDetailDialog } from './useWalletDetailDialog';
+import { useTwoSteps } from 'contexts/two-steps';
 
 export interface MobileHeaderProps {
   className?: string;
@@ -24,6 +25,10 @@ function MobileHeaderBase({ className }: MobileHeaderProps) {
   const [open, setOpen] = useState<boolean>(false);
 
   const { pathname } = useLocation();
+
+  const history = useHistory();
+
+  const { validateAndNavigate } = useTwoSteps();
 
   useEffect(() => {
     setOpen(false);
@@ -49,10 +54,17 @@ function MobileHeaderBase({ className }: MobileHeaderProps) {
     }
   }, [connect, status]);
 
+  const navigate = (event: React.MouseEvent<any, MouseEvent>, path: string) => {
+    // ignore Link, NavLink link behaviour
+    event.preventDefault();
+
+    validateAndNavigate(() => history.push(path));
+  };
+
   return (
     <header className={className + ' dark-color-set'}>
       <section>
-        <Link to="/">
+        <Link to="/" onClick={(e) => navigate(e, '/')}>
           <img src={logoImage} alt="Nebula Protocol" />
         </Link>
 
@@ -72,10 +84,18 @@ function MobileHeaderBase({ className }: MobileHeaderProps) {
       </section>
       {open && (
         <nav>
-          <NavLink to="/clusters">Clusters</NavLink>
-          <NavLink to="/staking">Staking</NavLink>
-          <NavLink to="/gov">Governance</NavLink>
-          <NavLink to="/my">My Page</NavLink>
+          <NavLink to="/clusters" onClick={(e) => navigate(e, '/clusters')}>
+            Clusters
+          </NavLink>
+          <NavLink to="/staking" onClick={(e) => navigate(e, '/staking')}>
+            Staking
+          </NavLink>
+          <NavLink to="/gov" onClick={(e) => navigate(e, '/gov')}>
+            Governance
+          </NavLink>
+          <NavLink to="/my" onClick={(e) => navigate(e, '/my')}>
+            My Page
+          </NavLink>
 
           {status === WalletStatus.WALLET_NOT_CONNECTED && (
             <ViewAddressButton onClick={viewAddress} />

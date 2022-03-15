@@ -35,14 +35,14 @@ export interface ClusterMintAdvancedFormStates
   invalidAmounts: (string | null)[];
   invalidMintQuery: string | null;
   remainAssets: terraswap.Asset<Token>[];
-  balances: TerraBalances | undefined;
+  balances?: TerraBalances;
   txFee: u<UST> | null;
 }
 
 export interface ClusterMintAdvancedFormAsyncStates {
   mintedAmount?: u<CT>;
   totalInputValue?: u<UST<Big>>;
-  pnl: u<UST> | undefined;
+  pnl?: u<UST>;
 }
 
 export const clusterMintAdvancedForm = (
@@ -68,7 +68,7 @@ export const clusterMintAdvancedForm = (
       dependency.balances !== prevDependency?.balances ||
       input.amounts !== prevInput?.amounts
     ) {
-      invalidAmounts = dependency.clusterState.target.map(({ info }, i) => {
+      invalidAmounts = dependency.clusterState.target.map((_, i) => {
         const amount = input.amounts[i];
         const balance = dependency.balances?.balances[i].balance ?? 0;
 
@@ -157,6 +157,7 @@ export const clusterMintAdvancedForm = (
                 pnl: totalMintValue.minus(totalInputValue).toFixed() as u<UST>,
                 totalInputValue,
                 txFee: clusterTxFee,
+                invalidMintQuery: undefined,
               };
             })
             .catch((err) => {

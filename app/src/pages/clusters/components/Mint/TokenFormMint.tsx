@@ -5,9 +5,9 @@ import {
   ClusterMintAdvancedFormAsyncStates,
   ClusterMintAdvancedFormInput,
   ClusterMintAdvancedFormStates,
-  ClusterMintTerraswapArbitrageFormAsyncStates,
-  ClusterMintTerraswapArbitrageFormInput,
-  ClusterMintTerraswapArbitrageFormStates,
+  ClusterMintArbAdvancedFormInput,
+  ClusterMintArbAdvancedFormStates,
+  ClusterMintArbAdvancedFormAsyncStates,
 } from '@nebula-js/app-fns';
 import { WalletIcon } from '@nebula-js/icons';
 import { terraswap, Token, u } from '@nebula-js/types';
@@ -23,15 +23,15 @@ export interface TokenFormMintProps {
   clusterInfo: ClusterInfo;
   updateInput:
     | FormInput<ClusterMintAdvancedFormInput>
-    | FormInput<ClusterMintTerraswapArbitrageFormInput>;
+    | FormInput<ClusterMintArbAdvancedFormInput>;
   states:
     | FormStates<
         ClusterMintAdvancedFormStates,
         ClusterMintAdvancedFormAsyncStates
       >
     | FormStates<
-        ClusterMintTerraswapArbitrageFormStates,
-        ClusterMintTerraswapArbitrageFormAsyncStates
+        ClusterMintArbAdvancedFormStates,
+        ClusterMintArbAdvancedFormAsyncStates
       >;
   children: ReactNode;
   className?: string;
@@ -51,9 +51,7 @@ function TokenFormMintBase({
     (asset: terraswap.Asset<Token>) => {
       updateInput(
         (
-          prev:
-            | ClusterMintAdvancedFormInput
-            | ClusterMintTerraswapArbitrageFormInput,
+          prev: ClusterMintAdvancedFormInput | ClusterMintArbAdvancedFormInput,
         ) => {
           const nextAddedAssets = new Set(prev.addedAssets);
           nextAddedAssets.add(asset);
@@ -71,9 +69,7 @@ function TokenFormMintBase({
     (asset: terraswap.Asset<Token>) => {
       updateInput(
         (
-          prev:
-            | ClusterMintAdvancedFormInput
-            | ClusterMintTerraswapArbitrageFormInput,
+          prev: ClusterMintAdvancedFormInput | ClusterMintArbAdvancedFormInput,
         ) => {
           const index = clusterState.target.findIndex(
             ({ info }) => info === asset.info,
@@ -101,9 +97,7 @@ function TokenFormMintBase({
     (asset: terraswap.Asset<Token>, amount: Token) => {
       updateInput(
         (
-          prev:
-            | ClusterMintAdvancedFormInput
-            | ClusterMintTerraswapArbitrageFormInput,
+          prev: ClusterMintAdvancedFormInput | ClusterMintArbAdvancedFormInput,
         ) => {
           const index = clusterState.target.findIndex(
             (targetAsset) => targetAsset === asset,

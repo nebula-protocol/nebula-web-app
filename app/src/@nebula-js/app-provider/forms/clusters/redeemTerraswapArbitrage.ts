@@ -1,6 +1,7 @@
 import { useFixedFee, useUstBalance, useUstTax } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
 import { clusterRedeemTerraswapArbitrageForm } from '@nebula-js/app-fns';
+import { useProtocolFee } from '@nebula-js/app-provider/queries/cluster-factory/config';
 import { cluster, terraswap, UST, Rate } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useNebulaApp } from '../../hooks/useNebulaApp';
@@ -24,6 +25,8 @@ export function useClusterRedeemTerraswapArbitrageForm({
 
   const uUST = useUstBalance(connectedWallet?.walletAddress);
 
+  const protocolFee = useProtocolFee();
+
   return useForm(
     clusterRedeemTerraswapArbitrageForm,
     {
@@ -31,6 +34,7 @@ export function useClusterRedeemTerraswapArbitrageForm({
       lastSyncedHeight,
       ustBalance: uUST,
       terraswapPair,
+      protocolFee,
       taxRate: tax.taxRate,
       maxTaxUUSD: tax.maxTax,
       fixedFee,

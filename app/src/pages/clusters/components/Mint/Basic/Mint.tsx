@@ -25,6 +25,9 @@ function MintBasicBase({
   clusterInfo: { clusterState, assetTokenInfos, clusterTokenInfo },
   resetAndBackToSwap,
 }: MintBasicProps) {
+  // ---------------------------------------------
+  // dependencies
+  // ---------------------------------------------
   const connectedWallet = useConnectedWallet();
 
   const { broadcast } = useTxBroadcast();
@@ -34,8 +37,16 @@ function MintBasicBase({
     clusterState.target,
   );
 
-  const [, states] = useClusterMintBasicForm({ clusterState });
+  // ---------------------------------------------
+  // states
+  // ---------------------------------------------
+  const [, states] = useClusterMintBasicForm({
+    clusterState,
+  });
 
+  // ---------------------------------------------
+  // callbacks
+  // ---------------------------------------------
   const proceed = useCallback(
     (amounts: u<Token>[], txFee: u<UST>) => {
       const stream = postTx?.({
@@ -47,13 +58,16 @@ function MintBasicBase({
       });
 
       if (stream) {
-        console.log('Mint.tsx..()', stream);
+        console.log('Basic Mint', stream);
         broadcast(stream);
       }
     },
     [broadcast, postTx, resetAndBackToSwap],
   );
 
+  // ---------------------------------------------
+  // presentation
+  // ---------------------------------------------
   const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
     mobile: 'medium',
     tablet: 'normal',

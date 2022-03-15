@@ -1,25 +1,26 @@
 import { useFixedFee, useTerraBalancesQuery } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
 import {
-  clusterMintTerraswapArbitrageForm,
-  ClusterMintTerraswapArbitrageFormInput,
+  clusterMintArbBasicForm,
+  ClusterMintArbBasicFormInput,
 } from '@nebula-js/app-fns';
-import { cluster, terraswap, CT, Token, UST, Rate } from '@nebula-js/types';
+import { cluster, terraswap, CT, UST, Rate } from '@nebula-js/types';
 import { useMemo } from 'react';
 import { useNebulaApp } from '../../hooks/useNebulaApp';
 import { useProtocolFee } from '@nebula-js/app-provider';
+import { useTwoSteps } from 'contexts/two-steps';
 
-export interface ClusterMintTerraswapArbitrageFormParams {
+export interface ClusterMintArbBasicFormParams {
   clusterState: cluster.ClusterStateResponse;
   terraswapPool: terraswap.pair.PoolResponse<CT, UST>;
   terraswapPair: terraswap.factory.PairResponse;
 }
 
-export function useClusterMintTerraswapArbitrageForm({
+export function useClusterMintArbBasicForm({
   clusterState,
   terraswapPool,
   terraswapPair,
-}: ClusterMintTerraswapArbitrageFormParams) {
+}: ClusterMintArbBasicFormParams) {
   const { queryClient, lastSyncedHeight, gasPrice, constants } = useNebulaApp();
 
   const assetInfos = useMemo(() => {
@@ -30,10 +31,12 @@ export function useClusterMintTerraswapArbitrageForm({
 
   const { data: balances } = useTerraBalancesQuery(assetInfos);
 
+  const { tokenAmounts } = useTwoSteps();
+
   const protocolFee = useProtocolFee();
 
   return useForm(
-    clusterMintTerraswapArbitrageForm,
+    clusterMintArbBasicForm,
     {
       queryClient,
       clusterState,
@@ -41,6 +44,7 @@ export function useClusterMintTerraswapArbitrageForm({
       lastSyncedHeight,
       terraswapPair,
       balances,
+      providedAmounts: tokenAmounts,
       protocolFee,
       fixedFee,
       clusterFee: constants.nebula.clusterFee,
@@ -48,10 +52,8 @@ export function useClusterMintTerraswapArbitrageForm({
     },
     () => {
       return {
-        addedAssets: new Set<terraswap.Asset<Token>>(),
-        amounts: assetInfos.map(() => '' as Token),
         maxSpread: '0.01' as Rate,
-      } as ClusterMintTerraswapArbitrageFormInput;
+      } as ClusterMintArbBasicFormInput;
     },
   );
 }

@@ -5,8 +5,9 @@ import { useLocalStorage } from '@libs/use-local-storage';
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { MintAdvanced } from './Advanced';
-import { MintBasic } from './basic';
-import { MintTerraswapArbitrage } from './TerraswapArbitrage';
+import { MintBasic } from './Basic';
+import { MintArbitrage } from './Arbitrage';
+import { useTwoSteps } from 'contexts/two-steps';
 
 export interface ClusterMintProps {
   className?: string;
@@ -24,9 +25,17 @@ const TAB_KEY = '__nebula_mint_tab__';
 function ClusterMintBase({ className, clusterInfo }: ClusterMintProps) {
   const [tabId, setTabId] = useLocalStorage(TAB_KEY, () => tabItems[0].id);
 
+  const { validateAndNavigate } = useTwoSteps();
+
   const tab = useMemo(() => {
     return tabItems.find(({ id }) => tabId === id) ?? tabItems[0];
   }, [tabId]);
+
+  const changeTabId = (nextTab: TabItem) => {
+    const navigate = () => setTabId(nextTab.id);
+
+    validateAndNavigate(navigate);
+  };
 
   return (
     <div className={className}>
@@ -34,13 +43,13 @@ function ClusterMintBase({ className, clusterInfo }: ClusterMintProps) {
         className="mode-tab"
         items={tabItems}
         selectedItem={tab}
-        onChange={(nextTab) => setTabId(nextTab.id)}
+        onChange={changeTabId}
       />
 
       {tabId === 'advanced' ? (
         <MintAdvanced clusterInfo={clusterInfo} />
       ) : tabId === 'astroportArbitrage' ? (
-        <MintTerraswapArbitrage clusterInfo={clusterInfo} />
+        <MintArbitrage clusterInfo={clusterInfo} />
       ) : (
         <MintBasic clusterInfo={clusterInfo} />
       )}

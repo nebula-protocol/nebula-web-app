@@ -127,6 +127,7 @@ export const clusterRedeemAdvancedForm = (
         dependency.clusterState !== prevDependency?.clusterState ||
         dependency.clusterFee !== prevDependency?.clusterFee ||
         dependency.gasPrice !== prevDependency?.gasPrice ||
+        dependency.protocolFee !== prevDependency.protocolFee ||
         input.tokenAmount !== prevInput?.tokenAmount ||
         input.addedAssets !== prevInput?.addedAssets ||
         input.amounts !== prevInput.amounts) &&
@@ -196,7 +197,7 @@ export const clusterRedeemAdvancedForm = (
             redeemTokenAmounts: undefined,
             totalRedeemValue: undefined,
             pnl: undefined,
-            invalidRedeemQuery,
+            invalidRedeemQuery: null,
           };
         });
     }

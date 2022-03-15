@@ -63,7 +63,8 @@ function ComponentBase({
   }, [existsAssets, searchResult]);
 
   const onSearch = useCallback((event: ChangeEvent<{ value: string }>) => {
-    setSearchText(event.target.value);
+    const newVal = event.target.value;
+    setSearchText(newVal);
   }, []);
 
   return (

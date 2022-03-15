@@ -12,8 +12,8 @@ import {
 } from '@nebula-js/ui';
 import { SwapTokenInfo, ClusterInfo } from '@nebula-js/app-fns';
 import {
-  useClusterSwapForm,
-  useCW20BuyTokenChuckTx,
+  useMultiBuyForm,
+  useCW20MultiBuyTokensTx,
 } from '@nebula-js/app-provider';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { FeeBox } from 'components/boxes/FeeBox';
@@ -21,26 +21,35 @@ import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { TokenTable } from '../TokenTable';
+import { TokenTable } from './TokenTable';
 import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
 
-export interface SwapProps {
+export interface MultiBuyProps {
   className?: string;
   clusterInfo: ClusterInfo;
 }
 
-function SwapBase({
+function MultiBuyBase({
   className,
   clusterInfo: { clusterState, assetTokenInfos },
-}: SwapProps) {
+}: MultiBuyProps) {
+  // ---------------------------------------------
+  // dependencies
+  // ---------------------------------------------
   const connectedWallet = useConnectedWallet();
 
   const { broadcast } = useTxBroadcast();
 
-  const postTx = useCW20BuyTokenChuckTx();
+  const postTx = useCW20MultiBuyTokensTx();
 
-  const [updateInput, states] = useClusterSwapForm({ clusterState });
+  // ---------------------------------------------
+  // states
+  // ---------------------------------------------
+  const [updateInput, states] = useMultiBuyForm({ clusterState });
 
+  // ---------------------------------------------
+  // callbacks
+  // ---------------------------------------------
   const initForm = useCallback(() => {
     updateInput({
       ustAmount: '' as UST,
@@ -58,13 +67,15 @@ function SwapBase({
       });
 
       if (stream) {
-        console.log('Swap.tsx..()', stream);
         broadcast(stream);
       }
     },
     [broadcast, initForm, postTx],
   );
 
+  // ---------------------------------------------
+  // presentations
+  // ---------------------------------------------
   const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
     mobile: 'medium',
     tablet: 'normal',
@@ -165,7 +176,7 @@ function SwapBase({
   );
 }
 
-export const StyledMintBasic = styled(SwapBase)`
+export const StyledMultiBuy = styled(MultiBuyBase)`
   .token-input {
     margin-bottom: 2.28571429em;
   }
@@ -203,4 +214,4 @@ export const StyledMintBasic = styled(SwapBase)`
   }
 `;
 
-export const Swap = fixHMR(StyledMintBasic);
+export const MultiBuy = fixHMR(StyledMultiBuy);

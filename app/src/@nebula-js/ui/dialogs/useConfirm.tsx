@@ -9,19 +9,22 @@ import { DialogProps, OpenDialog, useDialog } from '@libs/use-dialog';
 import React, { ReactNode } from 'react';
 import { Button } from '../buttons/Button';
 import { useAlertStyles } from './useAlert';
+import styled from 'styled-components';
 
 export function useConfirm(): [OpenDialog<ConfirmParams, boolean>, ReactNode] {
   return useDialog(Component as any);
 }
 
 export interface ConfirmParams {
+  className?: string;
   title?: ReactNode;
   description: ReactNode;
   agree?: string;
   disagree?: string;
 }
 
-function Component({
+function ComponentBase({
+  className,
   closeDialog,
   title,
   description,
@@ -37,6 +40,7 @@ function Component({
       onClose={() => closeDialog(false)}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
+      className={className}
     >
       {title && <DialogTitle id="alert-dialog-title">{title}</DialogTitle>}
 
@@ -47,12 +51,13 @@ function Component({
       </DialogContent>
 
       <DialogActions>
-        <Button style={{ width: 150 }} onClick={() => closeDialog(false)}>
+        <Button className="btn" onClick={() => closeDialog(false)}>
           {disagree}
         </Button>
         <Button
+          className="btn"
           autoFocus
-          style={{ width: 150 }}
+          style={{ backgroundColor: 'var(--color-red01)' }}
           onClick={() => closeDialog(true)}
         >
           {agree}
@@ -61,3 +66,11 @@ function Component({
     </Dialog>
   );
 }
+
+const Component = styled(ComponentBase)`
+  .btn {
+    width: 100px;
+    height: 2.5em;
+    font-size: var(--font-size16-14);
+  }
+`;

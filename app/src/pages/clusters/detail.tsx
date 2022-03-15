@@ -31,6 +31,7 @@ import { ClusterBuy } from './components/Buy';
 import { ClusterMint } from './components/Mint';
 import { PriceCard } from './components/PriceCard';
 import { ClusterSell } from './components/Sell';
+import { useTwoSteps } from 'contexts/two-steps';
 
 export interface ClustersDetailProps
   extends RouteComponentProps<{ cluster: string }> {
@@ -53,6 +54,8 @@ function ClustersDetailBase({
 
   const { data: clusterInfo } = useClusterInfoQuery(clusterAddr);
 
+  const { validateAndNavigate } = useTwoSteps();
+
   const clusterView = useMemo(() => {
     return clusterInfo ? toClusterView(clusterInfo) : undefined;
   }, [clusterInfo]);
@@ -65,11 +68,14 @@ function ClustersDetailBase({
 
   const tabChange = useCallback(
     (nextTab: TabItem) => {
-      history.push({
-        pathname: `${match.url}/${nextTab.id}`,
-      });
+      const navigate = () =>
+        history.push({
+          pathname: `${match.url}/${nextTab.id}`,
+        });
+
+      validateAndNavigate(navigate);
     },
-    [history, match.url],
+    [history, match.url, validateAndNavigate],
   );
 
   const descriptionDisplay = useScreenSizeValue<'horizontal' | 'vertical'>({

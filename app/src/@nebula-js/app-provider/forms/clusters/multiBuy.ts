@@ -3,13 +3,13 @@ import { useForm } from '@libs/use-form';
 import { clusterSwapForm } from '@nebula-js/app-fns';
 import { cluster, UST } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/use-wallet';
-import { useNebulaApp } from '../../../hooks/useNebulaApp';
+import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export interface ClusterSwapFormParams {
   clusterState: cluster.ClusterStateResponse;
 }
 
-export function useClusterSwapForm({ clusterState }: ClusterSwapFormParams) {
+export function useMultiBuyForm({ clusterState }: ClusterSwapFormParams) {
   const connectedWallet = useConnectedWallet();
 
   const { queryClient, gasPrice, constants, contractAddress } = useNebulaApp();
