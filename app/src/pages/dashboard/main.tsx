@@ -30,25 +30,39 @@ function DashboardMainBase({ className }: DashboardMainProps) {
       >
         <Section>
           <h3>
-            Total Value Locked <InfoTooltip>Test tooltip...</InfoTooltip>
+            Total Value Locked{' '}
+            <InfoTooltip>
+              Total value of all cluster inventory, withdrawable liquidity,
+              rewards, community pool holdings, staked NEB and UST.
+            </InfoTooltip>
           </h3>
           <TotalValueLocked />
         </Section>
         <Section>
           <h3>
-            NEB Price <InfoTooltip>Test tooltip...</InfoTooltip>
+            NEB Price{' '}
+            <InfoTooltip>
+              NEB token price from the NEB-UST Astroport pool
+            </InfoTooltip>
           </h3>
           <NEBPrice />
         </Section>
         <Section>
           <h3 style={{ marginBottom: '2em' }}>
-            Top Clusters <InfoTooltip>Test tooltip...</InfoTooltip>
+            Top Clusters{' '}
+            <InfoTooltip>
+              Top ranking clusters by cluster market cap
+            </InfoTooltip>
           </h3>
           <TopClusters />
         </Section>
         <Section>
           <h3>
-            Cluster Distribution <InfoTooltip>Test tooltip...</InfoTooltip>
+            Cluster Distribution{' '}
+            <InfoTooltip>
+              Distribution of all the Nebula cluster based on inventory
+              value/market cap
+            </InfoTooltip>
           </h3>
           <ClusterDistribution />
         </Section>

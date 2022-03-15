@@ -92,7 +92,11 @@ function TopClustersBase({ className }: TopClustersProps) {
                 className="marketcap-asset"
                 label={
                   <>
-                    MARKET CAP <InfoTooltip>Test tooltip...</InfoTooltip>
+                    MARKET CAP{' '}
+                    <InfoTooltip>
+                      Cluster market cap. Calculated from the cluster’s market
+                      price and total supply
+                    </InfoTooltip>
                   </>
                 }
               >
@@ -103,7 +107,10 @@ function TopClustersBase({ className }: TopClustersProps) {
                 className="provided-asset"
                 label={
                   <>
-                    PROVIDED ASSET <InfoTooltip>Test tooltip...</InfoTooltip>
+                    PROVIDED ASSET{' '}
+                    <InfoTooltip>
+                      Total value of the cluster’s inventory
+                    </InfoTooltip>
                   </>
                 }
               >
