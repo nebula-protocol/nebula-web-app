@@ -7,7 +7,7 @@ export function computeProRata(
   inputAmount: Token,
   idx: number,
 ): Token[] {
-  if (inventories.length < idx) {
+  if (inventories.length <= idx) {
     console.error('inventories:', inventories, ' index: ', idx);
     return Array(inventories.length).fill('0');
   }
