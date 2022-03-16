@@ -150,8 +150,6 @@ function TokenFormMintBase({
       (amount) => amount.length !== 0,
     );
 
-    console.log('trigger');
-
     if (hasAmountIdx >= 0 && proRata) {
       updateAmountProRata(
         clusterState.target[hasAmountIdx],
