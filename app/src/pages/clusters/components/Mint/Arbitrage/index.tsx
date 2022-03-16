@@ -2,7 +2,7 @@ import { ClusterInfo } from '@nebula-js/app-fns';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { fixHMR } from 'fix-hmr';
-import { AdvancedSwitch } from '@nebula-js/ui/switches/AdvancedSwitch';
+import { BasicSwitch } from '@nebula-js/ui/switches';
 import { MintArbAdvanced } from './ArbAdvanced';
 import { MintArbBasic } from './ArbBasic';
 
@@ -16,7 +16,11 @@ function MintArbitrageBase({ className, clusterInfo }: MintArbitrageProps) {
 
   return (
     <div className={className}>
-      <AdvancedSwitch checked={advancedMode} updateChecked={setAdvancedMode} />
+      <BasicSwitch
+        title="Advanced Mode"
+        checked={advancedMode}
+        updateChecked={setAdvancedMode}
+      />
       {!advancedMode && <MintArbBasic clusterInfo={clusterInfo} />}
       {advancedMode && <MintArbAdvanced clusterInfo={clusterInfo} />}
     </div>

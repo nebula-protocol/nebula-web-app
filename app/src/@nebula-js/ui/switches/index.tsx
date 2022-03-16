@@ -8,12 +8,14 @@ import { useTwoSteps } from 'contexts/two-steps';
 export interface AdvancedSwitchProps {
   className?: string;
   checked: boolean;
+  title: string;
   updateChecked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function AdvancedSwitchBase({
+function SwitchBase({
   className,
   checked,
+  title,
   updateChecked,
 }: AdvancedSwitchProps) {
   const { validateAndNavigate } = useTwoSteps();
@@ -31,17 +33,17 @@ function AdvancedSwitchBase({
           <Switch
             checked={checked}
             onChange={handleChange}
-            name="Advanced Mode"
+            name={title}
             color="primary"
           />
         }
-        label="Advanced Mode"
+        label={title}
       />
     </div>
   );
 }
 
-const StyledAdvancedSwitch = styled(AdvancedSwitchBase)`
+const StyledSwitch = styled(SwitchBase)`
   display: flex;
   justify-content: flex-end;
   padding-bottom: 0.5em;
@@ -55,4 +57,4 @@ const StyledAdvancedSwitch = styled(AdvancedSwitchBase)`
   }
 `;
 
-export const AdvancedSwitch = fixHMR(StyledAdvancedSwitch);
+export const BasicSwitch = fixHMR(StyledSwitch);
