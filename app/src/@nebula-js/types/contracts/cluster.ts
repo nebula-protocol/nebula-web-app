@@ -82,9 +82,9 @@ export namespace cluster {
   }
 
   export interface ClusterStateResponse {
-    outstanding_balance_tokens: u<CT<rs.Uint128>>;
+    outstanding_balance_tokens: u<CT>;
     prices: UST[];
-    inv: u<Token<rs.Uint128>>[];
+    inv: u<Token>[];
     penalty: HumanAddr;
     cluster_token: CW20Addr;
     target: terraswap.Asset<Token>[];

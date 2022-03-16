@@ -4,6 +4,7 @@ import {
   ClusterRedeemAdvancedFormAsyncStates,
   ClusterRedeemAdvancedFormStates,
   ClusterRedeemAdvancedFormInput,
+  computeProRata,
 } from '@nebula-js/app-fns';
 import { terraswap, Token, u, UST, CT } from '@nebula-js/types';
 import {
@@ -17,8 +18,9 @@ import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { AddAssetBadges } from 'components/form/AddAssetBadges';
 import { TokenInputRemoveTool } from 'components/form/TokenInputRemoveTool';
 import { fixHMR } from 'fix-hmr';
-import React, { ReactNode, useCallback } from 'react';
+import React, { ReactNode, useCallback, useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { BasicSwitch } from '@nebula-js/ui/switches';
 
 export interface TokenFormBurnProps {
   clusterInfo: ClusterInfo;
@@ -46,6 +48,11 @@ function TokenFormBurnBase({
   const connectedWallet = useConnectedWallet();
 
   // ---------------------------------------------
+  // states
+  // ---------------------------------------------
+  const [proRata, setProRata] = useState(false);
+
+  // ---------------------------------------------
   // callbacks
   // ---------------------------------------------
   const addAsset = useCallback(
@@ -61,16 +68,6 @@ function TokenFormBurnBase({
     },
     [updateInput],
   );
-
-  // ---------------------------------------------
-  // presentation
-  // ---------------------------------------------
-  const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
-    mobile: 'medium',
-    tablet: 'normal',
-    pc: 'normal',
-    monitor: 'normal',
-  });
 
   const removeAsset = useCallback(
     (asset: terraswap.Asset<Token>) => {
@@ -119,8 +116,56 @@ function TokenFormBurnBase({
     [clusterState.target, updateInput],
   );
 
+  const updateAmountProRata = useCallback(
+    (asset: terraswap.Asset<Token>, amount: Token) => {
+      const allAssets = new Set(clusterState.target);
+
+      const index = clusterState.target.findIndex(
+        (targetAsset) => targetAsset === asset,
+      );
+
+      const proRataAmounts = computeProRata(clusterState.inv, amount, index);
+
+      updateInput({ addedAssets: allAssets, amounts: proRataAmounts });
+    },
+    [clusterState.inv, clusterState.target, updateInput],
+  );
+
+  // ---------------------------------------------
+  // side effects
+  // ---------------------------------------------
+  useEffect(() => {
+    const hasAmountIdx = states.amounts.findIndex(
+      (amount) => amount.length !== 0,
+    );
+
+    if (hasAmountIdx >= 0 && proRata) {
+      updateAmountProRata(
+        clusterState.target[hasAmountIdx],
+        states.amounts[hasAmountIdx],
+      );
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [proRata, clusterState.target, updateAmountProRata]);
+
+  // ---------------------------------------------
+  // presentation
+  // ---------------------------------------------
+  const buttonSize = useScreenSizeValue<'normal' | 'medium'>({
+    mobile: 'medium',
+    tablet: 'normal',
+    pc: 'normal',
+    monitor: 'normal',
+  });
+
   return (
     <div className={className}>
+      <BasicSwitch
+        title="Pro Rata"
+        checked={proRata}
+        updateChecked={setProRata}
+      />
       <ul className="added-tokens" style={{ gap: '2em' }}>
         {clusterState.target.length > 0 &&
           clusterState.target.map(
@@ -136,7 +181,11 @@ function TokenFormBurnBase({
                     }}
                     maxDecimalPoints={6}
                     value={states.amounts[i]}
-                    onChange={(nextAmount) => updateAmount(asset, nextAmount)}
+                    onChange={(nextAmount) =>
+                      proRata
+                        ? updateAmountProRata(asset, nextAmount)
+                        : updateAmount(asset, nextAmount)
+                    }
                     placeholder="0.00"
                     token={
                       <TokenSpan

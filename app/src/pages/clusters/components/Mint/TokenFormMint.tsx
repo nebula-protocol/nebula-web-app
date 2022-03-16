@@ -8,6 +8,7 @@ import {
   ClusterMintArbAdvancedFormInput,
   ClusterMintArbAdvancedFormStates,
   ClusterMintArbAdvancedFormAsyncStates,
+  computeProRata,
 } from '@nebula-js/app-fns';
 import { WalletIcon } from '@nebula-js/icons';
 import { terraswap, Token, u } from '@nebula-js/types';
@@ -16,8 +17,9 @@ import big from 'big.js';
 import { AddAssetBadges } from 'components/form/AddAssetBadges';
 import { TokenInputRemoveTool } from 'components/form/TokenInputRemoveTool';
 import { fixHMR } from 'fix-hmr';
-import React, { ReactNode, useCallback } from 'react';
+import React, { ReactNode, useCallback, useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { BasicSwitch } from '@nebula-js/ui/switches';
 
 export interface TokenFormMintProps {
   clusterInfo: ClusterInfo;
@@ -44,6 +46,11 @@ function TokenFormMintBase({
   children,
   className,
 }: TokenFormMintProps) {
+  // ---------------------------------------------
+  // states
+  // ---------------------------------------------
+  const [proRata, setProRata] = useState(false);
+
   // ---------------------------------------------
   // callbacks
   // ---------------------------------------------
@@ -120,8 +127,48 @@ function TokenFormMintBase({
     [clusterState.target, updateInput],
   );
 
+  const updateAmountProRata = useCallback(
+    (asset: terraswap.Asset<Token>, amount: Token) => {
+      const allAssets = new Set(clusterState.target);
+
+      const index = clusterState.target.findIndex(
+        (targetAsset) => targetAsset === asset,
+      );
+
+      const proRataAmounts = computeProRata(clusterState.inv, amount, index);
+
+      updateInput({ addedAssets: allAssets, amounts: proRataAmounts });
+    },
+    [clusterState.inv, clusterState.target, updateInput],
+  );
+
+  // ---------------------------------------------
+  // side effects
+  // ---------------------------------------------
+  useEffect(() => {
+    const hasAmountIdx = states.amounts.findIndex(
+      (amount) => amount.length !== 0,
+    );
+
+    console.log('trigger');
+
+    if (hasAmountIdx >= 0 && proRata) {
+      updateAmountProRata(
+        clusterState.target[hasAmountIdx],
+        states.amounts[hasAmountIdx],
+      );
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [proRata, clusterState.target, updateAmountProRata]);
+
   return (
     <div className={className}>
+      <BasicSwitch
+        title="Pro Rata"
+        checked={proRata}
+        updateChecked={setProRata}
+      />
       <ul className="added-tokens">
         {clusterState.target.length > 0 &&
           clusterState.target.map(
@@ -131,7 +178,11 @@ function TokenFormMintBase({
                   <TokenInput<Token>
                     maxDecimalPoints={6}
                     value={states.amounts[i]}
-                    onChange={(nextAmount) => updateAmount(asset, nextAmount)}
+                    onChange={(nextAmount) =>
+                      proRata
+                        ? updateAmountProRata(asset, nextAmount)
+                        : updateAmount(asset, nextAmount)
+                    }
                     placeholder="0.00"
                     label={assetTokenInfos[i].tokenInfo.symbol}
                     token={
