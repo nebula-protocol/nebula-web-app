@@ -27,7 +27,9 @@ function ClustersMainBase({ className }: ClustersMainProps) {
   const { data: infoList = [] } = useClustersInfoListQuery();
 
   const data = useMemo<ClusterView[]>(() => {
-    return infoList.map((info) => toClusterView(info));
+    return infoList
+      .map((info) => toClusterView(info))
+      .sort((a, b) => Number(b.isActive) - Number(a.isActive));
   }, [infoList]);
 
   // ---------------------------------------------

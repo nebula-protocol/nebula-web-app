@@ -33,7 +33,9 @@ function StakingMainBase({ className }: StakingMainProps) {
   // computes
   // ---------------------------------------------
   const data = useMemo(() => {
-    return toStakingView(nebPool, poolInfoList, distributionSchedule);
+    return toStakingView(nebPool, poolInfoList, distributionSchedule).sort(
+      (a, b) => Number(b.isActive) - Number(a.isActive),
+    );
   }, [nebPool, poolInfoList, distributionSchedule]);
 
   const filteredData = useMemo(() => {
