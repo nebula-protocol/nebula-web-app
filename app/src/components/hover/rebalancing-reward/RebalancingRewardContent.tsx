@@ -13,12 +13,14 @@ function RebalancingRewardBase({
   claim,
   isMobileLayout,
   rewardAmount,
+  disabled,
 }: {
   className?: string;
   onClose: () => void;
   claim: () => void;
   isMobileLayout?: boolean;
   rewardAmount: u<NEB>;
+  disabled: boolean;
 }) {
   return (
     <div
@@ -31,7 +33,7 @@ function RebalancingRewardBase({
       <div>
         <h2>Rebalancing Reward</h2>
         <p>Claim {formatUToken(rewardAmount)} NEB</p>
-        <Button className="claim-button" onClick={claim}>
+        <Button className="claim-button" onClick={claim} disabled={disabled}>
           Claim
         </Button>
         <IconButton className="close" size="small" onClick={onClose}>
