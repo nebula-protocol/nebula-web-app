@@ -150,11 +150,16 @@ function TokenFormMintBase({
       (amount) => amount.length !== 0,
     );
 
-    if (hasAmountIdx >= 0 && proRata) {
-      updateAmountProRata(
-        clusterState.target[hasAmountIdx],
-        states.amounts[hasAmountIdx],
-      );
+    if (proRata) {
+      if (hasAmountIdx >= 0) {
+        updateAmountProRata(
+          clusterState.target[hasAmountIdx],
+          states.amounts[hasAmountIdx],
+        );
+      } else {
+        // initial with 0
+        updateAmountProRata(clusterState.target[0], '0' as Token);
+      }
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
