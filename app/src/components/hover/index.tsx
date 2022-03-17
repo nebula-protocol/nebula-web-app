@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { RebalancingReward } from './rebalancing-reward/RebalancingReward';
 import { breakpoints } from '@nebula-js/ui';
 import { useMediaQuery } from 'react-responsive';
+import { Airdrop } from './airdrop/Airdrop';
 
 export interface HoverPanelProps {
   className?: string;
@@ -16,6 +17,7 @@ export function HoverPanel({ className }: HoverPanelProps) {
       className={className}
       data-layout={isMobile ? 'mobile' : 'modal'}
     >
+      <Airdrop isMobile={isMobile} />
       <RebalancingReward isMobile={isMobile} />
     </Container>
   );
