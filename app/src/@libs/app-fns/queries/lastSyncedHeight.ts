@@ -99,7 +99,7 @@ class BlockHeightFetcher {
               this.client.requestInit,
             )
             .then(({ block }) => {
-              return +block.last_commit.height;
+              return +block.header.height;
             })
         : this.client
             .hiveFetcher<{}, LastSyncedHeight>(
