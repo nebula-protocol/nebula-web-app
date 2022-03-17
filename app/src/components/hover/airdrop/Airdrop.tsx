@@ -77,7 +77,12 @@ export function Airdrop({ className, isMobile }: AirdropProps) {
         isMobileLayout={isMobile}
         claim={() => proceed(airdrop)}
         amount={airdrop.amount}
-        disabled={!!invalidTxFee}
+        disabled={
+          !!invalidTxFee ||
+          !connectedWallet ||
+          !connectedWallet.availablePost ||
+          !postTx
+        }
       />
       {invalidTxFee && <p id="error">{invalidTxFee}</p>}
     </Container>
