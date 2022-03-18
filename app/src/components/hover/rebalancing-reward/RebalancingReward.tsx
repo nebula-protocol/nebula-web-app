@@ -7,6 +7,7 @@ import {
 } from '@nebula-js/app-provider';
 import big from 'big.js';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
+import { useConnectedWallet } from '@terra-money/use-wallet';
 
 export interface RebalancingRewardProps {
   className?: string;
@@ -17,6 +18,8 @@ export function RebalancingReward({
   className,
   isMobile,
 }: RebalancingRewardProps) {
+  const connectedWallet = useConnectedWallet();
+
   const [rewardClosed, setRewardClosed] = useState(false);
 
   const { data: reward } = useIncentiveRewardQuery();
@@ -48,6 +51,7 @@ export function RebalancingReward({
         isMobileLayout={isMobile}
         claim={proceed}
         rewardAmount={reward.incentiveReward.pending_rewards}
+        disabled={!connectedWallet || !connectedWallet.availablePost || !postTx}
       />
     </Container>
   ) : null;

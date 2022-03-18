@@ -1,6 +1,7 @@
 // THIS FILE IS AUTO CREATED
 // @see ~/scripts/create-index.ts
 export * from './types';
+export * from './caches/airdrop';
 export * from './forms/clusters/mintBasic';
 export * from './forms/clusters/mintAdvanced';
 export * from './forms/clusters/mintArbBasic';
@@ -28,6 +29,7 @@ export * from './logics/clusters/getTargetColor';
 export * from './logics/clusters/easyMint/ClusterSimulatorWithPenalty';
 export * from './logics/clusters/easyMint/EasyMintOptimizer';
 export * from './logics/clusters/easyMint/TerraswapPoolSimulation';
+export * from './logics/common/validateTxFee';
 export * from './logics/gov/getPollStatusColor';
 export * from './logics/staking/computeAPR';
 export * from './logics/staking/computeStakedValue';
@@ -41,6 +43,7 @@ export * from './logics/gov/computeVotingPower';
 export * from './logics/gov/parseGovPollResponse';
 export * from './logics/gov/pickGovPollVoted';
 export * from './models/assetTokens';
+export * from './queries/airdrop/check';
 export * from './queries/anchor/base';
 export * from './queries/clusters/arbRedeem';
 export * from './queries/clusters/info';
@@ -70,6 +73,7 @@ export * from './queries/staking/poolInfo';
 export * from './queries/staking/poolInfoList';
 export * from './queries/staking/rewardInfo';
 export * from './queries/swap/price';
+export * from './tx/airdrop/claim';
 export * from './tx/clusters/arbMint';
 export * from './tx/clusters/arbRedeem';
 export * from './tx/clusters/mint';

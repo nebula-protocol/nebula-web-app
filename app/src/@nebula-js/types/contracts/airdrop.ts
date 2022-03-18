@@ -20,7 +20,6 @@ export namespace airdrop {
   export interface Claim {
     claim: {
       stage: rs.u8;
-      // TODO is this NEB or not?
       amount: u<NEB>;
       proof: string[];
     };

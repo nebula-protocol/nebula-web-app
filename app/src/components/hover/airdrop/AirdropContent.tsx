@@ -1,25 +1,25 @@
-import { formatUToken } from '@libs/formatter';
 import { u, NEB } from '@nebula-js/types';
 import { IconButton } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import { Button } from '@nebula-js/ui';
 import React from 'react';
 import styled from 'styled-components';
-import { RebalancingRewardImage } from './RebalancingRewardImage';
+import { AirdropImage } from './AirdropImage';
+import { formatUToken } from '@libs/formatter';
 
-function RebalancingRewardBase({
+function AirdropBase({
   className,
   onClose,
   claim,
   isMobileLayout,
-  rewardAmount,
+  amount,
   disabled,
 }: {
   className?: string;
   onClose: () => void;
   claim: () => void;
   isMobileLayout?: boolean;
-  rewardAmount: u<NEB>;
+  amount: u<NEB>;
   disabled: boolean;
 }) {
   return (
@@ -28,11 +28,11 @@ function RebalancingRewardBase({
       data-layout={isMobileLayout ? 'mobile' : 'modal'}
     >
       <div>
-        <RebalancingRewardImage />
+        <AirdropImage />
       </div>
       <div>
-        <h2>Rebalancing Reward</h2>
-        <p>Claim {formatUToken(rewardAmount)} NEB</p>
+        <h2>Airdrop</h2>
+        <p>Claim your {formatUToken(amount)} NEB</p>
         <Button className="claim-button" onClick={claim} disabled={disabled}>
           Claim
         </Button>
@@ -44,7 +44,7 @@ function RebalancingRewardBase({
   );
 }
 
-export const RebalancingRewardContent = styled(RebalancingRewardBase)`
+export const AirdropContent = styled(AirdropBase)`
   text-align: center;
 
   position: relative;
