@@ -33,6 +33,16 @@ export function useMintArbTxInfo(
 
   return useCallback(
     async (amounts: u<Token>[], maxSpread: Rate) => {
+      if (amounts.length !== clusterState.prices.length) {
+        return {
+          totalInputValue: '0' as u<UST>,
+          pnl: '0' as u<UST>,
+          minReceivedUust: '0' as u<UST>,
+        };
+      }
+
+      const totalInputValue = vectorDot(amounts, clusterState.prices);
+
       const { mint } = await clusterMintQuery(
         amounts,
         clusterState,
@@ -64,9 +74,6 @@ export function useMintArbTxInfo(
         return_amount as u<UST>,
         maxSpread,
       );
-
-      // use oracle price
-      const totalInputValue = vectorDot(amounts, clusterState.prices);
 
       return {
         totalInputValue: totalInputValue.toFixed(0) as u<UST>,
