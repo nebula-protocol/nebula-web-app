@@ -16,6 +16,7 @@ export * from './forms/send/tokens';
 export * from './forms/staking/stake';
 export * from './forms/staking/unstake';
 export * from './hooks/useGovFee';
+export * from './hooks/useMintArbTxInfo';
 export * from './hooks/useNebBalance';
 export * from './hooks/useNebPrice';
 export * from './hooks/useNebulaApp';

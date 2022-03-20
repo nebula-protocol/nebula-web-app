@@ -125,7 +125,7 @@ function MintArbAdvancedBase({ className, clusterInfo }: MintArbAdvancedProps) {
               </li>
             )}
 
-          {clusterInfo.clusterTokenInfo && 'pnl' in states && states.pnl && (
+          {'pnl' in states && states.pnl && (
             <li>
               <span>PNL</span>
               <span>{formatUToken(states.pnl)} UST</span>
@@ -165,7 +165,7 @@ function MintArbAdvancedBase({ className, clusterInfo }: MintArbAdvancedProps) {
             proceed(states.amounts, states.txFee, states.returnedAmount)
           }
         >
-          Mint
+          Arb
         </Button>
       </TokenFormMint>
     </div>

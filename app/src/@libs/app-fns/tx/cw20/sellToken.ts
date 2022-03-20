@@ -136,7 +136,7 @@ export function cw20SellTokenTx<T extends Token>(
               }`,
             },
             return_amount && {
-              name: 'Earned',
+              name: 'Received',
               value: `${formatUTokenWithPostfixUnits(return_amount)} UST`,
             },
             pricePerToken && {

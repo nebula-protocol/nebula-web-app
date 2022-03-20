@@ -100,7 +100,7 @@ export function cw20BuyTokenTx(
 
         const pricePerToken =
           return_amount && offer_amount
-            ? (big(return_amount).div(offer_amount) as UST<Big>)
+            ? (big(offer_amount).div(return_amount) as UST<Big>)
             : undefined;
         const tradingFee =
           spread_amount && commission_amount
@@ -118,17 +118,17 @@ export function cw20BuyTokenTx(
           phase: TxStreamPhase.SUCCEED,
           receipts: [
             return_amount && {
-              name: 'Bought',
+              name: 'Tokens Bought',
               value: `${formatUTokenWithPostfixUnits(return_amount)} ${
                 $.tokenSymbol
               }`,
             },
             offer_amount && {
-              name: 'Paid',
+              name: 'UST Paid',
               value: `${formatUTokenWithPostfixUnits(offer_amount)} UST`,
             },
             pricePerToken && {
-              name: 'Paid/Bought',
+              name: `Price Per ${$.tokenSymbol}`,
               value: `${formatTokenWithPostfixUnits(pricePerToken)} UST`,
             },
             tradingFee && {

@@ -52,6 +52,7 @@ export const clusterMintArbAdvancedForm = (
       dependency.clusterState.target.length,
     );
 
+    // TODO: use mintArbTxInfo here
     const asyncStates = _asyncStates?.then(async (advancedAsyncStates) => {
       if (advancedAsyncStates.mintedAmount) {
         const {
