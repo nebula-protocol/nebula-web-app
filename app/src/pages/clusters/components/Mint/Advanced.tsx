@@ -31,6 +31,7 @@ function MintAdvancedBase({ className, clusterInfo }: MintAdvancedProps) {
   const postTx = useClusterMintTx(
     clusterInfo.clusterState.cluster_contract_address,
     clusterInfo.clusterState.target,
+    clusterInfo.clusterTokenInfo.symbol,
   );
 
   // ---------------------------------------------
@@ -100,7 +101,7 @@ function MintAdvancedBase({ className, clusterInfo }: MintAdvancedProps) {
               </li>
             )}
 
-          {clusterInfo.clusterTokenInfo && 'pnl' in states && states.pnl && (
+          {'pnl' in states && states.pnl && (
             <li>
               <span>PNL</span>
               <span>{formatUToken(states.pnl)} UST</span>

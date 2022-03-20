@@ -1,5 +1,6 @@
 import { floor } from '@libs/big-math';
 import {
+  pickAttributeValueByKey,
   pickEvent,
   pickRawLog,
   TxCommonParams,
@@ -25,6 +26,7 @@ import { pipe } from '@rx-stream/pipe';
 import { Coin, Coins, MsgExecuteContract, Fee } from '@terra-money/terra.js';
 import big from 'big.js';
 import { Observable } from 'rxjs';
+import { formatUTokenWithPostfixUnits } from '@libs/formatter';
 
 export function clusterMintTx(
   $: {
@@ -33,6 +35,7 @@ export function clusterMintTx(
     clusterAddr: HumanAddr;
     assets: terraswap.Asset<Token>[];
     amounts: u<Token>[];
+    tokenSymbol: string;
     onTxSucceed?: () => void;
   } & TxCommonParams,
 ): Observable<TxResultRendering> {
@@ -99,18 +102,31 @@ export function clusterMintTx(
       }
 
       const fromContract = pickEvent(rawLog, 'from_contract');
-      const transfer = pickEvent(rawLog, 'transfer');
 
-      if (!fromContract || !transfer) {
-        return helper.failedToFindEvents('from_contract', 'transfer');
+      if (!fromContract) {
+        return helper.failedToFindEvents('from_contract');
       }
 
       try {
+        const mint_to_sender = pickAttributeValueByKey<u<Token>>(
+          fromContract,
+          'mint_to_sender',
+        );
+
         return {
           value: null,
 
           phase: TxStreamPhase.SUCCEED,
-          receipts: [helper.txHashReceipt(), helper.txFeeReceipt($.txFee)],
+          receipts: [
+            mint_to_sender && {
+              name: `Minted ${$.tokenSymbol}`,
+              value: `${formatUTokenWithPostfixUnits(mint_to_sender)} ${
+                $.tokenSymbol
+              }`,
+            },
+            helper.txHashReceipt(),
+            helper.txFeeReceipt($.txFee),
+          ],
         } as TxResultRendering;
       } catch (error) {
         return helper.failedToParseTxResult();

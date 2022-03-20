@@ -17,6 +17,7 @@ export interface ClusterMintTxParams {
 export function useClusterMintTx(
   clusterAddr: HumanAddr,
   assets: terraswap.Asset<Token>[],
+  tokenSymbol: string,
 ) {
   const connectedWallet = useConnectedWallet();
 
@@ -40,6 +41,7 @@ export function useClusterMintTx(
         clusterAddr,
         assets,
         amounts,
+        tokenSymbol,
         fixedFee,
         gasWanted: computeClusterGasWanted(
           constants.nebula.clusterFee.default,
@@ -65,6 +67,7 @@ export function useClusterMintTx(
       constants.gasAdjustment,
       contractAddress.incentives,
       fixedFee,
+      tokenSymbol,
       refetchQueries,
       txErrorReporter,
       queryClient,

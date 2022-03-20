@@ -35,6 +35,7 @@ function MintBasicBase({
   const postTx = useClusterMintTx(
     clusterState.cluster_contract_address,
     clusterState.target,
+    clusterTokenInfo.symbol,
   );
 
   // ---------------------------------------------
