@@ -28,7 +28,7 @@ export function MintArbBasic({ className, clusterInfo }: MintArbBasicProps) {
       />
 
       {step === TwoStepsEnum.STEP1 ? (
-        <MultiBuy clusterInfo={clusterInfo} />
+        <MultiBuy clusterInfo={clusterInfo} isArbitrage />
       ) : (
         <MintArbBasicArbitrage
           clusterInfo={clusterInfo}

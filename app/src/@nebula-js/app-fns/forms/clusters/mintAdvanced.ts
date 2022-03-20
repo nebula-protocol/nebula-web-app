@@ -97,6 +97,7 @@ export const clusterMintAdvancedForm = (
       dependency.terraswapPool !== prevDependency?.terraswapPool ||
       dependency.clusterFee !== prevDependency?.clusterFee ||
       dependency.gasPrice !== prevDependency?.gasPrice ||
+      dependency.protocolFee !== prevDependency?.protocolFee ||
       input.amounts !== prevInput?.amounts
     ) {
       const hasAmounts = input.amounts.some((amount) => amount.length > 0);

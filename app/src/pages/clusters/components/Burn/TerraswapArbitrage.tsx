@@ -217,7 +217,7 @@ function BurnTerraswapArbitrageBase({
           proceed(states.ustAmount, states.txFee, states.maxSpread)
         }
       >
-        Burn
+        Arb
       </Button>
     </div>
   );

@@ -10,6 +10,7 @@ import {
   Token,
   u,
   UST,
+  Rate,
 } from '@nebula-js/types';
 import { NebulaClusterFee } from '../../types';
 import big, { Big, BigSource } from 'big.js';
@@ -21,26 +22,28 @@ import {
 } from '@nebula-js/app-fns';
 import { SwapTokenInfo } from '../../types';
 import { divWithDefault, sum, vectorDot } from '@libs/big-math';
+import { GetMintArbTxInfoResponse } from '@nebula-js/app-provider';
 
-export interface ClusterSwapFormInput {
+export interface ClusterMultiBuyFormInput {
   ustAmount: UST;
 }
 
-export interface ClusterSwapFormDependency {
+export interface ClusterMultiBuyFormDependency {
   connected: boolean;
   queryClient: QueryClient;
   clusterState: cluster.ClusterStateResponse;
+  isArbitrage: boolean;
   terraswapFactoryAddr: HumanAddr;
   anchorProxyAddr: HumanAddr;
   aUSTAddr: CW20Addr;
   ustBalance: u<UST>;
-  fixedFee: u<UST<BigSource>>;
   gasPrice: GasPrice;
   swapGasWantedPerAsset: Gas;
   clusterFee: NebulaClusterFee;
+  mintArbInfoTx: GetMintArbTxInfoResponse;
 }
 
-export interface ClusterSwapFormStates extends ClusterSwapFormInput {
+export interface ClusterMultiBuyFormStates extends ClusterMultiBuyFormInput {
   maxUstAmount: u<UST<BigSource>>;
   txFee: u<UST> | null;
   invalidUstAmount: string | null;
@@ -48,11 +51,12 @@ export interface ClusterSwapFormStates extends ClusterSwapFormInput {
   invalidSwap: string | null;
 }
 
-export interface ClusterSwapFormAsyncStates {
+export interface ClusterMultiBuyFormAsyncStates {
   boughtTokens?: SwapTokenInfo[];
+  pnl?: u<UST>;
 }
 
-export const clusterSwapForm = ({
+export const clusterMultiBuyForm = ({
   connected,
   queryClient,
   ustBalance,
@@ -63,12 +67,14 @@ export const clusterSwapForm = ({
   swapGasWantedPerAsset,
   gasPrice,
   clusterFee,
-}: ClusterSwapFormDependency) => {
+  isArbitrage,
+  mintArbInfoTx,
+}: ClusterMultiBuyFormDependency) => {
   return ({
     ustAmount,
-  }: ClusterSwapFormInput): FormReturn<
-    ClusterSwapFormStates,
-    ClusterSwapFormAsyncStates
+  }: ClusterMultiBuyFormInput): FormReturn<
+    ClusterMultiBuyFormStates,
+    ClusterMultiBuyFormAsyncStates
   > => {
     let invalidQuery: string | null;
     let invalidSwap: string | null;
@@ -84,7 +90,7 @@ export const clusterSwapForm = ({
 
     const clusterTxFee = computeClusterTxFee(
       gasPrice,
-      clusterFee.default,
+      isArbitrage ? clusterFee.arbMint : clusterFee.default,
       clusterState.target.length,
       clusterState.target.length,
     );
@@ -122,7 +128,7 @@ export const clusterSwapForm = ({
           aUSTAddr,
           queryClient,
         )
-          .then((priceInfos) => {
+          .then(async (priceInfos) => {
             const poolPrices: UST[] = priceInfos.map(
               ({ buyTokenPrice }) => buyTokenPrice,
             );
@@ -168,16 +174,24 @@ export const clusterSwapForm = ({
               ? 'Insufficient UST to swap the underlying assets.'
               : null;
 
-            console.log(
-              'swap.tsx...sum',
-              vectorDot(
-                poolPrices,
-                boughtTokens.map(({ returnAmount }) => returnAmount),
-              ).toString(),
+            const providedAmounts = boughtTokens.map(
+              ({ returnAmount }) => returnAmount,
             );
+
+            console.log(
+              'multiBuy.tsx...sum',
+              vectorDot(poolPrices, providedAmounts).toString(),
+            );
+
+            const _pnl = isArbitrage
+              ? await mintArbInfoTx(providedAmounts, '0.01' as Rate).then(
+                  ({ pnl }) => pnl,
+                )
+              : undefined;
 
             return Promise.resolve({
               boughtTokens,
+              pnl: _pnl,
               txFee,
               invalidSwap,
               invalidQuery,

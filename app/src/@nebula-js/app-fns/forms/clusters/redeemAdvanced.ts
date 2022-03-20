@@ -76,7 +76,11 @@ export const clusterRedeemAdvancedForm = (
     ClusterRedeemAdvancedFormStates,
     ClusterRedeemAdvancedFormAsyncStates
   > => {
-    if (input.tokenAmount.trim().length === 0 || big(input.tokenAmount).eq(0)) {
+    if (
+      input.tokenAmount.trim().length === 0 ||
+      big(input.tokenAmount).eq(0) ||
+      input.amounts.every((amount) => amount.length === 0 || big(amount).eq(0))
+    ) {
       return [
         {
           ...input,
@@ -121,17 +125,16 @@ export const clusterRedeemAdvancedForm = (
     }
 
     if (
-      (!asyncStates ||
-        dependency.queryClient !== prevDependency?.queryClient ||
-        dependency.lastSyncedHeight !== prevDependency?.lastSyncedHeight ||
-        dependency.clusterState !== prevDependency?.clusterState ||
-        dependency.clusterFee !== prevDependency?.clusterFee ||
-        dependency.gasPrice !== prevDependency?.gasPrice ||
-        dependency.protocolFee !== prevDependency.protocolFee ||
-        input.tokenAmount !== prevInput?.tokenAmount ||
-        input.addedAssets !== prevInput?.addedAssets ||
-        input.amounts !== prevInput.amounts) &&
-      input.amounts.find((amount) => amount.length > 0)
+      !asyncStates ||
+      dependency.queryClient !== prevDependency?.queryClient ||
+      dependency.lastSyncedHeight !== prevDependency?.lastSyncedHeight ||
+      dependency.clusterState !== prevDependency?.clusterState ||
+      dependency.clusterFee !== prevDependency?.clusterFee ||
+      dependency.gasPrice !== prevDependency?.gasPrice ||
+      dependency.protocolFee !== prevDependency.protocolFee ||
+      input.tokenAmount !== prevInput?.tokenAmount ||
+      input.addedAssets !== prevInput?.addedAssets ||
+      input.amounts !== prevInput.amounts
     ) {
       const tokenAmountWithoutFee = computeTokenWithoutFee(
         input.tokenAmount,

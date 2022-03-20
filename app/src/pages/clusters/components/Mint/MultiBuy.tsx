@@ -27,11 +27,13 @@ import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
 export interface MultiBuyProps {
   className?: string;
   clusterInfo: ClusterInfo;
+  isArbitrage?: boolean;
 }
 
 function MultiBuyBase({
   className,
-  clusterInfo: { clusterState, assetTokenInfos },
+  clusterInfo: { clusterState, assetTokenInfos, terraswapPair },
+  isArbitrage = false,
 }: MultiBuyProps) {
   // ---------------------------------------------
   // dependencies
@@ -45,7 +47,11 @@ function MultiBuyBase({
   // ---------------------------------------------
   // states
   // ---------------------------------------------
-  const [updateInput, states] = useMultiBuyForm({ clusterState });
+  const [updateInput, states] = useMultiBuyForm({
+    clusterState,
+    terraswapPair,
+    isArbitrage,
+  });
 
   // ---------------------------------------------
   // callbacks
@@ -134,6 +140,13 @@ function MultiBuyBase({
           <li>
             <span>Tx Fee</span>
             <span>{formatUToken(states.txFee)} UST</span>
+          </li>
+        )}
+
+        {'pnl' in states && states.pnl && (
+          <li>
+            <span>PNL</span>
+            <span>{formatUToken(states.pnl)} UST</span>
           </li>
         )}
       </FeeBox>

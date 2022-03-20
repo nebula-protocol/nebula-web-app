@@ -34,7 +34,6 @@ function MintArbBasicArbitrageBase({
     assetTokenInfos,
     clusterTokenInfo,
     terraswapPair,
-    terraswapPool,
   },
   resetAndBackToSwap,
 }: MintArbBasicArbitrageProps) {
@@ -58,7 +57,6 @@ function MintArbBasicArbitrageBase({
 
   const [updateInput, states] = useClusterMintArbBasicForm({
     clusterState,
-    terraswapPool,
     terraswapPair,
   });
 
@@ -130,7 +128,7 @@ function MintArbBasicArbitrageBase({
             </li>
           )}
 
-        {clusterTokenInfo && 'pnl' in states && states.pnl && (
+        {'pnl' in states && states.pnl && (
           <li>
             <span>PNL</span>
             <span>{formatUToken(states.pnl)} UST</span>
@@ -167,7 +165,7 @@ function MintArbBasicArbitrageBase({
           proceed(states.providedAmounts, states.txFee, states.returnedAmount)
         }
       >
-        Mint
+        Arb
       </Button>
     </div>
   );
