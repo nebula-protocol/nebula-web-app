@@ -142,6 +142,11 @@ export async function tokenDisplayInfosQuery(
     ...NATIVE_TOKEN_DISPLAY_INFOS,
     ...Object.values(cw20DisplayInfos)
       .filter(({ symbol }) => symbol.toLowerCase().indexOf('delisted') === -1)
+      .filter(
+        ({ symbol, protocol }) =>
+          symbol === 'MIR' ||
+          (!!protocol && protocol.toLowerCase() !== 'mirror'),
+      )
       .map(({ token, symbol, protocol, icon }) => {
         return {
           protocol,

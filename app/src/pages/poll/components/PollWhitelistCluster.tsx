@@ -44,9 +44,11 @@ export default function PollWhitelistCluster() {
     };
   }, [assets]);
 
-  const invalidSymbol = useValidateStringBytes(clusterSymbol, 2, 13);
+  const invalidSymbolLength = useValidateStringBytes(clusterSymbol, 2, 13);
 
-  const invalidClusterName = useValidateStringBytes(clusterName, 4, 64);
+  const invalidSymbolRegex = !clusterSymbol.match(/^[a-zA-Z]*$/);
+
+  const invalidClusterName = useValidateStringBytes(clusterName, 3, 64);
 
   const invalidClusterDescription = useValidateStringBytes(
     clusterDescription,
@@ -139,7 +141,8 @@ export default function PollWhitelistCluster() {
         targetOracleAddress.length > 0 &&
         penaltyAddress.length > 0 &&
         validAssets &&
-        !invalidSymbol &&
+        !invalidSymbolLength &&
+        !invalidSymbolRegex &&
         !invalidClusterName &&
         !invalidClusterDescription &&
         !invalidPriceOracleAddress &&
@@ -170,12 +173,14 @@ export default function PollWhitelistCluster() {
           fullWidth
           value={clusterSymbol}
           onChange={({ target }) => setClusterSymbol(target.value)}
-          error={!!invalidSymbol}
+          error={!!invalidSymbolLength || invalidSymbolRegex}
           helperText={
-            invalidSymbol === BytesValid.LESS
+            invalidSymbolLength === BytesValid.LESS
               ? 'Symbol must be at least 3 bytes.'
-              : invalidSymbol === BytesValid.MUCH
+              : invalidSymbolLength === BytesValid.MUCH
               ? 'Symbol cannot be longer than 12 bytes.'
+              : invalidSymbolRegex
+              ? 'Symbol can only include a-z or A-Z.'
               : undefined
           }
         />

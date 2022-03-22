@@ -76,12 +76,12 @@ function PollCreateBaseBase({
     return big(uNEB).lt(govConfig.proposal_deposit) ? 'Not enough NEB' : null;
   }, [govConfig, uNEB]);
 
-  const invalidPollTitleBytes = useValidateStringBytes(pollTitle, 4, 64);
+  const invalidPollTitleBytes = useValidateStringBytes(pollTitle, 3, 64);
 
   const invalidPollDescriptionBytes = useValidateStringBytes(
     pollDescription,
-    4,
-    1024,
+    3,
+    256,
   );
 
   const invalidPollExternalLinkBytes = useValidateStringBytes(
@@ -165,7 +165,7 @@ function PollCreateBaseBase({
               invalidPollDescriptionBytes === BytesValid.LESS
                 ? 'Proposal rational must be at least 4 bytes.'
                 : invalidPollDescriptionBytes === BytesValid.MUCH
-                ? 'Proposal rational cannot be longer than 1024 bytes.'
+                ? 'Proposal rational cannot be longer than 256 bytes.'
                 : undefined
             }
           />
