@@ -1,10 +1,17 @@
 import { formatUToken, microfy } from '@libs/formatter';
 import { ClusterInfo } from '@nebula-js/app-fns';
 import {
+  useBurnTab,
   useClusterMintAdvancedForm,
   useClusterMintTx,
 } from '@nebula-js/app-provider';
-import { breakpoints, Button, useScreenSizeValue } from '@nebula-js/ui';
+import {
+  breakpoints,
+  Button,
+  GuideInfo,
+  TextLink,
+  useScreenSizeValue,
+} from '@nebula-js/ui';
 import { CT, terraswap, Token, u, UST } from '@nebula-js/types';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
@@ -13,6 +20,7 @@ import { fixHMR } from 'fix-hmr';
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { TokenFormMint } from './TokenFormMint';
+import { Link, matchPath, useLocation } from 'react-router-dom';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 
 export interface MintAdvancedProps {
@@ -33,6 +41,10 @@ function MintAdvancedBase({ className, clusterInfo }: MintAdvancedProps) {
     clusterInfo.clusterState.target,
     clusterInfo.clusterTokenInfo.symbol,
   );
+
+  const { pathname } = useLocation();
+
+  const { setTabId } = useBurnTab();
 
   // ---------------------------------------------
   // states
@@ -71,6 +83,16 @@ function MintAdvancedBase({ className, clusterInfo }: MintAdvancedProps) {
     [broadcast, initForm, postTx],
   );
 
+  const getBurnLink = () => {
+    const match = matchPath(pathname, {
+      path: '/clusters/:address',
+      exact: false,
+      strict: false,
+    });
+
+    return match?.url + '/burn';
+  };
+
   // ---------------------------------------------
   // presentation
   // ---------------------------------------------
@@ -83,6 +105,41 @@ function MintAdvancedBase({ className, clusterInfo }: MintAdvancedProps) {
 
   return (
     <div className={className}>
+      <GuideInfo link="https://docs.neb.money/guide/clusters.html#mint-advanced">
+        <span>
+          Enables full customization of the cluster token minting process
+          <span id="extra">
+            <br />
+            <br />
+            <span>
+              Instead of starting with UST as in Mint Basic, the mode allows
+              utilization of assets already in the user’s wallet, with the
+              assets.
+            </span>
+            <br />
+            <br />
+            <span>
+              This is one of the two main ways to{' '}
+              <TextLink
+                href="https://docs.neb.money/protocol/clusters#rebalancing"
+                target="_blank"
+                rel="noreferrer"
+                hoverStyle
+              >
+                rebalance
+              </TextLink>{' '}
+              clusters, with the other being{' '}
+              <TextLink
+                component={Link}
+                to={getBurnLink()}
+                onClick={() => setTabId('advanced')}
+              >
+                Burn Advanced
+              </TextLink>
+            </span>
+          </span>
+        </span>
+      </GuideInfo>
       <TokenFormMint
         clusterInfo={clusterInfo}
         updateInput={updateInput}

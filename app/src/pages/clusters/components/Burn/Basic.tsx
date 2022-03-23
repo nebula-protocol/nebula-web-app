@@ -9,6 +9,7 @@ import { CT, u, UST } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
+  GuideInfo,
   TextButton,
   TokenInput,
   TokenSpan,
@@ -74,6 +75,16 @@ function BurnBasicBase({
 
   return (
     <div className={className}>
+      <GuideInfo link="https://docs.neb.money/guide/clusters.html#burn-basic">
+        <span>
+          Enables redeeming cluster tokens to receive back the cluster’s
+          inventory assets
+          <span id="extra">
+            {' '}
+            in pro-rata amount to the cluster’s current inventory weights.
+          </span>
+        </span>
+      </GuideInfo>
       <TokenInput<CT>
         className="token-input"
         maxDecimalPoints={6}
@@ -166,6 +177,7 @@ function BurnBasicBase({
 export const StyledBurnBasic = styled(BurnBasicBase)`
   .token-input {
     margin-bottom: 2.28571429em;
+    margin-top: 2.28571429em;
   }
 
   .feebox {

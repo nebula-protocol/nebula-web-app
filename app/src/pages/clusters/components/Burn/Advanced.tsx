@@ -3,10 +3,18 @@ import { ClusterInfo } from '@nebula-js/app-fns';
 import {
   useClusterRedeemAdvancedForm,
   useClusterRedeemAdvancedTx,
+  useMintTab,
 } from '@nebula-js/app-provider';
 import { WalletIcon } from '@nebula-js/icons';
 import { CT, u, terraswap, UST, Token } from '@nebula-js/types';
-import { breakpoints, TextButton, TokenInput, TokenSpan } from '@nebula-js/ui';
+import {
+  breakpoints,
+  GuideInfo,
+  TextButton,
+  TextLink,
+  TokenInput,
+  TokenSpan,
+} from '@nebula-js/ui';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
@@ -14,6 +22,7 @@ import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { TokenFormBurn } from './TokenFormBurn';
 import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
+import { Link, matchPath, useLocation } from 'react-router-dom';
 
 export interface BurnAdvancedProps {
   className?: string;
@@ -21,12 +30,10 @@ export interface BurnAdvancedProps {
 }
 
 function BurnAdvancedBase({ className, clusterInfo }: BurnAdvancedProps) {
+  // ---------------------------------------------
+  // dependencies
+  // ---------------------------------------------
   const { clusterState, clusterTokenInfo, terraswapPool } = clusterInfo;
-
-  const [updateInput, states] = useClusterRedeemAdvancedForm({
-    clusterState,
-    terraswapPool,
-  });
 
   const { broadcast } = useTxBroadcast();
 
@@ -35,6 +42,22 @@ function BurnAdvancedBase({ className, clusterInfo }: BurnAdvancedProps) {
     clusterState.cluster_token,
     clusterState.target,
   );
+
+  const { pathname } = useLocation();
+
+  const { setTabId } = useMintTab();
+
+  // ---------------------------------------------
+  // states
+  // ---------------------------------------------
+  const [updateInput, states] = useClusterRedeemAdvancedForm({
+    clusterState,
+    terraswapPool,
+  });
+
+  // ---------------------------------------------
+  // callbacks
+  // ---------------------------------------------
 
   const initForm = useCallback(() => {
     updateInput({
@@ -66,9 +89,51 @@ function BurnAdvancedBase({ className, clusterInfo }: BurnAdvancedProps) {
     [broadcast, initForm, postTx],
   );
 
+  const getMintLink = () => {
+    const match = matchPath(pathname, {
+      path: '/clusters/:address',
+      exact: false,
+      strict: false,
+    });
+
+    return match?.url + '/mint';
+  };
+
   return (
     <div className={className}>
-      <p className="title">1. Choose maximum amount to burn</p>
+      <GuideInfo link="https://docs.neb.money/guide/clusters.html#mint-advanced">
+        <span>
+          Enables full customization of the cluster token burning/redemption
+          process
+          <span id="extra">
+            <br />
+            <br />
+            The mode allows users to select the maximum amount of cluster tokens
+            to burn, as well as the weight and amounts of each inventory assets
+            to receive back in return
+            <br />
+            <br />
+            This is one of the two main ways to{' '}
+            <TextLink
+              href="https://docs.neb.money/protocol/clusters#rebalancing"
+              target="_blank"
+              rel="noreferrer"
+              hoverStyle
+            >
+              rebalance
+            </TextLink>{' '}
+            clusters, with the other being{' '}
+            <TextLink
+              component={Link}
+              to={getMintLink()}
+              onClick={() => setTabId('advanced')}
+            >
+              Mint Advanced
+            </TextLink>
+          </span>
+        </span>
+      </GuideInfo>
+      <p className="title first">1. Choose maximum amount to burn</p>
       <TokenInput<CT>
         className="token-input"
         maxDecimalPoints={6}
@@ -167,6 +232,10 @@ export const StyledBurnAdvanced = styled(BurnAdvancedBase)`
     font-style: normal;
     line-height: normal;
     letter-spacing: normal;
+  }
+
+  .first {
+    margin-top: 2.28571429em;
   }
 
   .token-input {

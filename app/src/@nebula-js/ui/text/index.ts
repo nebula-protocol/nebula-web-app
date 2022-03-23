@@ -10,3 +10,4 @@ export * from './TwoLine';
 export * from './TitledLabel';
 export * from './PartitionLabels';
 export * from './VerticalLabelAndValue';
+export * from './GuideInfo';
