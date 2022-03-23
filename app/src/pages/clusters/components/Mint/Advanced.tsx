@@ -133,6 +133,7 @@ function MintAdvancedBase({ className, clusterInfo }: MintAdvancedProps) {
                 component={Link}
                 to={getBurnLink()}
                 onClick={() => setTabId('advanced')}
+                hoverStyle
               >
                 Burn Advanced
               </TextLink>
