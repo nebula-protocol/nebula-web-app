@@ -1,4 +1,4 @@
-import { demicrofy, formatUTokenInteger } from '@libs/formatter';
+import { demicrofy, formatUToken } from '@libs/formatter';
 import { FormInput, FormStates } from '@libs/use-form';
 import {
   ClusterInfo,
@@ -212,7 +212,7 @@ function TokenFormMintBase({
                               transform: 'translate(-0.3em, 0)',
                             }}
                           />{' '}
-                          {formatUTokenInteger(
+                          {formatUToken(
                             (states.balances?.balances[i].balance ??
                               '0') as u<Token>,
                           )}{' '}
