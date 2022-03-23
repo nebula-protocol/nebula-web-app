@@ -113,40 +113,6 @@ function StakingStakeBase({
     <div className={className}>
       <TokenInput
         maxDecimalPoints={6}
-        value={states.ustAmount ?? ('' as UST)}
-        onChange={(nextUstAmount) =>
-          updateInput({ ustAmount: nextUstAmount, tokenAmount: undefined })
-        }
-        placeholder="0.00"
-        label="AMOUNT"
-        suggest={
-          <TextButton
-            fontSize={12}
-            onClick={() =>
-              updateInput({
-                ustAmount: formatUInput(states.maxUstAmount) as UST,
-                tokenAmount: undefined,
-              })
-            }
-          >
-            <WalletIcon
-              style={{
-                transform: 'translateX(-0.3em)',
-              }}
-            />{' '}
-            {formatUToken(states.maxUstAmount)}
-          </TextButton>
-        }
-        token={<TokenSpan symbol="UST">UST</TokenSpan>}
-        error={states.invalidUstAmount}
-      />
-
-      <IconSeparator>
-        <PlusIcon />
-      </IconSeparator>
-
-      <TokenInput
-        maxDecimalPoints={6}
         value={states.tokenAmount ?? ('' as CT)}
         onChange={(nextCtAmount) =>
           updateInput({ ustAmount: undefined, tokenAmount: nextCtAmount })
@@ -175,6 +141,40 @@ function StakingStakeBase({
           <TokenSpan symbol={tokenInfo.symbol}>{tokenInfo.symbol}</TokenSpan>
         }
         error={states.invalidTokenAmount}
+      />
+
+      <IconSeparator>
+        <PlusIcon />
+      </IconSeparator>
+
+      <TokenInput
+        maxDecimalPoints={6}
+        value={states.ustAmount ?? ('' as UST)}
+        onChange={(nextUstAmount) =>
+          updateInput({ ustAmount: nextUstAmount, tokenAmount: undefined })
+        }
+        placeholder="0.00"
+        label="AMOUNT"
+        suggest={
+          <TextButton
+            fontSize={12}
+            onClick={() =>
+              updateInput({
+                ustAmount: formatUInput(states.maxUstAmount) as UST,
+                tokenAmount: undefined,
+              })
+            }
+          >
+            <WalletIcon
+              style={{
+                transform: 'translateX(-0.3em)',
+              }}
+            />{' '}
+            {formatUToken(states.maxUstAmount)}
+          </TextButton>
+        }
+        token={<TokenSpan symbol="UST">UST</TokenSpan>}
+        error={states.invalidUstAmount}
       />
 
       <Disclosure
