@@ -1,32 +1,19 @@
-import { TabItem } from '@nebula-js/ui';
 import { SubTab } from '@nebula-js/ui/layout/SubTab';
 import { ClusterInfo } from '@nebula-js/app-fns';
-import { useLocalStorage } from '@libs/use-local-storage';
-import React, { useMemo } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { BurnAdvanced } from './Advanced';
 import { BurnBasic } from './Basic';
 import { BurnTerraswapArbitrage } from './TerraswapArbitrage';
+import { useBurnTab } from '@nebula-js/app-provider';
 
 export interface ClusterBurnProps {
   className?: string;
   clusterInfo: ClusterInfo;
 }
 
-const tabItems: TabItem[] = [
-  { id: 'basic', label: 'Basic' },
-  { id: 'advanced', label: 'Advanced' },
-  { id: 'astroportArbitrage', label: 'Astroport Arbitrage' },
-];
-
-const TAB_KEY = '__nebula_burn_tab__';
-
 function ClusterBurnBase({ className, clusterInfo }: ClusterBurnProps) {
-  const [tabId, setTabId] = useLocalStorage(TAB_KEY, () => tabItems[0].id);
-
-  const tab = useMemo(() => {
-    return tabItems.find(({ id }) => tabId === id) ?? tabItems[0];
-  }, [tabId]);
+  const { tab, tabId, tabItems, setTabId } = useBurnTab();
 
   return (
     <div className={className}>

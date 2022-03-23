@@ -11,6 +11,7 @@ import {
   Button,
   Disclosure,
   FormLabel,
+  GuideInfo,
   TextButton,
   TokenInput,
   TokenSpan,
@@ -104,6 +105,29 @@ function BurnTerraswapArbitrageBase({
 
   return (
     <div className={className}>
+      <GuideInfo link="https://docs.neb.money/guide/clusters.html#arbitraging">
+        <span>
+          Enables profitable arbitraging when the cluster’s market price is
+          lower than its intrinsic price
+          <span id="extra">
+            <br />
+            <br />
+            The mode:
+            <br />
+            <br />
+            <span className="indent-text">
+              1. Uses the user’s input UST amount to buy cluster tokens from
+              Astroport at a discount
+            </span>
+            <br />
+            <br />
+            <span className="indent-text">
+              2. Burns the cluster tokens and returns the received inventory
+              assets back to the user
+            </span>
+          </span>
+        </span>
+      </GuideInfo>
       <TokenInput<UST>
         className="token-input"
         maxDecimalPoints={6}
@@ -226,6 +250,7 @@ function BurnTerraswapArbitrageBase({
 export const StyledBurnTerraswapArbitrage = styled(BurnTerraswapArbitrageBase)`
   .token-input {
     margin-bottom: 2.28571429em;
+    margin-top: 2.28571429em;
   }
 
   .warning {
