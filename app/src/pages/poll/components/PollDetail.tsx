@@ -111,7 +111,7 @@ function WhitelistCluster({
         <h4>Price Oracle Address</h4>
         <p>
           <FinderAddressLink
-            chainID={network.chainID}
+            network={network}
             address={params.pricing_oracle}
           />
         </p>
@@ -120,20 +120,14 @@ function WhitelistCluster({
       <div>
         <h4>Target Oracle Address</h4>
         <p>
-          <FinderAddressLink
-            chainID={network.chainID}
-            address={params.target_oracle}
-          />
+          <FinderAddressLink network={network} address={params.target_oracle} />
         </p>
       </div>
 
       <div>
         <h4>Penalty Address</h4>
         <p>
-          <FinderAddressLink
-            chainID={network.chainID}
-            address={params.penalty}
-          />
+          <FinderAddressLink network={network} address={params.penalty} />
         </p>
       </div>
 
@@ -289,10 +283,7 @@ function CommunityPoolSpend({ msg: { spend } }: { msg: community.Spend }) {
       <div>
         <h4>Recipient</h4>
         <p>
-          <FinderAddressLink
-            chainID={network.chainID}
-            address={spend.recipient}
-          />
+          <FinderAddressLink network={network} address={spend.recipient} />
         </p>
       </div>
 
@@ -355,7 +346,7 @@ function ClusterParameterChange({
             <p>
               <s>
                 <FinderAddressLink
-                  chainID={network.chainID}
+                  network={network}
                   address={clusterConfig.config.pricing_oracle}
                 />
               </s>
@@ -363,7 +354,7 @@ function ClusterParameterChange({
           )} */}
           <p>
             <FinderAddressLink
-              chainID={network.chainID}
+              network={network}
               address={update_config.pricing_oracle}
             />
           </p>
@@ -377,7 +368,7 @@ function ClusterParameterChange({
             <p>
               <s>
                 <FinderAddressLink
-                  chainID={network.chainID}
+                  network={network}
                   address={clusterConfig.config.target_oracle}
                 />
               </s>
@@ -385,7 +376,7 @@ function ClusterParameterChange({
           )} */}
           <p>
             <FinderAddressLink
-              chainID={network.chainID}
+              network={network}
               address={update_config.target_oracle}
             />
           </p>
@@ -399,7 +390,7 @@ function ClusterParameterChange({
             <p>
               <s>
                 <FinderAddressLink
-                  chainID={network.chainID}
+                  network={network}
                   address={clusterConfig.config.penalty}
                 />
               </s>
@@ -407,7 +398,7 @@ function ClusterParameterChange({
           )} */}
           <p>
             <FinderAddressLink
-              chainID={network.chainID}
+              network={network}
               address={update_config.penalty}
             />
           </p>

@@ -101,7 +101,7 @@ function PollDetailBase({ className }: PollDetailProps) {
             <p>
               <span>Creator</span>
               <FinderAddressLink
-                chainID={network.chainID}
+                network={network}
                 address={parsedPoll?.poll.creator ?? ''}
                 shortenAddress
               />
@@ -197,7 +197,7 @@ function PollDetailBase({ className }: PollDetailProps) {
                 <tr key={'row' + voter}>
                   <td>
                     <FinderAddressLink
-                      chainID={network.chainID}
+                      network={network}
                       address={voter}
                       shortenAddress
                     />

@@ -31,9 +31,9 @@ export class TxHelper {
       return null;
     }
 
-    const chainID = this.$.network.chainID;
+    const networkName = this.$.network.name;
     const txhash = this._savedTxResult.result.txhash;
-    const html = `<a href="https://finder.extraterrestrial.money/${chainID}/tx/${txhash}" target="_blank" rel="noreferrer">${truncate(
+    const html = `<a href="https://finder.extraterrestrial.money/${networkName}/tx/${txhash}" target="_blank" rel="noreferrer">${truncate(
       txhash,
     )}</a>`;
 
