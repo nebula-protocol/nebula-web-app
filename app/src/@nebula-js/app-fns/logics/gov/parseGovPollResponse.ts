@@ -172,7 +172,7 @@ function parsePollType(
   executeMsgs: ParsedExecuteMsg[] | undefined,
   address: NebulaContractAddress,
 ): string {
-  if (!executeMsgs) {
+  if (!executeMsgs || executeMsgs.length === 0) {
     return 'Text Poll';
   }
 
@@ -180,7 +180,7 @@ function parsePollType(
     return 'Custom Poll';
   }
 
-  // Only support poll that created via webapp or one message.
+  // Only support the poll that is created with one execute msg.
   const executeMsg = executeMsgs[0];
 
   if (
