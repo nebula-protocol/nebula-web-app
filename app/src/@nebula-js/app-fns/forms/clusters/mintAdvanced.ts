@@ -35,7 +35,7 @@ export interface ClusterMintAdvancedFormStates
   invalidAmounts: (string | null)[];
   invalidMintQuery: string | null;
   remainAssets: terraswap.Asset<Token>[];
-  balances?: TerraBalances;
+  balances?: Array<{ asset: terraswap.AssetInfo; balance: u<Token> }>;
   txFee: u<UST> | null;
 }
 
@@ -61,6 +61,25 @@ export const clusterMintAdvancedForm = (
     ClusterMintAdvancedFormStates,
     ClusterMintAdvancedFormAsyncStates
   > => {
+    const clusterTxFee = computeClusterTxFee(
+      dependency.gasPrice,
+      dependency.clusterFee.default,
+      dependency.clusterState.target.length,
+      dependency.clusterState.target.length,
+    );
+
+    // subtract max fee from ust max balance
+    const maxBalances = dependency.balances?.balances.map(
+      ({ asset, balance }) => {
+        let newBalance = balance;
+        if ('native_token' in asset && asset.native_token.denom === 'uusd') {
+          newBalance = big(balance).minus(clusterTxFee).toFixed() as u<UST>;
+        }
+
+        return { asset, balance: newBalance };
+      },
+    );
+
     // validate inputAmount > balance
     if (
       !invalidAmounts ||
@@ -129,13 +148,6 @@ export const clusterMintAdvancedForm = (
                 dependency.protocolFee,
               );
 
-              const clusterTxFee = computeClusterTxFee(
-                dependency.gasPrice,
-                dependency.clusterFee.default,
-                dependency.clusterState.target.length,
-                dependency.clusterState.target.length,
-              );
-
               const clusterPrice = computeCTPrices(
                 dependency.clusterState,
                 dependency.terraswapPool,
@@ -186,7 +198,7 @@ export const clusterMintAdvancedForm = (
         invalidAmounts,
         invalidMintQuery,
         remainAssets,
-        balances: dependency.balances,
+        balances: maxBalances,
         txFee: null,
       },
       asyncStates,

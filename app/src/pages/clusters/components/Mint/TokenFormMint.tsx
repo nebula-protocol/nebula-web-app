@@ -194,15 +194,15 @@ function TokenFormMintBase({
                       </TokenSpan>
                     }
                     suggest={
-                      big(states.balances?.balances[i].balance ?? 0).gt(0) && (
+                      big(states.balances?.[i].balance ?? 0).gt(0) && (
                         <TextButton
                           fontSize={12}
                           onClick={() =>
-                            states.balances?.balances &&
+                            states.balances &&
                             updateAmount(
                               asset,
                               demicrofy(
-                                states.balances.balances[i].balance,
+                                states.balances[i].balance,
                               ).toFixed() as Token,
                             )
                           }
@@ -213,8 +213,7 @@ function TokenFormMintBase({
                             }}
                           />{' '}
                           {formatUToken(
-                            (states.balances?.balances[i].balance ??
-                              '0') as u<Token>,
+                            (states.balances?.[i].balance ?? '0') as u<Token>,
                           )}{' '}
                           {assetTokenInfos[i].tokenInfo.symbol ?? ''}
                         </TextButton>
