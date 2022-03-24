@@ -55,7 +55,7 @@ export interface ParsedPoll {
 
   type: string;
 
-  executeMsg: ParsedExecuteMsg | undefined;
+  executeMsgs: ParsedExecuteMsg[] | undefined;
 }
 
 export function parseGovPollResponse(
@@ -96,8 +96,8 @@ export function parseGovPollResponse(
 
   const inProgressOver = poll.status === 'in_progress' && endsIn <= new Date();
 
-  const executeMsg: ParsedExecuteMsg | undefined = poll.execute_data
-    ? parseExecuteMsg(poll.execute_data)
+  const executeMsgs: ParsedExecuteMsg[] | undefined = poll.execute_data
+    ? poll.execute_data.map((data) => parseExecuteMsg(data))
     : undefined;
 
   return {
@@ -150,16 +150,16 @@ export function parseGovPollResponse(
 
     endsIn,
 
-    type: parsePollType(executeMsg, contractAddress),
+    type: parsePollType(executeMsgs, contractAddress),
 
-    executeMsg,
+    executeMsgs,
   };
 }
 
 function parseExecuteMsg(executeMsg: gov.ExecuteMsg): ParsedExecuteMsg {
   let msg: any = {};
   try {
-    msg = JSON.parse(atob(executeMsg.msg));
+    msg = JSON.parse(Buffer.from(executeMsg.msg, 'base64').toString('binary'));
   } catch (error) {}
 
   return {
@@ -169,12 +169,21 @@ function parseExecuteMsg(executeMsg: gov.ExecuteMsg): ParsedExecuteMsg {
 }
 
 function parsePollType(
-  executeMsg: ParsedExecuteMsg | undefined,
+  executeMsgs: ParsedExecuteMsg[] | undefined,
   address: NebulaContractAddress,
 ): string {
-  if (!executeMsg) {
+  if (!executeMsgs || executeMsgs.length === 0) {
     return 'Text Poll';
-  } else if (
+  }
+
+  if (executeMsgs.length >= 2) {
+    return 'Custom Poll';
+  }
+
+  // Only support the poll that is created with one execute msg.
+  const executeMsg = executeMsgs[0];
+
+  if (
     executeMsg.contract === address.clusterFactory &&
     'create_cluster' in executeMsg.msg
   ) {

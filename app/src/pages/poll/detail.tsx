@@ -208,6 +208,17 @@ function PollDetailBase({ className }: PollDetailProps) {
               ))}
             </tbody>
           </Table>
+          {voters && voters.length === 0 && (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginTop: '2em',
+              }}
+            >
+              No Voters
+            </div>
+          )}
 
           {hasNextPage && (
             <TextButton

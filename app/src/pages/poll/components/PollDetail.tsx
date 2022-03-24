@@ -17,9 +17,11 @@ import { Section } from '@nebula-js/ui';
 import { useWallet } from '@terra-money/use-wallet';
 import { fixHMR } from 'fix-hmr';
 import { TokenLabel } from 'pages/poll/components/TokenLabel';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import useClipboard from 'react-use-clipboard';
 import styled from 'styled-components';
+import { FileCopy, Check } from '@material-ui/icons';
 
 export interface PollDetailProps {
   className?: string;
@@ -28,6 +30,19 @@ export interface PollDetailProps {
 
 function PollDetailBase({ className, parsedPoll }: PollDetailProps) {
   const { contractAddress } = useNebulaApp();
+
+  const [isCopied, setCopied] = useClipboard(
+    JSON.stringify(parsedPoll?.executeMsgs) ?? '',
+    {
+      successDuration: 1000 * 3,
+    },
+  );
+
+  const executedMsgJson = useMemo(() => {
+    if (!parsedPoll?.executeMsgs) return undefined;
+
+    return JSON.stringify(parsedPoll?.executeMsgs, null, '\t');
+  }, [parsedPoll]);
 
   return (
     <Section className={className}>
@@ -47,32 +62,46 @@ function PollDetailBase({ className, parsedPoll }: PollDetailProps) {
         </div>
       )}
 
-      {parsedPoll.executeMsg?.contract === contractAddress.clusterFactory &&
-        'create_cluster' in parsedPoll.executeMsg.msg && (
-          <WhitelistCluster msg={parsedPoll.executeMsg.msg} />
+      {parsedPoll?.executeMsgs &&
+        parsedPoll?.executeMsgs.length >= 2 &&
+        executedMsgJson && (
+          <div>
+            <h4>Executed Message</h4>
+            <div className="json-box">
+              {isCopied ? <Check /> : <FileCopy onClick={setCopied} />}
+              <pre>{executedMsgJson}</pre>
+            </div>
+          </div>
         )}
 
-      {parsedPoll.executeMsg?.contract === contractAddress.clusterFactory &&
-        'decommission_cluster' in parsedPoll.executeMsg.msg && (
-          <BlacklistCluster msg={parsedPoll.executeMsg.msg} />
+      {parsedPoll.executeMsgs?.[0].contract ===
+        contractAddress.clusterFactory &&
+        'create_cluster' in parsedPoll.executeMsgs?.[0].msg && (
+          <WhitelistCluster msg={parsedPoll.executeMsgs?.[0].msg} />
         )}
 
-      {parsedPoll.executeMsg?.contract === contractAddress.gov &&
-        'update_config' in parsedPoll.executeMsg.msg && (
-          <GovernanceParameterChange msg={parsedPoll.executeMsg.msg} />
+      {parsedPoll.executeMsgs?.[0].contract ===
+        contractAddress.clusterFactory &&
+        'decommission_cluster' in parsedPoll.executeMsgs?.[0].msg && (
+          <BlacklistCluster msg={parsedPoll.executeMsgs?.[0].msg} />
         )}
 
-      {parsedPoll.executeMsg?.contract === contractAddress.community &&
-        'spend' in parsedPoll.executeMsg.msg && (
-          <CommunityPoolSpend msg={parsedPoll.executeMsg.msg} />
+      {parsedPoll.executeMsgs?.[0].contract === contractAddress.gov &&
+        'update_config' in parsedPoll.executeMsgs?.[0].msg && (
+          <GovernanceParameterChange msg={parsedPoll.executeMsgs?.[0].msg} />
         )}
 
-      {parsedPoll.executeMsg &&
-        parsedPoll.executeMsg.contract !== contractAddress.gov &&
-        'update_config' in parsedPoll.executeMsg.msg && (
+      {parsedPoll.executeMsgs?.[0].contract === contractAddress.community &&
+        'spend' in parsedPoll.executeMsgs?.[0].msg && (
+          <CommunityPoolSpend msg={parsedPoll.executeMsgs?.[0].msg} />
+        )}
+
+      {parsedPoll.executeMsgs &&
+        parsedPoll.executeMsgs?.[0].contract !== contractAddress.gov &&
+        'update_config' in parsedPoll.executeMsgs?.[0].msg && (
           <ClusterParameterChange
-            msg={parsedPoll.executeMsg.msg}
-            clusterAddr={parsedPoll.executeMsg.contract}
+            msg={parsedPoll.executeMsgs?.[0].msg}
+            clusterAddr={parsedPoll.executeMsgs?.[0].contract}
           />
         )}
     </Section>
@@ -468,6 +497,36 @@ export const StyledPollDetail = styled(PollDetailBase)`
 
     img.icon {
       max-width: 30px;
+    }
+  }
+
+  .json-box {
+    margin-top: 1em;
+    background-color: var(--color-gray11);
+    color: var(--color-white80);
+    border-radius: 8px;
+    padding: 1.4em 1.7em;
+    word-break: break-word;
+    position: relative;
+
+    > pre {
+      white-space: -moz-pre-wrap; /* Mozilla, supported since 1999 */
+      white-space: -pre-wrap; /* Opera */
+      white-space: -o-pre-wrap; /* Opera */
+      white-space: pre-wrap; /* CSS3 - Text module (Candidate Recommendation) http://www.w3.org/TR/css3-text/#white-space */
+      word-wrap: break-word; /* IE 5.5+ */
+    }
+
+    &:empty {
+      display: none;
+    }
+
+    svg {
+      position: absolute;
+      top: 1em;
+      right: 1em;
+      font-size: 16px;
+      cursor: pointer;
     }
   }
 `;

@@ -40,7 +40,7 @@ export namespace gov {
       title: string;
       description: string;
       link?: string;
-      execute_msg?: ExecuteMsg;
+      execute_msgs?: ExecuteMsg[];
     };
   }
 
@@ -189,7 +189,7 @@ export namespace gov {
     link?: string;
     // TODO set token type to deposit_amount
     deposit_amount: rs.Uint128;
-    execute_data?: ExecuteMsg;
+    execute_data?: ExecuteMsg[];
     yes_votes: u<NEB<rs.Uint128>>; // balance
     no_votes: u<NEB<rs.Uint128>>; // balance
     abstain_votes: u<NEB<rs.Uint128>>; // balance

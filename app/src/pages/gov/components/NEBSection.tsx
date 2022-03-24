@@ -117,6 +117,7 @@ const StyledNEBSection = styled(NEBSectionBase)`
 
     display: flex;
     gap: 28px;
+    grid-column: span 2;
   }
 
   .apr {

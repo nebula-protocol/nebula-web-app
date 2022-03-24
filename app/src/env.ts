@@ -22,10 +22,10 @@ export function NEBULA_CONTRACT_ADDRESS(
     return {
       airdrop: 'terra16l476zxmduaxgpask2vqxut0674paz7mmdjhcw' as HumanAddr,
       collector: 'terra1nqjfk3uaefzrgecnmxjgcwxxfg4jhrvcupm9nm' as HumanAddr,
-      community: 'terra1fkwn9mmyz2fqyv67qf3z6l9xjya42sdurdfjxn' as HumanAddr,
+      community: 'terra12ptkvvhtyplqdqft3k7qf5e883q3v08p7edv94' as HumanAddr,
       clusterFactory:
         'terra103srr94gy8zgyey7ncg63gqfgac3y6nkdc28jh' as HumanAddr,
-      gov: 'terra12qsqwjc2f95a93l6kg0k77ldvvptuqg4wujqa3' as HumanAddr,
+      gov: 'terra1yzsxytzktj7dsrhyajx34jzz8cxw0vws8cgvkg' as HumanAddr,
       incentives: 'terra1x7ug3ehdtdz5w2q37l2l9rd0u5ekv2gvzfq0y6' as HumanAddr,
       incentivesCustody:
         'terra1nghgqatgz3w2qps598zaf07526l7ye0g0pswz2' as HumanAddr,

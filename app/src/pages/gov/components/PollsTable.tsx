@@ -14,7 +14,7 @@ import {
 import { EmptySelect } from '@nebula-js/ui/form/EmptySelect';
 import { fixHMR } from 'fix-hmr';
 import React, { useCallback, useMemo, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import big from 'big.js';
 
@@ -68,11 +68,8 @@ function PollsTableBase({ className }: PollsTableProps) {
 
   if (filter === undefined && pages && polls.length === 0) {
     return (
-      <Section>
+      <Section style={{ display: 'flex', justifyContent: 'center' }}>
         No polls
-        <Button componentProps={{ component: Link, to: '/polls' }}>
-          Create Poll
-        </Button>
       </Section>
     );
   }
@@ -125,56 +122,47 @@ function PollsTableBase({ className }: PollsTableProps) {
           </tr>
         </thead>
         <tbody>
-          {polls.map(
-            ({
-              poll: { id, title },
-              votes,
-              quorum,
-              status,
-              inProgressTimeover,
-              type,
-            }) => (
-              <tr key={id} onClick={() => gotoPoll(id)}>
-                <td>{type}</td>
-                <td
+          {polls.map(({ poll: { id, title }, votes, quorum, status, type }) => (
+            <tr key={id} onClick={() => gotoPoll(id)}>
+              <td>{type}</td>
+              <td
+                style={{
+                  wordBreak: 'break-all',
+                  whiteSpace: 'break-spaces',
+                  minWidth: 300,
+                  maxWidth: 600,
+                }}
+              >
+                {title}
+              </td>
+              <td>
+                <p
                   style={{
-                    wordBreak: 'break-all',
-                    whiteSpace: 'break-spaces',
-                    minWidth: 300,
-                    maxWidth: 600,
+                    color: big(quorum.current).lt(quorum.gov)
+                      ? 'var(--color-red01)'
+                      : 'var(--color-white92)',
+                    display: 'flex',
+                    alignItems: 'center',
                   }}
                 >
-                  {title}
-                </td>
-                <td>
-                  <p
-                    style={{
-                      color: big(quorum.current).lt(quorum.gov)
-                        ? 'var(--color-red01)'
-                        : 'var(--color-white92)',
-                      display: 'flex',
-                      alignItems: 'center',
-                    }}
-                  >
-                    {big(quorum.current).lt(quorum.gov) && (
-                      <CircleExclamationIcon id="circle-exclamation" />
-                    )}
-                    Quorum {formatRate(quorum.current)}% /{' '}
-                    {formatRate(quorum.gov)}%
-                  </p>
-                  <p>
-                    <span id="yes-amount">
-                      YES {formatRate(votes.yesRatio)}%{' '}
-                    </span>
-                    <span id="no-amount">NO {formatRate(votes.noRatio)}%</span>
-                  </p>
-                </td>
-                <td style={{ color: getPollStatusColor(status) }}>
-                  <p>{status}</p>
-                </td>
-              </tr>
-            ),
-          )}
+                  {big(quorum.current).lt(quorum.gov) && (
+                    <CircleExclamationIcon id="circle-exclamation" />
+                  )}
+                  Quorum {formatRate(quorum.current)}% /{' '}
+                  {formatRate(quorum.gov)}%
+                </p>
+                <p>
+                  <span id="yes-amount">
+                    YES {formatRate(votes.yesRatio)}%{' '}
+                  </span>
+                  <span id="no-amount">NO {formatRate(votes.noRatio)}%</span>
+                </p>
+              </td>
+              <td style={{ color: getPollStatusColor(status) }}>
+                <p>{status}</p>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </HorizontalScrollTable>
 

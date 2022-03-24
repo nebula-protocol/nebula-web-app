@@ -48,7 +48,7 @@ export function govCreatePollTx(
                   title: $.title,
                   description: $.description,
                   link: $.link,
-                  execute_msg: $.execute_msg,
+                  execute_msgs: !!$.execute_msg ? [$.execute_msg] : undefined,
                 },
               } as gov.CreatePoll),
             ).toString('base64'),

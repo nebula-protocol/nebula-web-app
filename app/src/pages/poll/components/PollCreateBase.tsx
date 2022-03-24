@@ -59,10 +59,6 @@ function PollCreateBaseBase({
   const uNEB = useNebBalance(connectedWallet?.walletAddress);
 
   const fixedFee = useFixedFee();
-  //const { tokenBalances } = useBank<NebulaTokenBalances>();
-  //const {
-  //  constants: { fixedFee },
-  //} = useNebulaWebapp();
 
   const [pollTitle, setPollTitle] = useState<string>('');
   const [pollDescription, setPollDescription] = useState<string>('');
