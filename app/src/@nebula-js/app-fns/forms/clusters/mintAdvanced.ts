@@ -68,7 +68,7 @@ export const clusterMintAdvancedForm = (
       dependency.clusterState.target.length,
     );
 
-    // reduce max ust with tx fee
+    // subtract max fee from ust max balance
     const maxBalances = dependency.balances?.balances.map(
       ({ asset, balance }) => {
         let newBalance = balance;
