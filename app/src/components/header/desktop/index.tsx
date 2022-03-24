@@ -59,6 +59,9 @@ function DesktopHeaderBase({ className }: DesktopHeaderProps) {
 
       <div>
         <nav>
+          <NavLink to="/" exact onClick={(e) => navigate(e, '/')}>
+            Dashboard
+          </NavLink>
           <NavLink to="/clusters" onClick={(e) => navigate(e, '/clusters')}>
             Clusters
           </NavLink>

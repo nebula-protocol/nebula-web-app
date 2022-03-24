@@ -34,6 +34,7 @@ export interface PollCreateBaseProps {
 
   title: string;
   description: ReactNode;
+  extraDescription?: string;
   children?: ReactNode;
   submitButtonStatus: 'disabled' | 'hidden' | true;
   onCreateMsg: () => gov.ExecuteMsg | undefined;
@@ -43,6 +44,7 @@ function PollCreateBaseBase({
   className,
   title,
   description,
+  extraDescription,
   onCreateMsg,
   submitButtonStatus,
   children,
@@ -106,7 +108,7 @@ function PollCreateBaseBase({
     ) => {
       const stream = postTx?.({
         title: _title,
-        description: _description,
+        description: _description + extraDescription,
         link: _link.length > 0 ? _link : undefined,
         execute_msg: onCreateMsg(),
         depositAmount: _depositAmount,
@@ -119,7 +121,7 @@ function PollCreateBaseBase({
         broadcast(stream);
       }
     },
-    [broadcast, history, onCreateMsg, postTx],
+    [broadcast, history, onCreateMsg, postTx, extraDescription],
   );
 
   return (

@@ -48,7 +48,7 @@ function PollDetailBase({ className, parsedPoll }: PollDetailProps) {
     <Section className={className}>
       <div>
         <h4>Description</h4>
-        <p>{parsedPoll.poll.description}</p>
+        <pre>{parsedPoll.poll.description}</pre>
       </div>
 
       {parsedPoll.poll?.link && parsedPoll.poll.link.startsWith('http') && (
@@ -508,14 +508,6 @@ export const StyledPollDetail = styled(PollDetailBase)`
     padding: 1.4em 1.7em;
     word-break: break-word;
     position: relative;
-
-    > pre {
-      white-space: -moz-pre-wrap; /* Mozilla, supported since 1999 */
-      white-space: -pre-wrap; /* Opera */
-      white-space: -o-pre-wrap; /* Opera */
-      white-space: pre-wrap; /* CSS3 - Text module (Candidate Recommendation) http://www.w3.org/TR/css3-text/#white-space */
-      word-wrap: break-word; /* IE 5.5+ */
-    }
 
     &:empty {
       display: none;
