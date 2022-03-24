@@ -6,7 +6,7 @@ export const TEST_CONTRACT_ADDRESS = {
   collector: 'terra1qvdf64vhtpjfznysr8uqm28exrekaju7j3mpcw' as HumanAddr,
   community: 'terra108u9rg6nhltna8ce3teve8lsnahehljr2273m2' as HumanAddr,
   clusterFactory: 'terra1q2ft2we9p5p5d624hsamx9k3qc2qkzw4wyg4c6' as HumanAddr,
-  gov: 'terra1qugtk3h7tr8s0ltnpheh7gaf43hv9ax7mlg6jc' as HumanAddr,
+  gov: 'terra1yzsxytzktj7dsrhyajx34jzz8cxw0vws8cgvkg' as HumanAddr,
   incentives: 'terra14j87dwkfmjs48hd3skuxnw2fm0z9x90kruspsn' as HumanAddr,
   incentivesCustody:
     'terra16stw0qmz8mj5uzg672x2t8lfdjqgva7xv3fs5q' as HumanAddr,
