@@ -17,7 +17,7 @@ import PollClusterParameterChange from 'pages/poll/components/PollClusterParamet
 import PollCommunityPoolSpend from 'pages/poll/components/PollCommunityPoolSpend';
 import PollGovernanceParameterChange from 'pages/poll/components/PollGovernanceParameterChange';
 import PollText from 'pages/poll/components/PollText';
-import PollWhitelistCluster from 'pages/poll/components/PollWhitelistCluster';
+import PollWhitelistClusterTextPoll from 'pages/poll/components/PollWhitelistClusterTextPoll';
 import PollDetail from 'pages/poll/detail';
 import PollMain from 'pages/poll/main';
 import Send from 'pages/send/main';
@@ -49,7 +49,7 @@ function App() {
           <Route exact path="/polls" component={PollMain} />
           <Route
             path="/polls/create/whitelist-cluster"
-            component={PollWhitelistCluster}
+            component={PollWhitelistClusterTextPoll}
           />
           <Route
             path="/polls/create/blacklist-cluster"
