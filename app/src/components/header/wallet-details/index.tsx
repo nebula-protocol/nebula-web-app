@@ -40,10 +40,10 @@ function WalletDetailsBase({
 
   const viewOnTerraFinder = useCallback(() => {
     window.open(
-      `https://finder.extraterrestrial.money/${connectedWallet?.network.chainID}/account/${connectedWallet?.walletAddress}`,
+      `https://finder.extraterrestrial.money/${connectedWallet?.network.name}/account/${connectedWallet?.walletAddress}`,
       '_blank',
     );
-  }, [connectedWallet?.network.chainID, connectedWallet?.walletAddress]);
+  }, [connectedWallet?.network.name, connectedWallet?.walletAddress]);
 
   if (!connectedWallet) {
     return null;
