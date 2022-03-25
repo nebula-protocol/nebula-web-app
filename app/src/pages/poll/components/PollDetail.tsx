@@ -44,11 +44,18 @@ function PollDetailBase({ className, parsedPoll }: PollDetailProps) {
     return JSON.stringify(parsedPoll?.executeMsgs, null, '\t');
   }, [parsedPoll]);
 
+  const parsedDescription = useMemo(() => {
+    return parsedPoll.poll.description
+      .replace('#n', '\nCluster Name: ')
+      .replace('#s', '\nCluster Symbol: ')
+      .replace('#d', '\nCluster Description: ');
+  }, [parsedPoll.poll.description]);
+
   return (
     <Section className={className}>
       <div>
         <h4>Description</h4>
-        <pre>{parsedPoll.poll.description}</pre>
+        <pre>{parsedDescription}</pre>
       </div>
 
       {parsedPoll.poll?.link && parsedPoll.poll.link.startsWith('http') && (

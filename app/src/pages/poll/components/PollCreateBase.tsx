@@ -28,13 +28,13 @@ import { fixHMR } from 'fix-hmr';
 import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import { validateLinkAddress } from '@nebula-js/app-fns';
 
 export interface PollCreateBaseProps {
   className?: string;
 
   title: string;
   description: ReactNode;
-  extraDescription?: string;
   children?: ReactNode;
   submitButtonStatus: 'disabled' | 'hidden' | true;
   onCreateMsg: () => gov.ExecuteMsg | undefined;
@@ -44,7 +44,6 @@ function PollCreateBaseBase({
   className,
   title,
   description,
-  extraDescription,
   onCreateMsg,
   submitButtonStatus,
   children,
@@ -108,7 +107,7 @@ function PollCreateBaseBase({
     ) => {
       const stream = postTx?.({
         title: _title,
-        description: _description + extraDescription,
+        description: _description,
         link: _link.length > 0 ? _link : undefined,
         execute_msg: onCreateMsg(),
         depositAmount: _depositAmount,
@@ -121,7 +120,7 @@ function PollCreateBaseBase({
         broadcast(stream);
       }
     },
-    [broadcast, history, onCreateMsg, postTx, extraDescription],
+    [broadcast, history, onCreateMsg, postTx],
   );
 
   return (
@@ -302,11 +301,3 @@ export const StyledPollCreateBase = styled(PollCreateBaseBase)`
 `;
 
 export const PollCreateBase = fixHMR(StyledPollCreateBase);
-
-function validateLinkAddress(link: string): ReactNode {
-  if (link.length === 0) return undefined;
-  if (!/^(http|https):\/\//.test(link)) {
-    return 'Must begin with http:// or https://';
-  }
-  return undefined;
-}
