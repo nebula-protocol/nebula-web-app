@@ -42,6 +42,7 @@ export * from './logics/gov/computeUnstakableNebBalance';
 export * from './logics/gov/computeVotingPower';
 export * from './logics/gov/parseGovPollResponse';
 export * from './logics/gov/pickGovPollVoted';
+export * from './logics/gov/validateLinkAddress';
 export * from './models/assetTokens';
 export * from './queries/airdrop/check';
 export * from './queries/anchor/base';
