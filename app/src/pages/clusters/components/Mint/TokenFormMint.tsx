@@ -197,15 +197,17 @@ function TokenFormMintBase({
                       big(states.balances?.[i].balance ?? 0).gt(0) && (
                         <TextButton
                           fontSize={12}
-                          onClick={() =>
-                            states.balances &&
-                            updateAmount(
-                              asset,
-                              demicrofy(
+                          onClick={() => {
+                            if (states.balances) {
+                              const newBalance = demicrofy(
                                 states.balances[i].balance,
-                              ).toFixed() as Token,
-                            )
-                          }
+                              ).toFixed() as Token;
+
+                              proRata
+                                ? updateAmountProRata(asset, newBalance)
+                                : updateAmount(asset, newBalance);
+                            }
+                          }}
                         >
                           <WalletIcon
                             style={{
