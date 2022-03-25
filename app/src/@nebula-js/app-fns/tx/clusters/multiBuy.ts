@@ -157,11 +157,13 @@ export function cw20MultiBuyTokensTx(
           }
         });
 
-        returnAmounts = [
-          ...returnAmounts.slice(0, ustIndex),
-          $.buyTokens[ustIndex].buyUustAmount,
-          ...returnAmounts.slice(ustIndex),
-        ];
+        if (ustIndex >= 0) {
+          returnAmounts = [
+            ...returnAmounts.slice(0, ustIndex),
+            $.buyTokens[ustIndex].buyUustAmount,
+            ...returnAmounts.slice(ustIndex),
+          ];
+        }
 
         console.log('returnAmounts', returnAmounts);
 
