@@ -11,6 +11,7 @@ export const TEST_CONTRACT_ADDRESS = {
   incentivesCustody:
     'terra16stw0qmz8mj5uzg672x2t8lfdjqgva7xv3fs5q' as HumanAddr,
   staking: 'terra1n9vdcgkd3dnqdq50kncd7e3vqj3uthg434knrd' as HumanAddr,
+  oracle: 'terra18syqrhamudfnks205wv8rrudp0yey7jk5kte97' as HumanAddr,
   terraswap: {
     factory: TERRA_TEST_CONTRACT_ADDRESS.terraswap.factory,
     nebUstPair: 'terra17ld5j4588k8w9hhtrllyj0537eqndkhr679m72' as HumanAddr,

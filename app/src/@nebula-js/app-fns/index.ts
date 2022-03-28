@@ -69,6 +69,7 @@ export * from './queries/gov/votingPower';
 export * from './queries/incentive/reward';
 export * from './queries/mypage/holdings';
 export * from './queries/mypage/staking';
+export * from './queries/oracle/price';
 export * from './queries/staking/distributionSchedule';
 export * from './queries/staking/poolInfo';
 export * from './queries/staking/poolInfoList';

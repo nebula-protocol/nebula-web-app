@@ -1,8 +1,5 @@
-import {
-  cw20PoolInfoQuery,
-  terraswapPairQuery,
-  terraswapPoolQuery,
-} from '@libs/app-fns';
+import { cw20PoolInfoQuery } from '@libs/app-fns';
+import { oraclePriceQuery } from '@nebula-js/app-fns';
 import { CW20Addr, HumanAddr, terraswap, Token, UST } from '@nebula-js/types';
 import { QueryClient } from '@libs/query-client';
 import big from 'big.js';
@@ -19,48 +16,26 @@ export async function swapPriceListQuery(
   assets: terraswap.Asset<Token>[],
   terraswapFactoryAddr: HumanAddr,
   anchorProxyAddr: HumanAddr,
+  oracleAddr: HumanAddr,
   aUSTTokenAddr: CW20Addr,
   queryClient: QueryClient,
 ): Promise<SwapPriceList> {
   return await Promise.all(
     assets.map(async ({ info }) => {
       if ('native_token' in info) {
-        if (info.native_token.denom === 'uusd') {
-          return {
-            info,
-            buyTokenPrice: '1' as UST,
-            sellTokenPrice: '1' as Token,
-          };
-        }
-
-        // TODO: uluna
-
-        // Others native token
-        const pair = await terraswapPairQuery(
-          terraswapFactoryAddr,
-          [
-            info,
-            {
-              native_token: {
-                denom: 'uusd',
-              },
-            },
-          ],
-          queryClient,
-        );
-
-        const poolInfo = await terraswapPoolQuery(
-          pair.terraswapPair.contract_addr,
+        const {
+          oraclePrice: { rate },
+        } = await oraclePriceQuery(
+          oracleAddr,
+          info,
+          { native_token: { denom: 'uusd' } },
           queryClient,
         );
 
         return {
           info,
-          buyTokenPrice: poolInfo.terraswapPoolInfo.tokenPrice,
-          sellTokenPrice: big(1)
-            .div(poolInfo.terraswapPoolInfo.tokenPrice)
-            .toFixed() as Token,
-          tokenUstPairAddr: pair.terraswapPair.contract_addr,
+          buyTokenPrice: rate as UST,
+          sellTokenPrice: big(1).div(rate).toFixed() as Token,
         };
       } else {
         // aUST

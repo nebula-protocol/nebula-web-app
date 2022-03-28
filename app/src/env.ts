@@ -30,6 +30,7 @@ export function NEBULA_CONTRACT_ADDRESS(
       incentivesCustody:
         'terra1nghgqatgz3w2qps598zaf07526l7ye0g0pswz2' as HumanAddr,
       staking: 'terra1wqc6rek55dnpj2j2h6mc9kqpqxnwnt23l830ey' as HumanAddr,
+      oracle: 'terra18syqrhamudfnks205wv8rrudp0yey7jk5kte97' as HumanAddr,
       terraswap: {
         factory: 'terra15jsahkaf9p0qu8ye873p0u5z6g07wdad0tdq43' as HumanAddr,
         nebUstPair: 'terra1u6tn733n3hw2gzkhqmqurajxjggfvf45qujq3d' as HumanAddr,

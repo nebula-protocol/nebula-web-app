@@ -10,7 +10,13 @@ import {
   UST,
 } from '@libs/types';
 import { pipe } from '@rx-stream/pipe';
-import { MsgExecuteContract, Fee } from '@terra-money/terra.js';
+import {
+  MsgExecuteContract,
+  MsgSwap,
+  Fee,
+  Coin,
+  Msg,
+} from '@terra-money/terra.js';
 import big, { Big } from 'big.js';
 import { Observable } from 'rxjs';
 import { RawLogEvent, TxResultRendering, TxStreamPhase } from '@libs/app-fns';
@@ -51,7 +57,7 @@ export function cw20MultiBuyTokensTx(
 
   return pipe(
     _createTxOptions({
-      msgs: buyTokensWithoutUST.reduce<MsgExecuteContract[]>(
+      msgs: buyTokensWithoutUST.reduce<Msg[]>(
         (acc, { tokenUstPairAddr, buyUustAmount, beliefPrice, info }) => {
           if ('token' in info && info.token.contract_addr === $.aUSTTokenAddr) {
             return [
@@ -63,6 +69,17 @@ export function cw20MultiBuyTokensTx(
                   deposit_stable: {},
                 },
                 buyUustAmount + 'uusd',
+              ),
+            ];
+          }
+
+          if ('native_token' in info) {
+            return [
+              ...acc,
+              new MsgSwap(
+                $.buyerAddr,
+                new Coin('uusd', buyUustAmount),
+                info.native_token.denom,
               ),
             ];
           }
@@ -98,43 +115,62 @@ export function cw20MultiBuyTokensTx(
     _postTx({ helper, ...$ }),
     _pollTxInfo({ helper, ...$ }),
     ({ value: txInfo }) => {
-      let fromContracts: RawLogEvent[] = [];
+      let events: RawLogEvent[] = [];
       let returnAmounts: u<Token>[] = [];
       let totalOfferAmount = big(0) as u<UST<Big>>;
 
-      buyTokensWithoutUST.forEach((_, idx) => {
+      buyTokensWithoutUST.forEach(({ info }, idx) => {
         const rawLog = pickRawLog(txInfo, idx);
 
         if (!rawLog) {
           return helper.failedToFindRawLog();
         }
 
-        const fromContract = pickEvent(rawLog, 'from_contract');
+        if ('native_token' in info) {
+          const swap = pickEvent(rawLog, 'swap');
 
-        if (!fromContract) {
-          return helper.failedToFindEvents('from_contract');
+          if (!swap) {
+            return helper.failedToFindEvents('from_contract');
+          }
+
+          events[idx] = swap;
+        } else {
+          const fromContract = pickEvent(rawLog, 'from_contract');
+
+          if (!fromContract) {
+            return helper.failedToFindEvents('from_contract');
+          }
+          events[idx] = fromContract;
         }
-        fromContracts[idx] = fromContract;
       });
 
       try {
-        fromContracts.forEach((fromContract) => {
+        events.forEach((event) => {
+          // Astroport pool (token addr)
           const return_amount = pickAttributeValueByKey<u<Token>>(
-            fromContract,
+            event,
             'return_amount',
           );
           const offer_amount = pickAttributeValueByKey<u<UST>>(
-            fromContract,
+            event,
             'offer_amount',
           );
 
+          // Anchor (aUST)
           const mint_amount = pickAttributeValueByKey<u<Token>>(
-            fromContract,
+            event,
             'mint_amount',
           );
           const deposit_amount = pickAttributeValueByKey<u<UST>>(
-            fromContract,
+            event,
             'deposit_amount',
+          );
+
+          // Native Token
+          const offer_swap = pickAttributeValueByKey<u<UST>>(event, 'offer');
+          const return_swap = pickAttributeValueByKey<u<Token>>(
+            event,
+            'swap_coin',
           );
 
           if (return_amount !== undefined && offer_amount !== undefined) {
@@ -150,9 +186,16 @@ export function cw20MultiBuyTokensTx(
             totalOfferAmount = totalOfferAmount.add(deposit_amount) as u<
               UST<Big>
             >;
+          } else if (offer_swap !== undefined && return_swap !== undefined) {
+            returnAmounts.push(
+              Coin.fromString(return_swap).amount.toString() as u<Token>,
+            );
+            totalOfferAmount = totalOfferAmount.add(
+              Coin.fromString(offer_swap).amount.toString(),
+            ) as u<UST<Big>>;
           } else {
             throw Error(
-              "Can't get return_amount or offer_amount or mint_amount or deposit_amount",
+              "Can't get return_amount or offer_amount or mint_amount or deposit_amount or offer_swap or return_swap",
             );
           }
         });

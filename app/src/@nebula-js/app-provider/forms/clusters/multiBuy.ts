@@ -34,6 +34,7 @@ export function useMultiBuyForm({
       isArbitrage,
       terraswapFactoryAddr: contractAddress.terraswap.factory,
       anchorProxyAddr: contractAddress.anchor.proxy,
+      oracleAddr: contractAddress.oracle,
       aUSTAddr: contractAddress.cw20.aUST,
       swapGasWantedPerAsset: constants.swapGasWantedPerAsset,
       clusterFee: constants.nebula.clusterFee,
