@@ -1,8 +1,7 @@
 import { DetailedHTMLProps, HTMLAttributes, ReactNode } from 'react';
 import styled from 'styled-components';
-import React, { useState } from 'react';
+import React from 'react';
 import { DocsIcon } from '@nebula-js/icons';
-import { ExpandLessRounded, ExpandMoreRounded } from '@material-ui/icons';
 import { fixHMR } from 'fix-hmr';
 
 export interface GuideInfoProps
@@ -15,15 +14,10 @@ export interface GuideInfoProps
 export interface ContentProps {
   className?: string;
   children: ReactNode;
-  readMore: boolean;
 }
 
-function ContentBase({ children, readMore, className }: ContentProps) {
-  return (
-    <div className={className}>
-      {children} {!readMore && '...'}
-    </div>
-  );
+function ContentBase({ children, className }: ContentProps) {
+  return <div className={className}>{children}</div>;
 }
 
 const Content = styled(ContentBase)`
@@ -36,23 +30,13 @@ const Content = styled(ContentBase)`
   span.indent-text {
     margin-left: 1em;
   }
-
-  span#extra {
-    display: ${({ readMore }) => (readMore ? 'unset' : 'none')};
-  }
 `;
 
 function GuideInfoBase({ children, link, ...divProps }: GuideInfoProps) {
-  const [readMore, setReadMore] = useState(false);
-
   return (
     <div {...divProps}>
-      <Content readMore={readMore}>{children}</Content>
+      <Content>{children}</Content>
       <div>
-        <span onClick={() => setReadMore(!readMore)}>
-          See {readMore ? 'Less' : 'More'}{' '}
-          {readMore ? <ExpandLessRounded /> : <ExpandMoreRounded />}
-        </span>
         <a href={link} target="_blank" rel="noreferrer">
           <DocsIcon /> See Guideline
         </a>
@@ -83,7 +67,6 @@ const StyledGuideInfo = styled(GuideInfoBase)`
       align-items: center;
       text-decoration: none;
       color: var(--color-blue01);
-      margin-left: 1.42857143em;
       font-weight: 500;
 
       > svg {
