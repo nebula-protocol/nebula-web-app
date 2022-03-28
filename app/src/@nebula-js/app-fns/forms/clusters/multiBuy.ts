@@ -35,6 +35,7 @@ export interface ClusterMultiBuyFormDependency {
   isArbitrage: boolean;
   terraswapFactoryAddr: HumanAddr;
   anchorProxyAddr: HumanAddr;
+  oracleAddr: HumanAddr;
   aUSTAddr: CW20Addr;
   ustBalance: u<UST>;
   gasPrice: GasPrice;
@@ -63,6 +64,7 @@ export const clusterMultiBuyForm = ({
   clusterState,
   terraswapFactoryAddr,
   anchorProxyAddr,
+  oracleAddr,
   aUSTAddr,
   swapGasWantedPerAsset,
   gasPrice,
@@ -125,6 +127,7 @@ export const clusterMultiBuyForm = ({
           clusterState.target,
           terraswapFactoryAddr,
           anchorProxyAddr,
+          oracleAddr,
           aUSTAddr,
           queryClient,
         )

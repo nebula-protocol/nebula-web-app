@@ -1,4 +1,5 @@
 import { rs } from '@libs/types';
+import { terraswap } from '..';
 
 export namespace oracle {
   // ---------------------------------------------
@@ -6,8 +7,8 @@ export namespace oracle {
   // ---------------------------------------------
   export interface Price {
     price: {
-      base_asset: string;
-      quote_asset: string;
+      base_asset: terraswap.CW20AssetInfo | terraswap.NativeAssetInfo;
+      quote_asset: terraswap.CW20AssetInfo | terraswap.NativeAssetInfo;
     };
   }
 
