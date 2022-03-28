@@ -14,8 +14,8 @@ export type OraclePrice = WasmQueryData<OraclePriceWasmQuery>;
 
 export async function oraclePriceQuery(
   oracleAddr: HumanAddr,
-  baseAsset: terraswap.CW20AssetInfo | terraswap.NativeAssetInfo,
-  quoteAsset: terraswap.CW20AssetInfo | terraswap.NativeAssetInfo,
+  baseAsset: terraswap.AssetInfo,
+  quoteAsset: terraswap.AssetInfo,
   queryClient: QueryClient,
 ): Promise<OraclePrice> {
   return wasmFetch<OraclePriceWasmQuery>({

@@ -23,5 +23,5 @@ export interface SwapTokenInfo {
   returnAmount: u<Token>;
   tokenUstPairAddr?: HumanAddr;
   beliefPrice: UST;
-  info: terraswap.CW20AssetInfo | terraswap.NativeAssetInfo;
+  info: terraswap.AssetInfo;
 }
