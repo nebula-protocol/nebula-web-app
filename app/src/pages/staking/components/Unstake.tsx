@@ -1,9 +1,4 @@
-import {
-  formatFluidDecimalPoints,
-  formatUInput,
-  formatUToken,
-  microfy,
-} from '@libs/formatter';
+import { formatUInput, formatUToken, microfy } from '@libs/formatter';
 import { StakingPoolInfo } from '@nebula-js/app-fns';
 import {
   useStakingUnstakeForm,
@@ -25,7 +20,6 @@ import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
-import { ExchangeRateAB } from 'components/text/ExchangeRateAB';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
 import React, { useCallback } from 'react';
@@ -127,18 +121,6 @@ function StakingUnstakeBase({
       />
 
       <FeeBox className="feebox">
-        {states.poolPrice && (
-          <li>
-            <span>Price</span>
-            <ExchangeRateAB
-              symbolA="UST"
-              symbolB={tokenInfo.symbol}
-              exchangeRateAB={states.poolPrice}
-              initialDirection="a/b"
-              formatExchangeRate={(price) => formatFluidDecimalPoints(price, 6)}
-            />
-          </li>
-        )}
         {states.returnedUstAmount && states.returnedTokenAmount && (
           <li>
             <span>Returned</span>
