@@ -1,9 +1,4 @@
-import {
-  formatFluidDecimalPoints,
-  formatUInput,
-  formatUToken,
-  microfy,
-} from '@libs/formatter';
+import { formatUInput, formatUToken, microfy } from '@libs/formatter';
 import { StakingPoolInfo } from '@nebula-js/app-fns';
 import {
   useStakingStakeForm,
@@ -28,7 +23,6 @@ import big, { BigSource } from 'big.js';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
 import { SlippageToleranceInput } from 'components/form/SlippageToleranceInput';
-import { ExchangeRateAB } from 'components/text/ExchangeRateAB';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
@@ -195,18 +189,6 @@ function StakingStakeBase({
       </Disclosure>
 
       <FeeBox className="feebox">
-        {states.poolPrice && (
-          <li>
-            <span>Price</span>
-            <ExchangeRateAB
-              symbolA="UST"
-              symbolB={tokenInfo.symbol}
-              exchangeRateAB={states.poolPrice}
-              initialDirection="b/a"
-              formatExchangeRate={(price) => formatFluidDecimalPoints(price, 6)}
-            />
-          </li>
-        )}
         {states.lpStakedFromTx && (
           <li>
             <span>LP Staked from Tx</span>
