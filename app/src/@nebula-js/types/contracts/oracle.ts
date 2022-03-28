@@ -7,8 +7,8 @@ export namespace oracle {
   // ---------------------------------------------
   export interface Price {
     price: {
-      base_asset: terraswap.CW20AssetInfo | terraswap.NativeAssetInfo;
-      quote_asset: terraswap.CW20AssetInfo | terraswap.NativeAssetInfo;
+      base_asset: terraswap.AssetInfo;
+      quote_asset: terraswap.AssetInfo;
     };
   }
 

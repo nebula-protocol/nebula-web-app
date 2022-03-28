@@ -8,7 +8,7 @@ import { anchorAUSTRateQuery } from '../anchor/base';
 export type SwapPriceList = {
   buyTokenPrice: UST;
   sellTokenPrice: Token;
-  info: terraswap.CW20AssetInfo | terraswap.NativeAssetInfo;
+  info: terraswap.AssetInfo;
   tokenUstPairAddr?: HumanAddr;
 }[];
 
