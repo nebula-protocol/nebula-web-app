@@ -25,16 +25,16 @@ const NotConnected = () => {
       <StyledSection>
         <p>Connect</p>
         <div>
-          {availableConnectTypes.includes(ConnectType.WALLETCONNECT) && (
-            <ConnectButton onClick={() => connect(ConnectType.WALLETCONNECT)}>
-              <span>Terra Station Mobile</span>
-              <WalletconnectIcon />
-            </ConnectButton>
-          )}
           {availableConnectTypes.includes(ConnectType.EXTENSION) && (
             <ConnectButton onClick={() => connect(ConnectType.EXTENSION)}>
               <span>Terra Station Extension</span>
               <TerraIcon />
+            </ConnectButton>
+          )}
+          {availableConnectTypes.includes(ConnectType.WALLETCONNECT) && (
+            <ConnectButton onClick={() => connect(ConnectType.WALLETCONNECT)}>
+              <span>Terra Station Mobile</span>
+              <WalletconnectIcon />
             </ConnectButton>
           )}
           {availableInstallTypes.includes(ConnectType.EXTENSION) && (
