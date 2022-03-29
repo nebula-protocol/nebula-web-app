@@ -15,6 +15,7 @@ export interface ClusterFeeMultipliers {
 export interface NebulaClusterFee {
   default: ClusterFeeMultipliers;
   arbMint: ClusterFeeMultipliers;
+  arbRedeem: ClusterFeeMultipliers;
 }
 
 export interface SwapTokenInfo {

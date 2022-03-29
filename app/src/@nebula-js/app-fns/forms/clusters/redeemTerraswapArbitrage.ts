@@ -72,7 +72,7 @@ export const clusterRedeemTerraswapArbitrageForm = (
 ) => {
   const clusterTxFee = computeClusterTxFee(
     dependency.gasPrice,
-    dependency.clusterFee.default,
+    dependency.clusterFee.arbRedeem,
     dependency.clusterState.target.length,
     dependency.clusterState.target.length,
   );

@@ -47,7 +47,7 @@ export function useClusterArbRedeemTx(
         maxSpread,
         fixedFee,
         gasWanted: computeClusterGasWanted(
-          constants.nebula.clusterFee.default,
+          constants.nebula.clusterFee.arbRedeem,
           assets.length,
           assets.length,
         ),
@@ -66,7 +66,7 @@ export function useClusterArbRedeemTx(
       assets.length,
       clusterAddr,
       connectedWallet,
-      constants.nebula.clusterFee.default,
+      constants.nebula.clusterFee.arbRedeem,
       constants.gasAdjustment,
       contractAddress.incentives,
       terraswapPairAddr,
