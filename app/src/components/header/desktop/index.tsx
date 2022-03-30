@@ -59,21 +59,21 @@ function DesktopHeaderBase({ className }: DesktopHeaderProps) {
 
       <div>
         <nav>
-          <NavLink to="/" exact onClick={(e) => navigate(e, '/')}>
+          {/* <NavLink to="/" exact onClick={(e) => navigate(e, '/')}>
             Dashboard
-          </NavLink>
-          <NavLink to="/clusters" onClick={(e) => navigate(e, '/clusters')}>
+          </NavLink> */}
+          {/* <NavLink to="/clusters" onClick={(e) => navigate(e, '/clusters')}>
             Clusters
           </NavLink>
           <NavLink to="/staking" onClick={(e) => navigate(e, '/staking')}>
             Staking
-          </NavLink>
+          </NavLink> */}
           <NavLink to="/gov" onClick={(e) => navigate(e, '/gov')}>
             Governance
           </NavLink>
-          <NavLink to="/my" onClick={(e) => navigate(e, '/my')}>
+          {/* <NavLink to="/my" onClick={(e) => navigate(e, '/my')}>
             My Page
-          </NavLink>
+          </NavLink> */}
         </nav>
 
         <Wallet />
