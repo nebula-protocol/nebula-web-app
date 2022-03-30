@@ -1,8 +1,8 @@
-import { breakpoints } from '@nebula-js/ui';
+import { breakpoints, Button } from '@nebula-js/ui';
 import { MainLayout } from 'components/layouts/MainLayout';
 import { fixHMR } from 'fix-hmr';
 import React from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { NEBSection } from './components/NEBSection';
 import { PollsTable } from './components/PollsTable';
@@ -17,13 +17,13 @@ function GovMainBase({ className }: GovMainProps) {
     <MainLayout className={className}>
       <h1>
         <span>Governance</span>
-        {/* <Button
+        <Button
           size="small"
           color="border"
           componentProps={{ component: Link, to: '/polls' }}
         >
           Create poll
-        </Button> */}
+        </Button>
       </h1>
       <section>
         <NEBSection />
