@@ -1,0 +1,9 @@
+[build]
+  command = "yarn workspace @nebula-web-app/app build"
+  publish = "app/dist"
+  base = "/"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
