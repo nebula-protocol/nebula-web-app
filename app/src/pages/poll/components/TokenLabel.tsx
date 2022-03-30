@@ -24,7 +24,7 @@ function TokenLabelBase({ className, assetInfo }: TokenLabelProps) {
         )}
       </div>
       <div>
-        <p>{tokenInfo?.symbol}</p>
+        <p>{tokenDisplayInfo?.symbol ?? tokenInfo?.symbol}</p>
         {tokenInfo?.symbol !== tokenInfo?.name ? (
           <p>{tokenInfo?.name}</p>
         ) : null}

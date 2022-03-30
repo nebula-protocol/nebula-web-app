@@ -70,6 +70,12 @@ const NATIVE_TOKEN_DISPLAY_INFOS: TokenDisplayInfo[] = [
   },
   {
     protocol: 'Terra',
+    symbol: 'INT',
+    asset: { native_token: { denom: 'uinr' } },
+    icon: 'https://assets.terra.money/icon/60/INT.png',
+  },
+  {
+    protocol: 'Terra',
     symbol: 'JPT',
     asset: { native_token: { denom: 'ujpy' } },
     icon: 'https://assets.terra.money/icon/60/JPT.png',

@@ -41,7 +41,7 @@ function PollDetailBase({ className, parsedPoll }: PollDetailProps) {
   const executedMsgJson = useMemo(() => {
     if (!parsedPoll?.executeMsgs) return undefined;
 
-    return JSON.stringify(parsedPoll?.executeMsgs, null, '\t');
+    return JSON.stringify(parsedPoll?.executeMsgs, null, 2);
   }, [parsedPoll]);
 
   const parsedDescription = useMemo(() => {
@@ -68,18 +68,6 @@ function PollDetailBase({ className, parsedPoll }: PollDetailProps) {
           </p>
         </div>
       )}
-
-      {parsedPoll?.executeMsgs &&
-        parsedPoll?.executeMsgs.length >= 2 &&
-        executedMsgJson && (
-          <div>
-            <h4>Executed Message</h4>
-            <div className="json-box">
-              {isCopied ? <Check /> : <FileCopy onClick={setCopied} />}
-              <pre>{executedMsgJson}</pre>
-            </div>
-          </div>
-        )}
 
       {parsedPoll.executeMsgs?.[0].contract ===
         contractAddress.clusterFactory &&
@@ -111,6 +99,21 @@ function PollDetailBase({ className, parsedPoll }: PollDetailProps) {
             clusterAddr={parsedPoll.executeMsgs?.[0].contract}
           />
         )}
+
+      {parsedPoll?.executeMsgs && executedMsgJson && (
+        <div>
+          <div className="execute-header">
+            <h4>Executed Message</h4>
+            <div onClick={setCopied}>
+              {isCopied ? <Check /> : <FileCopy />}{' '}
+              {isCopied ? 'Copied' : 'Copy'}
+            </div>
+          </div>
+          <div className="json-box">
+            <pre>{executedMsgJson}</pre>
+          </div>
+        </div>
+      )}
     </Section>
   );
 }
@@ -507,6 +510,24 @@ export const StyledPollDetail = styled(PollDetailBase)`
     }
   }
 
+  .execute-header {
+    display: flex;
+    justify-content: space-between;
+
+    > div {
+      cursor: pointer;
+      color: var(--color-blue01);
+      font-size: var(--font-size12);
+      display: flex;
+      align-items: center;
+
+      svg {
+        margin-right: 0.3em;
+        font-size: 16px;
+      }
+    }
+  }
+
   .json-box {
     margin-top: 1em;
     background-color: var(--color-gray11);
@@ -514,18 +535,9 @@ export const StyledPollDetail = styled(PollDetailBase)`
     border-radius: 8px;
     padding: 1.4em 1.7em;
     word-break: break-word;
-    position: relative;
 
     &:empty {
       display: none;
-    }
-
-    svg {
-      position: absolute;
-      top: 1em;
-      right: 1em;
-      font-size: 16px;
-      cursor: pointer;
     }
   }
 `;
