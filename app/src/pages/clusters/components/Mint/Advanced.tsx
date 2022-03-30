@@ -17,10 +17,10 @@ import { FeeBox } from 'components/boxes/FeeBox';
 import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { TokenFormMint } from './TokenFormMint';
-import { Link, matchPath, useLocation } from 'react-router-dom';
+import { Link, matchPath, useLocation, useHistory } from 'react-router-dom';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 
 export interface MintAdvancedProps {
@@ -44,6 +44,8 @@ function MintAdvancedBase({ className, clusterInfo }: MintAdvancedProps) {
 
   const { pathname } = useLocation();
 
+  const history = useHistory();
+
   const { setTabId } = useBurnTab();
 
   // ---------------------------------------------
@@ -53,6 +55,19 @@ function MintAdvancedBase({ className, clusterInfo }: MintAdvancedProps) {
     clusterState: clusterInfo.clusterState,
     terraswapPool: clusterInfo.terraswapPool,
   });
+
+  // ---------------------------------------------
+  // logics
+  // ---------------------------------------------
+  const burnLink = useMemo(() => {
+    const match = matchPath(pathname, {
+      path: '/clusters/:address',
+      exact: false,
+      strict: false,
+    });
+
+    return match?.url + '/burn';
+  }, [pathname]);
 
   // ---------------------------------------------
   // callbacks
@@ -83,14 +98,11 @@ function MintAdvancedBase({ className, clusterInfo }: MintAdvancedProps) {
     [broadcast, initForm, postTx],
   );
 
-  const getBurnLink = () => {
-    const match = matchPath(pathname, {
-      path: '/clusters/:address',
-      exact: false,
-      strict: false,
-    });
+  const gotoBurnAdvanced = (e: React.MouseEvent<any, MouseEvent>) => {
+    e.preventDefault();
 
-    return match?.url + '/burn';
+    setTabId('advanced');
+    setTimeout(() => history.push(burnLink), 100);
   };
 
   // ---------------------------------------------
@@ -129,12 +141,7 @@ function MintAdvancedBase({ className, clusterInfo }: MintAdvancedProps) {
                 rebalance
               </TextLink>{' '}
               clusters, with the other being{' '}
-              <TextLink
-                component={Link}
-                to={getBurnLink()}
-                onClick={() => setTabId('advanced')}
-                hoverStyle
-              >
+              <TextLink component={Link} onClick={gotoBurnAdvanced} hoverStyle>
                 Burn Advanced
               </TextLink>
             </span>

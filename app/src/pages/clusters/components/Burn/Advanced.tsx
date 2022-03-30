@@ -18,11 +18,11 @@ import {
 import { FeeBox } from 'components/boxes/FeeBox';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
 import { fixHMR } from 'fix-hmr';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { TokenFormBurn } from './TokenFormBurn';
 import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
-import { Link, matchPath, useLocation } from 'react-router-dom';
+import { Link, matchPath, useHistory, useLocation } from 'react-router-dom';
 
 export interface BurnAdvancedProps {
   className?: string;
@@ -45,6 +45,8 @@ function BurnAdvancedBase({ className, clusterInfo }: BurnAdvancedProps) {
 
   const { pathname } = useLocation();
 
+  const history = useHistory();
+
   const { setTabId } = useMintTab();
 
   // ---------------------------------------------
@@ -54,6 +56,19 @@ function BurnAdvancedBase({ className, clusterInfo }: BurnAdvancedProps) {
     clusterState,
     terraswapPool,
   });
+
+  // ---------------------------------------------
+  // logics
+  // ---------------------------------------------
+  const mintLink = useMemo(() => {
+    const match = matchPath(pathname, {
+      path: '/clusters/:address',
+      exact: false,
+      strict: false,
+    });
+
+    return match?.url + '/mint';
+  }, [pathname]);
 
   // ---------------------------------------------
   // callbacks
@@ -89,14 +104,11 @@ function BurnAdvancedBase({ className, clusterInfo }: BurnAdvancedProps) {
     [broadcast, initForm, postTx],
   );
 
-  const getMintLink = () => {
-    const match = matchPath(pathname, {
-      path: '/clusters/:address',
-      exact: false,
-      strict: false,
-    });
+  const gotoMintAdvanced = (e: React.MouseEvent<any, MouseEvent>) => {
+    e.preventDefault();
 
-    return match?.url + '/mint';
+    setTabId('advanced');
+    setTimeout(() => history.push(mintLink), 100);
   };
 
   return (
@@ -123,12 +135,7 @@ function BurnAdvancedBase({ className, clusterInfo }: BurnAdvancedProps) {
               rebalance
             </TextLink>{' '}
             clusters, with the other being{' '}
-            <TextLink
-              component={Link}
-              to={getMintLink()}
-              onClick={() => setTabId('advanced')}
-              hoverStyle
-            >
+            <TextLink component={Link} onClick={gotoMintAdvanced} hoverStyle>
               Mint Advanced
             </TextLink>
           </span>
