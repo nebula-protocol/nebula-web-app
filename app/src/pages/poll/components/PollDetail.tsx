@@ -1,4 +1,4 @@
-import { formatUToken } from '@libs/formatter';
+import { formatRate, formatUToken } from '@libs/formatter';
 import { FinderAddressLink } from '@libs/ui';
 import { ParsedPoll } from '@nebula-js/app-fns';
 import {
@@ -12,6 +12,7 @@ import {
   community,
   gov,
   HumanAddr,
+  Rate,
 } from '@nebula-js/types';
 import { Section } from '@nebula-js/ui';
 import { useWallet } from '@terra-money/use-wallet';
@@ -22,6 +23,8 @@ import { Link } from 'react-router-dom';
 import useClipboard from 'react-use-clipboard';
 import styled from 'styled-components';
 import { FileCopy, Check } from '@material-ui/icons';
+import { sum } from '@libs/big-math';
+import big from 'big.js';
 
 export interface PollDetailProps {
   className?: string;
@@ -126,6 +129,7 @@ function WhitelistCluster({
   msg: cluster_factory.CreateCluster;
 }) {
   const { network } = useWallet();
+  const targetSum = sum(...params.target.map(({ amount }) => amount));
 
   return (
     <>
@@ -185,7 +189,11 @@ function WhitelistCluster({
                 <td>
                   <TokenLabel assetInfo={info} />
                 </td>
-                <td>{formatUToken(amount)}</td>
+                <td>
+                  {amount} (
+                  {formatRate(big(amount).div(targetSum).toFixed() as Rate)}
+                  %)
+                </td>
               </tr>
             ))}
           </tbody>
@@ -460,7 +468,7 @@ function ClusterParameterChange({
                   <td>
                     <TokenLabel assetInfo={info} />
                   </td>
-                  <td>{formatUToken(amount)}</td>
+                  <td>{amount}</td>
                 </tr>
               ))}
             </tbody>
