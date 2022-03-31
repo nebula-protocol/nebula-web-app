@@ -35,7 +35,7 @@ export async function airdropCheckQuery(
     }
 
     // HARD-CODED because there is only one round.
-    const stage = chainId.startsWith('columbus') ? 1 : 2;
+    const stage = 1;
     airdrop.stage = stage;
 
     const { isClaimed } = await airdropIsClaimedQuery(
