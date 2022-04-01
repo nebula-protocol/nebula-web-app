@@ -58,6 +58,7 @@ function ClusterDistributionBase({ className }: ClusterDistributionProps) {
     });
 
     const top3 = sortedDistributions.slice(0, 3);
+    const othersList = sortedDistributions.slice(3);
     const others = sortedDistributions.slice(3).reduce(
       (o, { provided, ratio }) => {
         o.provided = big(o.provided).plus(provided).toFixed() as u<UST>;
@@ -74,7 +75,7 @@ function ClusterDistributionBase({ className }: ClusterDistributionProps) {
       } as Item,
     );
 
-    return [...top3, others];
+    return othersList.length > 0 ? [...top3, others] : [...top3];
   }, [clusterInfos, totalProvided]);
 
   return (

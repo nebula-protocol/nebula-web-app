@@ -24,6 +24,7 @@ export interface ClusterMintBaicFormDependency {
 export interface ClusterMintBasicFormStates extends ClusterMintBasicFormInput {
   providedAmounts: u<Token>[];
   txFee: u<UST> | null;
+  invalidMintQuery: string | null;
 }
 
 export interface ClusterMintBasicFormAsyncStates {
@@ -56,22 +57,30 @@ export const clusterMintBasicForm = ({
       clusterState,
       lastSyncedHeight,
       queryClient,
-    ).then(({ mint }) => {
-      const mintedAmountWithoutFee = computeUTokenWithoutFee(
-        mint.create_tokens as u<CT>,
-        protocolFee,
-      );
+    )
+      .then(({ mint }) => {
+        const mintedAmountWithoutFee = computeUTokenWithoutFee(
+          mint.create_tokens as u<CT>,
+          protocolFee,
+        );
 
-      return {
-        mintedAmount: mintedAmountWithoutFee,
-        txFee: clusterTxFee,
-      };
-    });
+        return {
+          mintedAmount: mintedAmountWithoutFee,
+          txFee: clusterTxFee,
+          invalidMintQuery: null,
+        };
+      })
+      .catch((err) => ({
+        mintedAmount: undefined,
+        txFee: null,
+        invalidMintQuery: err.message,
+      }));
 
     return [
       {
         providedAmounts,
         txFee: null,
+        invalidMintQuery: null,
       },
       asyncStates,
     ];

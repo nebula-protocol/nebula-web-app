@@ -171,7 +171,7 @@ function ClustersDetailBase({
               {
                 label: (
                   <>
-                    TOTAL VALUE PROVIDED{' '}
+                    NET ASSET VALUE{' '}
                     <InfoTooltip>
                       Total value of the cluster’s inventory
                     </InfoTooltip>

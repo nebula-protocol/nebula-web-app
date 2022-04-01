@@ -13,6 +13,7 @@ import { fixHMR } from 'fix-hmr';
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { TokenTable } from '../TokenTable';
+import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
 
 export interface MintBasicProps {
   className?: string;
@@ -103,6 +104,12 @@ function MintBasicBase({
           </li>
         )}
       </FeeBox>
+
+      {states.invalidMintQuery ? (
+        <WarningMessageBox level="critical" className="warning">
+          {states.invalidMintQuery}
+        </WarningMessageBox>
+      ) : null}
 
       <Button
         className="submit"
