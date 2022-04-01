@@ -67,6 +67,7 @@ export const clusterMintBasicForm = ({
         return {
           mintedAmount: mintedAmountWithoutFee,
           txFee: clusterTxFee,
+          invalidMintQuery: null,
         };
       })
       .catch((err) => ({
