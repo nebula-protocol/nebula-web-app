@@ -84,7 +84,7 @@ function MobileHeaderBase({ className }: MobileHeaderProps) {
       </section>
       {open && (
         <nav>
-          {/* <NavLink to="/" exact onClick={(e) => navigate(e, '/')}>
+          <NavLink to="/" exact onClick={(e) => navigate(e, '/')}>
             Dashboard
           </NavLink>
           <NavLink to="/clusters" onClick={(e) => navigate(e, '/clusters')}>
@@ -92,13 +92,13 @@ function MobileHeaderBase({ className }: MobileHeaderProps) {
           </NavLink>
           <NavLink to="/staking" onClick={(e) => navigate(e, '/staking')}>
             Staking
-          </NavLink> */}
+          </NavLink>
           <NavLink to="/gov" onClick={(e) => navigate(e, '/gov')}>
             Governance
           </NavLink>
-          {/* <NavLink to="/my" onClick={(e) => navigate(e, '/my')}>
+          <NavLink to="/my" onClick={(e) => navigate(e, '/my')}>
             My Page
-          </NavLink> */}
+          </NavLink>
 
           {status === WalletStatus.WALLET_NOT_CONNECTED && (
             <ViewAddressButton onClick={viewAddress} />
