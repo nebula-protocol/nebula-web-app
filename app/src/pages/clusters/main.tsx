@@ -74,10 +74,14 @@ function ClustersMainBase({ className }: ClustersMainProps) {
         x = x.sort((a, b) => b.provided.cmp(a.provided));
         break;
       case SortBy.PremiumASC:
-        x = x.sort((a, b) => a.prices.premium.cmp(b.prices.premium));
+        x = x.sort((a, b) =>
+          a.prices.premium.abs().cmp(b.prices.premium.abs()),
+        );
         break;
       case SortBy.PremiumDESC:
-        x = x.sort((a, b) => b.prices.premium.cmp(a.prices.premium));
+        x = x.sort((a, b) =>
+          b.prices.premium.abs().cmp(a.prices.premium.abs()),
+        );
         break;
       case SortBy.MCapASC:
         x = x.sort((a, b) => a.marketCap.cmp(b.marketCap));
