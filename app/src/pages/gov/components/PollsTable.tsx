@@ -250,6 +250,16 @@ const StyledPollsTable = styled(PollsTableBase)`
         border-bottom: 1px solid var(--color-gray11);
       }
     }
+
+    tr:last-child {
+      td:first-child {
+        border-bottom-left-radius: 8px;
+      }
+
+      td:last-child {
+        border-bottom-right-radius: 8px;
+      }
+    }
   }
 
   #yes-amount {
