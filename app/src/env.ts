@@ -20,23 +20,23 @@ export function NEBULA_CONTRACT_ADDRESS(
 ): NebulaContractAddress {
   if (network.chainID.startsWith('bombay')) {
     return {
-      airdrop: 'terra16l476zxmduaxgpask2vqxut0674paz7mmdjhcw' as HumanAddr,
-      collector: 'terra1nqjfk3uaefzrgecnmxjgcwxxfg4jhrvcupm9nm' as HumanAddr,
-      community: 'terra12ptkvvhtyplqdqft3k7qf5e883q3v08p7edv94' as HumanAddr,
+      airdrop: 'terra1ccxk2lfyr59uwyuqndfl4k7vnjvxqy3chku9g5' as HumanAddr,
+      collector: 'terra1dxj5exufmmcypu5m3nu5aj8huerv86luy36xmu' as HumanAddr,
+      community: 'terra1hnszn4rmllu2gmjvtul3qz555r6ysmsarwxhmf' as HumanAddr,
       clusterFactory:
-        'terra103srr94gy8zgyey7ncg63gqfgac3y6nkdc28jh' as HumanAddr,
-      gov: 'terra1yzsxytzktj7dsrhyajx34jzz8cxw0vws8cgvkg' as HumanAddr,
-      incentives: 'terra1x7ug3ehdtdz5w2q37l2l9rd0u5ekv2gvzfq0y6' as HumanAddr,
+        'terra16g6l6w9d2p862v8f4mda0a0zsn8xe55834dgsc' as HumanAddr,
+      gov: 'terra1m28kqh03exl8nhvw9k6efhedn6ghcvfkghey0l' as HumanAddr,
+      incentives: 'terra18aapzlvk3g4x7etqqngvdxlc3k9e7slynd3zk6' as HumanAddr,
       incentivesCustody:
-        'terra1nghgqatgz3w2qps598zaf07526l7ye0g0pswz2' as HumanAddr,
-      staking: 'terra1wqc6rek55dnpj2j2h6mc9kqpqxnwnt23l830ey' as HumanAddr,
-      oracle: 'terra18syqrhamudfnks205wv8rrudp0yey7jk5kte97' as HumanAddr,
+        'terra1xzf5r2ftuj2zjcp0r7szdp29f9242g7qtajat6' as HumanAddr,
+      staking: 'terra1277gqnvqs95h8v908m3fzsayamajgz53n39q9l' as HumanAddr,
+      oracle: 'terra13cs729swd0e2mre5a0f0wa77r3vfsa70nekm7n' as HumanAddr,
       terraswap: {
         factory: 'terra15jsahkaf9p0qu8ye873p0u5z6g07wdad0tdq43' as HumanAddr,
-        nebUstPair: 'terra1u6tn733n3hw2gzkhqmqurajxjggfvf45qujq3d' as HumanAddr,
+        nebUstPair: 'terra1al32z353z63d6ejr2603lecc0jzqf30jegwqry' as HumanAddr,
       },
       cw20: {
-        NEB: 'terra1aj5yepjnmhdvh0xz3dfqeh30wday6tapvaze47' as CW20Addr,
+        NEB: 'terra1gam4r7le3j9rkssqsgdkyltqtlgwkyuww7e0gp' as CW20Addr,
         aUST: 'terra1ajt556dpzvjwl0kl5tzku3fc3p3knkg9mkv8jl' as CW20Addr,
       },
       anchor: {
