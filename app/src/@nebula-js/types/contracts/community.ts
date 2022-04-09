@@ -1,5 +1,4 @@
-import { HumanAddr, rs, u } from '@libs/types';
-import { NEB } from '../tokens';
+import { HumanAddr, terraswap, Token } from '@libs/types';
 
 export namespace community {
   // ---------------------------------------------
@@ -14,7 +13,7 @@ export namespace community {
   export interface Spend {
     spend: {
       recipient: HumanAddr;
-      amount: u<NEB<rs.Uint128>>;
+      asset: terraswap.Asset<Token>;
     };
   }
 
