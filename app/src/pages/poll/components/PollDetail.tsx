@@ -25,6 +25,7 @@ import styled from 'styled-components';
 import { FileCopy, Check } from '@material-ui/icons';
 import { sum } from '@libs/big-math';
 import big from 'big.js';
+import { useTerraTokenDisplayInfo } from '@libs/app-provider';
 
 export interface PollDetailProps {
   className?: string;
@@ -324,6 +325,7 @@ function GovernanceParameterChange({
 
 function CommunityPoolSpend({ msg: { spend } }: { msg: community.Spend }) {
   const { network } = useWallet();
+  const { tokenInfo } = useTerraTokenDisplayInfo(spend.asset.info);
 
   return (
     <>
@@ -336,7 +338,9 @@ function CommunityPoolSpend({ msg: { spend } }: { msg: community.Spend }) {
 
       <div>
         <h4>Amount</h4>
-        <p>{formatUToken(spend.amount)} NEB</p>
+        <p>
+          {formatUToken(spend.asset.amount)} {tokenInfo?.symbol}
+        </p>
       </div>
     </>
   );

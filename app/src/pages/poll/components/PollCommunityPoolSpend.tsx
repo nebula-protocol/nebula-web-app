@@ -25,7 +25,14 @@ export default function PollCommunityPoolSpend() {
     const communitySpend: community.Spend = {
       spend: {
         recipient: recipient as HumanAddr,
-        amount: microfy(amount).toFixed() as u<NEB>,
+        asset: {
+          info: {
+            token: {
+              contract_addr: contractAddress.cw20.NEB,
+            },
+          },
+          amount: microfy(amount).toFixed() as u<NEB>,
+        },
       },
     };
 
@@ -35,7 +42,7 @@ export default function PollCommunityPoolSpend() {
     };
 
     return executeMsg;
-  }, [amount, contractAddress.community, recipient]);
+  }, [amount, contractAddress.community, recipient, contractAddress.cw20.NEB]);
 
   return (
     <PollCreateBase
