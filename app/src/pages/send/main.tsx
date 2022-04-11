@@ -141,11 +141,16 @@ function SendMainBase({ className }: SendMainProps) {
               })
             }
           >
-            {tokens.tokenInfos.map(({ tokenInfo: { symbol, name } }) => (
-              <option key={'token' + symbol} value={symbol}>
-                {symbol} - {name}
-              </option>
-            ))}
+            {tokens.tokenInfos.map(
+              ({ tokenInfo: { symbol, name }, assetInfo }) => (
+                <option
+                  key={'token' + JSON.stringify(assetInfo)}
+                  value={symbol}
+                >
+                  {symbol} - {name}
+                </option>
+              ),
+            )}
           </NativeSelect>
 
           <EmptyButton onClick={addCW20Addr} fontSize="2em">

@@ -40,7 +40,9 @@ export function useSendTokensForm() {
     () =>
       ({
         nativeDenoms: NATIVE_DENOMS,
-        cw20Addrs: cw20AddrCache.get(network.chainID) ?? [],
+        cw20Addrs: [contractAddress.cw20.NEB].concat(
+          cw20AddrCache.get(network.chainID) ?? [],
+        ),
         selectedTokenInfo: undefined,
       } as SendTokensFormInput),
   );
