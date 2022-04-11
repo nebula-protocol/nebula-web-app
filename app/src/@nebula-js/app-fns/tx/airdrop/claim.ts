@@ -59,7 +59,7 @@ export function airdropClaimTx($: {
           value: null,
 
           phase: TxStreamPhase.SUCCEED,
-          receipts: [helper.txHashReceipt()],
+          receipts: [helper.txHashReceipt(), helper.txFeeReceipt($.txFee)],
         } as TxResultRendering;
       } catch (error) {
         return helper.failedToParseTxResult();
