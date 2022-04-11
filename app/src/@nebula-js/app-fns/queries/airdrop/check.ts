@@ -23,8 +23,8 @@ export async function airdropCheckQuery(
 
   try {
     const endpoint = chainId.startsWith('columbus')
-      ? 'https://nebula-airdrop.vercel.app'
-      : 'https://nebula-airdrop-bombay.vercel.app';
+      ? 'https://airdrop.neb.money'
+      : 'https://airdrop-bombay.neb.money';
 
     const airdrop: Airdrop = await fetch(
       `${endpoint}/api/get?address=${walletAddress}`,
