@@ -79,10 +79,7 @@ export function govCreatePollTx(
           value: null,
 
           phase: TxStreamPhase.SUCCEED,
-          receipts: [
-            helper.txHashReceipt(),
-            //helper.txFeeReceipt(txFee),
-          ],
+          receipts: [helper.txHashReceipt(), helper.txFeeReceipt($.txFee)],
         } as TxResultRendering;
       } catch (error) {
         return helper.failedToParseTxResult();
