@@ -77,12 +77,10 @@ function StakingMainBase({ className }: StakingMainProps) {
       return sortedData;
     }
 
-    const tokens = value.split(' ');
+    const token = value.trim().toLocaleLowerCase();
 
     return sortedData.filter(({ nameLowerCase }) => {
-      return tokens.some((token) => {
-        return nameLowerCase.indexOf(token) > -1;
-      });
+      return nameLowerCase.indexOf(token) > -1;
     });
   }, [sortedData, value]);
 
