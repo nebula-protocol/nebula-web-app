@@ -41,12 +41,12 @@ function NEBSectionBase({ className }: NEBSectionProps) {
         textGap="-0.15em"
       />
       <div className="buttons">
-        <Button
+        {/* <Button
           size="medium"
           componentProps={{ component: Link, to: '/gov/trade' }}
         >
           Trade
-        </Button>
+        </Button> */}
         <Button
           size="medium"
           componentProps={{ component: Link, to: '/gov/stake' }}
