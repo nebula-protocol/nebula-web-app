@@ -27,6 +27,7 @@ import Send from 'pages/send/main';
 import React from 'react';
 import { render } from 'react-dom';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import { DisclaimerModal } from 'components/modal/DisclaimerModal';
 
 function App() {
   return (
@@ -74,6 +75,7 @@ function App() {
           <Redirect to="/gov" />
         </Switch>
       </div>
+      <DisclaimerModal />
     </div>
   );
 }
