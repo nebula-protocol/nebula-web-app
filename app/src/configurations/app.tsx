@@ -14,7 +14,7 @@ import { TxBroadcastProvider } from 'contexts/tx-broadcast';
 import { TwoStepsProvider } from 'contexts/two-steps';
 import React, { ReactNode, useCallback } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom';
 import {
   NEBULA_CONSTANTS,
   NEBULA_CONTRACT_ADDRESS,
