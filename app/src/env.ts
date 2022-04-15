@@ -22,22 +22,22 @@ export function NEBULA_CONTRACT_ADDRESS(
     // testnet
     return {
       airdrop: 'terra16l476zxmduaxgpask2vqxut0674paz7mmdjhcw' as HumanAddr,
-      collector: 'terra1nqjfk3uaefzrgecnmxjgcwxxfg4jhrvcupm9nm' as HumanAddr,
-      community: 'terra12ptkvvhtyplqdqft3k7qf5e883q3v08p7edv94' as HumanAddr,
+      collector: 'terra193we3rf4sreh3j5ecw5dm58w835jcwle638zse' as HumanAddr,
+      community: 'terra1wzqulhjxlz3xlq2h9kkgqzkmhuc9szf7knm0zq' as HumanAddr,
       clusterFactory:
-        'terra103srr94gy8zgyey7ncg63gqfgac3y6nkdc28jh' as HumanAddr,
-      gov: 'terra1yzsxytzktj7dsrhyajx34jzz8cxw0vws8cgvkg' as HumanAddr,
-      incentives: 'terra1x7ug3ehdtdz5w2q37l2l9rd0u5ekv2gvzfq0y6' as HumanAddr,
+        'terra13fznthg3jz5hgmy2k3fl3e736hmsaut9ylnhl2' as HumanAddr,
+      gov: 'terra1mvv63f0aerqsj2rxlvqfqa9ng29tt9ftustsy8' as HumanAddr,
+      incentives: 'terra1yquzgj5hrm7y40cfuk69smuc2swz95ewa4ra9a' as HumanAddr,
       incentivesCustody:
-        'terra1nghgqatgz3w2qps598zaf07526l7ye0g0pswz2' as HumanAddr,
-      staking: 'terra1wqc6rek55dnpj2j2h6mc9kqpqxnwnt23l830ey' as HumanAddr,
-      oracle: 'terra18syqrhamudfnks205wv8rrudp0yey7jk5kte97' as HumanAddr,
+        'terra16vx25lx2n70fds5rr4c552t24jecxkm67t3mfr' as HumanAddr,
+      staking: 'terra15s92ygxd8kpgpt8jmnl23nztvkhhytsrtzazuu' as HumanAddr,
+      oracle: 'terra1ea2n3mlwveum0la900r9tlfs6qg8pdmn2cnd07' as HumanAddr,
       terraswap: {
         factory: 'terra15jsahkaf9p0qu8ye873p0u5z6g07wdad0tdq43' as HumanAddr,
-        nebUstPair: 'terra1u6tn733n3hw2gzkhqmqurajxjggfvf45qujq3d' as HumanAddr,
+        nebUstPair: 'terra1y05y2hyttrkr22hsqkfnjfvxgwms0rp2lvhgrq' as HumanAddr,
       },
       cw20: {
-        NEB: 'terra1aj5yepjnmhdvh0xz3dfqeh30wday6tapvaze47' as CW20Addr,
+        NEB: 'terra1cv8ar4gld0v6ns3zs2kzws8tgdzje3y8ar8jxe' as CW20Addr,
         aUST: 'terra1ajt556dpzvjwl0kl5tzku3fc3p3knkg9mkv8jl' as CW20Addr,
       },
       anchor: {
@@ -58,7 +58,7 @@ export function NEBULA_CONTRACT_ADDRESS(
       staking: '' as HumanAddr,
       oracle: '' as HumanAddr,
       terraswap: {
-        factory: '' as HumanAddr,
+        factory: 'terra1fnywlw4edny3vw44x04xd67uzkdqluymgreu7g' as HumanAddr,
         nebUstPair: 'terra1d7028vhd9u26fqyreee38cj39fwqvcyjps8sjk' as HumanAddr,
       },
       cw20: {
@@ -66,7 +66,7 @@ export function NEBULA_CONTRACT_ADDRESS(
         aUST: 'terra1hzh9vpxhsk8253se0vv5jj6etdvxu3nv8z07zu' as CW20Addr,
       },
       anchor: {
-        proxy: '' as HumanAddr,
+        proxy: 'terra1hhgrnyq3gl78aqwn6hw2p0dena0lrkuq9ndfuu' as HumanAddr,
         market: 'terra1sepfj7s0aeg5967uxnfk4thzlerrsktkpelm5s' as HumanAddr,
       },
     };
