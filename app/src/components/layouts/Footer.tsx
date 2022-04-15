@@ -11,13 +11,25 @@ import { EmptyButton } from '@nebula-js/ui';
 import React from 'react';
 import { useStyle } from '@libs/style-router';
 import styled from 'styled-components';
+import { useMediaQuery } from 'react-responsive';
 
+const Disclaimer = () => (
+  <a
+    href="https://cloudflare-ipfs.com/ipfs/QmSp9V2ysm4y7eBz3bVYGdFA44fwdmDgLJ1op6KYAMpDm9"
+    target="_blank"
+    rel="noreferrer"
+    style={{ fontSize: 'var(--font-size12)' }}
+  >
+    Disclaimers
+  </a>
+);
 export interface FooterProps {
   className?: string;
 }
 
 function FooterBase({ className }: FooterProps) {
   const { updateColor } = useStyle();
+  const isMobile = useMediaQuery({ maxWidth: 425 });
 
   return (
     <div className={className}>
@@ -48,6 +60,7 @@ function FooterBase({ className }: FooterProps) {
       >
         <FooterGithubIcon />
       </a>
+      {!isMobile && <Disclaimer />}
       <div />
       <div className="buttons">
         <EmptyButton>
@@ -66,6 +79,7 @@ function FooterBase({ className }: FooterProps) {
           <ModeIcon />
         </EmptyButton>
       </div>
+      {isMobile && <Disclaimer />}
     </div>
   );
 }
@@ -75,6 +89,7 @@ export const Footer = styled(FooterBase)`
 
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 
   a {
     font-size: 18px;
@@ -89,6 +104,9 @@ export const Footer = styled(FooterBase)`
   }
 
   .buttons {
+    display: flex;
+    flex-wrap: nowrap;
+
     button {
       min-height: 42px;
       padding: 12px;
