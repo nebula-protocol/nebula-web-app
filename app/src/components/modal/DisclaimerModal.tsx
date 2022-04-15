@@ -51,7 +51,7 @@ function DisclaimerModalBase({ className }: DisclaimerModalProps) {
             hoverStyle
             className="nebula-terms-link"
           >
-            Terms & conditions
+            Declaration & Disclaimers
           </TextLink>
         </span>
 
