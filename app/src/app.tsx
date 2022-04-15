@@ -82,10 +82,7 @@ importColor((color) => `/styles/colors/${color}.css`, 'dark', '#theme-color');
 
 getChainOptions().then((chainOptions) => {
   render(
-    <Providers
-      {...chainOptions}
-      defaultNetwork={chainOptions.walletConnectChainIds[0]}
-    >
+    <Providers {...chainOptions}>
       <DisableOverflowXStyle />
       <App />
     </Providers>,
