@@ -93,6 +93,7 @@ const StyledDisclaimerModal = styled(DisclaimerModalBase)`
 
   span {
     color: var(--color-white64);
+    line-height: 1.5em;
   }
 
   .nebula-terms-link {
@@ -105,6 +106,7 @@ const StyledDisclaimerModal = styled(DisclaimerModalBase)`
 
     > p {
       color: var(--color-white100);
+      line-height: 1.5em;
     }
 
     input[type='checkbox'] {
