@@ -10,10 +10,10 @@ export function NEBULA_DEFAULT_LCD_WASM_CLIENT(
   console.log('current network lcd', network.lcd);
 
   return {
-    // lcdEndpoint: network.lcd,
-    lcdEndpoint: network.chainID.startsWith('bombay')
-      ? network.lcd
-      : 'https://load-balancer.neb.money',
+    lcdEndpoint: network.lcd,
+    // lcdEndpoint: network.chainID.startsWith('bombay')
+    //   ? network.lcd
+    //   : 'https://load-balancer.neb.money',
     lcdFetcher: defaultLcdFetcher,
     requestInit: {
       headers,
