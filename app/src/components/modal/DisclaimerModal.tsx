@@ -45,7 +45,7 @@ function DisclaimerModalBase({ className }: DisclaimerModalProps) {
         <span>
           Please check the box below to confirm your agreement to the{' '}
           <TextLink
-            href="https://docs.neb.money/protocol/clusters#rebalancing"
+            href="https://assets.neb.money/docs/nebula_declaration_disclaimers.pdf"
             target="_blank"
             rel="noreferrer"
             hoverStyle
