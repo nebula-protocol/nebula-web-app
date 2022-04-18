@@ -1,5 +1,5 @@
 import { useLocalStorage } from '@libs/use-local-storage';
-import { useWallet, WalletStatus } from '@terra-money/use-wallet';
+import { useConnectedWallet } from '@terra-money/use-wallet';
 import React, { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Modal } from '@material-ui/core';
@@ -12,7 +12,7 @@ export interface DisclaimerModalProps {
 }
 
 function DisclaimerModalBase({ className }: DisclaimerModalProps) {
-  const { status } = useWallet();
+  const connectedWallet = useConnectedWallet();
 
   const [acceptedTerms, setAcceptedTerms] = useLocalStorage<'true' | 'false'>(
     '__nebula_accepted_terms_conditions__',
@@ -23,9 +23,11 @@ function DisclaimerModalBase({ className }: DisclaimerModalProps) {
 
   const open = useMemo(() => {
     return (
-      status === WalletStatus.WALLET_CONNECTED && !JSON.parse(acceptedTerms)
+      !!connectedWallet &&
+      connectedWallet.availablePost &&
+      !JSON.parse(acceptedTerms)
     );
-  }, [status, acceptedTerms]);
+  }, [connectedWallet, acceptedTerms]);
 
   const handleClose = useCallback(() => {
     setAcceptedTerms('true');
@@ -45,13 +47,13 @@ function DisclaimerModalBase({ className }: DisclaimerModalProps) {
         <span>
           Please check the box below to confirm your agreement to the{' '}
           <TextLink
-            href="https://assets.neb.money/docs/nebula_declaration_disclaimers.pdf"
+            href="https://cloudflare-ipfs.com/ipfs/QmSp9V2ysm4y7eBz3bVYGdFA44fwdmDgLJ1op6KYAMpDm9"
             target="_blank"
             rel="noreferrer"
             hoverStyle
             className="nebula-terms-link"
           >
-            Terms & conditions
+            Declaration & Disclaimers
           </TextLink>
         </span>
 
