@@ -12,7 +12,13 @@ export function useGovPollsQuery(
     useNebulaApp();
 
   const result = useInfiniteQuery(
-    [NEBULA_QUERY_KEYS.GOV_POLLS, filter],
+    [
+      NEBULA_QUERY_KEYS.GOV_POLLS,
+      contractAddress.gov,
+      contractAddress.cw20.NEB,
+      filter,
+      queryClient,
+    ],
     ({ pageParam = undefined }) => {
       return govPollsQuery(
         contractAddress.gov,

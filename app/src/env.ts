@@ -19,6 +19,7 @@ export function NEBULA_CONTRACT_ADDRESS(
   network: NetworkInfo,
 ): NebulaContractAddress {
   if (network.chainID.startsWith('bombay')) {
+    // testnet
     return {
       airdrop: 'terra16l476zxmduaxgpask2vqxut0674paz7mmdjhcw' as HumanAddr,
       collector: 'terra1nqjfk3uaefzrgecnmxjgcwxxfg4jhrvcupm9nm' as HumanAddr,
@@ -44,57 +45,76 @@ export function NEBULA_CONTRACT_ADDRESS(
         market: 'terra15dwd5mj8v59wpj0wvt233mf5efdff808c5tkal' as HumanAddr,
       },
     };
-  }
-
-  throw new Error(`currently only support "bombay-12"`);
-}
-
-export function NEBULA_CONSTANTS(network: NetworkInfo): NebulaContants {
-  if (network.chainID.startsWith('bombay')) {
+  } else {
+    // mainnet
     return {
-      gasWanted: 1_000_000 as Gas,
-      fixedGas: 1_671_053 as Gas,
-      blocksPerYear: 4_656_810,
-      gasAdjustment: 1.6 as Rate<number>,
-      govGas: 500_000 as Gas,
-      swapGasWantedPerAsset: 600_000 as Gas,
-      airdropGasWanted: 300_000 as Gas,
-      airdropGas: 334_211 as Gas,
-      nebula: {
-        clusterFee: {
-          default: {
-            txFeeBase: 7_000_000 as Gas,
-            txFeePerInventory: 600_000 as Gas,
-            txFeePerAsset: 400_000 as Gas,
-            gasWantedBase: 7_000_000 as Gas,
-            gasWantedPerInventory: 400_000 as Gas,
-            gasWantedPerAsset: 300_000 as Gas,
-          },
-          arbMint: {
-            txFeeBase: 15_000_000 as Gas,
-            txFeePerInventory: 800_000 as Gas,
-            txFeePerAsset: 400_000 as Gas,
-            gasWantedBase: 15_000_000 as Gas,
-            gasWantedPerInventory: 600_000 as Gas,
-            gasWantedPerAsset: 300_000 as Gas,
-          },
-          arbRedeem: {
-            txFeeBase: 15_000_000 as Gas,
-            txFeePerInventory: 800_000 as Gas,
-            txFeePerAsset: 400_000 as Gas,
-            gasWantedBase: 15_000_000 as Gas,
-            gasWantedPerInventory: 600_000 as Gas,
-            gasWantedPerAsset: 300_000 as Gas,
-          },
-        },
+      airdrop: 'terra1wjqsy2q3xzn3rxv5drutfysvg24pqwsg3nmv0y' as HumanAddr,
+      collector: '' as HumanAddr,
+      community: 'terra1g5py2hu8kpenqetv6xjas5z5gtaszhsuk8yn7n' as HumanAddr,
+      clusterFactory: '' as HumanAddr,
+      gov: 'terra1gsq7p9a8uu6wdr78rk9cthz57tzkfzrejhdknf' as HumanAddr,
+      incentives: '' as HumanAddr,
+      incentivesCustody: '' as HumanAddr,
+      staking: '' as HumanAddr,
+      oracle: '' as HumanAddr,
+      terraswap: {
+        factory: '' as HumanAddr,
+        nebUstPair: 'terra1d7028vhd9u26fqyreee38cj39fwqvcyjps8sjk' as HumanAddr,
+      },
+      cw20: {
+        NEB: 'terra1mpq5zkkm39nmjrjg9raknpfrfmcfwv0nh0whvn' as CW20Addr,
+        aUST: 'terra1hzh9vpxhsk8253se0vv5jj6etdvxu3nv8z07zu' as CW20Addr,
+      },
+      anchor: {
+        proxy: '' as HumanAddr,
+        market: 'terra1sepfj7s0aeg5967uxnfk4thzlerrsktkpelm5s' as HumanAddr,
       },
     };
   }
-
-  throw new Error(`currently only support "bombay-12"`);
 }
 
-export const ON_PRODUCTION = global.location.host === 'app.nebulaprotocol.com';
+export function NEBULA_CONSTANTS(network: NetworkInfo): NebulaContants {
+  return {
+    gasWanted: 1_000_000 as Gas,
+    fixedGas: 1_671_053 as Gas,
+    blocksPerYear: 4_656_810,
+    gasAdjustment: 1.6 as Rate<number>,
+    govGas: 500_000 as Gas,
+    swapGasWantedPerAsset: 600_000 as Gas,
+    airdropGasWanted: 300_000 as Gas,
+    airdropGas: 334_211 as Gas,
+    nebula: {
+      clusterFee: {
+        default: {
+          txFeeBase: 7_000_000 as Gas,
+          txFeePerInventory: 600_000 as Gas,
+          txFeePerAsset: 400_000 as Gas,
+          gasWantedBase: 7_000_000 as Gas,
+          gasWantedPerInventory: 400_000 as Gas,
+          gasWantedPerAsset: 300_000 as Gas,
+        },
+        arbMint: {
+          txFeeBase: 15_000_000 as Gas,
+          txFeePerInventory: 800_000 as Gas,
+          txFeePerAsset: 400_000 as Gas,
+          gasWantedBase: 15_000_000 as Gas,
+          gasWantedPerInventory: 600_000 as Gas,
+          gasWantedPerAsset: 300_000 as Gas,
+        },
+        arbRedeem: {
+          txFeeBase: 15_000_000 as Gas,
+          txFeePerInventory: 800_000 as Gas,
+          txFeePerAsset: 400_000 as Gas,
+          gasWantedBase: 15_000_000 as Gas,
+          gasWantedPerInventory: 600_000 as Gas,
+          gasWantedPerAsset: 300_000 as Gas,
+        },
+      },
+    },
+  };
+}
+
+export const ON_PRODUCTION = global.location.host === 'app.neb.money';
 
 export const WALLETCONNECT_BRIDGE_SERVER = 'https://walletconnect.terra.dev/';
 
