@@ -10,7 +10,7 @@ export function useGovVotersQuery(
   const { queryClient, queryErrorReporter, contractAddress } = useNebulaApp();
 
   const result = useInfiniteQuery(
-    [NEBULA_QUERY_KEYS.GOV_VOTERS, pollId],
+    [NEBULA_QUERY_KEYS.GOV_VOTERS, pollId, contractAddress.gov, queryClient],
     ({ pageParam = undefined }) => {
       return govVotersQuery(
         contractAddress.gov,
