@@ -131,6 +131,7 @@ function MultiBuyBase({
         <TokenTable
           name="Bought Amount"
           amounts={states.boughtTokens.map(({ returnAmount }) => returnAmount)}
+          prices={states.boughtTokens.map(({ beliefPrice }) => beliefPrice)}
           assetTokenInfos={assetTokenInfos}
         />
       )}
