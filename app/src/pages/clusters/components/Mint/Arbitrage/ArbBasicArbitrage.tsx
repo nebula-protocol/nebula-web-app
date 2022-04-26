@@ -97,6 +97,8 @@ function MintArbBasicArbitrageBase({
         <TokenTable
           name="Provided Amount"
           amounts={states.providedAmounts}
+          // TODO: use pool prices
+          prices={clusterState.prices}
           assetTokenInfos={assetTokenInfos}
         />
       )}

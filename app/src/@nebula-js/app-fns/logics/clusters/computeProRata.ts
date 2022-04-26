@@ -2,25 +2,30 @@ import { divWithDefault, sum } from '@libs/big-math';
 import { formatFluidDecimalPoints } from '@libs/formatter';
 import { u, Token } from '@nebula-js/types';
 
+/**
+ * @param weights targets (mint), inventories (burn)
+ * @param inputAmount input amount of asset
+ * @param idx index of input in weight list
+ */
 export function computeProRata(
-  inventories: u<Token>[],
+  weights: u<Token>[],
   inputAmount: Token,
   idx: number,
 ): Token[] {
-  if (inventories.length <= idx) {
-    console.error('inventories:', inventories, ' index: ', idx);
-    return Array(inventories.length).fill('0');
+  if (weights.length <= idx) {
+    console.error('weights:', weights, ' index: ', idx);
+    return Array(weights.length).fill('0');
   }
 
-  const invSum = sum(...inventories);
-  const idxRatio = divWithDefault(inventories[idx], invSum, 0);
+  const weightSum = sum(...weights);
+  const idxRatio = divWithDefault(weights[idx], weightSum, 0);
 
-  return inventories.map((inv, _idx) => {
+  return weights.map((weight, _idx) => {
     if (inputAmount.length === 0) return '' as u<Token>;
 
     if (idx === _idx) return inputAmount;
 
-    const eachRatio = divWithDefault(inv, invSum, 0);
+    const eachRatio = divWithDefault(weight, weightSum, 0);
 
     return formatFluidDecimalPoints(
       divWithDefault(inputAmount, idxRatio, 0).mul(eachRatio),

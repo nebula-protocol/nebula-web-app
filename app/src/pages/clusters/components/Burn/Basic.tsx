@@ -123,6 +123,7 @@ function BurnBasicBase({
         Array.isArray(states.redeemTokenAmounts) && (
           <WithdrawnTokenTable
             redeemTokenAmounts={states.redeemTokenAmounts}
+            prices={clusterState.prices}
             assetTokenInfos={assetTokenInfos}
           />
         )}

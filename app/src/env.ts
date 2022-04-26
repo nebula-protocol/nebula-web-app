@@ -86,11 +86,11 @@ export function NEBULA_CONSTANTS(network: NetworkInfo): NebulaContants {
     nebula: {
       clusterFee: {
         default: {
-          txFeeBase: 7_000_000 as Gas,
-          txFeePerInventory: 600_000 as Gas,
+          txFeeBase: 10_000_000 as Gas,
+          txFeePerInventory: 800_000 as Gas,
           txFeePerAsset: 400_000 as Gas,
-          gasWantedBase: 7_000_000 as Gas,
-          gasWantedPerInventory: 400_000 as Gas,
+          gasWantedBase: 10_000_000 as Gas,
+          gasWantedPerInventory: 600_000 as Gas,
           gasWantedPerAsset: 300_000 as Gas,
         },
         arbMint: {

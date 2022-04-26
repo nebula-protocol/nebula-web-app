@@ -12,7 +12,8 @@ export interface AssetView {
   targetRatio: number;
   portfolioRatio: number;
   color: string;
-  targetColor: string;
+  diff: number;
+  diffColor: string;
   targetAmount: u<Token<Big>>;
 }
 
@@ -35,7 +36,12 @@ export function toAssetView(
       targetRatio: targetRatio.toNumber(),
       portfolioRatio: portfolioRatio.toNumber(),
       color: partitionColor[j % partitionColor.length],
-      targetColor: getTargetColor(targetRatio, portfolioRatio),
+      diff: divWithDefault(
+        portfolioRatio.minus(targetRatio),
+        targetRatio,
+        0,
+      ).toNumber(),
+      diffColor: getTargetColor(targetRatio, portfolioRatio),
       targetAmount: invSum.mul(targetRatio) as u<Token<Big>>,
     };
   });

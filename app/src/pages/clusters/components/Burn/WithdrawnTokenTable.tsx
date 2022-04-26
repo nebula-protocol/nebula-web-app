@@ -1,20 +1,23 @@
 import { formatUToken } from '@libs/formatter';
-import { Token, u } from '@nebula-js/types';
+import { Token, u, UST } from '@nebula-js/types';
 import { TokenSpan } from '@nebula-js/ui';
 import { AssetTokenInfo } from '@nebula-js/app-fns';
 import { fixHMR } from 'fix-hmr';
+import big, { Big } from 'big.js';
 import React from 'react';
 import styled from 'styled-components';
 
 export interface WithdrawnTokenTableProps {
   className?: string;
   redeemTokenAmounts: u<Token>[];
+  prices: UST[];
   assetTokenInfos: AssetTokenInfo[];
 }
 
 function WithdrawnTokenTableBase({
   className,
   redeemTokenAmounts,
+  prices,
   assetTokenInfos,
 }: WithdrawnTokenTableProps) {
   return (
@@ -33,8 +36,13 @@ function WithdrawnTokenTableBase({
                 {assetTokenInfos[i].tokenInfo.symbol}
               </TokenSpan>
             </td>
-            <td>
-              {formatUToken(amount)} {assetTokenInfos[i].tokenInfo.symbol}
+            <td className="two-line">
+              <p>
+                {formatUToken(amount)} {assetTokenInfos[i].tokenInfo.symbol}
+              </p>
+              <p>
+                {formatUToken(big(amount).mul(prices[i]) as u<Token<Big>>)} UST
+              </p>
             </td>
           </tr>
         ))}
@@ -76,6 +84,13 @@ export const StyledWithdrawnTokenTable = styled(WithdrawnTokenTableBase)`
 
     &:not(:first-child) {
       text-align: right;
+    }
+  }
+
+  .two-line {
+    > p:not(:first-child) {
+      font-size: var(--font-size12);
+      color: var(--color-white52);
     }
   }
 `;

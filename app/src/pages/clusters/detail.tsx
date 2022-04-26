@@ -199,10 +199,12 @@ function ClustersDetailBase({
                 <span>
                   Asset Weight
                   <br />
-                  <span style={{ opacity: 0.6 }}>Current (Target)</span>
+                  <span style={{ opacity: 0.6 }}>Current(+/- Target)</span>
                 </span>
               </th>
-              <th />
+              <th className="graph">
+                <span>Premium</span>
+              </th>
             </tr>
           </thead>
 
@@ -211,10 +213,10 @@ function ClustersDetailBase({
               ({
                 oraclePrice,
                 token,
-                amount,
                 portfolioRatio,
                 targetRatio,
-                targetColor,
+                diff,
+                diffColor,
               }) => (
                 <tr key={'row' + token.symbol}>
                   <td>
@@ -227,18 +229,19 @@ function ClustersDetailBase({
                   <td className="price">{d2Formatter(oraclePrice)} UST</td>
                   <td className="portfolio-ratio">
                     {formatRate(portfolioRatio as Rate<number>)}%{' '}
-                    <Sub>({formatRate(targetRatio as Rate<number>)}%)</Sub>
+                    <Sub
+                      style={{
+                        color: diffColor,
+                      }}
+                    >
+                      ({formatRate(diff as Rate<number>)}%)
+                    </Sub>
                   </td>
                   <td className="graph">
                     <BarGraph
-                      ratio={portfolioRatio}
-                      width={300}
-                      height={8}
-                      railColor={targetColor}
+                      portfolioRatio={portfolioRatio}
+                      targetRatio={targetRatio}
                     />
-                    <div>
-                      {formatUTokenDecimal2(amount)} {token.symbol}
-                    </div>
                   </td>
                 </tr>
               ),
@@ -279,7 +282,8 @@ const Table = styled(HorizontalScrollTable)`
   th {
     text-align: right;
 
-    &:first-child {
+    &:first-child,
+    &:last-child {
       text-align: left;
     }
   }
@@ -297,9 +301,10 @@ const Table = styled(HorizontalScrollTable)`
     }
   }
 
+  th.graph,
   td.graph {
     text-align: left;
-    padding-left: 4em !important;
+    padding-left: 3em !important;
 
     > div {
       font-size: var(--font-size12);

@@ -136,24 +136,26 @@ export const clusterMultiBuyForm = ({
               ({ buyTokenPrice }) => buyTokenPrice,
             );
 
-            // multiplierRatio = (invSum * ustAmount) / dot(inv,prices)
-            // boughtAmount = round(multiplierRatio) * inv / invSum;
-            const invSum = sum(...clusterState.inv);
+            const targetAmts = clusterState.target.map(({ amount }) => amount);
 
-            const priceInvSum = vectorDot(clusterState.inv, poolPrices);
+            // multiplierRatio = (targetSum * ustAmount) / dot(targetAmt,prices)
+            // boughtAmount = round(multiplierRatio) * targetAmt / targetSum;
+            const targetSum = sum(...targetAmts);
 
-            const multiplierInvRatio = divWithDefault(
-              invSum.mul(ustAmount),
-              priceInvSum,
+            const priceTargetSum = vectorDot(targetAmts, poolPrices);
+
+            const multiplierTargetRatio = divWithDefault(
+              targetSum.mul(ustAmount),
+              priceTargetSum,
               0,
             ).round(10, Big.roundDown); // prevent to exceed ustAmount
 
-            const boughtTokens: SwapTokenInfo[] = clusterState.inv.map(
-              (inv, idx) => {
+            const boughtTokens: SwapTokenInfo[] = clusterState.target.map(
+              ({ info, amount }, idx) => {
                 const uTokenAmount = microfy(
                   divWithDefault(
-                    multiplierInvRatio.mul(inv),
-                    invSum,
+                    multiplierTargetRatio.mul(amount),
+                    targetSum,
                     0,
                   ) as Token<Big>,
                 ).round(0, Big.roundDown) as u<Token<Big>>;
@@ -165,7 +167,7 @@ export const clusterMultiBuyForm = ({
                   returnAmount: uTokenAmount.toFixed() as u<Token>,
                   tokenUstPairAddr: priceInfos[idx].tokenUstPairAddr,
                   beliefPrice: formatExecuteMsgNumber(poolPrices[idx]) as UST,
-                  info: priceInfos[idx].info,
+                  info,
                 };
               },
             );

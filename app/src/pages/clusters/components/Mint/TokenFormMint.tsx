@@ -135,11 +135,15 @@ function TokenFormMintBase({
         (targetAsset) => targetAsset === asset,
       );
 
-      const proRataAmounts = computeProRata(clusterState.inv, amount, index);
+      const proRataAmounts = computeProRata(
+        clusterState.target.map(({ amount: targetAmt }) => targetAmt),
+        amount,
+        index,
+      );
 
       updateInput({ addedAssets: allAssets, amounts: proRataAmounts });
     },
-    [clusterState.inv, clusterState.target, updateInput],
+    [clusterState.target, updateInput],
   );
 
   // ---------------------------------------------

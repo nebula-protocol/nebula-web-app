@@ -141,7 +141,12 @@ function MintAdvancedBase({ className, clusterInfo }: MintAdvancedProps) {
                 rebalance
               </TextLink>{' '}
               clusters, with the other being{' '}
-              <TextLink component={Link} onClick={gotoBurnAdvanced} hoverStyle>
+              <TextLink
+                component={Link}
+                to="/not-use" // Fixed later
+                onClick={gotoBurnAdvanced}
+                hoverStyle
+              >
                 Burn Advanced
               </TextLink>
             </span>
