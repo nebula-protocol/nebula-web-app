@@ -15,7 +15,7 @@ import {
 } from '@nebula-js/types';
 import big, { Big } from 'big.js';
 import {
-  computeTokenWithoutFee,
+  computeUTokenWithFee,
   computeClusterTxFee,
   computeCTPrices,
 } from '@nebula-js/app-fns';
@@ -136,13 +136,8 @@ export const clusterRedeemAdvancedForm = (
       input.addedAssets !== prevInput?.addedAssets ||
       input.amounts !== prevInput.amounts
     ) {
-      const tokenAmountWithoutFee = computeTokenWithoutFee(
-        input.tokenAmount,
-        dependency.protocolFee,
-      );
-
       asyncStates = clusterRedeemQuery(
-        tokenAmountWithoutFee,
+        '0' as u<CT>, // if there are input's amount, maxToken will be ignored.
         input.amounts,
         dependency.clusterState,
         dependency.lastSyncedHeight,
@@ -158,8 +153,13 @@ export const clusterRedeemAdvancedForm = (
             dependency.clusterState.target.length,
           );
 
-          invalidBurntAmount = big(redeem.token_cost).gt(
-            microfy(tokenAmountWithoutFee),
+          const tokenCostWithFee = computeUTokenWithFee(
+            redeem.token_cost,
+            dependency.protocolFee,
+          );
+
+          invalidBurntAmount = big(tokenCostWithFee).gt(
+            microfy(input.tokenAmount),
           )
             ? 'Burnt Token Amount exceed.'
             : big(redeem.token_cost).eq(0)
@@ -172,7 +172,7 @@ export const clusterRedeemAdvancedForm = (
           ).clusterPrice;
 
           // burnCTValue = burnToken * clusterPrice
-          const burnCTValue = big(redeem.token_cost).mul(clusterPrice) as u<
+          const burnCTValue = big(tokenCostWithFee).mul(clusterPrice) as u<
             UST<Big>
           >;
 
@@ -183,7 +183,7 @@ export const clusterRedeemAdvancedForm = (
           ) as u<UST<Big>>;
 
           return {
-            burntTokenAmount: redeem.token_cost,
+            burntTokenAmount: tokenCostWithFee,
             redeemTokenAmounts: redeem.redeem_assets,
             totalRedeemValue,
             pnl: totalRedeemValue.minus(burnCTValue).toFixed() as u<UST>,

@@ -22,6 +22,7 @@ export * from './logics/clusters/computeMarketCap';
 export * from './logics/clusters/computeMaxUstBalanceForSwap';
 export * from './logics/clusters/computeMinReceived';
 export * from './logics/clusters/computeTokenWithoutFee';
+export * from './logics/clusters/computeTokenWithFee';
 export * from './logics/clusters/computeProRata';
 export * from './logics/clusters/computeProvided';
 export * from './logics/clusters/computeTotalProvided';
