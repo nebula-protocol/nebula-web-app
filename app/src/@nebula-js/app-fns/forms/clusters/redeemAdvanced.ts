@@ -137,7 +137,7 @@ export const clusterRedeemAdvancedForm = (
       input.amounts !== prevInput.amounts
     ) {
       asyncStates = clusterRedeemQuery(
-        '0' as u<CT>, // if there are input's amount, maxToken will be ignored.
+        '0' as u<CT>, // if there are input's amounts, maxToken will be ignored.
         input.amounts,
         dependency.clusterState,
         dependency.lastSyncedHeight,
