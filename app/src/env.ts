@@ -49,14 +49,16 @@ export function NEBULA_CONTRACT_ADDRESS(
     // mainnet
     return {
       airdrop: 'terra1wjqsy2q3xzn3rxv5drutfysvg24pqwsg3nmv0y' as HumanAddr,
-      collector: '' as HumanAddr,
+      collector: 'terra17l6pueq2hpz7hwvr8hqa8qmslz8ddy530eaelp' as HumanAddr,
       community: 'terra1g5py2hu8kpenqetv6xjas5z5gtaszhsuk8yn7n' as HumanAddr,
-      clusterFactory: '' as HumanAddr,
+      clusterFactory:
+        'terra13uk55nt7d7telqluzhajv8u3n3vl5vuwjzcssr' as HumanAddr,
       gov: 'terra1gsq7p9a8uu6wdr78rk9cthz57tzkfzrejhdknf' as HumanAddr,
-      incentives: '' as HumanAddr,
-      incentivesCustody: '' as HumanAddr,
-      staking: '' as HumanAddr,
-      oracle: '' as HumanAddr,
+      incentives: 'terra14j6zzqyhlp06xrkzkuwngrfeprh5uyfj7jme7f' as HumanAddr,
+      incentivesCustody:
+        'terra1daqjhk38z0qd8vjuvg7lxrx2yr5l3c038lsgcm' as HumanAddr,
+      staking: 'terra16rpqhxd7ju29jw8qe5gj2uxccj927d5993fkgk' as HumanAddr,
+      oracle: 'terra1wxa08mnu0qry6h9t2m3dhrw4thhxdrwpyg3m7p' as HumanAddr,
       terraswap: {
         factory: 'terra1fnywlw4edny3vw44x04xd67uzkdqluymgreu7g' as HumanAddr,
         nebUstPair: 'terra1d7028vhd9u26fqyreee38cj39fwqvcyjps8sjk' as HumanAddr,
