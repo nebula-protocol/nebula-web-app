@@ -21,6 +21,7 @@ import { fixHMR } from 'fix-hmr';
 import React, { ReactNode, useCallback, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { BasicSwitch } from '@nebula-js/ui/switches';
+import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
 
 export interface TokenFormBurnProps {
   clusterInfo: ClusterInfo;
@@ -50,7 +51,7 @@ function TokenFormBurnBase({
   // ---------------------------------------------
   // states
   // ---------------------------------------------
-  const [proRata, setProRata] = useState(false);
+  const [proRata, setProRata] = useState(true);
 
   // ---------------------------------------------
   // callbacks
@@ -171,6 +172,13 @@ function TokenFormBurnBase({
         checked={proRata}
         updateChecked={setProRata}
       />
+      {!proRata && (
+        <WarningMessageBox level="warning" className="prorata-warning">
+          Please take caution when performing non pro-rata mint and burns. Mint
+          or burn actions that increases cluster imbalance will be penalized and
+          results in a net loss
+        </WarningMessageBox>
+      )}
       <ul className="added-tokens" style={{ gap: '2em' }}>
         {clusterState.target.length > 0 &&
           clusterState.target.map(
@@ -286,6 +294,10 @@ const StyledTokenFormBurn = styled(TokenFormBurnBase)`
 
   .warning {
     margin-top: 2em;
+  }
+
+  .prorata-warning {
+    margin-bottom: 2.14285714em;
   }
 
   @media (max-width: ${breakpoints.mobile.max}px) {

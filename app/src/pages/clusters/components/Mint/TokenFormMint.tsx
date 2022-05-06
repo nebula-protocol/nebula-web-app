@@ -20,6 +20,7 @@ import { fixHMR } from 'fix-hmr';
 import React, { ReactNode, useCallback, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { BasicSwitch } from '@nebula-js/ui/switches';
+import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
 
 export interface TokenFormMintProps {
   clusterInfo: ClusterInfo;
@@ -49,7 +50,7 @@ function TokenFormMintBase({
   // ---------------------------------------------
   // states
   // ---------------------------------------------
-  const [proRata, setProRata] = useState(false);
+  const [proRata, setProRata] = useState(true);
 
   // ---------------------------------------------
   // callbacks
@@ -176,6 +177,13 @@ function TokenFormMintBase({
         checked={proRata}
         updateChecked={setProRata}
       />
+      {!proRata && (
+        <WarningMessageBox level="warning" className="prorata-warning">
+          Please take caution when performing non pro-rata mint and burns. Mint
+          or burn actions that increases cluster imbalance will be penalized and
+          results in a net loss
+        </WarningMessageBox>
+      )}
       <ul className="added-tokens">
         {clusterState.target.length > 0 &&
           clusterState.target.map(
@@ -261,6 +269,10 @@ const StyledTokenFormMint = styled(TokenFormMintBase)`
 
   .add-token {
     margin-top: 2.57142857em;
+  }
+
+  .prorata-warning {
+    margin-bottom: 2.14285714em;
   }
 `;
 
