@@ -26,9 +26,18 @@ export const StyledWarningMessageBox = styled(WarningMessageBoxBase)`
   align-items: center;
   gap: 0.5em;
 
-  background-color: ${({ level }) =>
-    level === 'critical' ? 'var(--color-red)' : 'var(--color-red)'};
+  background-color: var(--color-red);
   color: var(--color-white100);
+
+  ${({ level }) =>
+    level === 'warning' &&
+    `
+    color: #F6B54A;
+    background-color: rgba(140, 96, 26, 0.2);
+    border: 1px solid rgba(140, 96, 26, 0.5);
+    border-radius: 8px;
+  `}
+
   padding: 1.4em 1.7em;
   border-radius: 8px;
   font-weight: 400;
