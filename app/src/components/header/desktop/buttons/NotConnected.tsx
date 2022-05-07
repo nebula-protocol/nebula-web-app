@@ -1,10 +1,5 @@
 import { ClickAwayListener, Popper } from '@material-ui/core';
-import {
-  ChevronRightIcon,
-  TerraIcon,
-  WalletconnectIcon,
-  WalletIcon,
-} from '@nebula-js/icons';
+import { ChevronRightIcon, WalletIcon } from '@nebula-js/icons';
 import {
   buttonColorStyle,
   EmptyButton,
@@ -28,9 +23,9 @@ function NotConnectedBase({ ...buttonProps }: NotConnectedProps) {
   const {
     status,
     availableConnectTypes,
-    availableInstallTypes,
+    availableConnections,
+    availableInstallations,
     connect,
-    install,
   } = useWallet();
 
   const [anchorElement, setAnchorElement] = useState<HTMLElement | null>(null);
@@ -40,6 +35,10 @@ function NotConnectedBase({ ...buttonProps }: NotConnectedProps) {
   }
 
   const openDropdown = !!anchorElement;
+
+  const install = (url: string) => {
+    window.open(url, '_blank', 'noreferrer');
+  };
 
   return (
     <ClickAwayListener onClickAway={() => setAnchorElement(null)}>
@@ -68,24 +67,43 @@ function NotConnectedBase({ ...buttonProps }: NotConnectedProps) {
         >
           <Dropdown>
             <h2>Connect</h2>
-            {availableConnectTypes.includes(ConnectType.EXTENSION) && (
-              <ConnectButton onClick={() => connect(ConnectType.EXTENSION)}>
-                <span>Terra Station Extension</span>
-                <TerraIcon />
-              </ConnectButton>
-            )}
-            {availableConnectTypes.includes(ConnectType.WALLETCONNECT) && (
-              <ConnectButton onClick={() => connect(ConnectType.WALLETCONNECT)}>
-                <span>Terra Station Mobile</span>
-                <WalletconnectIcon />
-              </ConnectButton>
-            )}
-            {availableInstallTypes.includes(ConnectType.EXTENSION) && (
-              <ConnectButton onClick={() => install(ConnectType.EXTENSION)}>
-                <span>Install Station Extension</span>
-                <TerraIcon />
-              </ConnectButton>
-            )}
+
+            {availableConnections
+              .filter(({ type }) => type !== ConnectType.READONLY)
+              .map(({ type, icon, name, identifier }) => (
+                <ConnectButton
+                  key={'connection' + type + identifier}
+                  onClick={() => {
+                    connect(type, identifier);
+                  }}
+                >
+                  {name}
+                  <img
+                    src={
+                      icon ===
+                      'https://assets.terra.money/icon/station-extension/icon.png'
+                        ? 'https://assets.terra.money/icon/wallet-provider/station.svg'
+                        : icon
+                    }
+                    alt={name}
+                  />
+                </ConnectButton>
+              ))}
+
+            {availableInstallations
+              .filter(({ type }) => type === ConnectType.EXTENSION)
+              .map(({ type, identifier, name, icon, url }) => (
+                <ConnectButton
+                  key={'installation' + type + identifier}
+                  onClick={() => {
+                    install(url);
+                  }}
+                >
+                  Install {name}
+                  <img src={icon} alt={`Install ${name}`} />
+                </ConnectButton>
+              ))}
+
             {availableConnectTypes.includes(ConnectType.READONLY) && (
               <>
                 <hr />
@@ -108,8 +126,8 @@ const ConnectButton = styled(EmptyButton)`
 
   ${buttonColorStyle('dark')};
 
-  svg {
-    transform: scale(1.1);
+  img {
+    transform: scale(1.3);
   }
 `;
 
