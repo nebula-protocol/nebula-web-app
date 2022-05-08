@@ -33,7 +33,7 @@ function DashboardMainBase({ className }: DashboardMainProps) {
             Total Value Locked{' '}
             <InfoTooltip>
               Total value of all cluster inventory, withdrawable liquidity,
-              rewards, community pool holdings, staked NEB and UST.
+              rewards, staked NEB and UST.
             </InfoTooltip>
           </h3>
           <TotalValueLocked />

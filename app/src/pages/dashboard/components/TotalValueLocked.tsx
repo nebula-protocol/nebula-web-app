@@ -5,8 +5,8 @@ import { computeStakedValue, computeTotalProvided } from '@nebula-js/app-fns';
 import {
   useClustersInfoListQuery,
   useTotalNebStaked,
-  useNebBalance,
-  useNebulaApp,
+  // useNebBalance,
+  // useNebulaApp,
   useNebPrice,
   useStakingPoolInfoListQuery,
 } from '@nebula-js/app-provider';
@@ -27,7 +27,7 @@ export interface TotalValueLockedProps {
 }
 
 function TotalValueLockedBase({ className }: TotalValueLockedProps) {
-  const { contractAddress } = useNebulaApp();
+  // const { contractAddress } = useNebulaApp();
 
   // ---------------------------------------------
   // queries
@@ -38,7 +38,7 @@ function TotalValueLockedBase({ className }: TotalValueLockedProps) {
 
   const { totalStaked: totalNebStaked } = useTotalNebStaked();
 
-  const communityNebBalance = useNebBalance(contractAddress.community);
+  // const communityNebBalance = useNebBalance(contractAddress.community);
 
   // ---------------------------------------------
   // computes
@@ -48,7 +48,7 @@ function TotalValueLockedBase({ className }: TotalValueLockedProps) {
     totalProvidedRatio,
     totalLPStakedRatio,
     totalNebStakedRatio,
-    communityNebRatio,
+    // communityNebRatio,
   } = useMemo(() => {
     const totalProvided = computeTotalProvided(clusterInfos);
 
@@ -62,12 +62,12 @@ function TotalValueLockedBase({ className }: TotalValueLockedProps) {
 
     const totalNebStakedValue = totalNebStaked.mul(nebPrice);
 
-    const communityNebValue = big(communityNebBalance).mul(nebPrice);
+    // const communityNebValue = big(communityNebBalance).mul(nebPrice);
 
     const _tvl = totalProvided
       .plus(totalLPStakedValue)
-      .plus(totalNebStakedValue)
-      .plus(communityNebValue) as u<UST<Big>>;
+      .plus(totalNebStakedValue) as u<UST<Big>>;
+    // .plus(communityNebValue) as u<UST<Big>>;
 
     return {
       tvl: _tvl,
@@ -82,15 +82,15 @@ function TotalValueLockedBase({ className }: TotalValueLockedProps) {
         _tvl,
         0,
       ) as Rate<Big>,
-      communityNebRatio: divWithDefault(
-        communityNebValue,
-        _tvl,
-        0,
-      ) as Rate<Big>,
+      // communityNebRatio: divWithDefault(
+      //   communityNebValue,
+      //   _tvl,
+      //   0,
+      // ) as Rate<Big>,
     };
   }, [
     totalNebStaked,
-    communityNebBalance,
+    // communityNebBalance,
     clusterInfos,
     poolInfoList,
     nebPrice,
@@ -130,11 +130,11 @@ function TotalValueLockedBase({ className }: TotalValueLockedProps) {
               value: `${formatRate(totalNebStakedRatio)}%`,
               color: partitionColor[2],
             },
-            {
-              label: 'COMMUNITY',
-              value: `${formatRate(communityNebRatio)}%`,
-              color: partitionColor[3],
-            },
+            // {
+            //   label: 'COMMUNITY',
+            //   value: `${formatRate(communityNebRatio)}%`,
+            //   color: partitionColor[3],
+            // },
           ]}
         />
         <PartitionBarGraph
@@ -151,10 +151,10 @@ function TotalValueLockedBase({ className }: TotalValueLockedProps) {
               value: Number(totalNebStakedRatio.mul(100).toFixed(2)),
               color: partitionColor[2],
             },
-            {
-              value: Number(communityNebRatio.mul(100).toFixed(2)),
-              color: partitionColor[3],
-            },
+            // {
+            //   value: Number(communityNebRatio.mul(100).toFixed(2)),
+            //   color: partitionColor[3],
+            // },
           ]}
           width={width}
           height={5}
