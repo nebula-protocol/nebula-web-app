@@ -1,4 +1,8 @@
-import { formatRate, formatUTokenDecimal2, d2Formatter } from '@libs/formatter';
+import {
+  formatRate,
+  formatUTokenDecimal2,
+  formatUToken,
+} from '@libs/formatter';
 import { HumanAddr, Rate } from '@nebula-js/types';
 import {
   BarGraph,
@@ -193,7 +197,10 @@ function ClustersDetailBase({
                 <span>Tokens</span>
               </th>
               <th>
-                <span>Price</span>
+                <span>Supplied in Inventory</span>
+              </th>
+              <th>
+                <span>Value in inventory</span>
               </th>
               <th className="portfolio-ratio">
                 <span>
@@ -211,8 +218,9 @@ function ClustersDetailBase({
           <tbody>
             {clusterView?.assets.map(
               ({
-                oraclePrice,
+                amount,
                 token,
+                marketcap,
                 portfolioRatio,
                 targetRatio,
                 diff,
@@ -226,7 +234,10 @@ function ClustersDetailBase({
                       subtext={token.symbol}
                     />
                   </td>
-                  <td className="price">{d2Formatter(oraclePrice)} UST</td>
+                  <td>
+                    {formatUToken(amount)} {token.symbol}
+                  </td>
+                  <td>${formatUTokenDecimal2(marketcap)}</td>
                   <td className="portfolio-ratio">
                     {formatRate(portfolioRatio as Rate<number>)}%{' '}
                     <Sub
