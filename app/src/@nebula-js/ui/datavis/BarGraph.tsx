@@ -15,7 +15,7 @@ function BarGraphBase({
 }: BarGraphProps) {
   const textRef = useRef<SVGTextElement>(null);
   const [textX, setTextX] = useState(0);
-  const width = 420;
+  const width = 300;
   const height = 40;
 
   const lineX = useMemo(() => {

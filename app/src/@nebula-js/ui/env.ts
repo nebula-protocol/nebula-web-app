@@ -10,6 +10,7 @@ export const breakpoints = {
   // huge monitor : @media (min-width: ${screen.monitor.min}px)
 } as const;
 
+// TODO: use token display query
 export const imageURL = (symbol: string): string | undefined => {
   switch (symbol) {
     case 'UST':
@@ -42,6 +43,7 @@ export const imageURL = (symbol: string): string | undefined => {
     case 'MIR':
       return `https://whitelist.mirror.finance/icon/${symbol}.png`;
     case 'NEB':
+    case 'LUST':
       return `https://assets.neb.money/icons/${symbol}.png`;
     default:
       return undefined;

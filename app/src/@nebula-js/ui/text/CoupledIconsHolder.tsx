@@ -30,11 +30,9 @@ export const CoupledIconsHolder = styled(CoupledIconsHolderBase)`
 
     display: grid;
     place-content: center;
-    border-radius: 50%;
 
     &:not(:first-child) {
-      margin-right: -${({ radiusEm = defaultRadiusEm }) => radiusEm / 3}em;
-      box-shadow: 2px 0 2px 0 rgba(0, 0, 0, 0.15);
+      margin-right: -${({ radiusEm = defaultRadiusEm }) => radiusEm / 2}em;
     }
   }
 `;

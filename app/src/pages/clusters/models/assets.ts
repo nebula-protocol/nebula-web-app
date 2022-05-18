@@ -9,6 +9,7 @@ export interface AssetView {
   oraclePrice: UST<Big>;
   token: cw20.TokenInfoResponse<Token>;
   amount: u<Token<string>>;
+  marketcap: u<UST>;
   targetRatio: number;
   portfolioRatio: number;
   color: string;
@@ -33,6 +34,9 @@ export function toAssetView(
       oraclePrice: big(clusterState.prices[j]) as UST<Big>,
       token: assetTokenInfos[j].tokenInfo,
       amount: clusterState.inv[j],
+      marketcap: big(clusterState.inv[j])
+        .mul(clusterState.prices[j])
+        .toFixed() as u<UST>,
       targetRatio: targetRatio.toNumber(),
       portfolioRatio: portfolioRatio.toNumber(),
       color: partitionColor[j % partitionColor.length],

@@ -51,7 +51,16 @@ function StakingMainBase({ className }: StakingMainProps) {
   }, [nebPool, poolInfoList, distributionSchedule]);
 
   const sortedData = useMemo(() => {
+    if (data.length === 0) return [];
+
     let x = data;
+
+    const nebPairIdx = x.findIndex(
+      ({ nameLowerCase }) => nameLowerCase.indexOf('neb-ust') >= 0,
+    );
+
+    // filter neb pair out
+    x = x.filter((_, id) => id !== nebPairIdx);
 
     switch (sortBy) {
       case SortBy.NameASC:
@@ -69,7 +78,10 @@ function StakingMainBase({ className }: StakingMainProps) {
         break;
     }
 
-    return x.sort((a, b) => Number(b.isActive) - Number(a.isActive));
+    return [
+      data[nebPairIdx],
+      ...x.sort((a, b) => Number(b.isActive) - Number(a.isActive)),
+    ];
   }, [data, sortBy]);
 
   const filteredData = useMemo(() => {
