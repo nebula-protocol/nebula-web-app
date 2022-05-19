@@ -40,7 +40,7 @@ function FooterBase({ className }: FooterProps) {
       >
         <FooterMediumIcon />
       </a>
-      <a href="https://discord.gg/rSdww7c7Vn" target="_blank" rel="noreferrer">
+      <a href="https://discord.gg/5eWchjXPx4" target="_blank" rel="noreferrer">
         <FooterDiscordIcon />
       </a>
       <a href="https://t.me/nebula_protocol " target="_blank" rel="noreferrer">
