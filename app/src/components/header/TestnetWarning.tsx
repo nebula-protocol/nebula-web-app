@@ -16,7 +16,7 @@ const TestnetWarningBase = styled.div`
 export function TestnetWarning() {
   const { network } = useWallet();
 
-  return network.name.toLowerCase().indexOf('mainnet') !== 0 ? (
+  return network.name.toLowerCase().indexOf('classic') !== 0 ? (
     <TestnetWarningBase>
       You are using Nebula Protocol on testnet network.
     </TestnetWarningBase>

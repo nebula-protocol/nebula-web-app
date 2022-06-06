@@ -15,6 +15,7 @@ import { TwoStepsProvider } from 'contexts/two-steps';
 import React, { ReactNode, useCallback } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { HashRouter as Router } from 'react-router-dom';
+import { TerraNetworkGuard } from 'providers/TerraNetworkGuard';
 import {
   NEBULA_CONSTANTS,
   NEBULA_CONTRACT_ADDRESS,
@@ -51,32 +52,35 @@ export function Providers({ children, ...chainOptions }: ProvidersProps) {
   return (
     <WalletProvider
       {...chainOptions}
+      defaultNetwork={chainOptions.walletConnectChainIds[2]}
       connectorOpts={{
         bridge: WALLETCONNECT_BRIDGE_SERVER,
       }}
       createReadonlyWalletSession={createReadonlyWalletSession}
     >
-      <Router>
-        <QueryClientProvider client={queryClient}>
-          <AppProvider
-            defaultQueryClient={NEBULA_DEFAULT_WASM_CLIENT}
-            lcdQueryClient={NEBULA_DEFAULT_LCD_WASM_CLIENT}
-            contractAddress={NEBULA_CONTRACT_ADDRESS}
-            constants={NEBULA_CONSTANTS}
-            refetchMap={NEBULA_TX_REFETCH_MAP}
-            txErrorReporter={errorReporter}
-            queryErrorReporter={errorReporter}
-          >
-            <RouterScrollRestoration />
-            <StyleProviders>
-              <TxBroadcastProvider>
-                <TwoStepsProvider>{children}</TwoStepsProvider>
-              </TxBroadcastProvider>
-              {readonlyWalletSelectorElement}
-            </StyleProviders>
-          </AppProvider>
-        </QueryClientProvider>
-      </Router>
+      <TerraNetworkGuard>
+        <Router>
+          <QueryClientProvider client={queryClient}>
+            <AppProvider
+              defaultQueryClient={NEBULA_DEFAULT_WASM_CLIENT}
+              lcdQueryClient={NEBULA_DEFAULT_LCD_WASM_CLIENT}
+              contractAddress={NEBULA_CONTRACT_ADDRESS}
+              constants={NEBULA_CONSTANTS}
+              refetchMap={NEBULA_TX_REFETCH_MAP}
+              txErrorReporter={errorReporter}
+              queryErrorReporter={errorReporter}
+            >
+              <RouterScrollRestoration />
+              <StyleProviders>
+                <TxBroadcastProvider>
+                  <TwoStepsProvider>{children}</TwoStepsProvider>
+                </TxBroadcastProvider>
+                {readonlyWalletSelectorElement}
+              </StyleProviders>
+            </AppProvider>
+          </QueryClientProvider>
+        </Router>
+      </TerraNetworkGuard>
     </WalletProvider>
   );
 }
