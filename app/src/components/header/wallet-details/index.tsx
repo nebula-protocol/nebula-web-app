@@ -120,7 +120,7 @@ export const WalletDetails = styled(WalletDetailsBase)`
     user-select: none;
 
     font-size: 18px;
-    color: var(--color-white92);
+    color: var(--color-white2);
 
     svg {
       font-size: 1em;
@@ -139,20 +139,20 @@ export const WalletDetails = styled(WalletDetailsBase)`
     margin: 40px 0 32px 0;
     padding: 0;
 
-    border-top: 1px solid var(--color-gray24);
+    border-top: 1px solid var(--color-gray6);
 
     li {
       display: flex;
       justify-content: space-between;
-      border-bottom: 1px dotted var(--color-gray24);
-      color: var(--color-white92);
+      border-bottom: 1px dotted var(--color-gray6);
+      color: var(--color-white2);
 
       font-size: 12px;
       padding: 9px 0;
 
       > :last-child {
         font-weight: 400;
-        color: var(--color-white92);
+        color: var(--color-white2);
       }
     }
   }

@@ -79,9 +79,9 @@ const slide = keyframes`
  * ```
  */
 export const Dialog = styled(DialogBase)`
-  background-color: var(--color-gray18);
+  background-color: var(--color-gray4);
 
-  color: var(--color-white92);
+  color: var(--color-white2);
 
   outline: none;
 

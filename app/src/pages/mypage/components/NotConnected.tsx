@@ -76,7 +76,7 @@ const NotConnected = () => {
 };
 
 const Divider = styled.hr`
-  border-color: var(--color-gray08);
+  border-color: var(--color-gray1);
 `;
 
 const StyledSection = styled(Section)`
@@ -106,9 +106,9 @@ const ConnectButton = styled.section`
   gap: 10px;
   padding: 18px 28px;
   border-radius: 8px;
-  background-color: var(--color-gray11);
+  background-color: var(--color-gray2);
   font-size: var(--font-size16-14);
-  color: var(--color-blue01);
+  color: var(--color-blue);
   font-weight: 500;
 
   img {
@@ -118,7 +118,7 @@ const ConnectButton = styled.section`
 
 const AddressButton = styled(ConnectButton)`
   justify-content: center;
-  color: var(--color-white64);
+  color: var(--color-white4);
 `;
 
 export { NotConnected };

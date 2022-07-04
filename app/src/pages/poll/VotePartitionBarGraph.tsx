@@ -25,8 +25,8 @@ function VotePartitionBarGraphBase({ parsedPoll }: VotePartitionBarGraphProps) {
       <div
         style={{
           color: big(quorumCurrent).lt(quorumGov)
-            ? 'var(--color-red01)'
-            : 'var(--color-white92)',
+            ? 'var(--color-red)'
+            : 'var(--color-white2)',
           display: 'flex',
           alignItems: 'center',
           marginBottom: '0.4em',
@@ -47,7 +47,7 @@ function VotePartitionBarGraphBase({ parsedPoll }: VotePartitionBarGraphProps) {
       <div
         style={{
           width: `${quorumRatioInWidth}px`,
-          borderRight: '1px solid var(--color-white52)',
+          borderRight: '1px solid var(--color-white5)',
           height: '8px',
         }}
       />
@@ -55,11 +55,11 @@ function VotePartitionBarGraphBase({ parsedPoll }: VotePartitionBarGraphProps) {
         data={[
           {
             value: +(parsedPoll?.votes.yesRatio ?? 0),
-            color: 'var(--color-blue01)',
+            color: 'var(--color-blue)',
           },
           {
             value: +(parsedPoll?.votes.noRatio ?? 0),
-            color: 'var(--color-red01)',
+            color: 'var(--color-red)',
           },
           {
             value: +(parsedPoll?.votes.abstainRatio ?? 0),

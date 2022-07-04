@@ -13,7 +13,7 @@ import { fixHMR } from 'fix-hmr';
 import React, { DetailedHTMLProps } from 'react';
 import styled from 'styled-components';
 import useResizeObserver from 'use-resize-observer/polyfilled';
-import { ClusterView } from '../models/clusters';
+import { ClusterView } from 'pages/clusters/models/types';
 
 export interface ClustersCardsProps
   extends DetailedHTMLProps<
@@ -135,10 +135,10 @@ export const StyledClustersCards = styled(ClustersCardsBase)`
 
     ${sectionStyle};
 
-    background-color: var(--color-gray14);
+    background-color: var(--color-gray3);
 
     &:hover {
-      background-color: var(--color-gray18);
+      background-color: var(--color-gray4);
     }
 
     > button {

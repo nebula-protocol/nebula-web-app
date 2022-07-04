@@ -112,7 +112,7 @@ const StyledUL = styled.ul`
     min-width: var(--item-min-width);
     padding: 0 var(--item-padding);
 
-    border: 1px solid var(--color-gray34);
+    border: 1px solid var(--color-gray7);
 
     &:not(:first-child) {
       border-left: none;
@@ -132,7 +132,7 @@ const StyledUL = styled.ul`
 
       > div {
         margin-left: 1em;
-        background-color: var(--color-gray24);
+        background-color: var(--color-gray6);
         border-radius: 16px;
         padding: 0 0.5em;
 

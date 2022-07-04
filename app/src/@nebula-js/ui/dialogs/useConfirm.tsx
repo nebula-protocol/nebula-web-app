@@ -57,7 +57,7 @@ function ComponentBase({
         <Button
           className="btn"
           autoFocus
-          style={{ backgroundColor: 'var(--color-red01)' }}
+          style={{ backgroundColor: 'var(--color-red)' }}
           onClick={() => closeDialog(true)}
         >
           {agree}

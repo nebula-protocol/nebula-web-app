@@ -23,8 +23,8 @@ export const Initializing = styled(InitializingBase)`
 
   cursor: none;
 
-  border: 1px solid var(--color-gray24);
-  color: var(--color-gray24);
+  border: 1px solid var(--color-gray6);
+  color: var(--color-gray6);
 
   display: flex;
   align-items: center;

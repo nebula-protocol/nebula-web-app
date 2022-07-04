@@ -194,7 +194,7 @@ const ViewIcons = styled.div`
   }
 
   button {
-    color: var(--color-gray34);
+    color: var(--color-gray7);
 
     &[aria-checked='true'] {
       color: var(--color-paleblue);
@@ -220,7 +220,7 @@ const StyledStakingMain = styled(StakingMainBase)`
     > span {
       white-space: nowrap;
       margin-right: 1em;
-      color: var(--color-white44);
+      color: var(--color-white6);
     }
   }
 

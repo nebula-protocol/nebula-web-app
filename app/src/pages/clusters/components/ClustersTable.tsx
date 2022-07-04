@@ -13,7 +13,7 @@ import { DisplayPremium } from 'components/common/DisplayPremium';
 import { fixHMR } from 'fix-hmr';
 import React from 'react';
 import styled from 'styled-components';
-import { ClusterView } from '../models/clusters';
+import { ClusterView } from '../models/types';
 
 export interface ClustersTableProps
   extends Omit<HorizontalScrollTableProps, 'minWidth'> {
@@ -137,7 +137,7 @@ const Partition = styled.div`
 `;
 
 export const StyledClustersTable = styled(ClustersTableBase)`
-  background-color: var(--color-gray14);
+  background-color: var(--color-gray3);
   border-radius: 8px;
 
   td,
@@ -159,7 +159,7 @@ export const StyledClustersTable = styled(ClustersTableBase)`
   thead {
     tr {
       th {
-        border-bottom: 2px solid var(--color-gray11);
+        border-bottom: 2px solid var(--color-gray2);
       }
     }
   }
@@ -171,13 +171,13 @@ export const StyledClustersTable = styled(ClustersTableBase)`
       transition: background-color 0.3s ease-in-out;
 
       &:hover {
-        background-color: var(--color-gray18);
+        background-color: var(--color-gray4);
       }
     }
 
     tr:not(:last-child) {
       td {
-        border-bottom: 1px solid var(--color-gray11);
+        border-bottom: 1px solid var(--color-gray2);
       }
     }
 

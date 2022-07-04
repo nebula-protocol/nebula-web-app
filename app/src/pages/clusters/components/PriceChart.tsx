@@ -54,7 +54,7 @@ export class PriceChart extends Component<PriceChartProps> {
 
   componentDidUpdate(prevProps: Readonly<PriceChartProps>) {
     if (prevProps.data !== this.props.data) {
-      this.chart.data.labels = xTimestampAixs(
+      this.chart.data.labels = xTimestampAxis(
         this.props.data.map(({ date }) => date),
       );
       this.chart.data.datasets[0].data = this.props.data.map(({ y }) => y);
@@ -113,7 +113,7 @@ export class PriceChart extends Component<PriceChartProps> {
         },
       },
       data: {
-        labels: xTimestampAixs(this.props.data.map(({ date }) => date)),
+        labels: xTimestampAxis(this.props.data.map(({ date }) => date)),
         datasets: [
           {
             data: this.props.data?.map(({ y }) => y),
@@ -131,7 +131,7 @@ export class PriceChart extends Component<PriceChartProps> {
   };
 }
 
-export function xTimestampAixs(datetimes: JSDateTime[]): string[] {
+export function xTimestampAxis(datetimes: JSDateTime[]): string[] {
   return datetimes.map((timestamp) => {
     return format(timestamp, 'MMM d, yyyy');
   });
@@ -143,7 +143,7 @@ const Container = styled.div`
   position: relative;
 
   canvas {
-    background-color: var(--color-gray14);
+    background-color: var(--color-gray3);
 
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
@@ -157,11 +157,11 @@ const Container = styled.div`
     > h3 {
       font-size: 12px;
       font-weight: 500;
-      color: var(--color-white44);
+      color: var(--color-white6);
     }
 
     > p {
-      color: var(--color-white92);
+      color: var(--color-white2);
 
       font-size: 32px;
       font-weight: 500;

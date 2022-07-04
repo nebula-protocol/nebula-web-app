@@ -3,30 +3,12 @@ import {
   computeCTPrices,
   computeMarketCap,
   computeProvided,
-  ClusterTokenPrices,
   computeLiquidity,
 } from '@nebula-js/app-fns';
-import { cw20, CT, HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
-import { AssetView, toAssetView } from './assets';
+import { Rate, u, UST } from '@nebula-js/types';
+import { toAssetView } from './assets';
+import { ClusterView } from './types';
 import big, { Big } from 'big.js';
-
-export interface ClusterView {
-  addr: HumanAddr;
-  tokenInfo: cw20.TokenInfoResponse<Token>;
-  name: string;
-  nameLowerCase: string;
-  description: string;
-  prices: ClusterTokenPrices;
-  hr24: Rate<Big>;
-  hr24diff: Rate<Big>;
-  provided: u<UST<Big>>;
-  marketCap: u<UST<Big>>;
-  volume: u<UST<Big>>;
-  assets: AssetView[];
-  liquidity: u<UST<Big>>;
-  totalSupply: u<CT>;
-  isActive: boolean;
-}
 
 export function toClusterView({
   clusterState,

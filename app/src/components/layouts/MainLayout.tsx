@@ -25,16 +25,11 @@ function MainLayoutBase({
 }
 
 const Container = styled.section`
-  padding: 70px 50px 50px 50px;
+  padding: 32px 64px 50px 64px;
 
   > div {
     max-width: 1080px;
     margin: 0 auto;
-
-    h1 {
-      font-size: var(--font-size32);
-      font-weight: 500;
-    }
   }
 
   // small layout

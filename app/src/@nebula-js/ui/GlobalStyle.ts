@@ -8,8 +8,8 @@ export const globalStyle = css`
   }
 
   body {
-    background-color: var(--color-gray11);
-    color: var(--color-white80);
+    background-color: var(--color-gray2);
+    color: var(--color-white3);
   }
 
   html {

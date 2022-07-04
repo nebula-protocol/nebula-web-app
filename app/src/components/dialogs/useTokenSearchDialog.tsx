@@ -147,7 +147,7 @@ const Component = styled(ComponentBase)`
     overflow-y: auto;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    border: solid 1px var(--color-gray34);
+    border: solid 1px var(--color-gray7);
     border-top: none;
 
     li {
@@ -156,7 +156,7 @@ const Component = styled(ComponentBase)`
       align-items: center;
       padding: 20px 26px;
       &:hover {
-        background-color: var(--color-gray22);
+        background-color: var(--color-gray5);
       }
     }
 
@@ -172,9 +172,9 @@ const SearchBox = styled.div`
   align-items: center;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  background-color: var(--color-gray14);
+  background-color: var(--color-gray3);
   padding: 20px;
-  border: solid 1px var(--color-gray34);
+  border: solid 1px var(--color-gray7);
   border-bottom: none;
 `;
 
@@ -187,14 +187,14 @@ const SearchInput = styled.input`
   font: inherit;
   width: 100%;
   background-color: inherit;
-  color: var(--color-white92);
+  color: var(--color-white2);
   font-size: var(--font-size16-14);
 `;
 
 const StyledSearchIcon = styled(SearchIcon)`
   font-size: 14px;
   margin-right: 12px;
-  color: var(--color-blue01);
+  color: var(--color-blue);
 `;
 
 const Empty = styled.li`

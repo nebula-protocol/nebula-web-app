@@ -211,7 +211,7 @@ function TokenFormBurnBase({
                   >
                     <div
                       style={{
-                        borderLeft: '1px solid var(--color-gray34)',
+                        borderLeft: '1px solid var(--color-gray7)',
                         padding: '0.8em 1.42857em 0.8em 1.42857em',
                         marginLeft: '1.42857em',
                         minHeight: '4.28572em',

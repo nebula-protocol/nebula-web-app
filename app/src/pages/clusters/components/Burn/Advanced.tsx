@@ -239,7 +239,7 @@ function BurnAdvancedBase({ className, clusterInfo }: BurnAdvancedProps) {
 export const StyledBurnAdvanced = styled(BurnAdvancedBase)`
   .title {
     margin-bottom: 0.857142em;
-    color: var(--color-white44);
+    color: var(--color-white6);
     font-weight: 500;
     font-stretch: normal;
     font-style: normal;

@@ -55,14 +55,14 @@ export const subTabStyle = css`
 
     text-align: center;
 
-    background-color: var(--color-gray24);
-    color: var(--color-white80);
+    background-color: var(--color-gray6);
+    color: var(--color-white3);
 
     transition: background-color 0.3s ease-out, color 0.3s ease-out;
 
     &:hover {
-      background-color: var(--color-gray34);
-      color: var(--color-white100);
+      background-color: var(--color-gray7);
+      color: var(--color-white1);
     }
 
     &[aria-selected='true'] {

@@ -22,7 +22,7 @@ function ContentBase({ children, className }: ContentProps) {
 
 const Content = styled(ContentBase)`
   span {
-    color: var(--color-white52);
+    color: var(--color-white5);
     font-size: var(--font-size14);
     height: 1.5em;
   }
@@ -51,14 +51,14 @@ const StyledGuideInfo = styled(GuideInfoBase)`
     display: flex;
 
     svg {
-      color: var(--color-blue01);
+      color: var(--color-blue);
     }
 
     > span {
       display: flex;
       align-items: center;
       font-weight: 500;
-      color: var(--color-blue01);
+      color: var(--color-blue);
       cursor: pointer;
     }
 
@@ -66,7 +66,7 @@ const StyledGuideInfo = styled(GuideInfoBase)`
       display: flex;
       align-items: center;
       text-decoration: none;
-      color: var(--color-blue01);
+      color: var(--color-blue);
       font-weight: 500;
 
       > svg {

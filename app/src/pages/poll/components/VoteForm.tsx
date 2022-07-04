@@ -145,7 +145,7 @@ function VoteFormBase({ className, pollId, onVoteComplete }: VoteFormProps) {
 }
 
 export const StyledVoteForm = styled(VoteFormBase)`
-  background-color: var(--color-gray14);
+  background-color: var(--color-gray3);
   padding: 20px 20px 40px 20px;
   border-radius: 8px;
 

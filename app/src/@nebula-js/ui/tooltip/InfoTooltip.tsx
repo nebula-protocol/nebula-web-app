@@ -81,7 +81,7 @@ export function TouchTooltip({
 const Sup = styled.sup`
   display: inline-block;
   vertical-align: text-top;
-  transform: translateY(-0.2em);
+  transform: translateY(0.1em);
 `;
 
 const InfoIcon = styled(InfoOutlined)`

@@ -4,5 +4,6 @@ export * from './Section';
 export * from './Search';
 export * from './TabSection';
 export * from './MiniTab';
+export * from './MuiTab';
 export * from './Carousel';
 export * from './Disclosure';

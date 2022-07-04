@@ -67,14 +67,14 @@ export const IconAndLabels = styled(IconAndLabelsBase)`
     display: block;
     font-size: ${({ textSize = _textSize }) => textSize};
     font-weight: 500;
-    color: var(--color-white92);
+    color: var(--color-white2);
   }
 
   .subtext {
     display: block;
     font-size: max(${({ subtextSize = _subtextSize }) => subtextSize}, 12px);
     font-weight: 500;
-    color: var(--color-white44);
+    color: var(--color-white6);
   }
 
   > div {

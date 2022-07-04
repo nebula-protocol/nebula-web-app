@@ -94,7 +94,7 @@ const StyledDisclaimerModal = styled(DisclaimerModalBase)`
   }
 
   span {
-    color: var(--color-white64);
+    color: var(--color-white4);
     line-height: 1.5em;
   }
 
@@ -107,7 +107,7 @@ const StyledDisclaimerModal = styled(DisclaimerModalBase)`
     cursor: pointer;
 
     > p {
-      color: var(--color-white100);
+      color: var(--color-white1);
       line-height: 1.5em;
     }
 
@@ -124,9 +124,9 @@ const StyledDisclaimerModal = styled(DisclaimerModalBase)`
       height: 16px;
       top: 0;
       left: 0;
-      border: 1px solid var(--color-white100);
+      border: 1px solid var(--color-white1);
       border-radius: 3px;
-      background-color: var(--color-gray18);
+      background-color: var(--color-gray4);
     }
 
     input[type='checkbox']:checked:after {
@@ -134,7 +134,7 @@ const StyledDisclaimerModal = styled(DisclaimerModalBase)`
       display: block;
       width: 10px;
       height: 10px;
-      background-color: var(--color-white100);
+      background-color: var(--color-white1);
       position: absolute;
       top: 3px;
       left: 3px;
@@ -144,7 +144,7 @@ const StyledDisclaimerModal = styled(DisclaimerModalBase)`
   .line-separator {
     height: 1px;
     width: 100%;
-    background-color: var(--color-gray24);
+    background-color: var(--color-gray6);
     margin: 1.14285714em 0;
   }
 

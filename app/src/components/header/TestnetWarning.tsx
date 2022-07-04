@@ -7,8 +7,8 @@ const TestnetWarningBase = styled.div`
   justify-content: center;
   align-items: center;
   height: 40px;
-  background-color: var(--color-blue01);
-  color: var(--color-gray08);
+  background-color: var(--color-blue);
+  color: var(--color-gray1);
   font-weight: 500;
   font-size: var(--font-size14-12);
 `;
@@ -16,7 +16,7 @@ const TestnetWarningBase = styled.div`
 export function TestnetWarning() {
   const { network } = useWallet();
 
-  return network.name.toLowerCase().indexOf('mainnet') !== 0 ? (
+  return network.name.toLowerCase().indexOf('classic') !== 0 ? (
     <TestnetWarningBase>
       You are using Nebula Protocol on testnet network.
     </TestnetWarningBase>

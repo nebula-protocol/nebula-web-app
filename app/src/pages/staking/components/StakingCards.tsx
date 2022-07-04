@@ -127,7 +127,7 @@ export const StyledStakingCards = styled(StakingCardsBase)`
 
     ${sectionStyle};
 
-    background-color: var(--color-gray14);
+    background-color: var(--color-gray3);
   }
 
   h3 {

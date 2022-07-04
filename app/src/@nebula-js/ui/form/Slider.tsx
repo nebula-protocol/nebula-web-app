@@ -4,7 +4,7 @@ import thumbImage from './assets/SliderArrow.svg';
 
 export const Slider = withStyles({
   root: {
-    color: 'var(--color-gray34)',
+    color: 'var(--color-gray7)',
     height: 8,
   },
   thumb: {

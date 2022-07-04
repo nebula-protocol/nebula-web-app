@@ -10,7 +10,8 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { ClustersCards } from './components/ClustersCards';
 import { ClustersTable } from './components/ClustersTable';
-import { ClusterView, toClusterView } from './models/clusters';
+import { toClusterView } from './models/clusters';
+import { ClusterView } from './models/types';
 
 enum SortBy {
   NameASC = 'Name (A to Z)',
@@ -211,7 +212,7 @@ const ViewIcons = styled.div`
   }
 
   button {
-    color: var(--color-gray34);
+    color: var(--color-gray7);
 
     &[aria-checked='true'] {
       color: var(--color-paleblue);
@@ -237,7 +238,7 @@ const StyledClustersMain = styled(ClustersMainBase)`
     > span {
       white-space: nowrap;
       margin-right: 1em;
-      color: var(--color-white44);
+      color: var(--color-white6);
     }
   }
 

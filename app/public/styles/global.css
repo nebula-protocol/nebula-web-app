@@ -1,49 +1,66 @@
 :root {
-  --font-family: 'Gotham', BlinkMacSystemFont, 'Segoe UI',
-  'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-  'Helvetica Neue', sans-serif;
-  
+  --font-family: 'Gotham', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+
   --color-paleblue-h: 189;
   --color-paleblue-s: 72%;
   --color-paleblue-l: 49%;
-  --color-paleblue: hsl(var(--color-paleblue-h), var(--color-paleblue-s), var(--color-paleblue-l));
+  --color-paleblue: hsl(
+    var(--color-paleblue-h),
+    var(--color-paleblue-s),
+    var(--color-paleblue-l)
+  );
   --color-paleblue-text: #ffffff;
-  
-  --color-red-h: 347;
-  --color-red-s: 84%;
-  --color-red-l: 66%;
-  --color-red: hsl(var(--color-red-h), var(--color-red-s), var(--color-red-l));
-  --color-red-text: #ffffff;
+
+  /* Accent Color */
+  --color-blue-darkest: #0a92aa;
+  --color-blue-dark: #1faec6;
+  --color-blue: #23bed9;
+  --color-blue-hover: #4fcbe0;
+  --color-red: #f15e7e;
+  --color-positive: #43e0be;
+  --color-positive-dark: #15ad8c;
+  --color-positive-darkest: #06745c;
+
+  /* System Color */
+  --color-success: #52c858;
+  --color-success-dark: #337035;
+  --color-warning: #f7b54a;
+  --color-warning-dark: #8c601a;
+  --color-error: #fe5e53;
+  --color-error-dark: #942323;
 }
 
 .dark-color-set {
-  --color-gray08: #0C0816;
-  --color-gray11: #1A1525;
-  --color-gray14: #272231;
-  --color-gray18: #332E3C;
-  --color-gray22: #413A4B;
-  --color-gray24: #463F51;
-  --color-gray34: #685F75;
-  --color-white44: #939098;
-  --color-white52: #A19FA6;
-  --color-white64: #B9B7BC;
-  --color-white80: #E9E9EA;
-  --color-white92: #EEEDEE;
-  --color-white100: #ffffff;
+  --color-gray1: #0c0813;
+  --color-gray2: #1a1525;
+  --color-gray3: #272231;
+  --color-gray4: #332e3c;
+  --color-gray5: #413a4b;
+  --color-gray6: #463f51;
+  --color-gray7: #685f75;
+  --color-white6: #939098;
+  --color-white5: #a19fa6;
+  --color-white4: #b9b7bc;
+  --color-white3: #e9e9ea;
+  --color-white2: #eeedee;
+  --color-white1: #ffffff;
 }
 
+/* TODO */
 .light-color-set {
-  --color-gray08: #ffffff;
-  --color-gray11: #e8e8e8;
-  --color-gray14: #f5f5f5;
-  --color-gray18: #ffffff;
-  --color-gray22: #f0f0f0;
-  --color-gray24: #eeeeee;
-  --color-gray34: #cccccc;
-  --color-white44: #685F75;
-  --color-white52: #463F51;
-  --color-white64: #332E3C;
-  --color-white80: #272231;
-  --color-white92: #0C0816;
-  --color-white100: #000000;
+  --color-gray1: #ffffff;
+  --color-gray2: #e8e8e8;
+  --color-gray3: #f5f5f5;
+  --color-gray4: #ffffff;
+  --color-gray5: #f0f0f0;
+  --color-gray6: #eeeeee;
+  --color-gray7: #cccccc;
+  --color-white6: #685f75;
+  --color-white5: #463f51;
+  --color-white4: #332e3c;
+  --color-white3: #272231;
+  --color-white2: #0c0816;
+  --color-white1: #000000;
 }

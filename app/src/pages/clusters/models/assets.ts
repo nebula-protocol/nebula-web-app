@@ -1,22 +1,9 @@
 import big, { Big } from 'big.js';
 import { getTargetColor, AssetTokenInfo } from '@nebula-js/app-fns';
-import { terraswap, UST, Token, cw20, u, cluster } from '@nebula-js/types';
+import { UST, Token, u, cluster } from '@nebula-js/types';
 import { sum, divWithDefault } from '@libs/big-math';
 import { partitionColor } from '@nebula-js/ui';
-
-export interface AssetView {
-  asset: terraswap.Asset<Token>;
-  oraclePrice: UST<Big>;
-  token: cw20.TokenInfoResponse<Token>;
-  amount: u<Token<string>>;
-  marketcap: u<UST>;
-  targetRatio: number;
-  portfolioRatio: number;
-  color: string;
-  diff: number;
-  diffColor: string;
-  targetAmount: u<Token<Big>>;
-}
+import { AssetView } from './types';
 
 export function toAssetView(
   clusterState: cluster.ClusterStateResponse,

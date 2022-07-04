@@ -58,7 +58,7 @@ function StakingSectionBase({ className }: StakingSectionProps) {
 }
 
 export const StakingSection = styled(StakingSectionBase)`
-  background-color: var(--color-gray14);
+  background-color: var(--color-gray3);
 
   font-size: 20px;
 

@@ -114,7 +114,7 @@ const Container = styled.div`
   flex: 3;
   padding: 40px 32px;
   border-radius: 8px;
-  background-color: var(--color-gray14);
+  background-color: var(--color-gray3);
   min-width: 0;
   display: flex;
   flex-direction: column;

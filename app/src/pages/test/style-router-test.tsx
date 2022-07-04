@@ -12,13 +12,13 @@ export interface StyleRouterTestProps {
 function StyleRouterTestBase({ className }: StyleRouterTestProps) {
   const { color, updateColor, breakpoint } = useStyle();
   const paleblue = useCssVariable('--color-paleblue');
-  const white100 = useCssVariable('--color-white100');
+  const white1 = useCssVariable('--color-white1');
 
   return (
     <MainLayout className={className}>
       <section>
         <div style={{ color: paleblue }}>paleblue: {paleblue}</div>
-        <div>white100: {white100}</div>
+        <div>white1: {white1}</div>
       </section>
 
       <section style={{ marginTop: 40 }}>
@@ -85,7 +85,7 @@ const GlobalStyleLight = createGlobalStyle`
 
 export const StyledStyleRouterTest = styled(StyleRouterTestBase)`
   p {
-    color: var(--text-color);
+    color: var(--color-gray1);
     font-size: var(--font-size);
   }
 `;

@@ -16,7 +16,7 @@ export const useAlertStyles = makeStyles(() =>
   createStyles({
     paper: {
       color: 'var(--color-gray12)',
-      backgroundColor: 'var(--color-gray18)',
+      backgroundColor: 'var(--color-gray4)',
       padding: 10,
     },
   }),

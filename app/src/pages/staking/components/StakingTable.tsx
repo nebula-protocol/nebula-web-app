@@ -99,7 +99,7 @@ function StakingTableBase({ staking, ...tableProps }: StakingTableProps) {
 }
 
 export const StyledStakingTable = styled(StakingTableBase)`
-  background-color: var(--color-gray14);
+  background-color: var(--color-gray3);
   border-radius: 8px;
 
   td,
@@ -134,7 +134,7 @@ export const StyledStakingTable = styled(StakingTableBase)`
   thead {
     tr {
       th {
-        border-bottom: 2px solid var(--color-gray11);
+        border-bottom: 2px solid var(--color-gray2);
       }
     }
   }
@@ -142,7 +142,7 @@ export const StyledStakingTable = styled(StakingTableBase)`
   tbody {
     tr:not(:last-child) {
       td {
-        border-bottom: 1px solid var(--color-gray11);
+        border-bottom: 1px solid var(--color-gray2);
       }
     }
   }

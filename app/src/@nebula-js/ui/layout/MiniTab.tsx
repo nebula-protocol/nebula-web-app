@@ -53,18 +53,18 @@ export const miniTabStyle = css`
 
     font-size: 1em;
 
-    background-color: var(--color-gray18);
-    color: var(--color-white44);
+    background-color: var(--color-gray4);
+    color: var(--color-white6);
 
     transition: background-color 0.3s ease-out, color 0.3s ease-out;
 
     &:hover {
-      color: var(--color-white64);
+      color: var(--color-white4);
     }
 
     &[aria-selected='true'] {
-      background-color: var(--color-white80);
-      color: var(--color-gray08);
+      background-color: var(--color-white3);
+      color: var(--color-gray1);
     }
   }
 `;

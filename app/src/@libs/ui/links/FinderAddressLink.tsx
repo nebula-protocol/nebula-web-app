@@ -19,7 +19,7 @@ export function FinderAddressLink({
       target="_blank"
       rel="noreferrer"
       // TODO: make FinderAddressLink of Nebula
-      style={{ color: 'var(--color-blue01)', textDecoration: 'none' }}
+      style={{ color: 'var(--color-blue)', textDecoration: 'none' }}
     >
       {shortenAddress ? truncate(address) : address}
     </a>

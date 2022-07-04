@@ -44,7 +44,7 @@ export class PieChart extends Component<PieChartProps> {
     //if (this.props.theme !== prevProps.theme) {
     //  if (this.chart.options.plugins?.datalabels) {
     //    this.chart.options.plugins.datalabels.color =
-    //      this.props.theme.colors.gray14;
+    //      this.props.theme.colors.gray3;
     //  }
     //}
 
@@ -71,7 +71,7 @@ export class PieChart extends Component<PieChartProps> {
               size: 11,
             },
             display: false,
-            color: 'var(--color-gray14)',
+            color: 'var(--color-gray3)',
             formatter: (value, context) => {
               return context.chart.data.labels?.[context.dataIndex];
             },

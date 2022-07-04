@@ -54,7 +54,7 @@ const TotalRewards = () => {
       />
       <p
         style={{
-          color: 'var(--color-white44)',
+          color: 'var(--color-white6)',
           fontSize: '14px',
           marginBottom: '32px',
         }}
@@ -105,14 +105,14 @@ const StyledButton = styled(Button)`
 const SubTitle = styled.h4`
   font-size: 12px;
   font-weight: 500;
-  color: var(--color-white44);
+  color: var(--color-white6);
 `;
 
 const Container = styled.div`
   flex: 2;
   padding: 40px 32px;
   border-radius: 8px;
-  background-color: var(--color-gray14);
+  background-color: var(--color-gray3);
   @media (max-width: ${breakpoints.tablet.max}px) {
     margin-top: 11px;
     padding: 1rem;

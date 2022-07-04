@@ -63,7 +63,7 @@ const StyledSearch = styled(SearchBase)`
     width: 100%;
     height: 3rem;
 
-    background-color: var(--color-gray14);
+    background-color: var(--color-gray3);
     border-radius: 8px;
     padding-left: 2rem;
 
@@ -85,7 +85,7 @@ const StyledSearch = styled(SearchBase)`
     }
 
     &:focus-within {
-      background-color: var(--color-gray18);
+      background-color: var(--color-gray4);
     }
 
     // mobile

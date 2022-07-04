@@ -319,7 +319,7 @@ function PollWhitelistClusterTextBase({
 
 const Deposit = styled.div`
   border-radius: 8px;
-  background-color: var(--color-gray22);
+  background-color: var(--color-gray5);
   padding: 20px;
   display: flex;
   justify-content: space-between;
@@ -331,7 +331,7 @@ export const StyledPollWhitelistClusterTextBase = styled(
   --max-content-width: 704px;
 
   .header {
-    background-color: var(--color-gray18);
+    background-color: var(--color-gray4);
 
     h2 {
       font-size: 2em;
@@ -343,14 +343,14 @@ export const StyledPollWhitelistClusterTextBase = styled(
     p {
       font-size: 1em;
       font-weight: 400;
-      color: var(--color-white44);
+      color: var(--color-white6);
     }
 
     margin-bottom: 0.85714286em;
   }
 
   .body {
-    background-color: var(--color-gray18);
+    background-color: var(--color-gray4);
   }
 
   .form-label:not(:first-child) {

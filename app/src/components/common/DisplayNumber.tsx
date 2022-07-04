@@ -36,7 +36,7 @@ const DisplayNumber = ({ price, currency, size = 'md', ...props }: Props) => {
 };
 
 const DisplayNumberBase = styled.p<{ size: Size }>`
-  color: var(--color-white92);
+  color: var(--color-white2);
   font-weight: 500;
   ${({ size }) => numberStyles[size]}
 `;

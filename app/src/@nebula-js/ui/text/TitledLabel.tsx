@@ -19,7 +19,7 @@ function TitledLabelBase({ className, text, title }: TitledLabelProps) {
 export const TitledLabel = styled(TitledLabelBase)`
   > h4 {
     font-size: 12px;
-    color: var(--color-white44);
+    color: var(--color-white6);
 
     margin-bottom: 5px;
   }

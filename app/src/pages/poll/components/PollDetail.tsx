@@ -502,7 +502,7 @@ export const StyledPollDetail = styled(PollDetailBase)`
     font-size: 14px;
 
     h4 {
-      color: var(--color-white44);
+      color: var(--color-white6);
       font-weight: 500;
 
       margin-bottom: 4px;
@@ -510,7 +510,7 @@ export const StyledPollDetail = styled(PollDetailBase)`
 
     p {
       line-height: 21px;
-      color: var(--color-white100);
+      color: var(--color-white1);
     }
 
     &:not(:last-child) {
@@ -528,7 +528,7 @@ export const StyledPollDetail = styled(PollDetailBase)`
 
     > div {
       cursor: pointer;
-      color: var(--color-blue01);
+      color: var(--color-blue);
       font-size: var(--font-size12);
       display: flex;
       align-items: center;
@@ -542,8 +542,8 @@ export const StyledPollDetail = styled(PollDetailBase)`
 
   .json-box {
     margin-top: 1em;
-    background-color: var(--color-gray11);
-    color: var(--color-white80);
+    background-color: var(--color-gray2);
+    color: var(--color-white3);
     border-radius: 8px;
     padding: 1.4em 1.7em;
     word-break: break-word;

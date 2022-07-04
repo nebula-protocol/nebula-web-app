@@ -13,7 +13,8 @@ import {
   useScreenSizeValue,
   VerticalLabelAndValue,
 } from '@nebula-js/ui';
-import { ClusterView, toClusterView } from 'pages/clusters/models/clusters';
+import { toClusterView } from 'pages/clusters/models/clusters';
+import { ClusterView } from 'pages/clusters/models/types';
 import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -195,7 +196,7 @@ const Content = styled.div`
     }
 
     p:nth-child(2) {
-      color: var(--color-white44);
+      color: var(--color-white6);
     }
 
     p:nth-child(3) {
@@ -215,7 +216,7 @@ const Content = styled.div`
     margin-top: 3em;
 
     .more {
-      color: var(--color-white64);
+      color: var(--color-white4);
     }
   }
 `;

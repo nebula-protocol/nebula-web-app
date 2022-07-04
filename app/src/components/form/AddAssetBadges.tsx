@@ -65,7 +65,7 @@ export const StyledAddAssetBadges = styled(AddAssetBadgesBase)`
   li {
     cursor: n-resize;
 
-    background-color: var(--color-gray24);
+    background-color: var(--color-gray6);
     padding: 0.42857143em 0.85714286em;
     border-radius: 14px;
 

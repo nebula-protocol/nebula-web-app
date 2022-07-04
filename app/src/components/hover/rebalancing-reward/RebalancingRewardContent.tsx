@@ -54,7 +54,7 @@ export const RebalancingRewardContent = styled(RebalancingRewardBase)`
 
     font-size: 20px;
     font-weight: 500;
-    color: var(--color-white92);
+    color: var(--color-white2);
   }
 
   p {
@@ -62,7 +62,7 @@ export const RebalancingRewardContent = styled(RebalancingRewardBase)`
 
     font-size: 12px;
     font-weight: normal;
-    color: var(--color-white80);
+    color: var(--color-white3);
   }
 
   a {
@@ -97,7 +97,7 @@ export const RebalancingRewardContent = styled(RebalancingRewardBase)`
     display: flex;
     align-items: center;
 
-    background-color: var(--color-gray18);
+    background-color: var(--color-gray4);
 
     h2 {
       margin-top: 0;

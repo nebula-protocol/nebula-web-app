@@ -91,10 +91,10 @@ const StyledPollMain = styled(PollMainBase)`
     h3 {
       font-size: 12px;
       font-weight: 500;
-      color: var(--color-white44);
+      color: var(--color-white6);
       padding-bottom: 0.85714286em;
 
-      border-bottom: 1px solid var(--color-gray22);
+      border-bottom: 1px solid var(--color-gray5);
     }
 
     a {
@@ -104,14 +104,14 @@ const StyledPollMain = styled(PollMainBase)`
 
       font-size: 1.14285714em;
       font-weight: 500;
-      color: var(--color-white92);
+      color: var(--color-white2);
       text-decoration: none;
 
       padding: 1.14285714em var(--section-padding-h);
       margin: 0 calc(var(--section-padding-h) * -1);
 
       &:hover {
-        background-color: var(--color-gray18);
+        background-color: var(--color-gray4);
       }
 
       svg {

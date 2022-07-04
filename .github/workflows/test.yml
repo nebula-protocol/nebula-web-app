@@ -18,9 +18,9 @@ jobs:
       matrix:
         node: [14]
         os: [ubuntu-latest]
-#        TODO: in a private repository, windows-latest is charged 2x times and macos-latest is charged 10x times
-#        node: [12, 14, 15]
-#        os: [ubuntu-latest, windows-latest, macos-latest]
+    #        TODO: in a private repository, windows-latest is charged 2x times and macos-latest is charged 10x times
+    #        node: [12, 14, 15]
+    #        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
       - name: Clone Repository
@@ -54,12 +54,11 @@ jobs:
       - name: Lint
         run: yarn run lint
 
-#      - name: Build
-#        run: yarn run build
+      #      - name: Build
+      #        run: yarn run build
 
-      - name: Test
-        run: yarn workspace @nebula-web-app/app run test # coverage: "yarn workspace {workspace} run coverage && yarn workspace {workspace} run coverage && ..."
-
+      # - name: Test
+      #   run: yarn workspace @nebula-web-app/app run test # coverage: "yarn workspace {workspace} run coverage && yarn workspace {workspace} run coverage && ..."
 #      - name: Upload coverage to Codecov
 #        uses: codecov/codecov-action@v1
 #        with:

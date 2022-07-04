@@ -72,7 +72,7 @@ export class BarChart extends Component<BarChartProps> {
           : 'rgba(0, 0, 0, 0.05)';
     }
     this.chart.data.datasets[0].backgroundColor =
-      getCssVariable('--color-white44');
+      getCssVariable('--color-white6');
   };
 
   private createChart = () => {
@@ -130,7 +130,7 @@ export class BarChart extends Component<BarChartProps> {
         datasets: [
           {
             data: this.props.data?.map(({ y }) => y),
-            backgroundColor: getCssVariable('--color-white44'),
+            backgroundColor: getCssVariable('--color-white6'),
           },
         ],
       },

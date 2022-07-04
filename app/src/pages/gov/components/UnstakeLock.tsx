@@ -41,21 +41,21 @@ const Container = styled.div`
 
 const BlueLock = styled(Lock)`
   font-size: 53px;
-  color: var(--color-blue01);
+  color: var(--color-blue);
 `;
 
 const Label = styled.p`
-  color: var(--color-white44);
+  color: var(--color-white6);
 `;
 
 const Content = styled.p`
-  color: var(--color-white80);
+  color: var(--color-white3);
 `;
 
 const Section = styled.section`
   padding: 20px 24px;
   border-radius: 4px;
-  background-color: var(--color-gray14);
+  background-color: var(--color-gray3);
   display: flex;
   flex-direction: column;
   gap: 16px;

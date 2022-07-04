@@ -4,8 +4,8 @@ export const FeeBox = styled.ul`
   list-style: none;
   margin: 0;
 
-  background-color: var(--color-gray14);
-  color: var(--color-white80);
+  background-color: var(--color-gray3);
+  color: var(--color-white3);
   border-radius: 8px;
 
   font-weight: 400;
@@ -18,7 +18,7 @@ export const FeeBox = styled.ul`
     justify-content: space-between;
 
     > :first-child {
-      color: var(--color-white44);
+      color: var(--color-white6);
     }
 
     &:not(:first-child) {

@@ -144,7 +144,7 @@ const Dropdown = styled.div`
   h2 {
     font-size: 16px;
     text-align: center;
-    color: var(--color-white92);
+    color: var(--color-white2);
 
     margin-bottom: 20px;
   }
@@ -167,7 +167,7 @@ const Dropdown = styled.div`
 
   hr {
     border: 0;
-    border-top: 1px solid var(--color-gray08);
+    border-top: 1px solid var(--color-gray1);
     margin: 16px 0;
   }
 `;
@@ -177,7 +177,7 @@ export const NotConnected = styled(NotConnectedBase)`
 
   transition: border-color 0.3s ease-out, color 0.3s ease-out;
 
-  border: 1px solid var(--color-gray24);
+  border: 1px solid var(--color-gray6);
 
   color: var(--color-paleblue);
 

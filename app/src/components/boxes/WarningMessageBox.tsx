@@ -27,7 +27,7 @@ export const StyledWarningMessageBox = styled(WarningMessageBoxBase)`
   gap: 0.5em;
 
   background-color: var(--color-red);
-  color: var(--color-white100);
+  color: var(--color-white1);
 
   ${({ level }) =>
     level === 'warning' &&

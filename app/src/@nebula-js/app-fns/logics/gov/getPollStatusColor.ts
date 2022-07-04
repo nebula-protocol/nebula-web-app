@@ -1,8 +1,8 @@
 export function getPollStatusColor(pollStatus: string | undefined): string {
   const status = pollStatus?.toLowerCase();
   return status === 'passed' || status === 'executed'
-    ? 'var(--color-blue01)'
+    ? 'var(--color-blue)'
     : status === 'rejected' || status === 'expired' || status === 'failed'
-    ? 'var(--color-red01)'
-    : 'var(--color-white100)';
+    ? 'var(--color-red)'
+    : 'var(--color-white1)';
 }

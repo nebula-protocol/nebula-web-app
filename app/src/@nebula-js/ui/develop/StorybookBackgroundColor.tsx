@@ -5,6 +5,6 @@ export const StorybookBackgroundColor = createGlobalStyle<{
 }>`
   .sb-show-main.sb-main-padded {
     background-color: ${({ backgroundColor }) =>
-      backgroundColor ?? 'var(--color-gray11)'} !important;
+      backgroundColor ?? 'var(--color-gray2)'} !important;
   }
 `;

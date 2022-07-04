@@ -74,7 +74,7 @@ export const StyledGovStake = styled(GovStakeBase)`
   }
 
   .main {
-    background-color: var(--color-gray18);
+    background-color: var(--color-gray4);
 
     min-height: 200px;
 

@@ -68,7 +68,7 @@ export const StyledTwoSteps = styled(TwoStepsBase)`
   justify-content: center;
   align-items: center;
 
-  border-bottom: 1px solid var(--color-gray11);
+  border-bottom: 1px solid var(--color-gray2);
 
   .description {
     font-weight: 500;
@@ -88,7 +88,7 @@ export const StyledTwoSteps = styled(TwoStepsBase)`
       min-height: 0.3571428em;
       ${({ step }) =>
         `background-color: var(${
-          step === TwoStepsEnum.STEP2 ? '--color-blue01' : '--color-gray34'
+          step === TwoStepsEnum.STEP2 ? '--color-blue' : '--color-gray7'
         }`});
     }
 
@@ -122,16 +122,16 @@ export const StyledTwoSteps = styled(TwoStepsBase)`
 
       .span-step1 {
         span {
-          background-color: var(--color-blue01);
+          background-color: var(--color-blue);
           ${({ step }) =>
             `color: var(${
-              step === TwoStepsEnum.STEP1 ? '--white-100' : '--color-gray11'
+              step === TwoStepsEnum.STEP1 ? '--white-100' : '--color-gray2'
             }`});
         }
         div {
           ${({ step }) =>
             `color: var(${
-              step === TwoStepsEnum.STEP1 ? '--color-blue01' : '--color-gray34'
+              step === TwoStepsEnum.STEP1 ? '--color-blue' : '--color-gray7'
             }`});
         }
       }
@@ -140,17 +140,17 @@ export const StyledTwoSteps = styled(TwoStepsBase)`
         span {
           ${({ step }) =>
             `background-color: var(${
-              step === TwoStepsEnum.STEP2 ? '--color-blue01' : '--color-gray34'
+              step === TwoStepsEnum.STEP2 ? '--color-blue' : '--color-gray7'
             }`});
           ${({ step }) =>
             `color: var(${
-              step === TwoStepsEnum.STEP2 ? '--white-100' : '--color-gray24'
+              step === TwoStepsEnum.STEP2 ? '--white-100' : '--color-gray6'
             }`});
         }
         div {
           ${({ step }) =>
             `color: var(${
-              step === TwoStepsEnum.STEP2 ? '--color-blue01' : '--color-gray34'
+              step === TwoStepsEnum.STEP2 ? '--color-blue' : '--color-gray7'
             }`});
         }
       }

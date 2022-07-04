@@ -4,7 +4,7 @@ import { breakpoints } from '../env';
 export const Table3SectionHeader = styled.div`
   padding: 1rem 2rem;
 
-  border-bottom: 1px solid var(--color-gray11);
+  border-bottom: 1px solid var(--color-gray2);
 
   display: grid;
   grid-template-columns: auto 1fr;

@@ -60,20 +60,20 @@ export const StyledTokenTable = styled(TokenTableBase)`
   thead {
     font-size: 12px;
     font-weight: 500;
-    color: var(--color-white44);
+    color: var(--color-white6);
 
     th {
-      border-bottom: 1px solid var(--color-gray24);
+      border-bottom: 1px solid var(--color-gray6);
       padding-bottom: 1em;
     }
   }
 
   tbody {
     font-size: 1em;
-    color: var(--color-white80);
+    color: var(--color-white3);
 
     td {
-      border-bottom: 1px solid var(--color-gray24);
+      border-bottom: 1px solid var(--color-gray6);
       padding: 1em 0;
     }
   }
@@ -92,7 +92,7 @@ export const StyledTokenTable = styled(TokenTableBase)`
   .two-line {
     > p:not(:first-child) {
       font-size: var(--font-size12);
-      color: var(--color-white52);
+      color: var(--color-white5);
     }
   }
 `;

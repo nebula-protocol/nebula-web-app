@@ -125,13 +125,13 @@ const StyledTokenLabel = styled(TokenLabel)`
 const StyledDelete = styled(Delete)`
   font-size: 20px;
   cursor: pointer;
-  color: var(--color-white92);
+  color: var(--color-white2);
   transform: translateY(1px);
 `;
 
 const AllocationBox = styled.div`
   border-radius: 8px;
-  border: solid 1px var(--color-gray34);
+  border: solid 1px var(--color-gray7);
   display: flex;
   align-items: center;
   margin-top: 14px;
@@ -139,7 +139,7 @@ const AllocationBox = styled.div`
     flex: 1;
     padding: 20px 22px;
     display: flex;
-    border-right: 1px solid var(--color-gray34);
+    border-right: 1px solid var(--color-gray7);
     gap: 20px;
   }
   > div:last-child {
@@ -157,7 +157,7 @@ const AllocationInput = styled.input`
   font: inherit;
   width: 100%;
   background-color: inherit;
-  color: var(--color-white92);
+  color: var(--color-white2);
   font-size: var(--font-size14-12);
   text-align: right;
 `;
@@ -166,7 +166,7 @@ const Subtitle = styled.p`
   margin-top: 20px;
   font-size: 12px;
   font-weight: 500;
-  color: var(--color-white44);
+  color: var(--color-white6);
 `;
 
 const EmptyTokensContainer = styled.div`
@@ -178,12 +178,12 @@ const EmptyTokensContainer = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  border: dashed 1px var(--color-gray34);
-  color: var(--color-white44);
+  border: dashed 1px var(--color-gray7);
+  color: var(--color-white6);
 `;
 
 const StyledSearchIcon = styled(SearchIcon)`
-  color: var(--color-blue01);
+  color: var(--color-blue);
   font-size: 16px;
   margin-right: 12px;
 `;
@@ -195,7 +195,7 @@ const SearchBoxContainer = styled.div`
   width: 100%;
   padding: 20px;
   border-radius: 8px;
-  border: solid 1px var(--color-gray34);
-  background-color: var(--color-gray14);
-  color: var(--color-white44);
+  border: solid 1px var(--color-gray7);
+  background-color: var(--color-gray3);
+  color: var(--color-white6);
 `;

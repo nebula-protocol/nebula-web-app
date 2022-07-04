@@ -88,9 +88,9 @@ const StyledTable = styled(TableBase)`
   thead {
     tr {
       th {
-        color: var(--color-white44);
+        color: var(--color-white6);
         font-weight: 500;
-        border-bottom: 1px solid var(--color-gray24);
+        border-bottom: 1px solid var(--color-gray6);
       }
     }
   }

@@ -242,7 +242,7 @@ function StakingBase({ className }: StakingProps) {
 }
 
 export const Staking = styled(StakingBase)`
-  background-color: var(--color-gray14);
+  background-color: var(--color-gray3);
   border-radius: 8px;
 
   td,
@@ -258,7 +258,7 @@ export const Staking = styled(StakingBase)`
     &:nth-child(1) {
       font-size: 1.2em;
       font-weight: 500 !important;
-      color: var(--color-white92);
+      color: var(--color-white2);
     }
 
     &:nth-child(4) {
@@ -275,7 +275,7 @@ export const Staking = styled(StakingBase)`
   thead {
     tr {
       th {
-        border-bottom: 2px solid var(--color-gray11);
+        border-bottom: 2px solid var(--color-gray2);
       }
     }
   }
@@ -283,7 +283,7 @@ export const Staking = styled(StakingBase)`
   tbody {
     tr:not(:last-child) {
       td {
-        border-bottom: 1px solid var(--color-gray11);
+        border-bottom: 1px solid var(--color-gray2);
       }
     }
   }

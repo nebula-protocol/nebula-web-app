@@ -96,7 +96,7 @@ export const Footer = styled(FooterBase)`
     text-decoration: none;
     margin-right: 20px;
 
-    color: var(--color-white44);
+    color: var(--color-white6);
 
     &:hover {
       color: var(--color-paleblue);
@@ -112,8 +112,8 @@ export const Footer = styled(FooterBase)`
       padding: 12px;
       margin-left: 1px;
 
-      background-color: var(--color-gray14);
-      color: var(--color-white44);
+      background-color: var(--color-gray3);
+      color: var(--color-white6);
 
       font-size: 12px;
 
@@ -127,7 +127,7 @@ export const Footer = styled(FooterBase)`
         font-size: 12px;
         margin-right: 0px;
         &:hover {
-          color: var(--color-white44);
+          color: var(--color-white6);
         }
       }
 

@@ -279,14 +279,14 @@ const MainTab = styled(Tab)`
 const MainSection = styled(Section)`
   min-height: 200px;
 
-  background-color: var(--color-gray18);
+  background-color: var(--color-gray4);
 
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 `;
 
 const Table = styled(HorizontalScrollTable)`
-  background-color: var(--color-gray14);
+  background-color: var(--color-gray3);
   border-radius: 8px;
 
   td,
@@ -325,7 +325,7 @@ const Table = styled(HorizontalScrollTable)`
   thead {
     tr {
       th {
-        border-bottom: 2px solid var(--color-gray11);
+        border-bottom: 2px solid var(--color-gray2);
       }
     }
   }
@@ -333,7 +333,7 @@ const Table = styled(HorizontalScrollTable)`
   tbody {
     tr:not(:last-child) {
       td {
-        border-bottom: 1px solid var(--color-gray11);
+        border-bottom: 1px solid var(--color-gray2);
       }
     }
   }

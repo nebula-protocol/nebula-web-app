@@ -67,7 +67,7 @@ export const InputContainer = styled.div`
 
   font-size: 1em;
 
-  border: 1px solid var(--color-gray34);
+  border: 1px solid var(--color-gray7);
   border-radius: 8px;
 
   --token-input-padding: 20px;
@@ -80,7 +80,7 @@ export const InputContainer = styled.div`
     align-items: center;
 
     font-size: 0.9em;
-    color: var(--color-white44);
+    color: var(--color-white6);
     line-height: 12px;
 
     margin-bottom: 10px;
@@ -95,7 +95,7 @@ export const InputContainer = styled.div`
 
     height: 2.5em;
 
-    color: var(--color-white92);
+    color: var(--color-white2);
 
     > input {
       min-width: 0;
@@ -110,7 +110,7 @@ export const InputContainer = styled.div`
   }
 
   > footer {
-    border-top: 1px solid var(--color-gray22);
+    border-top: 1px solid var(--color-gray5);
     padding-top: 8px;
     padding-left: var(--token-input-padding);
     padding-right: var(--token-input-padding);

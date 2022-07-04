@@ -49,11 +49,11 @@ const StyledSwitch = styled(SwitchBase)`
   padding-bottom: 0.5em;
 
   .MuiSwitch-colorPrimary.Mui-checked {
-    color: var(--color-blue01);
+    color: var(--color-blue);
   }
 
   .MuiSwitch-colorPrimary.Mui-checked + .MuiSwitch-track {
-    background-color: var(--color-blue01);
+    background-color: var(--color-blue);
   }
 `;
 

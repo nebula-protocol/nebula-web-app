@@ -94,7 +94,7 @@ const Container = styled.div`
   padding: 32px 24px;
 
   box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.15);
-  background-color: var(--color-gray18);
+  background-color: var(--color-gray4);
   border-radius: 8px;
 
   &[data-layout='mobile'] {
@@ -111,6 +111,6 @@ const Container = styled.div`
   #error {
     margin-top: 1em;
     text-align: center;
-    color: var(--color-red01);
+    color: var(--color-red);
   }
 `;

@@ -39,7 +39,7 @@ export const StyledTxMiniRenderer = styled(TxMiniRendererBase)`
   user-select: none;
   cursor: pointer;
 
-  background-color: var(--color-gray18);
+  background-color: var(--color-gray4);
 
   display: grid;
   place-content: center;

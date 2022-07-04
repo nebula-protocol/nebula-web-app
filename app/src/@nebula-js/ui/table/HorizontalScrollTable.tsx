@@ -80,7 +80,7 @@ const StyledHorizontalScrollTable = styled(HorizontalScrollTableBase)`
             font-size: 12px;
           }
 
-          color: var(--color-white64);
+          color: var(--color-white4);
           font-weight: 500;
 
           padding: 1.42857143em 1em;
@@ -103,7 +103,7 @@ const StyledHorizontalScrollTable = styled(HorizontalScrollTableBase)`
 
           font-weight: 400;
 
-          color: var(--color-white80);
+          color: var(--color-white3);
           padding: 1.42857143em 1em;
 
           &:first-child {

@@ -139,8 +139,8 @@ function PollsTableBase({ className }: PollsTableProps) {
                 <p
                   style={{
                     color: big(quorum.current).lt(quorum.gov)
-                      ? 'var(--color-red01)'
-                      : 'var(--color-white92)',
+                      ? 'var(--color-red)'
+                      : 'var(--color-white2)',
                     display: 'flex',
                     alignItems: 'center',
                   }}
@@ -198,7 +198,7 @@ const More = styled.footer`
 `;
 
 const StyledPollsTable = styled(PollsTableBase)`
-  background-color: var(--color-gray14);
+  background-color: var(--color-gray3);
   border-radius: 8px;
 
   select {
@@ -217,7 +217,7 @@ const StyledPollsTable = styled(PollsTableBase)`
   td {
     &:nth-child(2) {
       font-weight: 500 !important;
-      color: var(--color-white92);
+      color: var(--color-white2);
     }
 
     &:nth-child(3) {
@@ -231,7 +231,7 @@ const StyledPollsTable = styled(PollsTableBase)`
   thead {
     tr {
       th {
-        border-bottom: 2px solid var(--color-gray11);
+        border-bottom: 2px solid var(--color-gray2);
       }
     }
   }
@@ -241,13 +241,13 @@ const StyledPollsTable = styled(PollsTableBase)`
       cursor: pointer;
 
       &:hover {
-        background-color: var(--color-gray22);
+        background-color: var(--color-gray5);
       }
     }
 
     tr:not(:last-child) {
       td {
-        border-bottom: 1px solid var(--color-gray11);
+        border-bottom: 1px solid var(--color-gray2);
       }
     }
 
@@ -263,11 +263,11 @@ const StyledPollsTable = styled(PollsTableBase)`
   }
 
   #yes-amount {
-    color: var(--color-blue01);
+    color: var(--color-blue);
   }
 
   #no-amount {
-    color: var(--color-red01);
+    color: var(--color-red);
   }
 
   #circle-exclamation {

@@ -45,16 +45,19 @@ function DesktopHeaderBase({ className }: DesktopHeaderProps) {
           </StyledA>
         </EmptyButton>
 
-        <EmptyButton
-          size={18}
-          onClick={() =>
-            updateColor((prevColor) =>
-              prevColor === 'dark' ? 'light' : 'dark',
-            )
-          }
-        >
-          <ModeIcon />
-        </EmptyButton>
+        {/* disable mode setting */}
+        {false && (
+          <EmptyButton
+            size={18}
+            onClick={() =>
+              updateColor((prevColor) =>
+                prevColor === 'dark' ? 'light' : 'dark',
+              )
+            }
+          >
+            <ModeIcon />
+          </EmptyButton>
+        )}
       </div>
 
       <div>
@@ -87,13 +90,13 @@ const StyledA = styled.a`
 `;
 
 export const DesktopHeader = styled(DesktopHeaderBase)`
-  background-color: var(--color-gray08);
-  color: var(--color-white44);
-  border-bottom: 1px solid var(--color-gray14);
+  background-color: var(--color-gray1);
+  color: var(--color-white6);
+  border-bottom: 1px solid var(--color-gray3);
 
   height: 110px;
 
-  padding: 24px 50px 12px 50px;
+  padding: 24px 64px 12px 64px;
 
   display: flex;
   flex-direction: column;
@@ -103,7 +106,7 @@ export const DesktopHeader = styled(DesktopHeaderBase)`
   --second-line-height: 32px;
 
   > div {
-    max-width: 1080px;
+    max-width: 1156px;
     width: 100%;
     margin: 0 auto;
 
@@ -120,7 +123,7 @@ export const DesktopHeader = styled(DesktopHeaderBase)`
       }
 
       .Nebula-EmptyButton {
-        color: var(--color-white52);
+        color: var(--color-white5);
 
         &:hover {
           color: var(--color-paleblue);
@@ -146,10 +149,10 @@ export const DesktopHeader = styled(DesktopHeaderBase)`
 
           transition: color 0.4s ease-out;
 
-          color: var(--color-white44);
+          color: var(--color-white6);
 
           &.active {
-            color: var(--color-white92);
+            color: var(--color-white2);
           }
         }
       }

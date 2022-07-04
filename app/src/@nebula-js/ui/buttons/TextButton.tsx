@@ -27,7 +27,7 @@ export const textButtonColorStyle = (color: TextButtonProps['color']) => {
       }
 
       &:disabled {
-        color: var(--color-gray22);
+        color: var(--color-gray5);
       }
     `;
   } else if (color)
@@ -40,8 +40,8 @@ export const textButtonColorStyle = (color: TextButtonProps['color']) => {
       }
 
       &:disabled {
-        color: var(--color-white44);
-        background-color: var(--color-gray22);
+        color: var(--color-white6);
+        background-color: var(--color-gray5);
       }
     `;
 };

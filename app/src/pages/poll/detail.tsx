@@ -236,13 +236,13 @@ function PollDetailBase({ className }: PollDetailProps) {
 
 const YesTwoLine = styled(TwoLineBase)`
   p {
-    color: var(--color-blue01);
+    color: var(--color-blue);
   }
 `;
 
 const NoTwoLine = styled(TwoLineBase)`
   p {
-    color: var(--color-red01);
+    color: var(--color-red);
   }
 `;
 
@@ -259,7 +259,7 @@ const Table = styled(HorizontalScrollTable)`
   thead {
     tr {
       th {
-        border-bottom: 1px solid var(--color-gray24);
+        border-bottom: 1px solid var(--color-gray6);
       }
     }
   }
@@ -293,14 +293,14 @@ const StyledPollDetail = styled(PollDetailBase)`
           font-size: 14px;
           height: 45px;
 
-          border-bottom: 1px solid var(--color-gray24);
+          border-bottom: 1px solid var(--color-gray6);
 
           margin-bottom: 16px;
         }
 
         > h2 {
           font-size: 24px;
-          color: var(--color-white100);
+          color: var(--color-white1);
 
           margin-bottom: 30px;
         }
@@ -309,7 +309,7 @@ const StyledPollDetail = styled(PollDetailBase)`
           font-size: 14px;
 
           span {
-            color: var(--color-white44);
+            color: var(--color-white6);
             margin-right: 8px;
           }
 
@@ -332,7 +332,7 @@ const StyledPollDetail = styled(PollDetailBase)`
       min-width: 420px;
       max-width: 420px;
 
-      background-color: var(--color-gray14);
+      background-color: var(--color-gray3);
 
       header {
         display: flex;

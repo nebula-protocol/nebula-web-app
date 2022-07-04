@@ -13,7 +13,7 @@ const breakpoints: Breakpoint[] = [
 export function StyleProviders({ children }: { children: ReactNode }) {
   return (
     <StyleRouter
-      defaultColor="dark"
+      defaultColor="light"
       breakpoints={breakpoints}
       fallbackBreakpoint="large"
     >

@@ -36,7 +36,7 @@ export const Basic = () => {
       <HorizontalScrollTable
         minWidth={1000}
         containerStyle={{
-          backgroundColor: 'var(--color-gray14)',
+          backgroundColor: 'var(--color-gray3)',
           maxWidth: '80vw',
           margin: '50px auto',
           borderRadius: 8,
@@ -105,7 +105,7 @@ export const Header_Contents = () => {
           </div>
         }
         containerStyle={{
-          backgroundColor: 'var(--color-gray14)',
+          backgroundColor: 'var(--color-gray3)',
           maxWidth: '80vw',
           margin: '50px auto',
           borderRadius: 8,

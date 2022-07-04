@@ -80,7 +80,7 @@ const Dropdown = styled.div`
 export const Connected = styled(ConnectedBase)`
   ${walletButtonMeasure};
 
-  border: 1px solid var(--color-gray24);
+  border: 1px solid var(--color-gray6);
   color: var(--color-paleblue);
 
   &:hover {

@@ -41,8 +41,8 @@ function TabSectionBase({
 }
 
 const mainStyle = css`
-  background-color: var(--color-gray18);
-  color: var(--color-white92);
+  background-color: var(--color-gray4);
+  color: var(--color-white2);
 
   padding: 2.85rem 2.3rem;
 

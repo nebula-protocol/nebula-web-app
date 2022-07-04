@@ -67,13 +67,13 @@ const StyledPrice = styled(DisplayNumber)`
 
 const Container = styled.div`
   width: 100%;
-  background-color: var(--color-gray14);
+  background-color: var(--color-gray3);
   border-radius: 8px;
   padding: 40px 32px;
   h3 {
     font-size: 12px;
     font-weight: 500;
-    color: var(--color-white44);
+    color: var(--color-white6);
   }
   section {
     font-size: 14px;

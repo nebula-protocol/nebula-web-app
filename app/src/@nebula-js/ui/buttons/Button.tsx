@@ -94,42 +94,42 @@ export const buttonColorStyle = (color: ButtonProps['color']) => {
       }
 
       &:disabled {
-        color: var(--color-white44);
-        background-color: var(--color-gray22);
+        color: var(--color-white6);
+        background-color: var(--color-gray5);
       }
     `;
   } else if (color === 'gray') {
     return css`
-      color: var(--color-white80);
-      background-color: var(--color-gray24);
+      color: var(--color-white3);
+      background-color: var(--color-gray6);
 
       &:hover {
-        background-color: var(--color-gray34);
+        background-color: var(--color-gray7);
       }
 
       &:disabled {
-        color: var(--color-white44);
-        background-color: var(--color-gray22);
+        color: var(--color-white6);
+        background-color: var(--color-gray5);
       }
     `;
   } else if (color === 'darkgray') {
     return css`
-      color: var(--color-white64);
-      background-color: var(--color-gray14);
+      color: var(--color-white4);
+      background-color: var(--color-gray3);
 
       &:hover {
-        background-color: var(--color-gray24);
+        background-color: var(--color-gray6);
       }
 
       &:disabled {
-        color: var(--color-white44);
-        background-color: var(--color-gray22);
+        color: var(--color-white6);
+        background-color: var(--color-gray5);
       }
     `;
   } else if (color === 'dark') {
     return css`
       color: var(--color-paleblue);
-      background-color: var(--color-gray11);
+      background-color: var(--color-gray2);
 
       &:hover {
         color: hsl(
@@ -137,31 +137,31 @@ export const buttonColorStyle = (color: ButtonProps['color']) => {
           var(--color-paleblue-s),
           calc(var(--color-paleblue-l) + 15%)
         );
-        background-color: var(--color-gray08);
+        background-color: var(--color-gray1);
       }
 
       &:disabled {
-        color: var(--color-gray34);
+        color: var(--color-gray7);
       }
     `;
   } else if (color === 'dim') {
     return css`
-      color: var(--color-white44);
-      background-color: var(--color-gray22);
+      color: var(--color-white6);
+      background-color: var(--color-gray5);
 
       &:hover {
-        color: var(--color-white64);
+        color: var(--color-white4);
       }
 
       &:disabled {
-        color: var(--color-gray34);
+        color: var(--color-gray7);
       }
     `;
   } else if (color === 'border') {
     return css`
-      color: var(--color-white44);
+      color: var(--color-white6);
       background-color: transparent;
-      border: 1px solid var(--color-gray22);
+      border: 1px solid var(--color-gray5);
 
       &:hover {
         color: var(--color-paleblue);
@@ -169,8 +169,8 @@ export const buttonColorStyle = (color: ButtonProps['color']) => {
       }
 
       &:disabled {
-        color: var(--color-gray34);
-        border-color: var(--color-gray34);
+        color: var(--color-gray7);
+        border-color: var(--color-gray7);
       }
     `;
   } else if (color)
@@ -183,8 +183,8 @@ export const buttonColorStyle = (color: ButtonProps['color']) => {
       }
 
       &:disabled {
-        color: var(--color-white44);
-        background-color: var(--color-gray22);
+        color: var(--color-white6);
+        background-color: var(--color-gray5);
       }
     `;
 };

@@ -33,10 +33,10 @@ const DisplayPremiumBase = styled.span<{
   color: var(
     ${({ premium, isColored }) =>
       !isColored || premium.eq(0)
-        ? '--color-white92'
+        ? '--color-white2'
         : premium.gt(0)
-        ? '--color-blue01'
-        : '--color-red01'}
+        ? '--color-blue'
+        : '--color-red'}
   );
 `;
 

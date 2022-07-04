@@ -85,7 +85,7 @@ function NEBSectionBase({ className }: NEBSectionProps) {
 const StyledNEBSection = styled(NEBSectionBase)`
   min-height: 230px;
 
-  background-color: var(--color-gray14);
+  background-color: var(--color-gray3);
 
   display: grid;
   grid-template-columns: auto auto;

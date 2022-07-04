@@ -1,9 +1,8 @@
 export const partitionColor = [
-  '#23bed9',
-  '#64a0bc',
-  '#918ba8',
-  '#ab7f9d',
-  '#c37493',
-  '#dc6887',
-  '#f15e7e',
+  '#23BED9',
+  '#8073FF',
+  '#F15E7E',
+  '#8BF8B8',
+  '#F5CF84',
+  '#709FAD',
 ];

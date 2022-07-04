@@ -12,7 +12,7 @@ function DelistedBadgeBase({ ...divProps }: DelistedBadgeProps) {
 
 export const DelistedBadge = styled(DelistedBadgeBase)`
   font-size: 10px;
-  background-color: var(--color-red01);
+  background-color: var(--color-red);
   border-radius: 3px;
   margin-right: 8px;
   padding: 2px 5px;

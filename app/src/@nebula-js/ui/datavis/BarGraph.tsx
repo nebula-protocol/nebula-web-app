@@ -58,20 +58,20 @@ function BarGraphBase({
 export const StyledBarGraph = styled(BarGraphBase)`
   > text {
     font-size: 12px;
-    fill: var(--color-white80);
+    fill: var(--color-white3);
     line-height: 18px;
   }
 
   rect#bar-graph-line {
-    fill: var(--color-white80);
+    fill: var(--color-white3);
   }
 
   rect#bar-graph-bg {
-    fill: var(--color-gray34);
+    fill: var(--color-gray7);
   }
 
   rect#bar-graph-bar {
-    fill: var(--color-blue01);
+    fill: var(--color-blue);
   }
 `;
 

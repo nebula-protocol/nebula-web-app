@@ -33,7 +33,7 @@ export const StyledFormLabel = styled(FormLabelBase)`
 
     font-size: 1em;
     font-weight: 500;
-    color: var(--color-white44);
+    color: var(--color-white6);
 
     margin-bottom: 0.857142857142857em;
   }

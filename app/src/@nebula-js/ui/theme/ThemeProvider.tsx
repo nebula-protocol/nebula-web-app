@@ -3,7 +3,7 @@ import {
   ThemeProvider as MuiThemeProvider,
 } from '@material-ui/core/styles';
 import React, { ReactNode } from 'react';
-import type { DefaultTheme } from 'styled-components';
+import { DefaultTheme } from 'styled-components';
 import { ThemeProvider as StyledComponentsThemeProvider } from 'styled-components';
 
 export interface ThemeProviderProps {

@@ -57,11 +57,11 @@ function HistoryBase({ className }: HistoryProps) {
 }
 
 export const History = styled(HistoryBase)`
-  background-color: var(--color-gray14);
+  background-color: var(--color-gray3);
   border-radius: 8px;
 
   > header {
-    border-bottom: 1px solid var(--color-gray11);
+    border-bottom: 1px solid var(--color-gray2);
   }
 
   > ul {
@@ -79,21 +79,21 @@ export const History = styled(HistoryBase)`
       font-size: 16px;
 
       > :first-child {
-        color: var(--color-white92);
+        color: var(--color-white2);
 
         > :first-child {
           font-size: 12px;
-          color: var(--color-white44);
+          color: var(--color-white6);
         }
       }
 
       > :last-child {
         font-size: 0.75em;
-        color: var(--color-white44);
+        color: var(--color-white6);
       }
 
       &:not(:last-child) {
-        border-bottom: 1px solid var(--color-gray11);
+        border-bottom: 1px solid var(--color-gray2);
       }
     }
   }
