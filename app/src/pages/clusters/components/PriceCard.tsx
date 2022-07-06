@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { UST, u } from '@nebula-js/types';
+import { Luna, u } from '@nebula-js/types';
 import { Big } from 'big.js';
 import { ClusterTokenPrices } from '@nebula-js/app-fns';
 import { formatToken, formatUTokenWithPostfixUnits } from '@libs/formatter';
@@ -10,7 +10,7 @@ import { InfoTooltip } from '@nebula-js/ui';
 
 export interface PriceCardProps {
   prices: ClusterTokenPrices | undefined;
-  liquidity: u<UST<Big>> | undefined;
+  liquidity: u<Luna<Big>> | undefined;
   desc: string | undefined;
 }
 
@@ -26,19 +26,21 @@ export const PriceCard = ({ prices, liquidity, desc }: PriceCardProps) => {
           divided by cluster token total supply
         </InfoTooltip>
       </h3>
-      <StyledPrice price={formatToken(prices.clusterPrice)} currency="UST" />
+      <StyledPrice price={formatToken(prices.clusterPrice)} currency="Luna" />
       <h3>
         CLUSTER PRICE (MARKET){' '}
         <InfoTooltip>
           Price of cluster as calculated from its Astroport pool
         </InfoTooltip>
       </h3>
-      <StyledPrice price={formatToken(prices.poolPrice)} currency="UST" />
+      <StyledPrice price={formatToken(prices.poolPrice)} currency="Luna" />
       <h3>PREMIUM</h3>
       <StyledNumber>
         <span>
-          {formatToken(prices.poolPrice.minus(prices.clusterPrice) as UST<Big>)}{' '}
-          UST
+          {formatToken(
+            prices.poolPrice.minus(prices.clusterPrice) as Luna<Big>,
+          )}{' '}
+          Luna
         </span>
         <span>
           (<DisplayPremium premium={prices.premium} />)
@@ -46,7 +48,7 @@ export const PriceCard = ({ prices, liquidity, desc }: PriceCardProps) => {
       </StyledNumber>
       <h3>LIQUIDITY</h3>
       <StyledNumber>
-        <span>{formatUTokenWithPostfixUnits(liquidity)} UST</span>
+        <span>{formatUTokenWithPostfixUnits(liquidity)} Luna</span>
       </StyledNumber>
       <section>{desc}</section>
     </Container>

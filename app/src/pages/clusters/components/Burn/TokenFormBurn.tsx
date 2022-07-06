@@ -6,7 +6,7 @@ import {
   ClusterRedeemAdvancedFormInput,
   computeProRata,
 } from '@nebula-js/app-fns';
-import { terraswap, Token, u, UST, CT } from '@nebula-js/types';
+import { terraswap, Token, u, Luna, CT } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
@@ -30,7 +30,7 @@ export interface TokenFormBurnProps {
     ClusterRedeemAdvancedFormStates,
     ClusterRedeemAdvancedFormAsyncStates
   >;
-  onProceed: (amount: CT, assetAmounts: Token[], txFee: u<UST>) => void;
+  onProceed: (amount: CT, assetAmounts: Token[], txFee: u<Luna>) => void;
   children: ReactNode;
   className?: string;
 }

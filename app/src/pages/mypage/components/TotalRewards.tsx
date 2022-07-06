@@ -59,7 +59,7 @@ const TotalRewards = () => {
           marginBottom: '32px',
         }}
       >
-        {formatUToken(totalRewardValue)} UST
+        {formatUToken(totalRewardValue)} Luna
       </p>
       <SubTitle>NEB PRICE</SubTitle>
       <DisplayNumber
@@ -68,7 +68,7 @@ const TotalRewards = () => {
           marginBottom: 40,
         }}
         price={d6Formatter(nebPrice)}
-        currency="UST"
+        currency="Luna"
         size="sm"
       />
       <StyledButton

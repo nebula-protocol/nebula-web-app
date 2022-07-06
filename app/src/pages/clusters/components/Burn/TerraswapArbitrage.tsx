@@ -5,7 +5,7 @@ import {
   useClusterRedeemTerraswapArbitrageForm,
 } from '@nebula-js/app-provider';
 import { WalletIcon } from '@nebula-js/icons';
-import { u, UST, Rate } from '@nebula-js/types';
+import { u, Luna, Rate } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
@@ -72,14 +72,14 @@ function BurnTerraswapArbitrageBase({
 
   const initForm = useCallback(() => {
     updateInput({
-      ustAmount: '' as UST,
+      lunaAmount: '' as Luna,
     });
   }, [updateInput]);
 
   const proceed = useCallback(
-    (ustAmount: UST, txFee: u<UST>, maxSpread: Rate) => {
+    (lunaAmount: Luna, txFee: u<Luna>, maxSpread: Rate) => {
       const stream = postTx?.({
-        amount: microfy(ustAmount).toFixed() as u<UST>,
+        amount: microfy(lunaAmount).toFixed() as u<Luna>,
         txFee,
         maxSpread,
         onTxSucceed: initForm,
@@ -116,7 +116,7 @@ function BurnTerraswapArbitrageBase({
             <br />
             <br />
             <span className="indent-text">
-              1. Uses the user’s input UST amount to buy cluster tokens from
+              1. Uses the user’s input Luna amount to buy cluster tokens from
               Astroport at a discount
             </span>
             <br />
@@ -128,11 +128,11 @@ function BurnTerraswapArbitrageBase({
           </span>
         </span>
       </GuideInfo>
-      <TokenInput<UST>
+      <TokenInput<Luna>
         className="token-input"
         maxDecimalPoints={6}
-        value={states.ustAmount ?? ('' as UST)}
-        onChange={(nextUstAmount) => updateInput({ ustAmount: nextUstAmount })}
+        value={states.lunaAmount ?? ('' as Luna)}
+        onChange={(nextUstAmount) => updateInput({ lunaAmount: nextUstAmount })}
         placeholder="0.00"
         label="INPUT"
         suggest={
@@ -140,7 +140,7 @@ function BurnTerraswapArbitrageBase({
             fontSize={12}
             onClick={() =>
               updateInput({
-                ustAmount: formatUInput(states.maxUstAmount) as UST,
+                lunaAmount: formatUInput(states.maxUstAmount) as Luna,
               })
             }
           >
@@ -152,7 +152,7 @@ function BurnTerraswapArbitrageBase({
             {formatUToken(states.maxUstAmount)}
           </TextButton>
         }
-        token={<TokenSpan symbol="UST">UST</TokenSpan>}
+        token={<TokenSpan symbol="Luna">Luna</TokenSpan>}
         error={states.invalidUstAmount}
       />
 
@@ -196,21 +196,21 @@ function BurnTerraswapArbitrageBase({
         {'totalRedeemValue' in states && states.totalRedeemValue && (
           <li>
             <span>Minimum Redeem Value</span>
-            <span>{formatUToken(states.totalRedeemValue)} UST</span>
+            <span>{formatUToken(states.totalRedeemValue)} Luna</span>
           </li>
         )}
 
         {'pnl' in states && states.pnl && (
           <li>
             <span>PNL</span>
-            <span>{formatUToken(states.pnl)} UST</span>
+            <span>{formatUToken(states.pnl)} Luna</span>
           </li>
         )}
 
         {'txFee' in states && states.txFee && (
           <li>
             <span>Tx Fee</span>
-            <span>{formatUToken(states.txFee)} UST</span>
+            <span>{formatUToken(states.txFee)} Luna</span>
           </li>
         )}
       </FeeBox>
@@ -233,13 +233,13 @@ function BurnTerraswapArbitrageBase({
           !!states.invalidRedeemQuery ||
           !!states.invalidTxFee ||
           !('minBurntTokenAmount' in states && states.minBurntTokenAmount) ||
-          states.ustAmount.length === 0 ||
-          Number(states.ustAmount) === 0
+          states.lunaAmount.length === 0 ||
+          Number(states.lunaAmount) === 0
         }
         onClick={() =>
           'txFee' in states &&
           states.txFee &&
-          proceed(states.ustAmount, states.txFee, states.maxSpread)
+          proceed(states.lunaAmount, states.txFee, states.maxSpread)
         }
       >
         Arb

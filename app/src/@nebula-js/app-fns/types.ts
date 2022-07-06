@@ -1,4 +1,4 @@
-import { u, Token, HumanAddr, Gas, UST, terraswap } from '@nebula-js/types';
+import { u, Token, HumanAddr, Gas, Luna, terraswap } from '@nebula-js/types';
 
 // gas_price = uusd of https://[bombay-]fcd.terra.dev/v1/txs/gas_prices
 // txFee = (txFeeBase + (inventory * txFeePerInventory) + (asset count * txFeePerAsset)) * gas_price
@@ -20,9 +20,9 @@ export interface NebulaClusterFee {
 
 export interface SwapTokenInfo {
   // ust amount to buy token
-  buyUustAmount: u<UST>;
+  buyUlunaAmount: u<Luna>;
   returnAmount: u<Token>;
   tokenUstPairAddr?: HumanAddr;
-  beliefPrice: UST;
+  beliefPrice: Luna;
   info: terraswap.AssetInfo;
 }

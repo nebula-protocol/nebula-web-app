@@ -1,5 +1,5 @@
 import { formatToken } from '@libs/formatter';
-import { JSDateTime, UST, u } from '@nebula-js/types';
+import { JSDateTime, Luna, u } from '@nebula-js/types';
 import { DiffSpan, Sub } from '@nebula-js/ui';
 import { Chart } from 'chart.js';
 import c from 'color';
@@ -10,7 +10,7 @@ import styled from 'styled-components';
 
 interface ChartData {
   y: number;
-  amount: u<UST>;
+  amount: u<Luna>;
   date: JSDateTime;
 }
 
@@ -87,7 +87,7 @@ export class PriceChart extends Component<PriceChartProps> {
             callbacks: {
               label: (tooltipItem): string | string[] => {
                 return (
-                  formatToken(tooltipItem.parsed.y as UST<number>) + ' UST'
+                  formatToken(tooltipItem.parsed.y as Luna<number>) + ' Luna'
                 );
               },
             },

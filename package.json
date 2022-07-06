@@ -30,7 +30,6 @@
     "prettier": "^2.3.2"
   },
   "resolutions": {
-    "jest": "26.6.3",
-    "@terra-money/terra.js": "3.0.1"
+    "jest": "26.6.3"
   }
 }

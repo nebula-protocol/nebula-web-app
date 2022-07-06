@@ -4,7 +4,7 @@ import {
   clusterMintArbAdvancedForm,
   ClusterMintArbAdvancedFormInput,
 } from '@nebula-js/app-fns';
-import { cluster, terraswap, CT, Token, UST, Rate } from '@nebula-js/types';
+import { cluster, terraswap, CT, Token, Luna, Rate } from '@nebula-js/types';
 import { useMemo } from 'react';
 import { useNebulaApp } from '../../hooks/useNebulaApp';
 import { useProtocolFee } from '@nebula-js/app-provider';
@@ -12,7 +12,7 @@ import { useTwoSteps } from 'contexts/two-steps';
 
 export interface ClusterMintArbAdvancedFormParams {
   clusterState: cluster.ClusterStateResponse;
-  terraswapPool: terraswap.pair.PoolResponse<CT, UST>;
+  terraswapPool: terraswap.pair.PoolResponse<CT, Luna>;
   terraswapPair: terraswap.factory.PairResponse;
 }
 

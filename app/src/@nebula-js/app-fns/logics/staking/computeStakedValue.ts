@@ -1,5 +1,5 @@
 import { TerraswapPoolInfo } from '@libs/app-fns';
-import { staking, Token, UST, u } from '@nebula-js/types';
+import { staking, Token, Luna, u } from '@nebula-js/types';
 import big from 'big.js';
 import { divWithDefault } from '@libs/big-math';
 
@@ -7,7 +7,7 @@ import { divWithDefault } from '@libs/big-math';
 export function computeStakedValue(
   terraswapPoolInfo: TerraswapPoolInfo<Token>,
   poolInfo: staking.PoolInfoResponse,
-): u<UST> {
+): u<Luna> {
   const liquidityValue = big(terraswapPoolInfo.tokenPrice)
     .mul(terraswapPoolInfo.tokenPoolSize)
     .plus(terraswapPoolInfo.ustPoolSize);
@@ -16,5 +16,5 @@ export function computeStakedValue(
     .mul(
       divWithDefault(poolInfo.total_bond_amount, terraswapPoolInfo.lpShare, 0),
     )
-    .toString() as u<UST>;
+    .toString() as u<Luna>;
 }

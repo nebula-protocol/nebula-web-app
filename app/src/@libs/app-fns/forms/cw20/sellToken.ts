@@ -1,13 +1,13 @@
 import { min } from '@libs/big-math';
 import { demicrofy, microfy } from '@libs/formatter';
 import { QueryClient } from '@libs/query-client';
-import { CW20Addr, HumanAddr, Rate, Token, u, UST } from '@libs/types';
+import { CW20Addr, HumanAddr, Rate, Token, u, Luna } from '@libs/types';
 import { FormFunction, FormReturn } from '@libs/use-form';
 import big, { Big, BigSource } from 'big.js';
 import { terraswapSimulationQuery } from '../../queries/terraswap/simulation';
 
 export interface CW20SellTokenFormInput<T extends Token> {
-  ustAmount?: UST;
+  lunaAmount?: Luna;
   tokenAmount?: T;
   maxSpread: Rate;
 }
@@ -15,14 +15,14 @@ export interface CW20SellTokenFormInput<T extends Token> {
 export interface CW20SellTokenFormDependency<T extends Token> {
   queryClient: QueryClient;
   //
-  ustTokenPairAddr: HumanAddr;
+  lunaTokenPairAddr: HumanAddr;
   tokenAddr: CW20Addr;
   //
-  ustBalance: u<UST>;
+  lunaBalance: u<Luna>;
   tokenBalance: u<T>;
   taxRate: Rate;
-  maxTaxUUSD: u<UST>;
-  fixedFee: u<UST<BigSource>>;
+  maxTaxUUSD: u<Luna>;
+  fixedFee: u<Luna<BigSource>>;
   //
   connected: boolean;
 }
@@ -37,13 +37,13 @@ export interface CW20SellTokenFormStates<T extends Token>
 }
 
 export type CW20SellTokenFormAsyncStates<T extends Token> = (
-  | { ustAmount: UST }
+  | { lunaAmount: Luna }
   | { tokenAmount: T }
 ) & {
   beliefPrice: T;
-  txFee: u<UST>;
-  minimumReceived: u<UST>;
-  tradingFee: u<UST>;
+  txFee: u<Luna>;
+  minimumReceived: u<Luna>;
+  tradingFee: u<Luna>;
 };
 
 export type CW20SellTokenForm<T extends Token> = FormFunction<
@@ -54,13 +54,13 @@ export type CW20SellTokenForm<T extends Token> = FormFunction<
 >;
 
 export const cw20SellTokenForm = <T extends Token>({
-  ustTokenPairAddr,
+  lunaTokenPairAddr,
   tokenAddr,
   queryClient,
   //mantleEndpoint,
   //mantleFetch,
   //requestInit,
-  ustBalance,
+  lunaBalance,
   tokenBalance,
   taxRate,
   maxTaxUUSD,
@@ -68,25 +68,25 @@ export const cw20SellTokenForm = <T extends Token>({
   connected,
 }: CW20SellTokenFormDependency<T>) => {
   return ({
-    ustAmount,
+    lunaAmount,
     tokenAmount,
     maxSpread,
   }: CW20SellTokenFormInput<T>): FormReturn<
     CW20SellTokenFormStates<T>,
     CW20SellTokenFormAsyncStates<T>
   > => {
-    const ustAmountExists: boolean =
-      !!ustAmount && ustAmount.length > 0 && big(ustAmount).gt(0);
+    const lunaAmountExists: boolean =
+      !!lunaAmount && lunaAmount.length > 0 && big(lunaAmount).gt(0);
     const ctAmountExists: boolean =
       !!tokenAmount && tokenAmount.length > 0 && big(tokenAmount).gt(0);
 
     const invalidMaxSpread: string | null =
       maxSpread.length === 0 ? 'Max Spread is required' : null;
 
-    if (!ustAmountExists && !ctAmountExists) {
+    if (!lunaAmountExists && !ctAmountExists) {
       return [
         {
-          ustAmount,
+          lunaAmount,
           tokenAmount: tokenAmount,
           maxSpread,
           tokenBalance,
@@ -111,7 +111,7 @@ export const cw20SellTokenForm = <T extends Token>({
           availableTx: false,
         },
         terraswapSimulationQuery(
-          ustTokenPairAddr,
+          lunaTokenPairAddr,
           {
             amount: microfy(tokenAmount!).toFixed() as u<Token>,
             info: {
@@ -130,7 +130,7 @@ export const cw20SellTokenForm = <T extends Token>({
                 big(return_amount).div(big(1).plus(taxRate)),
               ),
               maxTaxUUSD,
-            ) as u<UST<Big>>;
+            ) as u<Luna<Big>>;
 
             const beliefPrice = microfy(tokenAmount!)
               .div(return_amount)
@@ -139,21 +139,21 @@ export const cw20SellTokenForm = <T extends Token>({
             const rate = big(1).minus(maxSpread).toFixed() as Rate;
 
             const expectedAmount = big(return_amount).minus(_tax) as u<
-              UST<Big>
+              Luna<Big>
             >;
 
-            const txFee = _tax.plus(fixedFee).toFixed() as u<UST>;
+            const txFee = _tax.plus(fixedFee).toFixed() as u<Luna>;
 
             const tradingFee = big(commission_amount)
               .plus(spread_amount)
-              .toFixed() as u<UST>;
+              .toFixed() as u<Luna>;
 
             const minimumReceived = expectedAmount
               .mul(rate)
-              .toFixed() as u<UST>;
+              .toFixed() as u<Luna>;
 
             const invalidTxFee =
-              connected && big(fixedFee).gt(ustBalance)
+              connected && big(fixedFee).gt(lunaBalance)
                 ? 'Not enough transaction fees'
                 : null;
 
@@ -170,7 +170,7 @@ export const cw20SellTokenForm = <T extends Token>({
               !big(tradingFee).lte(0);
 
             return {
-              ustAmount: demicrofy(return_amount).toFixed() as UST,
+              lunaAmount: demicrofy(return_amount).toFixed() as Luna,
               beliefPrice,
               txFee,
               minimumReceived,
@@ -182,10 +182,10 @@ export const cw20SellTokenForm = <T extends Token>({
           },
         ),
       ];
-    } else if (ustAmountExists) {
+    } else if (lunaAmountExists) {
       return [
         {
-          ustAmount,
+          lunaAmount,
           tokenBalance,
           maxSpread,
           invalidMaxSpread,
@@ -194,12 +194,12 @@ export const cw20SellTokenForm = <T extends Token>({
           availableTx: false,
         },
         terraswapSimulationQuery(
-          ustTokenPairAddr,
+          lunaTokenPairAddr,
           {
-            amount: microfy(ustAmount!).toFixed() as u<UST>,
+            amount: microfy(lunaAmount!).toFixed() as u<Luna>,
             info: {
               native_token: {
-                denom: 'uusd',
+                denom: 'uluna',
               },
             },
           },
@@ -209,15 +209,15 @@ export const cw20SellTokenForm = <T extends Token>({
             simulation: { return_amount, spread_amount, commission_amount },
           }) => {
             const _tax = min(
-              microfy(ustAmount!).minus(
-                microfy(ustAmount!).div(big(1).plus(taxRate)),
+              microfy(lunaAmount!).minus(
+                microfy(lunaAmount!).div(big(1).plus(taxRate)),
               ),
               maxTaxUUSD,
-            ) as u<UST<Big>>;
+            ) as u<Luna<Big>>;
 
             const beliefPrice = (
               big(return_amount).gt(0)
-                ? big(1).div(microfy(ustAmount!).div(return_amount).toFixed())
+                ? big(1).div(microfy(lunaAmount!).div(return_amount).toFixed())
                 : '0'
             ) as T;
 
@@ -227,18 +227,18 @@ export const cw20SellTokenForm = <T extends Token>({
 
             const rate = big(1).minus(maxSpread) as Rate<Big>;
 
-            const txFee = _tax.plus(fixedFee).toFixed() as u<UST>;
+            const txFee = _tax.plus(fixedFee).toFixed() as u<Luna>;
 
             const tradingFee = big(commission_amount)
               .plus(spread_amount)
-              .toFixed() as u<UST>;
+              .toFixed() as u<Luna>;
 
             const minimumReceived = big(expectedAmount)
               .mul(rate)
-              .toFixed() as u<UST>;
+              .toFixed() as u<Luna>;
 
             const invalidTxFee =
-              connected && big(fixedFee).gt(ustBalance)
+              connected && big(fixedFee).gt(lunaBalance)
                 ? 'Not enough transaction fees'
                 : null;
 
@@ -271,7 +271,7 @@ export const cw20SellTokenForm = <T extends Token>({
 
     return [
       {
-        ustAmount,
+        lunaAmount,
         tokenAmount: tokenAmount,
         maxSpread,
         tokenBalance,

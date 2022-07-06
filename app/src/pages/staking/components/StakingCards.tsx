@@ -58,7 +58,7 @@ function StakingCardsBase({ staking, ...sectionProps }: StakingCardsProps) {
           <li key={'row' + id}>
             <h3>
               <CoupledIconsHolder radiusEm={1}>
-                <TokenIcon symbol="UST" />
+                <TokenIcon symbol="Luna" />
                 <TokenIcon symbol={symbol} />
               </CoupledIconsHolder>
               <div className="name-container">
@@ -80,7 +80,7 @@ function StakingCardsBase({ staking, ...sectionProps }: StakingCardsProps) {
                   <AnimateNumber format={formatUTokenWithPostfixUnits}>
                     {totalStaked}
                   </AnimateNumber>{' '}
-                  <Sub>UST</Sub>
+                  <Sub>Luna</Sub>
                 </>
               }
             />

@@ -1,7 +1,7 @@
 import { useRefetchQueries } from '@libs/app-provider';
 import { useGovFee } from '@nebula-js/app-provider';
 import { govStakeTx } from '@nebula-js/app-fns';
-import { NEB, u, UST } from '@nebula-js/types';
+import { NEB, u, Luna } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
 import { NEBULA_TX_KEYS } from '../../env';
@@ -9,7 +9,7 @@ import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export interface GovStakeTxParams {
   nebAmount: u<NEB>;
-  txFee: u<UST>;
+  txFee: u<Luna>;
 
   onTxSucceed?: () => void;
 }

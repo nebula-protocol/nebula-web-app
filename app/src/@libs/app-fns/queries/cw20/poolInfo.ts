@@ -1,5 +1,5 @@
 import { QueryClient } from '@libs/query-client';
-import { cw20, CW20Addr, HumanAddr, terraswap, Token, UST } from '@libs/types';
+import { cw20, CW20Addr, HumanAddr, terraswap, Token, Luna } from '@libs/types';
 import { cw20TokenInfoQuery } from '../cw20/tokenInfo';
 import { terraswapPairQuery } from '../terraswap/pair';
 import { TerraswapPoolInfo, terraswapPoolQuery } from '../terraswap/pool';
@@ -7,7 +7,7 @@ import { TerraswapPoolInfo, terraswapPoolQuery } from '../terraswap/pool';
 export type CW20PoolInfo<T extends Token> = {
   tokenAddr: CW20Addr;
   terraswapPair: terraswap.factory.PairResponse;
-  terraswapPool: terraswap.pair.PoolResponse<T, UST>;
+  terraswapPool: terraswap.pair.PoolResponse<T, Luna>;
   terraswapPoolInfo: TerraswapPoolInfo<T>;
   tokenInfo: cw20.TokenInfoResponse<T>;
 };
@@ -27,7 +27,7 @@ export async function cw20PoolInfoQuery<T extends Token>(
       },
       {
         native_token: {
-          denom: 'uusd',
+          denom: 'uluna',
         },
       },
     ],

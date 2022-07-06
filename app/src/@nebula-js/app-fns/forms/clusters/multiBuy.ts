@@ -9,7 +9,7 @@ import {
   HumanAddr,
   Token,
   u,
-  UST,
+  Luna,
   Rate,
 } from '@nebula-js/types';
 import { NebulaClusterFee } from '../../types';
@@ -17,7 +17,7 @@ import big, { Big, BigSource } from 'big.js';
 import {
   computeBulkSwapTxFee,
   computeClusterTxFee,
-  computeMaxUstBalanceForSwap,
+  computeMaxLunaBalanceForSwap,
   swapPriceListQuery,
 } from '@nebula-js/app-fns';
 import { SwapTokenInfo } from '../../types';
@@ -25,7 +25,7 @@ import { divWithDefault, sum, vectorDot } from '@libs/big-math';
 import { GetMintArbTxInfoResponse } from '@nebula-js/app-provider';
 
 export interface ClusterMultiBuyFormInput {
-  ustAmount: UST;
+  lunaAmount: Luna;
 }
 
 export interface ClusterMultiBuyFormDependency {
@@ -37,7 +37,7 @@ export interface ClusterMultiBuyFormDependency {
   anchorProxyAddr: HumanAddr;
   oracleAddr: HumanAddr;
   aUSTAddr: CW20Addr;
-  ustBalance: u<UST>;
+  lunaBalance: u<Luna>;
   gasPrice: GasPrice;
   swapGasWantedPerAsset: Gas;
   clusterFee: NebulaClusterFee;
@@ -45,8 +45,8 @@ export interface ClusterMultiBuyFormDependency {
 }
 
 export interface ClusterMultiBuyFormStates extends ClusterMultiBuyFormInput {
-  maxUstAmount: u<UST<BigSource>>;
-  txFee: u<UST> | null;
+  maxUstAmount: u<Luna<BigSource>>;
+  txFee: u<Luna> | null;
   invalidUstAmount: string | null;
   invalidQuery: string | null;
   invalidSwap: string | null;
@@ -54,13 +54,13 @@ export interface ClusterMultiBuyFormStates extends ClusterMultiBuyFormInput {
 
 export interface ClusterMultiBuyFormAsyncStates {
   boughtTokens?: SwapTokenInfo[];
-  pnl?: u<UST>;
+  pnl?: u<Luna>;
 }
 
 export const clusterMultiBuyForm = ({
   connected,
   queryClient,
-  ustBalance,
+  lunaBalance,
   clusterState,
   terraswapFactoryAddr,
   anchorProxyAddr,
@@ -73,7 +73,7 @@ export const clusterMultiBuyForm = ({
   mintArbInfoTx,
 }: ClusterMultiBuyFormDependency) => {
   return ({
-    ustAmount,
+    lunaAmount,
   }: ClusterMultiBuyFormInput): FormReturn<
     ClusterMultiBuyFormStates,
     ClusterMultiBuyFormAsyncStates
@@ -81,8 +81,8 @@ export const clusterMultiBuyForm = ({
     let invalidQuery: string | null;
     let invalidSwap: string | null;
 
-    const ustAmountExists: boolean =
-      !!ustAmount && ustAmount.length > 0 && big(ustAmount).gt(0);
+    const lunaAmountExists: boolean =
+      !!lunaAmount && lunaAmount.length > 0 && big(lunaAmount).gt(0);
 
     const txFee = computeBulkSwapTxFee(
       gasPrice,
@@ -97,16 +97,16 @@ export const clusterMultiBuyForm = ({
       clusterState.target.length,
     );
 
-    const maxUstAmount = computeMaxUstBalanceForSwap(
-      ustBalance,
+    const maxUstAmount = computeMaxLunaBalanceForSwap(
+      lunaBalance,
       txFee,
       clusterTxFee,
     );
 
-    if (!ustAmountExists) {
+    if (!lunaAmountExists) {
       return [
         {
-          ustAmount,
+          lunaAmount,
           maxUstAmount,
           txFee: null,
           invalidUstAmount: null,
@@ -118,11 +118,11 @@ export const clusterMultiBuyForm = ({
     }
 
     const invalidUstAmount =
-      connected && microfy(ustAmount).gt(maxUstAmount)
-        ? 'Not enough UST'
+      connected && microfy(lunaAmount).gt(maxUstAmount)
+        ? 'Not enough Luna'
         : null;
 
-    const asyncStates = ustAmountExists
+    const asyncStates = lunaAmountExists
       ? swapPriceListQuery(
           clusterState.target,
           terraswapFactoryAddr,
@@ -132,23 +132,23 @@ export const clusterMultiBuyForm = ({
           queryClient,
         )
           .then(async (priceInfos) => {
-            const poolPrices: UST[] = priceInfos.map(
+            const poolPrices: Luna[] = priceInfos.map(
               ({ buyTokenPrice }) => buyTokenPrice,
             );
 
             const targetAmts = clusterState.target.map(({ amount }) => amount);
 
-            // multiplierRatio = (targetSum * ustAmount) / dot(targetAmt,prices)
+            // multiplierRatio = (targetSum * lunaAmount) / dot(targetAmt,prices)
             // boughtAmount = round(multiplierRatio) * targetAmt / targetSum;
             const targetSum = sum(...targetAmts);
 
             const priceTargetSum = vectorDot(targetAmts, poolPrices);
 
             const multiplierTargetRatio = divWithDefault(
-              targetSum.mul(ustAmount),
+              targetSum.mul(lunaAmount),
               priceTargetSum,
               0,
-            ).round(10, Big.roundDown); // prevent to exceed ustAmount
+            ).round(10, Big.roundDown); // prevent to exceed lunaAmount
 
             const boughtTokens: SwapTokenInfo[] = clusterState.target.map(
               ({ info, amount }, idx) => {
@@ -161,22 +161,22 @@ export const clusterMultiBuyForm = ({
                 ).round(0, Big.roundDown) as u<Token<Big>>;
 
                 return {
-                  buyUustAmount: uTokenAmount
+                  buyUlunaAmount: uTokenAmount
                     .mul(poolPrices[idx])
-                    .toFixed(0) as u<UST>,
+                    .toFixed(0) as u<Luna>,
                   returnAmount: uTokenAmount.toFixed() as u<Token>,
                   tokenUstPairAddr: priceInfos[idx].tokenUstPairAddr,
-                  beliefPrice: formatExecuteMsgNumber(poolPrices[idx]) as UST,
+                  beliefPrice: formatExecuteMsgNumber(poolPrices[idx]) as Luna,
                   info,
                 };
               },
             );
 
             invalidSwap = boughtTokens.find(
-              ({ returnAmount, buyUustAmount }) =>
-                big(returnAmount).eq(0) || big(buyUustAmount).eq(0),
+              ({ returnAmount, buyUlunaAmount }) =>
+                big(returnAmount).eq(0) || big(buyUlunaAmount).eq(0),
             )
-              ? 'Insufficient UST to swap the underlying assets.'
+              ? 'Insufficient Luna to swap the underlying assets.'
               : null;
 
             const providedAmounts = boughtTokens.map(
@@ -211,7 +211,7 @@ export const clusterMultiBuyForm = ({
 
     return [
       {
-        ustAmount,
+        lunaAmount,
         maxUstAmount,
         txFee: null,
         invalidUstAmount,

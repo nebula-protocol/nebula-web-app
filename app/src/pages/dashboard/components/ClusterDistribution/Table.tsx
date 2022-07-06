@@ -34,7 +34,7 @@ function TableBase({ className, data }: TableProps) {
               <AnimateNumber format={formatUTokenWithPostfixUnits}>
                 {provided}
               </AnimateNumber>{' '}
-              UST
+              Luna
             </td>
             <td>
               <AnimateNumber format={formatRate}>{ratio}</AnimateNumber>%

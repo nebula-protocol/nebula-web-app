@@ -34,7 +34,10 @@ export class HiveFetchError extends Error {
   constructor(public readonly errors: HiveFetchErrorItem[]) {
     super(
       errors
-        .map(({ message, path }, i) => `${i} [${path.join(', ')}]: ${message}`)
+        .map(
+          ({ message, locations }, i) =>
+            `${i} [${JSON.stringify(locations)}]: ${message}`,
+        )
         .join('\n'),
     );
     this.name = 'HiveFetchError';

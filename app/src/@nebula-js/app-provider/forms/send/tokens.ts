@@ -12,14 +12,14 @@ import { useWallet } from '@terra-money/wallet-provider';
 import { useCallback, useEffect } from 'react';
 import { useNebulaApp } from '../../hooks/useNebulaApp';
 
-const NATIVE_DENOMS = ['uusd', 'uluna'] as NativeDenom[];
+const NATIVE_DENOMS = ['uluna'] as NativeDenom[];
 const FALLBACK = {
   assetInfo: {
     native_token: {
-      denom: 'uusd',
+      denom: 'uluna',
     },
   },
-  tokenInfo: nativeTokenInfoQuery('uusd')!,
+  tokenInfo: nativeTokenInfoQuery('uluna')!,
 } as SendTokenInfo;
 
 const cw20AddrCache = new PersistCache<CW20Addr[]>(

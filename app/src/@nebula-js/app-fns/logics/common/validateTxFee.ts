@@ -1,11 +1,11 @@
-import type { u, UST } from '@nebula-js/types';
+import type { u, Luna } from '@nebula-js/types';
 import big, { BigSource } from 'big.js';
 
 export function validateTxFee(
-  ustBalance: u<UST<BigSource>> | undefined,
-  txFee: u<UST<BigSource>>,
+  lunaBalance: u<Luna<BigSource>> | undefined,
+  txFee: u<Luna<BigSource>>,
 ): string | undefined {
-  if (big(ustBalance ?? 0).lt(txFee)) {
+  if (big(lunaBalance ?? 0).lt(txFee)) {
     return 'Not enough transaction fees';
   }
   return undefined;

@@ -12,7 +12,7 @@ import {
   TextLink,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { CT, terraswap, Token, u, UST } from '@nebula-js/types';
+import { CT, terraswap, Token, u, Luna } from '@nebula-js/types';
 import { FeeBox } from 'components/boxes/FeeBox';
 import { WarningMessageBox } from 'components/boxes/WarningMessageBox';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
@@ -80,7 +80,7 @@ function MintAdvancedBase({ className, clusterInfo }: MintAdvancedProps) {
   }, [clusterInfo.clusterState.target, updateInput]);
 
   const proceed = useCallback(
-    (amounts: Token[], txFee: u<UST>) => {
+    (amounts: Token[], txFee: u<Luna>) => {
       const stream = postTx?.({
         amounts: amounts.map(
           (amount) =>
@@ -124,7 +124,7 @@ function MintAdvancedBase({ className, clusterInfo }: MintAdvancedProps) {
             <br />
             <br />
             <span>
-              Instead of starting with UST as in Mint Basic, the mode allows
+              Instead of starting with Luna as in Mint Basic, the mode allows
               utilization of assets already in the user’s wallet, with the
               assets.
             </span>
@@ -174,14 +174,14 @@ function MintAdvancedBase({ className, clusterInfo }: MintAdvancedProps) {
           {'pnl' in states && states.pnl && (
             <li>
               <span>PNL</span>
-              <span>{formatUToken(states.pnl)} UST</span>
+              <span>{formatUToken(states.pnl)} Luna</span>
             </li>
           )}
 
           {states.txFee !== null && (
             <li>
               <span>Tx Fee</span>
-              <span>{states.txFee ? formatUToken(states.txFee) : 0} UST</span>
+              <span>{states.txFee ? formatUToken(states.txFee) : 0} Luna</span>
             </li>
           )}
         </FeeBox>

@@ -1,6 +1,6 @@
 import { cw20MultiBuyTokensTx } from '@nebula-js/app-fns/tx/clusters/multiBuy';
 import { useFixedFee } from '@libs/app-provider/hooks/useFixedFee';
-import { Rate, u, UST } from '@libs/types';
+import { Rate, u, Luna } from '@libs/types';
 import { useConnectedWallet } from '@terra-money/use-wallet';
 import { useCallback } from 'react';
 import { useNebulaApp } from '@nebula-js/app-provider';
@@ -12,7 +12,7 @@ import { computeBulkSwapGasWanted } from '@nebula-js/app-fns';
 
 export interface CW20MultiBuyTokenTxParams {
   buyTokens: SwapTokenInfo[];
-  txFee: u<UST>;
+  txFee: u<Luna>;
 
   onTxSucceed?: () => void;
 }

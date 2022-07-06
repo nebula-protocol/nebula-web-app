@@ -7,7 +7,7 @@ import {
   terraswap,
   Token,
   u,
-  UST,
+  Luna,
 } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
@@ -16,7 +16,7 @@ import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export interface ClusterRedeemTxParams {
   amount: u<CT>;
-  txFee: u<UST>;
+  txFee: u<Luna>;
 
   onTxSucceed?: () => void;
 }

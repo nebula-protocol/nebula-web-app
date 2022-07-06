@@ -15,7 +15,7 @@ export function FinderAddressLink({
 }: FinderAddressLinkProps) {
   return (
     <a
-      href={`https://finder.extraterrestrial.money/${network.name}/address/${address}`}
+      href={`https://finder.terra.money/${network.name}/address/${address}`}
       target="_blank"
       rel="noreferrer"
       // TODO: make FinderAddressLink of Nebula

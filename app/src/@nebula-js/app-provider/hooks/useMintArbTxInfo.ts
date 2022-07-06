@@ -3,7 +3,7 @@ import {
   computeMinReceivedAmount,
   computeUTokenWithoutFee,
 } from '@nebula-js/app-fns';
-import { cluster, u, CT, UST, Token, Rate, terraswap } from '@nebula-js/types';
+import { cluster, u, CT, Luna, Token, Rate, terraswap } from '@nebula-js/types';
 import { useCallback } from 'react';
 import { useNebulaApp } from './useNebulaApp';
 import { useProtocolFee } from '../queries/cluster-factory/config';
@@ -13,9 +13,9 @@ import big from 'big.js';
 
 // TODO: move to types.ts
 export interface MintArbTxInfo {
-  totalInputValue: u<UST>;
-  pnl: u<UST>;
-  minReceivedUust: u<UST>;
+  totalInputValue: u<Luna>;
+  pnl: u<Luna>;
+  minReceivedUust: u<Luna>;
 }
 
 export type GetMintArbTxInfoResponse = (
@@ -35,9 +35,9 @@ export function useMintArbTxInfo(
     async (amounts: u<Token>[], maxSpread: Rate) => {
       if (amounts.length !== clusterState.prices.length) {
         return {
-          totalInputValue: '0' as u<UST>,
-          pnl: '0' as u<UST>,
-          minReceivedUust: '0' as u<UST>,
+          totalInputValue: '0' as u<Luna>,
+          pnl: '0' as u<Luna>,
+          minReceivedUust: '0' as u<Luna>,
         };
       }
 
@@ -71,13 +71,13 @@ export function useMintArbTxInfo(
       );
 
       const minReceivedUust = computeMinReceivedAmount(
-        return_amount as u<UST>,
+        return_amount as u<Luna>,
         maxSpread,
       );
 
       return {
-        totalInputValue: totalInputValue.toFixed(0) as u<UST>,
-        pnl: big(minReceivedUust).minus(totalInputValue).toFixed() as u<UST>,
+        totalInputValue: totalInputValue.toFixed(0) as u<Luna>,
+        pnl: big(minReceivedUust).minus(totalInputValue).toFixed() as u<Luna>,
         minReceivedUust,
       };
     },

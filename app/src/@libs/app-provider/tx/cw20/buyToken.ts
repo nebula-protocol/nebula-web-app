@@ -1,7 +1,7 @@
 import { cw20BuyTokenTx } from '@libs/app-fns';
 import { useFixedFee } from '@libs/app-provider/hooks/useFixedFee';
 import { formatExecuteMsgNumber } from '@libs/formatter';
-import { HumanAddr, Rate, Token, u, UST } from '@libs/types';
+import { HumanAddr, Rate, Token, u, Luna } from '@libs/types';
 import { useConnectedWallet } from '@terra-money/use-wallet';
 import { useCallback } from 'react';
 import { useApp } from '../../contexts/app';
@@ -11,8 +11,8 @@ import { useUstTax } from '../../queries/terra/tax';
 import { useTerraswapPoolQuery } from '../../queries/terraswap/pool';
 
 export interface CW20BuyTokenTxParams {
-  buyAmount: u<UST>;
-  txFee: u<UST>;
+  buyAmount: u<Luna>;
+  txFee: u<Luna>;
   maxSpread: Rate;
 
   onTxSucceed?: () => void;
@@ -50,7 +50,7 @@ export function useCW20BuyTokenTx(
         buyAmount,
         beliefPrice: formatExecuteMsgNumber(
           terraswapPoolInfo.tokenPrice,
-        ) as UST,
+        ) as Luna,
         tokenUstPairAddr,
         tokenSymbol,
         taxRate,

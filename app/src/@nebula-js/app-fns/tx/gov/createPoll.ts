@@ -13,7 +13,7 @@ import {
   _postTx,
   TxHelper,
 } from '@libs/app-fns/tx/internal';
-import { CW20Addr, gov, HumanAddr, NEB, Rate, u, UST } from '@nebula-js/types';
+import { CW20Addr, gov, HumanAddr, NEB, Rate, u, Luna } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
 import { MsgExecuteContract, Fee } from '@terra-money/terra.js';
 import { Observable } from 'rxjs';
@@ -29,7 +29,7 @@ export function govCreatePollTx(
     link?: string;
     execute_msg?: gov.ExecuteMsg;
     taxRate: Rate;
-    maxTaxUUSD: u<UST>;
+    maxTaxUUSD: u<Luna>;
     onTxSucceed?: () => void;
   } & TxCommonParams,
 ): Observable<TxResultRendering> {
@@ -55,7 +55,7 @@ export function govCreatePollTx(
           },
         }),
       ],
-      fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
+      fee: new Fee($.gasWanted, floor($.txFee) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),
@@ -67,11 +67,11 @@ export function govCreatePollTx(
         return helper.failedToFindRawLog();
       }
 
-      const fromContract = pickEvent(rawLog, 'from_contract');
+      const fromContract = pickEvent(rawLog, 'wasm');
       const transfer = pickEvent(rawLog, 'transfer');
 
       if (!fromContract || !transfer) {
-        return helper.failedToFindEvents('from_contract', 'transfer');
+        return helper.failedToFindEvents('wasm', 'transfer');
       }
 
       try {

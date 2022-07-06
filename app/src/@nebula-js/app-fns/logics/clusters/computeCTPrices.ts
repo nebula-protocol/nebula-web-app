@@ -1,36 +1,36 @@
-import { cluster, CT, terraswap, Rate, UST } from '@nebula-js/types';
+import { cluster, CT, terraswap, Rate, Luna } from '@nebula-js/types';
 import { getAssetAmount, computeProvided } from '@nebula-js/app-fns';
 import { divWithDefault } from '@libs/big-math';
 import { Big } from 'big.js';
 
 export type ClusterTokenPrices = {
-  poolPrice: UST<Big>;
-  clusterPrice: UST<Big>;
+  poolPrice: Luna<Big>;
+  clusterPrice: Luna<Big>;
   premium: Rate<Big>;
 };
 
-// poolPrice = ustAmount / ctAmount
+// poolPrice = lunaAmount / ctAmount
 // clusterPrice = provided / ctTotalSupply
 // premium = (poolPrice - clusterPrice) / cluster
 export function computeCTPrices(
   clusterState: cluster.ClusterStateResponse,
-  terraswapPool: terraswap.pair.PoolResponse<CT, UST>,
+  terraswapPool: terraswap.pair.PoolResponse<CT, Luna>,
 ): ClusterTokenPrices {
   const ctAmount = getAssetAmount<CT>(terraswapPool.assets, {
     token: { contract_addr: clusterState.cluster_token },
   });
 
-  const ustAmount = getAssetAmount<UST>(terraswapPool.assets, 'uusd');
+  const lunaAmount = getAssetAmount<Luna>(terraswapPool.assets, 'uluna');
 
   const provided = computeProvided(clusterState);
 
-  const poolPrice = divWithDefault(ustAmount, ctAmount, 0) as UST<Big>;
+  const poolPrice = divWithDefault(lunaAmount, ctAmount, 0) as Luna<Big>;
 
   const clusterPrice = divWithDefault(
     provided,
     clusterState.outstanding_balance_tokens,
     0,
-  ) as UST<Big>;
+  ) as Luna<Big>;
 
   return {
     poolPrice,

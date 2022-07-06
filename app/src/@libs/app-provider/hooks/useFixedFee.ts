@@ -1,7 +1,7 @@
-import { useApp, useGasToUst } from '@libs/app-provider';
-import { u, UST } from '@libs/types';
+import { useApp, useGasToLuna } from '@libs/app-provider';
+import { u, Luna } from '@libs/types';
 
-export function useFixedFee(): u<UST> {
+export function useFixedFee(): u<Luna> {
   const { constants } = useApp();
-  return useGasToUst(constants.fixedGas);
+  return useGasToLuna(constants.fixedGas);
 }

@@ -1,10 +1,10 @@
 import { min } from '@libs/big-math';
 import { microfy } from '@libs/formatter';
-import { Rate, Token, u, UST } from '@libs/types';
+import { Rate, Token, u, Luna } from '@libs/types';
 import { FormFunction, FormReturn } from '@libs/use-form';
 import { AccAddress } from '@terra-money/terra.js';
 import big, { BigSource } from 'big.js';
-import { computeMaxUstBalanceForUstTransfer } from '../../logics/computeMaxUstBalanceForUstTransfer';
+import { computeMaxLunaBalanceForTransfer } from '../../logics/computeMaxLunaBalanceForTransfer';
 import { SendTokenInfo } from './tokens';
 
 export interface SendFormInput<T extends Token> {
@@ -16,11 +16,11 @@ export interface SendFormInput<T extends Token> {
 export interface SendFormDependency<T extends Token> {
   //
   balance: u<T>;
-  ustBalance: u<UST>;
+  lunaBalance: u<Luna>;
   //
   taxRate: Rate;
-  maxTaxUUSD: u<UST>;
-  fixedFee: u<UST<BigSource>>;
+  maxTaxUUSD: u<Luna>;
+  fixedFee: u<Luna<BigSource>>;
   //
   tokenInfo: SendTokenInfo;
   connected: boolean;
@@ -28,7 +28,7 @@ export interface SendFormDependency<T extends Token> {
 
 export interface SendFormStates<T extends Token> extends SendFormInput<T> {
   maxAmount: u<T>;
-  txFee: u<UST<BigSource>> | null;
+  txFee: u<Luna<BigSource>> | null;
 
   invalidToAddr: string | null;
   invalidTxFee: string | null;
@@ -51,7 +51,7 @@ export type SendForm<T extends Token> = FormFunction<
 
 export const sendForm = <T extends Token>({
   balance,
-  ustBalance,
+  lunaBalance,
   tokenInfo,
   taxRate,
   maxTaxUUSD,
@@ -60,11 +60,11 @@ export const sendForm = <T extends Token>({
 }: SendFormDependency<T>) => {
   const isUst =
     'native_token' in tokenInfo.assetInfo &&
-    tokenInfo.assetInfo.native_token.denom === 'uusd';
+    tokenInfo.assetInfo.native_token.denom === 'uluna';
 
   const maxAmount: u<T> = isUst
-    ? (computeMaxUstBalanceForUstTransfer(
-        balance as u<UST>,
+    ? (computeMaxLunaBalanceForTransfer(
+        balance as u<Luna>,
         taxRate,
         maxTaxUUSD,
         fixedFee,
@@ -112,10 +112,10 @@ export const sendForm = <T extends Token>({
       isUst
         ? min(microfy(amount!).mul(taxRate), maxTaxUUSD).plus(fixedFee)
         : fixedFee
-    ) as u<UST<BigSource>>;
+    ) as u<Luna<BigSource>>;
 
     const invalidTxFee =
-      connected && big(txFee).gt(ustBalance)
+      connected && big(txFee).gt(lunaBalance)
         ? 'Not enough transaction fees'
         : null;
 
@@ -123,7 +123,7 @@ export const sendForm = <T extends Token>({
       ? null
       : isUst
       ? microfy(amount!).plus(txFee).gt(balance)
-        ? 'Not enough UST'
+        ? 'Not enough Luna'
         : null
       : microfy(amount!).gt(balance)
       ? 'Not enough assets'

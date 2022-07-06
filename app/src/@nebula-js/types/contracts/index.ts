@@ -9,3 +9,4 @@ export * from './incentives_custody';
 export * from './penalty';
 export * from './staking';
 export * from './oracle';
+export * from './oracle_hub';

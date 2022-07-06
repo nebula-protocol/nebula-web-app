@@ -10,7 +10,7 @@ import { useConnectedWallet } from '@terra-money/use-wallet';
 import { useApp } from '../../contexts/app';
 import { useFixedFee } from '../../hooks/useFixedFee';
 import { useSendBalanceQuery } from '../../queries/send/balance';
-import { useUstBalance } from '../../queries/terra/nativeBalances';
+import { useLunaBalance } from '../../queries/terra/nativeBalances';
 import { useUstTax } from '../../queries/terra/tax';
 
 export interface SendFormParams {
@@ -26,7 +26,7 @@ export function useSendForm<T extends Token>({ tokenInfo }: SendFormParams) {
 
   const { taxRate, maxTax } = useUstTax();
 
-  const uUST = useUstBalance(connectedWallet?.walletAddress);
+  const uUST = useLunaBalance(connectedWallet?.walletAddress);
 
   const balance = useSendBalanceQuery<T>(
     'native_token' in tokenInfo.assetInfo
@@ -43,7 +43,7 @@ export function useSendForm<T extends Token>({ tokenInfo }: SendFormParams) {
       balance,
       walletAddr: connectedWallet?.walletAddress,
       queryClient,
-      ustBalance: uUST,
+      lunaBalance: uUST,
       taxRate,
       maxTaxUUSD: maxTax,
       fixedFee,

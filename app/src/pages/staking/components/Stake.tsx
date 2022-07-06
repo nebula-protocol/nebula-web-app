@@ -5,7 +5,7 @@ import {
   useStakingStakeTx,
 } from '@nebula-js/app-provider';
 import { PlusIcon, WalletIcon } from '@nebula-js/icons';
-import { CT, Rate, u, UST } from '@nebula-js/types';
+import { CT, Rate, u, Luna } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
@@ -48,21 +48,21 @@ function StakingStakeBase({
 
   const [updateInput, states] = useStakingStakeForm({
     tokenAddr: tokenAddr,
-    ustTokenPairAddr: terraswapPair.contract_addr,
+    lunaTokenPairAddr: terraswapPair.contract_addr,
   });
 
   const initForm = useCallback(() => {
     updateInput({
-      ustAmount: '' as UST,
+      lunaAmount: '' as Luna,
       tokenAmount: '' as CT,
     });
   }, [updateInput]);
 
   const proceed = useCallback(
     async (
-      ustAmount: UST,
+      lunaAmount: Luna,
       tokenAmount: CT,
-      txFee: u<UST<BigSource>>,
+      txFee: u<Luna<BigSource>>,
       slippageTolerance: Rate,
       warning: string | null,
     ) => {
@@ -79,9 +79,9 @@ function StakingStakeBase({
       }
 
       const stream = postTx?.({
-        ustAmount: microfy(ustAmount).toFixed() as u<UST>,
+        lunaAmount: microfy(lunaAmount).toFixed() as u<Luna>,
         tokenAmount: microfy(tokenAmount).toFixed() as u<CT>,
-        txFee: big(txFee).toFixed() as u<UST>,
+        txFee: big(txFee).toFixed() as u<Luna>,
         slippageTolerance,
         onTxSucceed: initForm,
       });
@@ -109,7 +109,7 @@ function StakingStakeBase({
         maxDecimalPoints={6}
         value={states.tokenAmount ?? ('' as CT)}
         onChange={(nextCtAmount) =>
-          updateInput({ ustAmount: undefined, tokenAmount: nextCtAmount })
+          updateInput({ lunaAmount: undefined, tokenAmount: nextCtAmount })
         }
         placeholder="0.00"
         label="AMOUNT"
@@ -118,7 +118,7 @@ function StakingStakeBase({
             fontSize={12}
             onClick={() =>
               updateInput({
-                ustAmount: undefined,
+                lunaAmount: undefined,
                 tokenAmount: formatUInput(states.maxTokenAmount) as CT,
               })
             }
@@ -143,9 +143,9 @@ function StakingStakeBase({
 
       <TokenInput
         maxDecimalPoints={6}
-        value={states.ustAmount ?? ('' as UST)}
+        value={states.lunaAmount ?? ('' as Luna)}
         onChange={(nextUstAmount) =>
-          updateInput({ ustAmount: nextUstAmount, tokenAmount: undefined })
+          updateInput({ lunaAmount: nextUstAmount, tokenAmount: undefined })
         }
         placeholder="0.00"
         label="AMOUNT"
@@ -154,7 +154,7 @@ function StakingStakeBase({
             fontSize={12}
             onClick={() =>
               updateInput({
-                ustAmount: formatUInput(states.maxUstAmount) as UST,
+                lunaAmount: formatUInput(states.maxUstAmount) as Luna,
                 tokenAmount: undefined,
               })
             }
@@ -167,7 +167,7 @@ function StakingStakeBase({
             {formatUToken(states.maxUstAmount)}
           </TextButton>
         }
-        token={<TokenSpan symbol="UST">UST</TokenSpan>}
+        token={<TokenSpan symbol="Luna">Luna</TokenSpan>}
         error={states.invalidUstAmount}
       />
 
@@ -198,7 +198,7 @@ function StakingStakeBase({
         {states.txFee && (
           <li>
             <span>Tx Fee</span>
-            <span>{formatUToken(states.txFee)} UST</span>
+            <span>{formatUToken(states.txFee)} Luna</span>
           </li>
         )}
       </FeeBox>
@@ -225,11 +225,11 @@ function StakingStakeBase({
           !states.availableTx
         }
         onClick={() =>
-          states.ustAmount &&
+          states.lunaAmount &&
           states.tokenAmount &&
           states.txFee &&
           proceed(
-            states.ustAmount,
+            states.lunaAmount,
             states.tokenAmount,
             states.txFee,
             states.slippageTolerance,

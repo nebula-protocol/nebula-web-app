@@ -78,12 +78,12 @@ export const Basic = () => {
                 <td>
                   <IconAndLabels text={name} subtext={description} />
                 </td>
-                <td>{price} UST</td>
+                <td>{price} Luna</td>
                 <td>
                   <DiffSpan diff={hr24diff}>{hr24}%</DiffSpan>
                 </td>
-                <td>{marketCap} UST</td>
-                <td>{volume} UST</td>
+                <td>{marketCap} Luna</td>
+                <td>{volume} Luna</td>
               </tr>
             ),
           )}
@@ -147,12 +147,12 @@ export const Header_Contents = () => {
                 <td>
                   <IconAndLabels text={name} subtext={description} />
                 </td>
-                <td>{price} UST</td>
+                <td>{price} Luna</td>
                 <td>
                   <DiffSpan diff={hr24diff}>{hr24}%</DiffSpan>
                 </td>
-                <td>{marketCap} UST</td>
-                <td>{volume} UST</td>
+                <td>{marketCap} Luna</td>
+                <td>{volume} Luna</td>
               </tr>
             ),
           )}

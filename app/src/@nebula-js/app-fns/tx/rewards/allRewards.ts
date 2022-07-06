@@ -59,7 +59,7 @@ export function claimAllRewardsTx(
   return pipe(
     _createTxOptions({
       msgs: [...govClaimMsg, ...stakingClaimMsg, ...incentiveClaimMsg],
-      fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
+      fee: new Fee($.gasWanted, floor($.txFee) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),
@@ -71,11 +71,11 @@ export function claimAllRewardsTx(
         return helper.failedToFindRawLog();
       }
 
-      const fromContract = pickEvent(rawLog, 'from_contract');
+      const fromContract = pickEvent(rawLog, 'wasm');
       const transfer = pickEvent(rawLog, 'transfer');
 
       if (!fromContract || !transfer) {
-        return helper.failedToFindEvents('from_contract', 'transfer');
+        return helper.failedToFindEvents('wasm', 'transfer');
       }
 
       try {

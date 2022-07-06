@@ -4,7 +4,7 @@ import { microfy } from '@libs/formatter';
 import { QueryClient } from '@libs/query-client';
 import { FormReturn } from '@libs/use-form';
 import { computeCTPrices } from '@nebula-js/app-fns';
-import { cluster, CT, Rate, terraswap, Token, u, UST } from '@nebula-js/types';
+import { cluster, CT, Rate, terraswap, Token, u, Luna } from '@nebula-js/types';
 import big, { Big, BigSource } from 'big.js';
 import {
   computeClusterTxFee,
@@ -24,10 +24,10 @@ export interface ClusterMintAdvancedFormDependency {
   lastSyncedHeight: () => Promise<number>;
   clusterState: cluster.ClusterStateResponse;
   protocolFee: Rate;
-  terraswapPool: terraswap.pair.PoolResponse<CT, UST>;
+  terraswapPool: terraswap.pair.PoolResponse<CT, Luna>;
   gasPrice: GasPrice;
   clusterFee: NebulaClusterFee;
-  fixedFee: u<UST<BigSource>>;
+  fixedFee: u<Luna<BigSource>>;
 }
 
 export interface ClusterMintAdvancedFormStates
@@ -36,13 +36,13 @@ export interface ClusterMintAdvancedFormStates
   invalidMintQuery: string | null;
   remainAssets: terraswap.Asset<Token>[];
   balances?: Array<{ asset: terraswap.AssetInfo; balance: u<Token> }>;
-  txFee: u<UST> | null;
+  txFee: u<Luna> | null;
 }
 
 export interface ClusterMintAdvancedFormAsyncStates {
   mintedAmount?: u<CT>;
-  totalInputValue?: u<UST<Big>>;
-  pnl?: u<UST>;
+  totalInputValue?: u<Luna<Big>>;
+  pnl?: u<Luna>;
 }
 
 export const clusterMintAdvancedForm = (
@@ -68,12 +68,12 @@ export const clusterMintAdvancedForm = (
       dependency.clusterState.target.length,
     );
 
-    // subtract max fee from ust max balance
+    // subtract max fee from luna max balance
     const maxBalances = dependency.balances?.balances.map(
       ({ asset, balance }) => {
         let newBalance = balance;
-        if ('native_token' in asset && asset.native_token.denom === 'uusd') {
-          newBalance = big(balance).minus(clusterTxFee).toFixed() as u<UST>;
+        if ('native_token' in asset && asset.native_token.denom === 'uluna') {
+          newBalance = big(balance).minus(clusterTxFee).toFixed() as u<Luna>;
         }
 
         return { asset, balance: newBalance };
@@ -156,18 +156,18 @@ export const clusterMintAdvancedForm = (
               // totalMintValue = createToken * clusterPrice
               const totalMintValue = big(mintedAmountWithoutFee).mul(
                 clusterPrice,
-              ) as u<UST<Big>>;
+              ) as u<Luna<Big>>;
 
               const totalInputValue = vectorDot(
                 input.amounts.map((amount) =>
                   amount.length > 0 ? microfy(amount).toFixed() : '0',
                 ),
                 dependency.clusterState.prices,
-              ) as u<UST<Big>>;
+              ) as u<Luna<Big>>;
 
               return {
                 mintedAmount: mintedAmountWithoutFee,
-                pnl: totalMintValue.minus(totalInputValue).toFixed() as u<UST>,
+                pnl: totalMintValue.minus(totalInputValue).toFixed() as u<Luna>,
                 totalInputValue,
                 txFee: clusterTxFee,
                 invalidMintQuery: undefined,

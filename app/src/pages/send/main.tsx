@@ -2,7 +2,7 @@ import { formatUInput, formatUToken, microfy } from '@libs/formatter';
 import { useSendForm, useSendTx } from '@libs/app-provider';
 import { Add } from '@material-ui/icons';
 import { WalletIcon } from '@nebula-js/icons';
-import { HumanAddr, terraswap, Token, u, UST } from '@nebula-js/types';
+import { HumanAddr, terraswap, Token, u, Luna } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
@@ -85,7 +85,7 @@ function SendMainBase({ className }: SendMainProps) {
       amount: Token,
       toAddr: string,
       memo: string,
-      txFee: u<UST<BigSource>>,
+      txFee: u<Luna<BigSource>>,
       warning: string | null,
     ) => {
       if (warning) {
@@ -101,11 +101,11 @@ function SendMainBase({ className }: SendMainProps) {
       }
 
       const stream = postTx?.({
-        amount: microfy(amount).toFixed() as u<UST>,
+        amount: microfy(amount).toFixed() as u<Luna>,
         asset,
         toAddr: toAddr as HumanAddr,
         memo: memo.length > 0 ? memo : undefined,
-        txFee: big(txFee).toFixed() as u<UST>,
+        txFee: big(txFee).toFixed() as u<Luna>,
         onTxSucceed: initForm,
       });
 

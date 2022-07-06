@@ -1,15 +1,15 @@
 import { useFixedFee, useRefetchQueries } from '@libs/app-provider';
 import { stakingStakeTx } from '@nebula-js/app-fns';
-import { CW20Addr, HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
+import { CW20Addr, HumanAddr, Rate, Token, u, Luna } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
 import { NEBULA_TX_KEYS } from '../../env';
 import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export interface StakingStakeTxParams {
-  ustAmount: u<UST>;
+  lunaAmount: u<Luna>;
   tokenAmount: u<Token>;
-  txFee: u<UST>;
+  txFee: u<Luna>;
   slippageTolerance: Rate;
 
   onTxSucceed?: () => void;
@@ -30,7 +30,7 @@ export function useStakingStakeTx(
 
   const stream = useCallback(
     ({
-      ustAmount,
+      lunaAmount,
       tokenAmount,
       txFee,
       slippageTolerance,
@@ -43,7 +43,7 @@ export function useStakingStakeTx(
       return stakingStakeTx({
         txFee,
         walletAddr: connectedWallet.walletAddress,
-        ustAmount,
+        lunaAmount,
         tokenAmount,
         stakingAddr: contractAddress.staking,
         tokenAddr,

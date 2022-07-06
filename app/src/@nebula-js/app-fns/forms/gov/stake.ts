@@ -1,5 +1,5 @@
 import { microfy } from '@libs/formatter';
-import { gov, NEB, u, UST } from '@nebula-js/types';
+import { gov, NEB, u, Luna } from '@nebula-js/types';
 import { FormReturn } from '@libs/use-form';
 import big, { Big, BigSource } from 'big.js';
 
@@ -9,8 +9,8 @@ export interface GovStakeFormInput {
 
 export interface GovStakeFormDependency {
   nebBalance: u<NEB>;
-  ustBalance: u<UST<BigSource>>;
-  fixedFee: u<UST<BigSource>>;
+  lunaBalance: u<Luna<BigSource>>;
+  fixedFee: u<Luna<BigSource>>;
   connected: boolean;
   govStaker: gov.StakerResponse | undefined;
 }
@@ -21,7 +21,7 @@ export interface GovStakeFormStates extends GovStakeFormInput {
   invalidNebAmount: string | null;
   availableTx: boolean;
   //
-  txFee: u<UST<BigSource>> | null;
+  txFee: u<Luna<BigSource>> | null;
   stakedNebAfterTx: u<NEB> | null;
 }
 
@@ -29,7 +29,7 @@ export type GovStakeFormAsyncStates = {};
 
 export const govStakeForm = ({
   nebBalance,
-  ustBalance,
+  lunaBalance,
   fixedFee,
   connected,
   govStaker,
@@ -65,7 +65,7 @@ export const govStakeForm = ({
     const txFee = fixedFee;
 
     const invalidTxFee =
-      connected && big(txFee).gt(ustBalance)
+      connected && big(txFee).gt(lunaBalance)
         ? 'Not enough transaction fees'
         : null;
 

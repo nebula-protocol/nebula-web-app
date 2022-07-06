@@ -1,4 +1,4 @@
-import { HumanAddr, rs, terraswap, Token, u, UST } from '@libs/types';
+import { HumanAddr, rs, terraswap, Token, u, Luna } from '@libs/types';
 import { CT, NEB } from '@nebula-js/types';
 
 export namespace incentives {
@@ -18,7 +18,7 @@ export namespace incentives {
     arb_cluster_create: {
       cluster_contract: HumanAddr;
       assets: Array<terraswap.Asset<Token>>;
-      min_ust?: u<UST>;
+      min_ust?: u<Luna>;
     };
   }
 

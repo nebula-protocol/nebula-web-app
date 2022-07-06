@@ -5,7 +5,7 @@ import {
   useStakingUnstakeTx,
 } from '@nebula-js/app-provider';
 import { WalletIcon } from '@nebula-js/icons';
-import { CT, LP, u, UST } from '@nebula-js/types';
+import { CT, LP, u, Luna } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
@@ -45,7 +45,7 @@ function StakingUnstakeBase({
   );
 
   const [updateInput, states] = useStakingUnstakeForm<CT>({
-    ustTokenPairAddr: terraswapPair.contract_addr,
+    lunaTokenPairAddr: terraswapPair.contract_addr,
     tokenAddr: tokenAddr,
   });
 
@@ -56,10 +56,10 @@ function StakingUnstakeBase({
   }, [updateInput]);
 
   const proceed = useCallback(
-    async (lpAmount: LP, txFee: u<UST<BigSource>>) => {
+    async (lpAmount: LP, txFee: u<Luna<BigSource>>) => {
       const stream = postTx?.({
         lpAmount: microfy(lpAmount).toFixed() as u<LP>,
-        txFee: big(txFee).toFixed() as u<UST>,
+        txFee: big(txFee).toFixed() as u<Luna>,
         onTxSucceed: initForm,
       });
 
@@ -109,12 +109,12 @@ function StakingUnstakeBase({
           <TokenSpan
             icon={
               <CoupledIconsHolder radiusEm={0.9}>
-                <TokenIcon symbol="UST" />
+                <TokenIcon symbol="Luna" />
                 <TokenIcon symbol={tokenInfo.symbol} />
               </CoupledIconsHolder>
             }
           >
-            {tokenInfo.symbol}-UST LP
+            {tokenInfo.symbol}-Luna LP
           </TokenSpan>
         }
         error={states.invalidLpAmount}
@@ -126,14 +126,14 @@ function StakingUnstakeBase({
             <span>Returned</span>
             <span>
               {formatUToken(states.returnedTokenAmount)} {tokenInfo.symbol} +{' '}
-              {formatUToken(states.returnedUstAmount)} UST
+              {formatUToken(states.returnedUstAmount)} Luna
             </span>
           </li>
         )}
         {states.txFee && (
           <li>
             <span>Tx Fee</span>
-            <span>{formatUToken(states.txFee)} UST</span>
+            <span>{formatUToken(states.txFee)} Luna</span>
           </li>
         )}
       </FeeBox>

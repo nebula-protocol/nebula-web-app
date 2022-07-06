@@ -1,5 +1,5 @@
 import { GasPrice } from '@libs/app-fns';
-import { Gas, u, UST } from '@libs/types';
+import { Gas, u, Luna } from '@libs/types';
 import big from 'big.js';
 import { ClusterFeeMultipliers } from '../../types';
 
@@ -8,12 +8,12 @@ export function computeClusterTxFee(
   multiplier: ClusterFeeMultipliers,
   inventory: number,
   assetCount: number,
-): u<UST> {
+): u<Luna> {
   return big(multiplier.txFeeBase)
     .plus(big(inventory).mul(multiplier.txFeePerInventory))
     .plus(big(assetCount).mul(multiplier.txFeePerAsset))
-    .mul(gasPrice.uusd)
-    .toFixed() as u<UST>;
+    .mul(gasPrice.uluna)
+    .toFixed() as u<Luna>;
 }
 
 export function computeClusterGasWanted(

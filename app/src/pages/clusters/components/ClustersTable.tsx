@@ -110,10 +110,10 @@ function ClustersTableBase({
                 />
               </td>
               <td>
-                <TwoLine text={formatToken(prices.clusterPrice) + ' UST'} />
+                <TwoLine text={formatToken(prices.clusterPrice) + ' Luna'} />
               </td>
-              <td>{formatUTokenDecimal2(marketCap)} UST</td>
-              <td>{formatUTokenDecimal2(provided)} UST</td>
+              <td>{formatUTokenDecimal2(marketCap)} Luna</td>
+              <td>{formatUTokenDecimal2(provided)} Luna</td>
               <td>
                 <DisplayPremium
                   premium={prices.premium}

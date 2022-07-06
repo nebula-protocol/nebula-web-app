@@ -1,5 +1,5 @@
 import { formatUToken } from '@libs/formatter';
-import { u, UST, Token, Rate } from '@nebula-js/types';
+import { u, Luna, Token, Rate } from '@nebula-js/types';
 import {
   Disclosure,
   FormLabel,
@@ -64,7 +64,7 @@ function MintArbBasicArbitrageBase({
   // callbacks
   // ---------------------------------------------
   const proceed = useCallback(
-    (amounts: u<Token>[], txFee: u<UST>, minUust: u<UST>) => {
+    (amounts: u<Token>[], txFee: u<Luna>, minUust: u<Luna>) => {
       const stream = postTx?.({
         amounts,
         txFee,
@@ -125,22 +125,22 @@ function MintArbBasicArbitrageBase({
           'returnedAmount' in states &&
           states.returnedAmount && (
             <li>
-              <span>Minimum Returned UST</span>
-              <span>{formatUToken(states.returnedAmount)} UST</span>
+              <span>Minimum Returned Luna</span>
+              <span>{formatUToken(states.returnedAmount)} Luna</span>
             </li>
           )}
 
         {'pnl' in states && states.pnl && (
           <li>
             <span>PNL</span>
-            <span>{formatUToken(states.pnl)} UST</span>
+            <span>{formatUToken(states.pnl)} Luna</span>
           </li>
         )}
 
         {states.txFee !== null && (
           <li>
             <span>Tx Fee</span>
-            <span>{states.txFee ? formatUToken(states.txFee) : 0} UST</span>
+            <span>{states.txFee ? formatUToken(states.txFee) : 0} Luna</span>
           </li>
         )}
       </FeeBox>

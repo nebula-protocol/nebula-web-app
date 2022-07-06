@@ -4,20 +4,20 @@ import {
   WasmQuery,
   WasmQueryData,
 } from '@libs/query-client';
-import { HumanAddr, LP, terraswap, Token, u, UST } from '@libs/types';
+import { HumanAddr, LP, terraswap, Token, u, Luna } from '@libs/types';
 import big from 'big.js';
 
 interface TerraswapPoolWasmQuery<T extends Token> {
   terraswapPool: WasmQuery<
     terraswap.pair.Pool,
-    terraswap.pair.PoolResponse<T, UST>
+    terraswap.pair.PoolResponse<T, Luna>
   >;
 }
 
 export type TerraswapPoolInfo<T extends Token> = {
   tokenPoolSize: u<T>;
-  ustPoolSize: u<UST>;
-  tokenPrice: UST;
+  ustPoolSize: u<Luna>;
+  tokenPrice: Luna;
   lpShare: u<LP>;
 };
 
@@ -45,22 +45,22 @@ export async function terraswapPoolQuery<T extends Token>(
     },
   });
 
-  const ustIndex = terraswapPool.assets.findIndex(
+  const lunaIndex = terraswapPool.assets.findIndex(
     (asset) =>
-      'native_token' in asset.info && asset.info.native_token.denom === 'uusd',
+      'native_token' in asset.info && asset.info.native_token.denom === 'uluna',
   )!;
-  const tokenIndex = ustIndex === 0 ? 1 : 0;
+  const tokenIndex = lunaIndex === 0 ? 1 : 0;
 
   const tokenAsset = terraswapPool.assets[tokenIndex] as terraswap.CW20Asset<T>;
   const ustAsset = terraswapPool.assets[
     tokenIndex === 0 ? 1 : 0
-  ] as terraswap.NativeAsset<UST>;
+  ] as terraswap.NativeAsset<Luna>;
 
   const tokenPoolSize = tokenAsset.amount;
   const ustPoolSize = ustAsset.amount;
   const tokenPrice = big(ustPoolSize)
     .div(+tokenPoolSize === 0 ? 1 : tokenPoolSize)
-    .toFixed() as UST;
+    .toFixed() as Luna;
   const lpShare = terraswapPool.total_share;
 
   return {

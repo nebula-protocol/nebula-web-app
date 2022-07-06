@@ -2,27 +2,37 @@ import { TEST_CONTRACT_ADDRESS as TERRA_TEST_CONTRACT_ADDRESS } from '@libs/app-
 import { CW20Addr, HumanAddr } from '@libs/types';
 
 export const TEST_CONTRACT_ADDRESS = {
-  airdrop: 'terra179dgjvznfk5x2fsqa3un492l5zu9p9utdncrn7' as HumanAddr,
-  collector: 'terra1qvdf64vhtpjfznysr8uqm28exrekaju7j3mpcw' as HumanAddr,
-  community: 'terra108u9rg6nhltna8ce3teve8lsnahehljr2273m2' as HumanAddr,
-  clusterFactory: 'terra1q2ft2we9p5p5d624hsamx9k3qc2qkzw4wyg4c6' as HumanAddr,
-  gov: 'terra1yzsxytzktj7dsrhyajx34jzz8cxw0vws8cgvkg' as HumanAddr,
-  incentives: 'terra14j87dwkfmjs48hd3skuxnw2fm0z9x90kruspsn' as HumanAddr,
+  airdrop:
+    'terra1pxvnr6xxmxtgymttpvhp7w8g6hnxmd6gru8eqzlffmljyak8wutsct6dmf' as HumanAddr,
+  collector:
+    'terra1z5hcdgw7sqkrkmwnvgt57dkg7z9jgpt6ha2j79m2ctv97kgmjjcs2xm423' as HumanAddr,
+  community:
+    'terra1d03xv30ljdsdprqgtw9vc7n5reaka4f0e6vuzduzuh5xg5jrpy0qu5elmf' as HumanAddr,
+  clusterFactory:
+    'terra15mx3zrwmhdr8sg0j737s4lrqyhsdsgqdvhcnf9dsklcrf8n8klmq5lwzsh' as HumanAddr,
+  gov: 'terra1h30f6k500ze9lac70paadtklrn7hue5azragx4sjl3wujwe4cwrqvw0hsh' as HumanAddr,
+  incentives:
+    'terra1y4tmwwm7qmuhpjuwx0nmmaw0pptpphnmln5mzpm27enqn2la7p0q95fcpd' as HumanAddr,
   incentivesCustody:
-    'terra16stw0qmz8mj5uzg672x2t8lfdjqgva7xv3fs5q' as HumanAddr,
-  staking: 'terra1n9vdcgkd3dnqdq50kncd7e3vqj3uthg434knrd' as HumanAddr,
-  oracle: 'terra18syqrhamudfnks205wv8rrudp0yey7jk5kte97' as HumanAddr,
+    'terra1atm2slufh0z2tmg4mtkwr9kvsh4tf4zut4ngqt6m96smd5ka0tnqqv7prl' as HumanAddr,
+  staking:
+    'terra1wgeqalcmkr8ug9m086sv4kcjpshs48enfkawepthjsw9k883098qqjhefp' as HumanAddr,
+  oracle:
+    'terra14029wvjzhtkphqyjykzjg0tjpgqmt0nw2vkcls9s46umgxjmmxssyxdkxx' as HumanAddr,
+  oracleHub:
+    'terra1umxshy9lymmseygh2f4ymztehqltl2cmvwdy7zlwuz6u4uvhehjsyf9arf' as HumanAddr,
   terraswap: {
     factory: TERRA_TEST_CONTRACT_ADDRESS.terraswap.factory,
-    nebUstPair: 'terra17ld5j4588k8w9hhtrllyj0537eqndkhr679m72' as HumanAddr,
+    nebUstPair:
+      'terra15xk25aeexx3ssk4ufentfje3qqau96sjkvncvqllhv5adqsk7yyq3et8v4' as HumanAddr,
   },
   cw20: {
-    NEB: 'terra1nknarneeatpm7amzw4rhxhcaqyt3ecx6y7k5yq' as CW20Addr,
-    aUST: 'terra1ajt556dpzvjwl0kl5tzku3fc3p3knkg9mkv8jl' as CW20Addr,
+    NEB: 'terra1d6gepuu0ykszjayvzzfddg2fqsqyjemdrg9xrahewgknawxfusmq5e0n0h' as CW20Addr,
+    aUST: '' as CW20Addr,
   },
   anchor: {
-    proxy: 'terra1jqx7xrt6fgf9qa48e9h0cvg6yvhtn4mcfsgqsz' as HumanAddr,
-    market: 'terra15dwd5mj8v59wpj0wvt233mf5efdff808c5tkal' as HumanAddr,
+    proxy: '' as HumanAddr,
+    market: '' as HumanAddr,
   },
 };
 

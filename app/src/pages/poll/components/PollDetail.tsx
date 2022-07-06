@@ -259,9 +259,10 @@ function GovernanceParameterChange({
       {update_config.voting_period && (
         <div>
           <h4>Voting Period</h4>
-          <p>
+          {/* TODO */}
+          {/* <p>
             <s>{govConfig?.voting_period}</s>
-          </p>
+          </p> */}
           <p>{update_config.voting_period}</p>
         </div>
       )}
@@ -269,9 +270,10 @@ function GovernanceParameterChange({
       {update_config.effective_delay && (
         <div>
           <h4>Effective Deplay</h4>
-          <p>
+          {/* TODO */}
+          {/* <p>
             <s>{govConfig?.effective_delay}</s>
-          </p>
+          </p> */}
           <p>{update_config.effective_delay}</p>
         </div>
       )}

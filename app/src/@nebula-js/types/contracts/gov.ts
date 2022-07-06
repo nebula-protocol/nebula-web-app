@@ -1,4 +1,4 @@
-import { HumanAddr, OrderBy, Rate, rs, u } from '@libs/types';
+import { HumanAddr, OrderBy, Rate, rs, u, Num } from '@libs/types';
 import { NEB } from '../tokens';
 
 export namespace gov {
@@ -183,7 +183,7 @@ export namespace gov {
     id: rs.u64;
     creator: HumanAddr;
     status: PollStatus;
-    end_time: rs.u64;
+    end_height: Num;
     title: string;
     description: string;
     link?: string;

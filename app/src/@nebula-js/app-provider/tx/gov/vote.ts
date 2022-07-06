@@ -1,6 +1,6 @@
 import { useFixedFee, useRefetchQueries } from '@libs/app-provider';
 import { govVoteTx } from '@nebula-js/app-fns';
-import { gov, NEB, u, UST } from '@nebula-js/types';
+import { gov, NEB, u, Luna } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
 import { NEBULA_TX_KEYS } from '../../env';
@@ -30,7 +30,7 @@ export function useGovVoteTx(pollId: number) {
       }
 
       return govVoteTx({
-        txFee: fixedFee.toString() as u<UST>,
+        txFee: fixedFee.toString() as u<Luna>,
         walletAddr: connectedWallet.walletAddress,
         vote,
         amount,

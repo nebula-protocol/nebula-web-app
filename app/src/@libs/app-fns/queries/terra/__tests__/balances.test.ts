@@ -1,5 +1,5 @@
 import { terraBalancesQuery } from '@libs/app-fns';
-import { TEST_HIVE_CLIENT, TEST_WALLET_ADDRESS } from '@libs/app-fns/test-env';
+import { TEST_LCD_CLIENT, TEST_WALLET_ADDRESS } from '@libs/app-fns/test-env';
 import { terraswap } from '@libs/types';
 
 const assetInfos: terraswap.AssetInfo[] = [
@@ -10,24 +10,19 @@ const assetInfos: terraswap.AssetInfo[] = [
   },
   {
     token: {
-      // bLuna
-      contract_addr: 'terra1u0t35drzyy0mujj8rkdyzhe264uls4ug3wdp3x',
-    },
-  },
-  {
-    token: {
-      // ANC
-      contract_addr: 'terra1747mad58h0w4y589y3sk84r5efqdev9q4r02pc',
+      // NEB
+      contract_addr:
+        'terra103g6fdulfjl2vqc6xgme73q40syu2huw8ustpy9xg674a67sqavq62h54m',
     },
   },
 ] as any;
 
 describe('terraBalancesQuery()', () => {
-  test('should get result', async () => {
+  test('should get result from lcd client', async () => {
     const result = await terraBalancesQuery(
       TEST_WALLET_ADDRESS,
       assetInfos,
-      TEST_HIVE_CLIENT,
+      TEST_LCD_CLIENT,
     );
 
     expect(result.balances[0].asset).toEqual({
@@ -35,17 +30,14 @@ describe('terraBalancesQuery()', () => {
     });
     expect(result.balances[1].asset).toEqual({
       token: {
-        contract_addr: 'terra1u0t35drzyy0mujj8rkdyzhe264uls4ug3wdp3x',
-      },
-    });
-    expect(result.balances[2].asset).toEqual({
-      token: {
-        contract_addr: 'terra1747mad58h0w4y589y3sk84r5efqdev9q4r02pc',
+        contract_addr:
+          'terra103g6fdulfjl2vqc6xgme73q40syu2huw8ustpy9xg674a67sqavq62h54m',
       },
     });
     expect(+result.balances[0].balance).not.toBeNaN();
     expect(+result.balances[1].balance).not.toBeNaN();
-    expect(+result.balances[2].balance).not.toBeNaN();
-    expect(result.balancesIndex.size).toBe(3);
+    expect(result.balancesIndex.size).toBe(2);
   });
+
+  // TODO: support hive client
 });

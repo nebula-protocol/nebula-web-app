@@ -1,7 +1,7 @@
 import { importColor } from '@libs/style-router';
 import { getChainOptions } from '@terra-money/wallet-provider';
 import { Header } from 'components/header';
-import { HoverPanel } from 'components/hover';
+// import { HoverPanel } from 'components/hover';
 import { DisableOverflowXStyle } from 'components/styles/DisableOverflowXStyle';
 import { Providers } from 'configurations/app';
 import 'configurations/chartjs';
@@ -35,7 +35,7 @@ function App() {
       <Header />
 
       <div style={{ position: 'relative' }}>
-        <HoverPanel />
+        {/* <HoverPanel /> */}
 
         <Switch>
           <Route exact path="/" component={DashboardMain} />

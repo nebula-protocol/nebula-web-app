@@ -58,7 +58,7 @@ function StakingTableBase({ staking, ...tableProps }: StakingTableProps) {
             <tr key={'row' + index}>
               <td>
                 <CoupledIconsHolder radiusEm={1.1}>
-                  <TokenIcon symbol="UST" />
+                  <TokenIcon symbol="Luna" />
                   <TokenIcon symbol={symbol} />
                 </CoupledIconsHolder>
                 <div className="name-container">
@@ -67,7 +67,7 @@ function StakingTableBase({ staking, ...tableProps }: StakingTableProps) {
                 </div>
               </td>
               <td>{formatRate(apr)}%</td>
-              <td>{`${formatUTokenWithPostfixUnits(totalStaked)} UST`}</td>
+              <td>{`${formatUTokenWithPostfixUnits(totalStaked)} Luna`}</td>
               <td>
                 <Button
                   size={buttonSize}

@@ -1,4 +1,4 @@
-import { Gas, HumanAddr, Rate, u, UST } from '@nebula-js/types';
+import { Gas, HumanAddr, Rate, u, Luna } from '@nebula-js/types';
 import { TxResultRendering, TxStreamPhase } from '@libs/app-fns';
 import {
   _catchTxError,
@@ -26,7 +26,7 @@ export function airdropClaimTx($: {
   airdropContract: HumanAddr;
   gasFee: Gas;
   gasAdjustment: Rate<number>;
-  txFee: u<UST>;
+  txFee: u<Luna>;
   network: NetworkInfo;
   queryClient: QueryClient;
   post: (tx: CreateTxOptions) => Promise<TxResult>;
@@ -46,7 +46,7 @@ export function airdropClaimTx($: {
           },
         }),
       ],
-      fee: new Fee($.gasFee, floor($.txFee) + 'uusd'),
+      fee: new Fee($.gasFee, floor($.txFee) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),

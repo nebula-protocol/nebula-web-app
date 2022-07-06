@@ -28,13 +28,14 @@ function MintArbitrageBase({ className, clusterInfo }: MintArbitrageProps) {
             <br />
             <br />
             <span className="indent-text">
-              1. Use either the user’s UST or, if the Advanced toggle is
+              1. Use either the user’s Luna or, if the Advanced toggle is
               enabled, their inputted inventory assets, to mint cluster tokens
             </span>
             <br />
             <br />
             <span className="indent-text">
-              2. Sell the cluster tokens on Astroport, returning UST to the user
+              2. Sell the cluster tokens on Astroport, returning Luna to the
+              user
             </span>
           </span>
         </span>

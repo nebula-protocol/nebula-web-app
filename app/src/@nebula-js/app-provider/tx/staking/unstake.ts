@@ -1,6 +1,6 @@
 import { useFixedFee, useRefetchQueries } from '@libs/app-provider';
 import { stakingUnstakeTx } from '@nebula-js/app-fns';
-import { CW20Addr, HumanAddr, LP, LPAddr, u, UST } from '@nebula-js/types';
+import { CW20Addr, HumanAddr, LP, LPAddr, u, Luna } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
 import { NEBULA_TX_KEYS } from '../../env';
@@ -8,7 +8,7 @@ import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export interface StakingUnstakeTxParams {
   lpAmount: u<LP>;
-  txFee: u<UST>;
+  txFee: u<Luna>;
 
   onTxSucceed?: () => void;
 }

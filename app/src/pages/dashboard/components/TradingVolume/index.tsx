@@ -1,4 +1,4 @@
-import { JSDateTime, u, UST } from '@nebula-js/types';
+import { JSDateTime, u, Luna } from '@nebula-js/types';
 import { DiffSpan, Sub } from '@nebula-js/ui';
 import React from 'react';
 import { useStyle } from '@libs/style-router';
@@ -10,7 +10,7 @@ const chartData = Array.from(
   (_, i) => {
     return {
       y: 10 * i + 10 - Math.random() * 20,
-      amount: i.toString() as u<UST>,
+      amount: i.toString() as u<Luna>,
       date: Date.now() as JSDateTime,
     };
   },
@@ -27,7 +27,7 @@ function TradingVolumeBase({ className }: TradingVolumeProps) {
     <div className={className}>
       <p>
         <s>
-          51M <Sub>UST</Sub>
+          51M <Sub>Luna</Sub>
         </s>
       </p>
       <p>

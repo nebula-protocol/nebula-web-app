@@ -13,7 +13,6 @@ export const breakpoints = {
 // TODO: use token display query
 export const imageURL = (symbol: string): string | undefined => {
   switch (symbol) {
-    case 'UST':
     case 'AUT':
     case 'CAT':
     case 'CHT':
@@ -33,6 +32,7 @@ export const imageURL = (symbol: string): string | undefined => {
     case 'THT':
     case 'KRT':
       return `https://assets.terra.money/icon/60/${symbol}.png`;
+    case 'Luna':
     case 'LUNA':
       return `https://assets.terra.money/icon/60/Luna.png`;
     case 'bLUNA':

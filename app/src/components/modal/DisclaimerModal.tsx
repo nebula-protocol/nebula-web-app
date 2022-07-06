@@ -114,6 +114,7 @@ const StyledDisclaimerModal = styled(DisclaimerModalBase)`
     input[type='checkbox'] {
       position: relative;
       margin-right: 1.142857em;
+      height: fit-content;
     }
 
     input[type='checkbox']:before {

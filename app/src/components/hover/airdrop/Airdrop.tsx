@@ -1,4 +1,4 @@
-import { useGasPrice, useUstBalance } from '@libs/app-provider';
+import { useGasPrice, useLunaBalance } from '@libs/app-provider';
 import { Airdrop as AirdropData, validateTxFee } from '@nebula-js/app-fns';
 import { useConnectedWallet } from '@terra-money/use-wallet';
 import { useTxBroadcast } from 'contexts/tx-broadcast';
@@ -30,7 +30,7 @@ export function Airdrop({ className, isMobile }: AirdropProps) {
 
   const postTx = useAirdropClaimTx();
 
-  const userUstBalance = useUstBalance(connectedWallet?.walletAddress);
+  const userUstBalance = useLunaBalance(connectedWallet?.walletAddress);
 
   // ---------------------------------------------
   // states
@@ -42,7 +42,7 @@ export function Airdrop({ className, isMobile }: AirdropProps) {
   // ---------------------------------------------
   // logics
   // ---------------------------------------------
-  const airdropFee = useGasPrice(constants.airdropGas, 'uusd');
+  const airdropFee = useGasPrice(constants.airdropGas, 'uluna');
 
   const invalidTxFee = useMemo(
     () => connectedWallet && validateTxFee(userUstBalance, airdropFee),

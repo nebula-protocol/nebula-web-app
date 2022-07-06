@@ -19,7 +19,7 @@ import {
   HumanAddr,
   incentives,
   u,
-  UST,
+  Luna,
   Rate,
   Token,
 } from '@nebula-js/types';
@@ -34,7 +34,7 @@ export function clusterArbRedeemTx(
     incentivesAddr: HumanAddr;
     clusterAddr: HumanAddr;
     terraswapPairAddr: HumanAddr;
-    amount: u<UST>;
+    amount: u<Luna>;
     maxSpread: Rate;
     onTxSucceed?: () => void;
   } & TxCommonParams,
@@ -49,7 +49,7 @@ export function clusterArbRedeemTx(
           amount: $.amount,
           info: {
             native_token: {
-              denom: 'uusd',
+              denom: 'uluna',
             },
           },
         },
@@ -79,7 +79,7 @@ export function clusterArbRedeemTx(
                 asset: {
                   info: {
                     native_token: {
-                      denom: 'uusd',
+                      denom: 'uluna',
                     },
                   },
                   amount: $.amount,
@@ -87,10 +87,10 @@ export function clusterArbRedeemTx(
                 min_cluster: minReceivedUCT,
               },
             } as incentives.ArbClusterRedeem,
-            new Coins([new Coin('uusd', $.amount)]),
+            new Coins([new Coin('uluna', $.amount)]),
           ),
         ],
-        fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
+        fee: new Fee($.gasWanted, floor($.txFee) + 'uluna'),
         gasAdjustment: $.gasAdjustment,
       })();
     },
@@ -103,11 +103,11 @@ export function clusterArbRedeemTx(
         return helper.failedToFindRawLog();
       }
 
-      const fromContract = pickEvent(rawLog, 'from_contract');
+      const fromContract = pickEvent(rawLog, 'wasm');
       const transfer = pickEvent(rawLog, 'transfer');
 
       if (!fromContract || !transfer) {
-        return helper.failedToFindEvents('from_contract', 'transfer');
+        return helper.failedToFindEvents('wasm', 'transfer');
       }
 
       try {

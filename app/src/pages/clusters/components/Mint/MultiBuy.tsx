@@ -1,6 +1,6 @@
 import { WalletIcon } from '@nebula-js/icons';
 import { formatUInput, formatUToken } from '@libs/formatter';
-import { u, UST } from '@nebula-js/types';
+import { u, Luna } from '@nebula-js/types';
 import { RotateSpinner } from 'react-spinners-kit';
 import {
   breakpoints,
@@ -58,12 +58,12 @@ function MultiBuyBase({
   // ---------------------------------------------
   const initForm = useCallback(() => {
     updateInput({
-      ustAmount: '' as UST,
+      lunaAmount: '' as Luna,
     });
   }, [updateInput]);
 
   const proceed = useCallback(
-    (buyTokens: SwapTokenInfo[], txFee: u<UST>) => {
+    (buyTokens: SwapTokenInfo[], txFee: u<Luna>) => {
       const stream = postTx?.({
         buyTokens,
         txFee,
@@ -91,18 +91,18 @@ function MultiBuyBase({
 
   return (
     <div className={className}>
-      <TokenInput<UST>
+      <TokenInput<Luna>
         className="token-input"
         maxDecimalPoints={6}
-        value={states.ustAmount ?? ('' as UST)}
-        onChange={(nextUstAmount) => updateInput({ ustAmount: nextUstAmount })}
+        value={states.lunaAmount ?? ('' as Luna)}
+        onChange={(nextUstAmount) => updateInput({ lunaAmount: nextUstAmount })}
         placeholder="0.00"
         label="FROM"
         suggest={
           <EmptyButton
             onClick={() =>
               updateInput({
-                ustAmount: formatUInput(states.maxUstAmount) as UST,
+                lunaAmount: formatUInput(states.maxUstAmount) as Luna,
               })
             }
           >
@@ -114,13 +114,13 @@ function MultiBuyBase({
             {formatUToken(states.maxUstAmount)}
           </EmptyButton>
         }
-        token={<TokenSpan symbol="UST">UST</TokenSpan>}
+        token={<TokenSpan symbol="Luna">Luna</TokenSpan>}
         error={states.invalidUstAmount}
       />
 
       {/* loading state */}
-      {states.ustAmount.length > 0 &&
-        states.ustAmount !== '0' &&
+      {states.lunaAmount.length > 0 &&
+        states.lunaAmount !== '0' &&
         !('boughtTokens' in states) && (
           <div className="loading-container">
             <RotateSpinner color="var(--color-paleblue)" />
@@ -140,14 +140,14 @@ function MultiBuyBase({
         {states.txFee !== null && (
           <li>
             <span>Tx Fee</span>
-            <span>{formatUToken(states.txFee)} UST</span>
+            <span>{formatUToken(states.txFee)} Luna</span>
           </li>
         )}
 
         {'pnl' in states && states.pnl && (
           <li>
             <span>PNL</span>
-            <span>{formatUToken(states.pnl)} UST</span>
+            <span>{formatUToken(states.pnl)} Luna</span>
           </li>
         )}
       </FeeBox>
@@ -174,7 +174,7 @@ function MultiBuyBase({
           !!states.invalidQuery ||
           !!states.invalidSwap ||
           !('boughtTokens' in states && Array.isArray(states.boughtTokens)) ||
-          states.ustAmount.length === 0 ||
+          states.lunaAmount.length === 0 ||
           !states.txFee
         }
         onClick={() =>

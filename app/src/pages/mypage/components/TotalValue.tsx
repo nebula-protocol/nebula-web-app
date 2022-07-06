@@ -16,7 +16,7 @@ import {
 import { DisplayNumber } from '../../../components/common/DisplayNumber';
 import { useTotalValue } from '../hooks/useTotalValue';
 import { Big } from 'big.js';
-import { u, UST } from '@nebula-js/types';
+import { u, Luna } from '@nebula-js/types';
 import useResizeObserver from 'use-resize-observer';
 import { Header } from './Header';
 
@@ -30,7 +30,7 @@ const TotalValue = () => {
   const totalValues = totalHoldingsValue
     .plus(totalStakingValue)
     .plus(totalGovValue)
-    .plus(totalRewardValue) as u<UST<Big>>;
+    .plus(totalRewardValue) as u<Luna<Big>>;
   const divideValue = totalValues.eq(0) ? 1 : totalValues;
 
   const { width = 200, ref } = useResizeObserver();
@@ -52,7 +52,7 @@ const TotalValue = () => {
         </Header>
         <DisplayNumber
           price={formatUToken(totalValues)}
-          currency="UST"
+          currency="Luna"
           style={{ marginTop: 8, marginBottom: 94 }}
         />
       </section>
@@ -61,22 +61,22 @@ const TotalValue = () => {
           data={[
             {
               label: 'HOLDINGS',
-              value: `${formatUTokenWithPostfixUnits(totalHoldingsValue)} UST`,
+              value: `${formatUTokenWithPostfixUnits(totalHoldingsValue)} Luna`,
               color: partitionColor[0],
             },
             {
               label: 'STAKING',
-              value: `${formatUTokenWithPostfixUnits(totalStakingValue)} UST`,
+              value: `${formatUTokenWithPostfixUnits(totalStakingValue)} Luna`,
               color: partitionColor[1],
             },
             {
               label: 'GOVERNANCE',
-              value: `${formatUTokenWithPostfixUnits(totalGovValue)} UST`,
+              value: `${formatUTokenWithPostfixUnits(totalGovValue)} Luna`,
               color: partitionColor[2],
             },
             {
               label: 'REWARDS',
-              value: `${formatUTokenWithPostfixUnits(totalRewardValue)} UST`,
+              value: `${formatUTokenWithPostfixUnits(totalRewardValue)} Luna`,
               color: partitionColor[3],
             },
           ]}

@@ -1,5 +1,5 @@
 import { useFixedFee, useRefetchQueries } from '@libs/app-provider';
-import { u, UST } from '@nebula-js/types';
+import { u, Luna } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
 import { NEBULA_TX_KEYS } from '../..';
@@ -22,7 +22,7 @@ export function useGovClaimRewardsTx() {
     }
 
     return govClaimRewardsTx({
-      txFee: fixedFee.toString() as u<UST>,
+      txFee: fixedFee.toString() as u<Luna>,
       govAddr: contractAddress.gov,
       walletAddr: connectedWallet.walletAddress,
       fixedFee,

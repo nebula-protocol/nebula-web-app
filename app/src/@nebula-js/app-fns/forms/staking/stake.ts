@@ -1,15 +1,15 @@
 import {
-  computeMaxUstBalanceForUstTransfer,
+  computeMaxLunaBalanceForTransfer,
   TerraswapPoolInfo,
 } from '@libs/app-fns';
 import { min } from '@libs/big-math';
 import { formatUInput, microfy } from '@libs/formatter';
 import { FormReturn } from '@libs/use-form';
-import { CT, LP, Rate, Token, u, UST } from '@nebula-js/types';
+import { CT, LP, Rate, Token, u, Luna } from '@nebula-js/types';
 import big, { Big, BigSource } from 'big.js';
 
 export interface StakingStakeFormInput {
-  ustAmount?: UST;
+  lunaAmount?: Luna;
   tokenAmount?: CT;
   slippageTolerance: Rate;
 }
@@ -17,16 +17,16 @@ export interface StakingStakeFormInput {
 export interface StakingStakeFormDependency {
   poolInfo: TerraswapPoolInfo<CT> | undefined;
   //
-  ustBalance: u<UST>;
+  lunaBalance: u<Luna>;
   tokenBalance: u<CT>;
   taxRate: Rate;
-  maxTaxUUSD: u<UST>;
-  fixedFee: u<UST<BigSource>>;
+  maxTaxUUSD: u<Luna>;
+  fixedFee: u<Luna<BigSource>>;
   connected: boolean;
 }
 
 export interface StakingStakeFormStates extends StakingStakeFormInput {
-  maxUstAmount: u<UST<BigSource>>;
+  maxUstAmount: u<Luna<BigSource>>;
   maxTokenAmount: u<CT>;
   invalidSlippageTolerance: string | null;
   invalidTxFee: string | null;
@@ -35,15 +35,15 @@ export interface StakingStakeFormStates extends StakingStakeFormInput {
   warningNextTxFee: string | null;
   availableTx: boolean;
   //
-  poolPrice: UST | null;
-  txFee: u<UST<BigSource>> | null;
+  poolPrice: Luna | null;
+  txFee: u<Luna<BigSource>> | null;
   lpStakedFromTx: u<LP<BigSource>> | null;
 }
 
 export type StakingStakeFormAsyncStates = {};
 
 export const stakingStakeForm = ({
-  ustBalance,
+  lunaBalance,
   tokenBalance,
   taxRate,
   maxTaxUUSD,
@@ -51,8 +51,8 @@ export const stakingStakeForm = ({
   poolInfo,
   connected,
 }: StakingStakeFormDependency) => {
-  const maxUstAmount = computeMaxUstBalanceForUstTransfer(
-    ustBalance,
+  const maxUstAmount = computeMaxLunaBalanceForTransfer(
+    lunaBalance,
     taxRate,
     maxTaxUUSD,
     fixedFee,
@@ -62,24 +62,24 @@ export const stakingStakeForm = ({
 
   return ({
     tokenAmount,
-    ustAmount,
+    lunaAmount,
     slippageTolerance,
   }: StakingStakeFormInput): FormReturn<
     StakingStakeFormStates,
     StakingStakeFormAsyncStates
   > => {
-    const ustAmountExists: boolean =
-      !!ustAmount && ustAmount.length > 0 && big(ustAmount).gt(0);
+    const lunaAmountExists: boolean =
+      !!lunaAmount && lunaAmount.length > 0 && big(lunaAmount).gt(0);
     const tokenAmountExists: boolean =
       !!tokenAmount && tokenAmount.length > 0 && big(tokenAmount).gt(0);
 
     const invalidSlippageTolerance =
       slippageTolerance.length === 0 ? 'Slippage Tolerance is required' : null;
 
-    if ((!ustAmountExists && !tokenAmountExists) || !poolInfo) {
+    if ((!lunaAmountExists && !tokenAmountExists) || !poolInfo) {
       return [
         {
-          ustAmount,
+          lunaAmount,
           tokenAmount,
           slippageTolerance,
           maxUstAmount,
@@ -98,19 +98,19 @@ export const stakingStakeForm = ({
       ];
     }
 
-    let ust: u<UST<Big>>;
+    let ust: u<Luna<Big>>;
     let token: u<Token<Big>>;
-    let returnedUstAmount: UST | null = null;
+    let returnedUstAmount: Luna | null = null;
     let returnedTokenAmount: CT | null = null;
 
-    if (ustAmountExists) {
-      ust = microfy(ustAmount!);
+    if (lunaAmountExists) {
+      ust = microfy(lunaAmount!);
       token = big(ust).div(poolInfo.tokenPrice) as u<Token<Big>>;
       returnedTokenAmount = formatUInput(token) as CT;
     } else {
       token = microfy(tokenAmount!);
-      ust = token.mul(poolInfo.tokenPrice) as u<UST<Big>>;
-      returnedUstAmount = formatUInput(ust) as UST;
+      ust = token.mul(poolInfo.tokenPrice) as u<Luna<Big>>;
+      returnedUstAmount = formatUInput(ust) as Luna;
     }
 
     const lpFromTx = min(
@@ -119,14 +119,14 @@ export const stakingStakeForm = ({
     ) as u<LP<Big>>;
 
     const txFee = min(ust.mul(taxRate), maxTaxUUSD).plus(fixedFee) as u<
-      UST<Big>
+      Luna<Big>
     >;
 
     const invalidTxFee =
-      connected && txFee.gt(ustBalance) ? 'Not enough transaction fees' : null;
+      connected && txFee.gt(lunaBalance) ? 'Not enough transaction fees' : null;
 
     const invalidUstAmount =
-      connected && ust.gt(ustBalance) ? 'Not enough assets' : null;
+      connected && ust.gt(lunaBalance) ? 'Not enough assets' : null;
 
     const invalidTokenAmount =
       connected && token.gt(tokenBalance) ? 'Not enough assets' : null;
@@ -137,13 +137,13 @@ export const stakingStakeForm = ({
     const warningNextTxFee =
       connected &&
       availableTx &&
-      big(ustBalance).minus(ust).minus(txFee).lt(fixedFee)
+      big(lunaBalance).minus(ust).minus(txFee).lt(fixedFee)
         ? 'You may run out of USD balance needed for future transactions'
         : null;
 
     return [
       {
-        ustAmount: returnedUstAmount ?? ustAmount,
+        lunaAmount: returnedUstAmount ?? lunaAmount,
         tokenAmount: returnedTokenAmount ?? tokenAmount,
         slippageTolerance,
         maxUstAmount,

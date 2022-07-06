@@ -19,7 +19,7 @@ import {
   incentives,
   terraswap,
   Token,
-  UST,
+  Luna,
   u,
 } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
@@ -35,7 +35,7 @@ export function clusterArbMintTx(
     terraswapPairAddr: HumanAddr;
     assets: terraswap.Asset<Token>[];
     amounts: u<Token>[];
-    minUust: u<UST>;
+    minUust: u<Luna>;
     onTxSucceed?: () => void;
   } & TxCommonParams,
 ): Observable<TxResultRendering> {
@@ -88,7 +88,7 @@ export function clusterArbMintTx(
           nativeCoins.length > 0 ? new Coins(nativeCoins) : undefined,
         ),
       ],
-      fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
+      fee: new Fee($.gasWanted, floor($.txFee) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),
@@ -100,11 +100,11 @@ export function clusterArbMintTx(
         return helper.failedToFindRawLog();
       }
 
-      const fromContract = pickEvent(rawLog, 'from_contract');
+      const fromContract = pickEvent(rawLog, 'wasm');
       const transfer = pickEvent(rawLog, 'transfer');
 
       if (!fromContract || !transfer) {
-        return helper.failedToFindEvents('from_contract', 'transfer');
+        return helper.failedToFindEvents('wasm', 'transfer');
       }
 
       try {

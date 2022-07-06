@@ -13,7 +13,6 @@ export function computeProRata(
   idx: number,
 ): Token[] {
   if (weights.length <= idx) {
-    console.error('weights:', weights, ' index: ', idx);
     return Array(weights.length).fill('0');
   }
 

@@ -1,7 +1,7 @@
 import { GasPrice } from '@libs/app-fns';
 import { QueryClient } from '@libs/query-client';
 import { FormReturn } from '@libs/use-form';
-import { cluster, CT, Rate, Token, u, UST } from '@nebula-js/types';
+import { cluster, CT, Rate, Token, u, Luna } from '@nebula-js/types';
 import {
   computeClusterTxFee,
   computeUTokenWithoutFee,
@@ -23,7 +23,7 @@ export interface ClusterMintBaicFormDependency {
 
 export interface ClusterMintBasicFormStates extends ClusterMintBasicFormInput {
   providedAmounts: u<Token>[];
-  txFee: u<UST> | null;
+  txFee: u<Luna> | null;
   invalidMintQuery: string | null;
 }
 

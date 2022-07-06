@@ -2,7 +2,7 @@ import { NativeDenom, terraswap, Token, u } from '@nebula-js/types';
 
 export function getAssetAmount<T extends Token>(
   assets: [terraswap.Asset<Token>, terraswap.Asset<Token>],
-  assetInfo: terraswap.AssetInfo | 'uusd' | 'uluna',
+  assetInfo: terraswap.AssetInfo | 'uluna' | 'uluna',
 ): u<T> {
   const _assetInfo: terraswap.AssetInfo =
     typeof assetInfo === 'string'

@@ -6,7 +6,7 @@ import {
   ClusterTokenPrices,
   computeLiquidity,
 } from '@nebula-js/app-fns';
-import { cw20, CT, HumanAddr, Rate, Token, u, UST } from '@nebula-js/types';
+import { cw20, CT, HumanAddr, Rate, Token, u, Luna } from '@nebula-js/types';
 import { AssetView, toAssetView } from './assets';
 import big, { Big } from 'big.js';
 
@@ -19,11 +19,11 @@ export interface ClusterView {
   prices: ClusterTokenPrices;
   hr24: Rate<Big>;
   hr24diff: Rate<Big>;
-  provided: u<UST<Big>>;
-  marketCap: u<UST<Big>>;
-  volume: u<UST<Big>>;
+  provided: u<Luna<Big>>;
+  marketCap: u<Luna<Big>>;
+  volume: u<Luna<Big>>;
   assets: AssetView[];
-  liquidity: u<UST<Big>>;
+  liquidity: u<Luna<Big>>;
   totalSupply: u<CT>;
   isActive: boolean;
 }
@@ -57,7 +57,7 @@ export function toClusterView({
     marketCap,
     provided,
     // TODO indexer data
-    volume: big(111) as u<UST<Big>>,
+    volume: big(111) as u<Luna<Big>>,
     assets: toAssetView(clusterState, assetTokenInfos),
     liquidity,
     totalSupply: clusterState.outstanding_balance_tokens,

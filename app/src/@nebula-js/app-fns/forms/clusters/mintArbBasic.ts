@@ -1,6 +1,6 @@
 import { GasPrice } from '@libs/app-fns';
 import { FormReturn } from '@libs/use-form';
-import { cluster, u, UST, Rate, Token } from '@nebula-js/types';
+import { cluster, u, Luna, Rate, Token } from '@nebula-js/types';
 import { computeClusterTxFee } from '@nebula-js/app-fns';
 import { NebulaClusterFee } from '../../types';
 import { GetMintArbTxInfoResponse } from '@nebula-js/app-provider';
@@ -20,13 +20,13 @@ export interface ClusterMintArbBasicFormDependency {
 export interface ClusterMintArbBasicFormStates
   extends ClusterMintArbBasicFormInput {
   providedAmounts: u<Token>[];
-  txFee: u<UST> | null;
+  txFee: u<Luna> | null;
 }
 
 export interface ClusterMintArbBasicFormAsyncStates {
-  totalInputValue?: u<UST>;
-  pnl?: u<UST>;
-  returnedAmount?: u<UST>;
+  totalInputValue?: u<Luna>;
+  pnl?: u<Luna>;
+  returnedAmount?: u<Luna>;
 }
 
 export const clusterMintArbBasicForm = (

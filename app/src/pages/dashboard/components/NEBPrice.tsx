@@ -17,7 +17,7 @@ function NEBPriceBase({ className }: NEBPriceProps) {
     <div className={className}>
       <p className="price">
         <AnimateNumber format={formatToken}>{nebPrice}</AnimateNumber>{' '}
-        <Sub>UST</Sub>
+        <Sub>Luna</Sub>
       </p>
 
       {/* TODO: need indexer */}

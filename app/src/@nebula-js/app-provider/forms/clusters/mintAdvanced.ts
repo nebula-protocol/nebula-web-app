@@ -2,13 +2,13 @@ import { useFixedFee, useTerraBalancesQuery } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
 import { clusterMintAdvancedForm } from '@nebula-js/app-fns';
 import { useProtocolFee } from '@nebula-js/app-provider';
-import { cluster, CT, terraswap, Token, UST } from '@nebula-js/types';
+import { cluster, CT, terraswap, Token, Luna } from '@nebula-js/types';
 import { useMemo } from 'react';
 import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export interface ClusterMintAdvancedFormParams {
   clusterState: cluster.ClusterStateResponse;
-  terraswapPool: terraswap.pair.PoolResponse<CT, UST>;
+  terraswapPool: terraswap.pair.PoolResponse<CT, Luna>;
 }
 
 export function useClusterMintAdvancedForm({

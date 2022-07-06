@@ -2,7 +2,7 @@ import { cw20SellTokenTx } from '@libs/app-fns';
 import { useFixedFee } from '@libs/app-provider/hooks/useFixedFee';
 import big from 'big.js';
 import { formatExecuteMsgNumber } from '@libs/formatter';
-import { CW20Addr, HumanAddr, Rate, Token, u, UST } from '@libs/types';
+import { CW20Addr, HumanAddr, Rate, Token, u, Luna } from '@libs/types';
 import { useConnectedWallet } from '@terra-money/use-wallet';
 import { useCallback } from 'react';
 import { useApp } from '../../contexts/app';
@@ -13,7 +13,7 @@ import { useTerraswapPoolQuery } from '../../queries/terraswap/pool';
 
 export interface CW20SellTokenTxParams<T extends Token> {
   sellAmount: u<T>;
-  txFee: u<UST>;
+  txFee: u<Luna>;
   maxSpread: Rate;
 
   onTxSucceed?: () => void;

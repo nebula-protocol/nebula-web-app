@@ -1,4 +1,4 @@
-import { useUstBalance } from '@libs/app-provider';
+import { useLunaBalance } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
 import { govStakeForm, GovStakeFormInput } from '@nebula-js/app-fns';
 import { useGovFee } from '@nebula-js/app-provider';
@@ -12,7 +12,7 @@ export function useGovStakeForm() {
 
   const fixedFee = useGovFee();
 
-  const uUST = useUstBalance(connectedWallet?.walletAddress);
+  const uUST = useLunaBalance(connectedWallet?.walletAddress);
 
   const uNEB = useNebBalance(connectedWallet?.walletAddress);
 
@@ -24,7 +24,7 @@ export function useGovStakeForm() {
     govStakeForm,
     {
       nebBalance: uNEB,
-      ustBalance: uUST,
+      lunaBalance: uUST,
       fixedFee,
       connected: !!connectedWallet,
       govStaker,
