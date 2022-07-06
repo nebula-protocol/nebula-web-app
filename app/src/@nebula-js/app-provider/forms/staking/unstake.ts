@@ -1,7 +1,7 @@
 import {
   useFixedFee,
   useTerraswapPoolQuery,
-  useUstBalance,
+  useLunaBalance,
   useUstTax,
 } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
@@ -15,12 +15,12 @@ import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useStakingRewardInfoQuery } from '../../queries/staking/rewardInfo';
 
 export interface CW20WithdrawTokenFormParams {
-  ustTokenPairAddr: HumanAddr;
+  lunaTokenPairAddr: HumanAddr;
   tokenAddr: CW20Addr;
 }
 
 export function useStakingUnstakeForm<T extends Token>({
-  ustTokenPairAddr,
+  lunaTokenPairAddr,
   tokenAddr,
 }: CW20WithdrawTokenFormParams) {
   const connectedWallet = useConnectedWallet();
@@ -29,12 +29,12 @@ export function useStakingUnstakeForm<T extends Token>({
 
   const fixedFee = useFixedFee();
 
-  const uUST = useUstBalance(connectedWallet?.walletAddress);
+  const uUST = useLunaBalance(connectedWallet?.walletAddress);
 
   const { data: { rewardInfo } = {} } = useStakingRewardInfoQuery(tokenAddr);
 
   const { data: { terraswapPoolInfo } = {} } =
-    useTerraswapPoolQuery<T>(ustTokenPairAddr);
+    useTerraswapPoolQuery<T>(lunaTokenPairAddr);
 
   const form: StakingUnstakeForm<T> = stakingUnstakeForm;
 
@@ -42,7 +42,7 @@ export function useStakingUnstakeForm<T extends Token>({
     form,
     {
       lpBalance: rewardInfo?.reward_infos[0]?.bond_amount ?? ('0' as u<LP>),
-      ustBalance: uUST,
+      lunaBalance: uUST,
       poolInfo: terraswapPoolInfo,
       taxRate,
       maxTaxUUSD: maxTax,

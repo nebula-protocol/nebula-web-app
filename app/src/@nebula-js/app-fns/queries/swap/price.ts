@@ -1,12 +1,12 @@
 import { cw20PoolInfoQuery } from '@libs/app-fns';
 import { oraclePriceQuery } from '@nebula-js/app-fns';
-import { CW20Addr, HumanAddr, terraswap, Token, UST } from '@nebula-js/types';
+import { CW20Addr, HumanAddr, terraswap, Token, Luna } from '@nebula-js/types';
 import { QueryClient } from '@libs/query-client';
 import big from 'big.js';
 import { anchorAUSTRateQuery } from '../anchor/base';
 
 export type SwapPriceList = {
-  buyTokenPrice: UST;
+  buyTokenPrice: Luna;
   sellTokenPrice: Token;
   info: terraswap.AssetInfo;
   tokenUstPairAddr?: HumanAddr;
@@ -28,13 +28,13 @@ export async function swapPriceListQuery(
         } = await oraclePriceQuery(
           oracleAddr,
           info,
-          { native_token: { denom: 'uusd' } },
+          { native_token: { denom: 'uluna' } },
           queryClient,
         );
 
         return {
           info,
-          buyTokenPrice: rate as UST,
+          buyTokenPrice: rate as Luna,
           sellTokenPrice: big(1).div(rate).toFixed() as Token,
         };
       } else {

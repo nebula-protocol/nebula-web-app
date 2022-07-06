@@ -2,41 +2,41 @@ import {
   useCW20Balance,
   useFixedFee,
   useTerraswapPoolQuery,
-  useUstBalance,
+  useLunaBalance,
   useUstTax,
 } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
 import { stakingStakeForm, StakingStakeFormInput } from '@nebula-js/app-fns';
-import { CT, CW20Addr, HumanAddr, Rate, UST } from '@nebula-js/types';
+import { CT, CW20Addr, HumanAddr, Rate, Luna } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 
 export interface StakingStakeFormParams {
-  ustTokenPairAddr: HumanAddr;
+  lunaTokenPairAddr: HumanAddr;
   tokenAddr: CW20Addr;
 }
 
 export function useStakingStakeForm({
-  ustTokenPairAddr,
+  lunaTokenPairAddr,
   tokenAddr,
 }: StakingStakeFormParams) {
   const connectedWallet = useConnectedWallet();
 
   const fixedFee = useFixedFee();
 
-  const uUST = useUstBalance(connectedWallet?.walletAddress);
+  const uUST = useLunaBalance(connectedWallet?.walletAddress);
 
   const tax = useUstTax();
 
   const uCT = useCW20Balance<CT>(tokenAddr, connectedWallet?.walletAddress);
 
   const { data: { terraswapPoolInfo } = {} } =
-    useTerraswapPoolQuery<CT>(ustTokenPairAddr);
+    useTerraswapPoolQuery<CT>(lunaTokenPairAddr);
 
   return useForm(
     stakingStakeForm,
     {
       tokenBalance: uCT,
-      ustBalance: uUST,
+      lunaBalance: uUST,
       poolInfo: terraswapPoolInfo,
       taxRate: tax.taxRate,
       maxTaxUUSD: tax.maxTax,
@@ -45,7 +45,7 @@ export function useStakingStakeForm({
     },
     () =>
       ({
-        ustAmount: '' as UST,
+        lunaAmount: '' as Luna,
         slippageTolerance: '0.01' as Rate,
       } as StakingStakeFormInput),
   );

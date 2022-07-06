@@ -1,7 +1,7 @@
 import { formatUInput, formatUToken, microfy } from '@libs/formatter';
 import { useGovStakeForm, useGovStakeTx } from '@nebula-js/app-provider';
 import { WalletIcon } from '@nebula-js/icons';
-import { NEB, u, UST } from '@nebula-js/types';
+import { NEB, u, Luna } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
@@ -39,10 +39,10 @@ function GovStakeBase({ className }: GovStakeProps) {
   }, [updateInput]);
 
   const proceed = useCallback(
-    async (nebAmount: NEB, txFee: u<UST<BigSource>>) => {
+    async (nebAmount: NEB, txFee: u<Luna<BigSource>>) => {
       const stream = postTx?.({
         nebAmount: microfy(nebAmount).toFixed() as u<NEB>,
-        txFee: big(txFee).toFixed() as u<UST>,
+        txFee: big(txFee).toFixed() as u<Luna>,
         onTxSucceed: initForm,
       });
 
@@ -102,7 +102,7 @@ function GovStakeBase({ className }: GovStakeProps) {
         {states.txFee && (
           <li>
             <span>Tx Fee</span>
-            <span>{formatUToken(states.txFee)} UST</span>
+            <span>{formatUToken(states.txFee)} Luna</span>
           </li>
         )}
       </FeeBox>

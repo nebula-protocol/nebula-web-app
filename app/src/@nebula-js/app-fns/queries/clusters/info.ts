@@ -17,7 +17,7 @@ import {
   HumanAddr,
   terraswap,
   Token,
-  UST,
+  Luna,
 } from '@nebula-js/types';
 
 interface ClusterStateWasmQuery {
@@ -34,7 +34,7 @@ export type AssetTokenInfo = {
 
 export type ClusterInfo = WasmQueryData<ClusterInfoWasmQuery> & {
   terraswapPair: terraswap.factory.PairResponse;
-  terraswapPool: terraswap.pair.PoolResponse<CT, UST>;
+  terraswapPool: terraswap.pair.PoolResponse<CT, Luna>;
   terraswapPoolInfo: TerraswapPoolInfo<CT>;
   clusterTokenInfo: cw20.TokenInfoResponse<Token>;
   assetTokenInfos: AssetTokenInfo[];

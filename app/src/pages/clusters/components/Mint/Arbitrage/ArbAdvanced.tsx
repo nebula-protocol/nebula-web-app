@@ -1,5 +1,5 @@
 import { formatUToken, microfy } from '@libs/formatter';
-import { CT, terraswap, Token, u, UST, Rate } from '@nebula-js/types';
+import { CT, terraswap, Token, u, Luna, Rate } from '@nebula-js/types';
 import { ClusterInfo } from '@nebula-js/app-fns';
 import {
   useClusterArbMintTx,
@@ -63,7 +63,7 @@ function MintArbAdvancedBase({ className, clusterInfo }: MintArbAdvancedProps) {
   }, [clusterInfo.clusterState.target, updateInput]);
 
   const proceed = useCallback(
-    (amounts: Token[], txFee: u<UST>, minUust: u<UST>) => {
+    (amounts: Token[], txFee: u<Luna>, minUust: u<Luna>) => {
       const stream = postTx?.({
         amounts: amounts.map(
           (amount) =>
@@ -120,22 +120,22 @@ function MintArbAdvancedBase({ className, clusterInfo }: MintArbAdvancedProps) {
             'returnedAmount' in states &&
             states.returnedAmount && (
               <li>
-                <span>Minimum Returned UST</span>
-                <span>{formatUToken(states.returnedAmount)} UST</span>
+                <span>Minimum Returned Luna</span>
+                <span>{formatUToken(states.returnedAmount)} Luna</span>
               </li>
             )}
 
           {'pnl' in states && states.pnl && (
             <li>
               <span>PNL</span>
-              <span>{formatUToken(states.pnl)} UST</span>
+              <span>{formatUToken(states.pnl)} Luna</span>
             </li>
           )}
 
           {states.txFee !== null && (
             <li>
               <span>Tx Fee</span>
-              <span>{states.txFee ? formatUToken(states.txFee) : 0} UST</span>
+              <span>{states.txFee ? formatUToken(states.txFee) : 0} Luna</span>
             </li>
           )}
         </FeeBox>

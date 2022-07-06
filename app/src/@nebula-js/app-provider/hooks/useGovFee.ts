@@ -1,8 +1,8 @@
-import { useGasToUst } from '@libs/app-provider';
-import { u, UST } from '@libs/types';
+import { useGasToLuna } from '@libs/app-provider';
+import { u, Luna } from '@libs/types';
 import { useNebulaApp } from '..';
 
-export function useGovFee(): u<UST> {
+export function useGovFee(): u<Luna> {
   const { constants } = useNebulaApp();
-  return useGasToUst(constants.govGas);
+  return useGasToLuna(constants.govGas);
 }

@@ -1,4 +1,4 @@
-import { UST, DateTime } from '@nebula-js/types';
+import { Luna, DateTime } from '@nebula-js/types';
 
 export namespace anchor {
   export interface Base {
@@ -10,7 +10,7 @@ export namespace anchor {
   }
 
   export interface BaseResponse {
-    rate: UST;
+    rate: Luna;
     last_update: DateTime;
   }
 }

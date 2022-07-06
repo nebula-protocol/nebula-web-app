@@ -5,7 +5,7 @@ import {
   useClusterRedeemTx,
 } from '@nebula-js/app-provider';
 import { WalletIcon } from '@nebula-js/icons';
-import { CT, u, UST } from '@nebula-js/types';
+import { CT, u, Luna } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
@@ -51,7 +51,7 @@ function BurnBasicBase({
   }, [updateInput]);
 
   const proceed = useCallback(
-    (tokenAmount: CT, txFee: u<UST>) => {
+    (tokenAmount: CT, txFee: u<Luna>) => {
       const stream = postTx?.({
         amount: microfy(tokenAmount).toFixed() as u<CT>,
         txFee,
@@ -141,14 +141,14 @@ function BurnBasicBase({
         {'totalRedeemValue' in states && states.totalRedeemValue && (
           <li>
             <span>Total Redeem Value</span>
-            <span>{formatUToken(states.totalRedeemValue)} UST</span>
+            <span>{formatUToken(states.totalRedeemValue)} Luna</span>
           </li>
         )}
 
         {states.txFee !== null && (
           <li>
             <span>Tx Fee</span>
-            <span>{formatUToken(states.txFee)} UST</span>
+            <span>{formatUToken(states.txFee)} Luna</span>
           </li>
         )}
       </FeeBox>

@@ -3,7 +3,7 @@ import { vectorDot } from '@libs/big-math';
 import { microfy } from '@libs/formatter';
 import { QueryClient } from '@libs/query-client';
 import { FormReturn } from '@libs/use-form';
-import { cluster, CT, NoMicro, Rate, Token, u, UST } from '@nebula-js/types';
+import { cluster, CT, NoMicro, Rate, Token, u, Luna } from '@nebula-js/types';
 import big from 'big.js';
 import {
   computeClusterTxFee,
@@ -32,13 +32,13 @@ export interface ClusterRedeemBasicFormStates
   extends ClusterRedeemBasicFormInput {
   invalidTokenAmount: string | null;
   tokenBalance: u<CT>;
-  txFee: u<UST> | null;
+  txFee: u<Luna> | null;
 }
 
 export interface ClusterRedeemBasicFormAsyncStates {
   burntTokenAmount?: u<CT>;
   redeemTokenAmounts?: u<Token>[];
-  totalRedeemValue?: u<UST>;
+  totalRedeemValue?: u<Luna>;
 }
 
 export const clusterRedeemBasicForm = (
@@ -113,8 +113,8 @@ export const clusterRedeemBasicForm = (
           totalRedeemValue: vectorDot(
             redeem.redeem_assets,
             dependency.clusterState.prices,
-          ).toFixed() as u<UST>,
-          txFee: clusterTxFee as u<UST>,
+          ).toFixed() as u<Luna>,
+          txFee: clusterTxFee as u<Luna>,
         };
       });
     }

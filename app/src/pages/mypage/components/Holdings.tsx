@@ -5,7 +5,7 @@ import {
 } from '@libs/formatter';
 import { useMypageHoldingsQuery, useNebulaApp } from '@nebula-js/app-provider';
 import { SendIcon } from '@nebula-js/icons';
-import { u, UST } from '@nebula-js/types';
+import { u, Luna } from '@nebula-js/types';
 import {
   Button,
   Descriptions,
@@ -42,7 +42,7 @@ function HoldingsBase({ className }: HoldingsProps) {
         }) => {
           const price = terraswapPoolInfo.tokenPrice;
           const balance = tokenBalance.balance;
-          const value = big(balance).mul(price) as u<UST<Big>>;
+          const value = big(balance).mul(price) as u<Luna<Big>>;
 
           return {
             id: tokenAddr,
@@ -61,7 +61,7 @@ function HoldingsBase({ className }: HoldingsProps) {
   }, [contractAddress.cw20.NEB, data]);
 
   const totalHoldingsValue = useMemo(() => {
-    return sum(...holdings.map(({ value }) => value)) as u<UST<Big>>;
+    return sum(...holdings.map(({ value }) => value)) as u<Luna<Big>>;
   }, [holdings]);
 
   const tableMinWidth = useScreenSizeValue({
@@ -118,7 +118,9 @@ function HoldingsBase({ className }: HoldingsProps) {
             descriptions={[
               {
                 label: 'Total Holdings Value',
-                text: `${formatUTokenWithPostfixUnits(totalHoldingsValue)} UST`,
+                text: `${formatUTokenWithPostfixUnits(
+                  totalHoldingsValue,
+                )} Luna`,
               },
             ]}
           />
@@ -150,9 +152,9 @@ function HoldingsBase({ className }: HoldingsProps) {
             <td>
               <TwoLine text={symbol} subText={name} />
             </td>
-            <td>{formatTokenWithPostfixUnits(price)} UST</td>
+            <td>{formatTokenWithPostfixUnits(price)} Luna</td>
             <td>{formatUTokenWithPostfixUnits(balance)}</td>
-            <td>{formatUTokenWithPostfixUnits(value)} UST</td>
+            <td>{formatUTokenWithPostfixUnits(value)} Luna</td>
             <td>
               <Button
                 size={tableButtonSize}

@@ -2,7 +2,7 @@ import { sum } from '@libs/big-math';
 import { formatUTokenWithPostfixUnits } from '@libs/formatter';
 import { useStyle } from '@libs/style-router';
 import { AnimateNumber } from '@libs/ui';
-import { JSDateTime, u, UST } from '@nebula-js/types';
+import { JSDateTime, u, Luna } from '@nebula-js/types';
 import { DiffSpan, Sub } from '@nebula-js/ui';
 import { computeProvided } from '@nebula-js/app-fns';
 import { useClustersInfoListQuery } from '@nebula-js/app-provider';
@@ -16,7 +16,7 @@ const chartData = Array.from(
   (_, i) => {
     return {
       y: 10 * i + 10 - Math.random() * 20,
-      amount: i.toString() as u<UST>,
+      amount: i.toString() as u<Luna>,
       date: Date.now() as JSDateTime,
     };
   },
@@ -33,14 +33,14 @@ function TotalProvidedBase({ className }: TotalProvidedProps) {
 
   const totalProvided = useMemo(() => {
     if (clusterInfos.length === 0) {
-      return big(0) as u<UST<Big>>;
+      return big(0) as u<Luna<Big>>;
     }
 
     const provided = clusterInfos.map(({ clusterState }) => {
       return computeProvided(clusterState);
     });
 
-    return sum(...provided) as u<UST<Big>>;
+    return sum(...provided) as u<Luna<Big>>;
   }, [clusterInfos]);
 
   return (
@@ -49,7 +49,7 @@ function TotalProvidedBase({ className }: TotalProvidedProps) {
         <AnimateNumber format={formatUTokenWithPostfixUnits}>
           {totalProvided}
         </AnimateNumber>{' '}
-        <Sub>UST</Sub>
+        <Sub>Luna</Sub>
       </p>
       <p>
         <s>

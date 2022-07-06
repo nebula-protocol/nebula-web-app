@@ -89,7 +89,7 @@ export function clusterMintTx(
           nativeCoins.length > 0 ? new Coins(nativeCoins) : undefined,
         ),
       ],
-      fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
+      fee: new Fee($.gasWanted, floor($.txFee) + 'uluna'),
       gasAdjustment: $.gasAdjustment + 0.1,
     }),
     _postTx({ helper, ...$ }),
@@ -101,10 +101,10 @@ export function clusterMintTx(
         return helper.failedToFindRawLog();
       }
 
-      const fromContract = pickEvent(rawLog, 'from_contract');
+      const fromContract = pickEvent(rawLog, 'wasm');
 
       if (!fromContract) {
-        return helper.failedToFindEvents('from_contract');
+        return helper.failedToFindEvents('wasm');
       }
 
       try {

@@ -100,7 +100,7 @@ function TopClustersBase({ className }: TopClustersProps) {
                   </>
                 }
               >
-                {formatUTokenWithPostfixUnits(marketCap)} UST
+                {formatUTokenWithPostfixUnits(marketCap)} Luna
               </VerticalLabelAndValue>
 
               <VerticalLabelAndValue
@@ -114,7 +114,7 @@ function TopClustersBase({ className }: TopClustersProps) {
                   </>
                 }
               >
-                {formatUTokenWithPostfixUnits(provided)} UST
+                {formatUTokenWithPostfixUnits(provided)} Luna
               </VerticalLabelAndValue>
 
               <VerticalLabelAndValue className="supply" label="SUPPLY">

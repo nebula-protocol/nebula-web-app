@@ -56,7 +56,7 @@ function StakingMainBase({ className }: StakingMainProps) {
     let x = data;
 
     const nebPairIdx = x.findIndex(
-      ({ nameLowerCase }) => nameLowerCase.indexOf('neb-ust') >= 0,
+      ({ nameLowerCase }) => nameLowerCase.indexOf('neb-luna') >= 0,
     );
 
     // filter neb pair out

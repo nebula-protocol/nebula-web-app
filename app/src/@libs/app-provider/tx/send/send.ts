@@ -1,6 +1,6 @@
 import { sendTx } from '@libs/app-fns';
 import { useFixedFee } from '@libs/app-provider/hooks/useFixedFee';
-import { HumanAddr, terraswap, Token, u, UST } from '@libs/types';
+import { HumanAddr, terraswap, Token, u, Luna } from '@libs/types';
 import { useConnectedWallet } from '@terra-money/use-wallet';
 import { useCallback } from 'react';
 import { useApp } from '../../contexts/app';
@@ -13,7 +13,7 @@ export interface SendTxParams {
   toAddr: HumanAddr;
   asset: terraswap.AssetInfo;
   memo?: string;
-  txFee: u<UST>;
+  txFee: u<Luna>;
 
   onTxSucceed?: () => void;
 }

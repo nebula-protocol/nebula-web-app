@@ -7,7 +7,7 @@ import {
   terraswap,
   Token,
   u,
-  UST,
+  Luna,
 } from '@libs/types';
 import { pipe } from '@rx-stream/pipe';
 import {
@@ -49,16 +49,18 @@ export function cw20MultiBuyTokensTx(
 ): Observable<TxResultRendering> {
   const helper = new TxHelper($);
 
-  const ustIndex = $.buyTokens.findIndex(
-    ({ info }) => 'native_token' in info && info.native_token.denom === 'uusd',
+  const lunaIndex = $.buyTokens.findIndex(
+    ({ info }) => 'native_token' in info && info.native_token.denom === 'uluna',
   );
 
-  const buyTokensWithoutUST = $.buyTokens.filter((_, idx) => idx !== ustIndex);
+  const buyTokensWithoutLuna = $.buyTokens.filter(
+    (_, idx) => idx !== lunaIndex,
+  );
 
   return pipe(
     _createTxOptions({
-      msgs: buyTokensWithoutUST.reduce<Msg[]>(
-        (acc, { tokenUstPairAddr, buyUustAmount, beliefPrice, info }) => {
+      msgs: buyTokensWithoutLuna.reduce<Msg[]>(
+        (acc, { tokenUstPairAddr, buyUlunaAmount, beliefPrice, info }) => {
           if ('token' in info && info.token.contract_addr === $.aUSTTokenAddr) {
             return [
               ...acc,
@@ -68,7 +70,7 @@ export function cw20MultiBuyTokensTx(
                 {
                   deposit_stable: {},
                 },
-                buyUustAmount + 'uusd',
+                buyUlunaAmount + 'uluna',
               ),
             ];
           }
@@ -78,7 +80,7 @@ export function cw20MultiBuyTokensTx(
               ...acc,
               new MsgSwap(
                 $.buyerAddr,
-                new Coin('uusd', buyUustAmount),
+                new Coin('uluna', buyUlunaAmount),
                 info.native_token.denom,
               ),
             ];
@@ -92,24 +94,24 @@ export function cw20MultiBuyTokensTx(
               {
                 swap: {
                   offer_asset: {
-                    amount: buyUustAmount,
+                    amount: buyUlunaAmount,
                     info: {
                       native_token: {
-                        denom: 'uusd',
+                        denom: 'uluna',
                       },
                     },
                   },
                   belief_price: beliefPrice,
                   max_spread: $.maxSpread,
                 },
-              } as terraswap.pair.Swap<UST>,
-              buyUustAmount + 'uusd',
+              } as terraswap.pair.Swap<Luna>,
+              buyUlunaAmount + 'uluna',
             ),
           ];
         },
         [],
       ),
-      fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
+      fee: new Fee($.gasWanted, floor($.txFee) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),
@@ -117,9 +119,9 @@ export function cw20MultiBuyTokensTx(
     ({ value: txInfo }) => {
       let events: RawLogEvent[] = [];
       let returnAmounts: u<Token>[] = [];
-      let totalOfferAmount = big(0) as u<UST<Big>>;
+      let totalOfferAmount = big(0) as u<Luna<Big>>;
 
-      buyTokensWithoutUST.forEach(({ info }, idx) => {
+      buyTokensWithoutLuna.forEach(({ info }, idx) => {
         const rawLog = pickRawLog(txInfo, idx);
 
         if (!rawLog) {
@@ -130,15 +132,15 @@ export function cw20MultiBuyTokensTx(
           const swap = pickEvent(rawLog, 'swap');
 
           if (!swap) {
-            return helper.failedToFindEvents('from_contract');
+            return helper.failedToFindEvents('wasm');
           }
 
           events[idx] = swap;
         } else {
-          const fromContract = pickEvent(rawLog, 'from_contract');
+          const fromContract = pickEvent(rawLog, 'wasm');
 
           if (!fromContract) {
-            return helper.failedToFindEvents('from_contract');
+            return helper.failedToFindEvents('wasm');
           }
           events[idx] = fromContract;
         }
@@ -151,7 +153,7 @@ export function cw20MultiBuyTokensTx(
             event,
             'return_amount',
           );
-          const offer_amount = pickAttributeValueByKey<u<UST>>(
+          const offer_amount = pickAttributeValueByKey<u<Luna>>(
             event,
             'offer_amount',
           );
@@ -161,13 +163,13 @@ export function cw20MultiBuyTokensTx(
             event,
             'mint_amount',
           );
-          const deposit_amount = pickAttributeValueByKey<u<UST>>(
+          const deposit_amount = pickAttributeValueByKey<u<Luna>>(
             event,
             'deposit_amount',
           );
 
           // Native Token
-          const offer_swap = pickAttributeValueByKey<u<UST>>(event, 'offer');
+          const offer_swap = pickAttributeValueByKey<u<Luna>>(event, 'offer');
           const return_swap = pickAttributeValueByKey<u<Token>>(
             event,
             'swap_coin',
@@ -176,7 +178,7 @@ export function cw20MultiBuyTokensTx(
           if (return_amount !== undefined && offer_amount !== undefined) {
             returnAmounts.push(return_amount);
             totalOfferAmount = totalOfferAmount.add(offer_amount) as u<
-              UST<Big>
+              Luna<Big>
             >;
           } else if (
             mint_amount !== undefined &&
@@ -184,7 +186,7 @@ export function cw20MultiBuyTokensTx(
           ) {
             returnAmounts.push(mint_amount);
             totalOfferAmount = totalOfferAmount.add(deposit_amount) as u<
-              UST<Big>
+              Luna<Big>
             >;
           } else if (offer_swap !== undefined && return_swap !== undefined) {
             returnAmounts.push(
@@ -192,7 +194,7 @@ export function cw20MultiBuyTokensTx(
             );
             totalOfferAmount = totalOfferAmount.add(
               Coin.fromString(offer_swap).amount.toString(),
-            ) as u<UST<Big>>;
+            ) as u<Luna<Big>>;
           } else {
             throw Error(
               "Can't get return_amount or offer_amount or mint_amount or deposit_amount or offer_swap or return_swap",
@@ -200,11 +202,16 @@ export function cw20MultiBuyTokensTx(
           }
         });
 
-        if (ustIndex >= 0) {
+        if (lunaIndex === 0) {
           returnAmounts = [
-            ...returnAmounts.slice(0, ustIndex),
-            $.buyTokens[ustIndex].buyUustAmount,
-            ...returnAmounts.slice(ustIndex),
+            $.buyTokens[lunaIndex].buyUlunaAmount,
+            ...returnAmounts,
+          ];
+        } else if (lunaIndex > 0) {
+          returnAmounts = [
+            ...returnAmounts.slice(0, lunaIndex),
+            $.buyTokens[lunaIndex].buyUlunaAmount,
+            ...returnAmounts.slice(lunaIndex),
           ];
         }
 
@@ -220,7 +227,7 @@ export function cw20MultiBuyTokensTx(
           receipts: [
             totalOfferAmount && {
               name: 'Paid',
-              value: `${formatUTokenWithPostfixUnits(totalOfferAmount)} UST`,
+              value: `${formatUTokenWithPostfixUnits(totalOfferAmount)} Luna`,
             },
             helper.txHashReceipt(),
             helper.txFeeReceipt($.txFee),

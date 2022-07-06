@@ -2157,6 +2157,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@improbable-eng/grpc-web@npm:^0.14.1":
+  version: 0.14.1
+  resolution: "@improbable-eng/grpc-web@npm:0.14.1"
+  dependencies:
+    browser-headers: ^0.4.1
+  peerDependencies:
+    google-protobuf: ^3.14.0
+  checksum: 8a3a6efe4ecb855ff636df634723e795ba97aeb2a3e1eeceb0a82086d1e27dfe1495915e09a29af8be4e4bde1fb0fd39b1d0608f3327d26f41d78df72fe77b53
+  languageName: node
+  linkType: hard
+
 "@istanbuljs/load-nyc-config@npm:^1.0.0":
   version: 1.1.0
   resolution: "@istanbuljs/load-nyc-config@npm:1.1.0"
@@ -2612,9 +2623,9 @@ __metadata:
     "@storybook/preset-create-react-app": ^3.2.0
     "@storybook/react": ^6.3.8
     "@storybook/theming": ^6.3.8
-    "@terra-money/terra.js": ^3.0.2
-    "@terra-money/use-wallet": ^3.8.1
-    "@terra-money/wallet-provider": ^3.8.1
+    "@terra-money/terra.js": 3.1.3
+    "@terra-money/use-wallet": ^3.9.4
+    "@terra-money/wallet-provider": ^3.9.4
     "@testing-library/jest-dom": ^5.14.1
     "@testing-library/react": ^12.0.0
     "@testing-library/react-hooks": ^7.0.2
@@ -2674,7 +2685,7 @@ __metadata:
     tsconfig-paths: ^3.11.0
     typescript: ^4.4.2
     use-resize-observer: ^8.0.0
-    vite: ^2.5.3
+    vite: ^2.9.13
     vite-compatible-readable-stream: ^3.6.0
     vite-plugin-svgr: ^0.4.0
     vite-tsconfig-paths: ^3.3.13
@@ -4322,12 +4333,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@terra-money/terra.js@npm:3.0.1":
-  version: 3.0.1
-  resolution: "@terra-money/terra.js@npm:3.0.1"
+"@terra-money/legacy.proto@npm:@terra-money/terra.proto@^0.1.7":
+  version: 0.1.7
+  resolution: "@terra-money/terra.proto@npm:0.1.7"
   dependencies:
-    "@terra-money/terra.proto": ^0.1.7
-    axios: ^0.24.0
+    google-protobuf: ^3.17.3
+    long: ^4.0.0
+    protobufjs: ~6.11.2
+  checksum: c6ad15f559008e5159137aea6fa0b3edd8699b2638cfbe7361c3b53a523bcf7b1f92e2977f4f022532f61a5f57a74bdd3e3db7d3eb5b97df743106aa40764bd0
+  languageName: node
+  linkType: hard
+
+"@terra-money/terra.js@npm:3.1.3":
+  version: 3.1.3
+  resolution: "@terra-money/terra.js@npm:3.1.3"
+  dependencies:
+    "@terra-money/legacy.proto": "npm:@terra-money/terra.proto@^0.1.7"
+    "@terra-money/terra.proto": ~2.0.0
+    axios: ^0.26.1
     bech32: ^2.0.0
     bip32: ^2.0.6
     bip39: ^3.0.3
@@ -4339,39 +4362,40 @@ __metadata:
     tmp: ^0.2.1
     utf-8-validate: ^5.0.5
     ws: ^7.5.5
-  checksum: 2bf6f53eec2772665e247c27ecfd766eb1e991c6239bdf3854ee7bcfeafbe5b60cd3b5232cb0ca91000fbcfa09116f40914faa008a2ba9b99dfc5feb9c529658
+  checksum: 9337a5cad9a2d9c858cec8dcd6bb7af6fa8129c174157edcbe67d075bf46163f90e4061c0c64fb0caba2b416f2492442cc136627ebaf41e62ee54ef3639980eb
   languageName: node
   linkType: hard
 
-"@terra-money/terra.proto@npm:^0.1.7":
-  version: 0.1.7
-  resolution: "@terra-money/terra.proto@npm:0.1.7"
+"@terra-money/terra.proto@npm:~2.0.0":
+  version: 2.0.0
+  resolution: "@terra-money/terra.proto@npm:2.0.0"
   dependencies:
+    "@improbable-eng/grpc-web": ^0.14.1
     google-protobuf: ^3.17.3
     long: ^4.0.0
     protobufjs: ~6.11.2
-  checksum: c6ad15f559008e5159137aea6fa0b3edd8699b2638cfbe7361c3b53a523bcf7b1f92e2977f4f022532f61a5f57a74bdd3e3db7d3eb5b97df743106aa40764bd0
+  checksum: 6bd13988f6581aa96534ed1440784d3189ac82a0baab7d0244b9abe580ebf9caa552f6814d9d11a6d05fc9eb14ec9fefdbf8749f8e821b06105e35509e65dc56
   languageName: node
   linkType: hard
 
-"@terra-money/use-wallet@npm:^3.8.1":
-  version: 3.8.1
-  resolution: "@terra-money/use-wallet@npm:3.8.1"
+"@terra-money/use-wallet@npm:^3.9.4":
+  version: 3.9.4
+  resolution: "@terra-money/use-wallet@npm:3.9.4"
   dependencies:
-    "@terra-money/wallet-types": ^3.8.1
+    "@terra-money/wallet-types": ^3.9.4
   peerDependencies:
     "@terra-money/terra.js": ^3.0.0
     react: ">=17.0.0"
-  checksum: 6785e27dd75b58f9ff8ad3bffb3572b92712194ca333d7cbe4adc7e0cc982c4c43db4d24838ea2fd7f92cb3473924676cd8c423032d99ca49435766bf4e1aa3b
+  checksum: 11a22023ff901b0cd9823b96a5d008d877e94d5199d1d589b37234f3dcb4aa4ecb15762b4edcb50657dc9effcf7316bcfa370516cd091e931ad18eb85d0f35fd
   languageName: node
   linkType: hard
 
-"@terra-money/wallet-controller@npm:^3.8.1":
-  version: 3.8.1
-  resolution: "@terra-money/wallet-controller@npm:3.8.1"
+"@terra-money/wallet-controller@npm:^3.9.4":
+  version: 3.9.4
+  resolution: "@terra-money/wallet-controller@npm:3.9.4"
   dependencies:
-    "@terra-money/wallet-types": ^3.8.1
-    "@terra-money/web-extension-interface": ^3.8.1
+    "@terra-money/wallet-types": ^3.9.4
+    "@terra-money/web-extension-interface": ^3.9.4
     "@walletconnect/core": ^1.6.6
     "@walletconnect/iso-crypto": ^1.6.6
     "@walletconnect/types": ^1.6.6
@@ -4386,40 +4410,40 @@ __metadata:
     ws: ^7.5.5
   peerDependencies:
     "@terra-money/terra.js": ^3.0.0
-  checksum: 7f408cba75ed1b7cbf0d3ffc3015fad310218ffa79bed904fddfd167b946cf31cd87ef30fdb1326dd27f38cc8091fb3b73a83af1cecc32790589e44ef2b5da0e
+  checksum: 449b940be167e4ddbe0c7f0d3100086fd92d8413ab1aa210cbe09dfa0c9b1bbe505202bc03f9a7f6531b3a080be17b24754d660a008da2c440c9a8aa799f3f85
   languageName: node
   linkType: hard
 
-"@terra-money/wallet-provider@npm:^3.8.1":
-  version: 3.8.1
-  resolution: "@terra-money/wallet-provider@npm:3.8.1"
+"@terra-money/wallet-provider@npm:^3.9.4":
+  version: 3.9.4
+  resolution: "@terra-money/wallet-provider@npm:3.9.4"
   dependencies:
-    "@terra-money/use-wallet": ^3.8.1
-    "@terra-money/wallet-controller": ^3.8.1
-    "@terra-money/web-extension-interface": ^3.8.1
+    "@terra-money/use-wallet": ^3.9.4
+    "@terra-money/wallet-controller": ^3.9.4
+    "@terra-money/web-extension-interface": ^3.9.4
   peerDependencies:
     react: ">=17.0.0"
-  checksum: 96d081146becfdb41d62beb024fd763eb1c301a6a5a2effd05257cb6c15518b33ddeaa7639999e7298f8828a9805f27f3d134b0823f459f2d58e363182d52c4a
+  checksum: 1ed27feef1b0e6524102783f7aad4d511eb752bf6a33c9fcaa0ff7772370ae5a9523de8dbe5c6ea026b95360fee68ab34aba6ea9665160c1301abef8537cfbe0
   languageName: node
   linkType: hard
 
-"@terra-money/wallet-types@npm:^3.8.1":
-  version: 3.8.1
-  resolution: "@terra-money/wallet-types@npm:3.8.1"
+"@terra-money/wallet-types@npm:^3.9.4":
+  version: 3.9.4
+  resolution: "@terra-money/wallet-types@npm:3.9.4"
   peerDependencies:
     "@terra-money/terra.js": ^3.0.0
-  checksum: dbba122544467ab470a32ab25e5215fe482819fca73c0def06f349e69cf6c2c17f03ac54d8d019f28b2be029b7da90aabafd29ebc9b29231327280d8413a9194
+  checksum: b6b196ed2d85e330704cc5b6f557192b2c13c56fb45a5b3bf5f089cf7ad7c14df2fd1e89e2090ebbb73a051cb2281c36c7d6046a27987d38327aa43f234af445
   languageName: node
   linkType: hard
 
-"@terra-money/web-extension-interface@npm:^3.8.1":
-  version: 3.8.1
-  resolution: "@terra-money/web-extension-interface@npm:3.8.1"
+"@terra-money/web-extension-interface@npm:^3.9.4":
+  version: 3.9.4
+  resolution: "@terra-money/web-extension-interface@npm:3.9.4"
   dependencies:
     rxjs: ^7.0.0
   peerDependencies:
     "@terra-money/terra.js": ^3.0.0
-  checksum: 3b46adc4ab39f99ffd699cbb4f350dd71ca265d114f6e964bdaee3706c057653e1b3ed9ef34542ad1213daa0100527d2d92e6f15850a514a5266b45230bfb5ad
+  checksum: 8e29c499c1dd6c1155b4d6e609390dfac74b4bd0af0a97f40730ab5f15073034829fe5a77f115695b70012702fbc2147c31bd65d2d0c483ddc9df9aca59cc4d5
   languageName: node
   linkType: hard
 
@@ -6388,12 +6412,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.24.0":
-  version: 0.24.0
-  resolution: "axios@npm:0.24.0"
+"axios@npm:^0.26.1":
+  version: 0.26.1
+  resolution: "axios@npm:0.26.1"
   dependencies:
-    follow-redirects: ^1.14.4
-  checksum: 468cf496c08a6aadfb7e699bebdac02851e3043d4e7d282350804ea8900e30d368daa6e3cd4ab83b8ddb5a3b1e17a5a21ada13fc9cebd27b74828f47a4236316
+    follow-redirects: ^1.14.8
+  checksum: d9eb58ff4bc0b36a04783fc9ff760e9245c829a5a1052ee7ca6013410d427036b1d10d04e7380c02f3508c5eaf3485b1ae67bd2adbfec3683704745c8d7a6e1a
   languageName: node
   linkType: hard
 
@@ -7084,6 +7108,13 @@ __metadata:
   version: 1.1.0
   resolution: "brorand@npm:1.1.0"
   checksum: 8a05c9f3c4b46572dec6ef71012b1946db6cae8c7bb60ccd4b7dd5a84655db49fe043ecc6272e7ef1f69dc53d6730b9e2a3a03a8310509a3d797a618cbee52be
+  languageName: node
+  linkType: hard
+
+"browser-headers@npm:^0.4.1":
+  version: 0.4.1
+  resolution: "browser-headers@npm:0.4.1"
+  checksum: 28b927dd90e4882eeb0625cd4a20a8e868f892144bca794a9b027fad9d2094656daf46473cb9084d650590504c581dd6a711146243035b66e75ade61bbe4d3cf
   languageName: node
   linkType: hard
 
@@ -9788,12 +9819,214 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.12.17":
-  version: 0.12.22
-  resolution: "esbuild@npm:0.12.22"
+"esbuild-android-64@npm:0.14.47":
+  version: 0.14.47
+  resolution: "esbuild-android-64@npm:0.14.47"
+  conditions: os=android & cpu=x64
+  languageName: node
+  linkType: hard
+
+"esbuild-android-arm64@npm:0.14.47":
+  version: 0.14.47
+  resolution: "esbuild-android-arm64@npm:0.14.47"
+  conditions: os=android & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"esbuild-darwin-64@npm:0.14.47":
+  version: 0.14.47
+  resolution: "esbuild-darwin-64@npm:0.14.47"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"esbuild-darwin-arm64@npm:0.14.47":
+  version: 0.14.47
+  resolution: "esbuild-darwin-arm64@npm:0.14.47"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"esbuild-freebsd-64@npm:0.14.47":
+  version: 0.14.47
+  resolution: "esbuild-freebsd-64@npm:0.14.47"
+  conditions: os=freebsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"esbuild-freebsd-arm64@npm:0.14.47":
+  version: 0.14.47
+  resolution: "esbuild-freebsd-arm64@npm:0.14.47"
+  conditions: os=freebsd & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"esbuild-linux-32@npm:0.14.47":
+  version: 0.14.47
+  resolution: "esbuild-linux-32@npm:0.14.47"
+  conditions: os=linux & cpu=ia32
+  languageName: node
+  linkType: hard
+
+"esbuild-linux-64@npm:0.14.47":
+  version: 0.14.47
+  resolution: "esbuild-linux-64@npm:0.14.47"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"esbuild-linux-arm64@npm:0.14.47":
+  version: 0.14.47
+  resolution: "esbuild-linux-arm64@npm:0.14.47"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"esbuild-linux-arm@npm:0.14.47":
+  version: 0.14.47
+  resolution: "esbuild-linux-arm@npm:0.14.47"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"esbuild-linux-mips64le@npm:0.14.47":
+  version: 0.14.47
+  resolution: "esbuild-linux-mips64le@npm:0.14.47"
+  conditions: os=linux & cpu=mips64el
+  languageName: node
+  linkType: hard
+
+"esbuild-linux-ppc64le@npm:0.14.47":
+  version: 0.14.47
+  resolution: "esbuild-linux-ppc64le@npm:0.14.47"
+  conditions: os=linux & cpu=ppc64
+  languageName: node
+  linkType: hard
+
+"esbuild-linux-riscv64@npm:0.14.47":
+  version: 0.14.47
+  resolution: "esbuild-linux-riscv64@npm:0.14.47"
+  conditions: os=linux & cpu=riscv64
+  languageName: node
+  linkType: hard
+
+"esbuild-linux-s390x@npm:0.14.47":
+  version: 0.14.47
+  resolution: "esbuild-linux-s390x@npm:0.14.47"
+  conditions: os=linux & cpu=s390x
+  languageName: node
+  linkType: hard
+
+"esbuild-netbsd-64@npm:0.14.47":
+  version: 0.14.47
+  resolution: "esbuild-netbsd-64@npm:0.14.47"
+  conditions: os=netbsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"esbuild-openbsd-64@npm:0.14.47":
+  version: 0.14.47
+  resolution: "esbuild-openbsd-64@npm:0.14.47"
+  conditions: os=openbsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"esbuild-sunos-64@npm:0.14.47":
+  version: 0.14.47
+  resolution: "esbuild-sunos-64@npm:0.14.47"
+  conditions: os=sunos & cpu=x64
+  languageName: node
+  linkType: hard
+
+"esbuild-windows-32@npm:0.14.47":
+  version: 0.14.47
+  resolution: "esbuild-windows-32@npm:0.14.47"
+  conditions: os=win32 & cpu=ia32
+  languageName: node
+  linkType: hard
+
+"esbuild-windows-64@npm:0.14.47":
+  version: 0.14.47
+  resolution: "esbuild-windows-64@npm:0.14.47"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"esbuild-windows-arm64@npm:0.14.47":
+  version: 0.14.47
+  resolution: "esbuild-windows-arm64@npm:0.14.47"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"esbuild@npm:^0.14.27":
+  version: 0.14.47
+  resolution: "esbuild@npm:0.14.47"
+  dependencies:
+    esbuild-android-64: 0.14.47
+    esbuild-android-arm64: 0.14.47
+    esbuild-darwin-64: 0.14.47
+    esbuild-darwin-arm64: 0.14.47
+    esbuild-freebsd-64: 0.14.47
+    esbuild-freebsd-arm64: 0.14.47
+    esbuild-linux-32: 0.14.47
+    esbuild-linux-64: 0.14.47
+    esbuild-linux-arm: 0.14.47
+    esbuild-linux-arm64: 0.14.47
+    esbuild-linux-mips64le: 0.14.47
+    esbuild-linux-ppc64le: 0.14.47
+    esbuild-linux-riscv64: 0.14.47
+    esbuild-linux-s390x: 0.14.47
+    esbuild-netbsd-64: 0.14.47
+    esbuild-openbsd-64: 0.14.47
+    esbuild-sunos-64: 0.14.47
+    esbuild-windows-32: 0.14.47
+    esbuild-windows-64: 0.14.47
+    esbuild-windows-arm64: 0.14.47
+  dependenciesMeta:
+    esbuild-android-64:
+      optional: true
+    esbuild-android-arm64:
+      optional: true
+    esbuild-darwin-64:
+      optional: true
+    esbuild-darwin-arm64:
+      optional: true
+    esbuild-freebsd-64:
+      optional: true
+    esbuild-freebsd-arm64:
+      optional: true
+    esbuild-linux-32:
+      optional: true
+    esbuild-linux-64:
+      optional: true
+    esbuild-linux-arm:
+      optional: true
+    esbuild-linux-arm64:
+      optional: true
+    esbuild-linux-mips64le:
+      optional: true
+    esbuild-linux-ppc64le:
+      optional: true
+    esbuild-linux-riscv64:
+      optional: true
+    esbuild-linux-s390x:
+      optional: true
+    esbuild-netbsd-64:
+      optional: true
+    esbuild-openbsd-64:
+      optional: true
+    esbuild-sunos-64:
+      optional: true
+    esbuild-windows-32:
+      optional: true
+    esbuild-windows-64:
+      optional: true
+    esbuild-windows-arm64:
+      optional: true
   bin:
     esbuild: bin/esbuild
-  checksum: db14cc10914d40a875da1b102cee7479ebe1b085cdc2deaa8e275468ada9bf3c6b793bd6004a031a9f2e34865fe629dc59030c5fe4820978f1cf071966aa2c5d
+  checksum: 77a8bff8c3fe52dc9d2823448843b0f53c9a9f3701e3637a54e396270c9ca04cc46a4b08ef86cbaa8d202854e02c790f61683bfa75ebff540b1e24414f536e91
   languageName: node
   linkType: hard
 
@@ -10787,13 +11020,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.14.4":
+"follow-redirects@npm:^1.0.0":
   version: 1.14.5
   resolution: "follow-redirects@npm:1.14.5"
   peerDependenciesMeta:
     debug:
       optional: true
   checksum: f004a76b2ee3a849772c2816e30928253bf47537b0f00184d89f4966413add96a228a4d96ca8c702bc045a683c52c2ba41545c915cc1a5e33bf8fd9d07b59aee
+  languageName: node
+  linkType: hard
+
+"follow-redirects@npm:^1.14.8":
+  version: 1.15.1
+  resolution: "follow-redirects@npm:1.15.1"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: 6aa4e3e3cdfa3b9314801a1cd192ba756a53479d9d8cca65bf4db3a3e8834e62139245cd2f9566147c8dfe2efff1700d3e6aefd103de4004a7b99985e71dd533
   languageName: node
   linkType: hard
 
@@ -12404,6 +12647,15 @@ fsevents@^1.2.7:
   dependencies:
     has: ^1.0.3
   checksum: c498902d4c4d0e8eba3a2e8293ccd442158cfe49a71d7cfad136ccf9902b6a41de34ddaa86cdc95c8b7c22f872e59572d8a5d994cbec04c8ecf27ffe75137119
+  languageName: node
+  linkType: hard
+
+"is-core-module@npm:^2.9.0":
+  version: 2.9.0
+  resolution: "is-core-module@npm:2.9.0"
+  dependencies:
+    has: ^1.0.3
+  checksum: b27034318b4b462f1c8f1dfb1b32baecd651d891a4e2d1922135daeff4141dfced2b82b07aef83ef54275c4a3526aa38da859223664d0868ca24182badb784ce
   languageName: node
   linkType: hard
 
@@ -15014,6 +15266,15 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"nanoid@npm:^3.3.4":
+  version: 3.3.4
+  resolution: "nanoid@npm:3.3.4"
+  bin:
+    nanoid: bin/nanoid.cjs
+  checksum: 2fddd6dee994b7676f008d3ffa4ab16035a754f4bb586c61df5a22cf8c8c94017aadd360368f47d653829e0569a92b129979152ff97af23a558331e47e37cd9c
+  languageName: node
+  linkType: hard
+
 "nanomatch@npm:^1.2.9":
   version: 1.2.13
   resolution: "nanomatch@npm:1.2.13"
@@ -15952,6 +16213,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"path-parse@npm:^1.0.7":
+  version: 1.0.7
+  resolution: "path-parse@npm:1.0.7"
+  checksum: 49abf3d81115642938a8700ec580da6e830dde670be21893c62f4e10bd7dd4c3742ddc603fe24f898cba7eb0c6bc1777f8d9ac14185d34540c6d4d80cd9cae8a
+  languageName: node
+  linkType: hard
+
 "path-to-regexp@npm:0.1.7":
   version: 0.1.7
   resolution: "path-to-regexp@npm:0.1.7"
@@ -16008,6 +16276,13 @@ fsevents@^1.2.7:
   version: 2.1.0
   resolution: "performance-now@npm:2.1.0"
   checksum: 534e641aa8f7cba160f0afec0599b6cecefbb516a2e837b512be0adbe6c1da5550e89c78059c7fabc5c9ffdf6627edabe23eb7c518c4500067a898fa65c2b550
+  languageName: node
+  linkType: hard
+
+"picocolors@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "picocolors@npm:1.0.0"
+  checksum: a2e8092dd86c8396bdba9f2b5481032848525b3dc295ce9b57896f931e63fc16f79805144321f72976383fc249584672a75cc18d6777c6b757603f372f745981
   languageName: node
   linkType: hard
 
@@ -17010,7 +17285,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.1.0, postcss@npm:^8.3.6":
+"postcss@npm:^8.1.0":
   version: 8.3.6
   resolution: "postcss@npm:8.3.6"
   dependencies:
@@ -17018,6 +17293,17 @@ fsevents@^1.2.7:
     nanoid: ^3.1.23
     source-map-js: ^0.6.2
   checksum: ff55b91bea21f42c2a94d77fd05c3f66dd15889c68506cf1dbb9cdee8c3b9e9d0e219bcbc6e61a107bd63e3cac0670176486e2a5794c106a4e1b9babceb79317
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.4.13":
+  version: 8.4.14
+  resolution: "postcss@npm:8.4.14"
+  dependencies:
+    nanoid: ^3.3.4
+    picocolors: ^1.0.0
+    source-map-js: ^1.0.2
+  checksum: fe58766ff32e4becf65a7d57678995cfd239df6deed2fe0557f038b47c94e4132e7e5f68b5aa820c13adfec32e523b693efaeb65798efb995ce49ccd83953816
   languageName: node
   linkType: hard
 
@@ -18629,6 +18915,19 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+"resolve@npm:^1.22.0":
+  version: 1.22.1
+  resolution: "resolve@npm:1.22.1"
+  dependencies:
+    is-core-module: ^2.9.0
+    path-parse: ^1.0.7
+    supports-preserve-symlinks-flag: ^1.0.0
+  bin:
+    resolve: bin/resolve
+  checksum: 07af5fc1e81aa1d866cbc9e9460fbb67318a10fa3c4deadc35c3ad8a898ee9a71a86a65e4755ac3195e0ea0cfbe201eb323ebe655ce90526fd61917313a34e4e
+  languageName: node
+  linkType: hard
+
 "resolve@patch:resolve@1.18.1#~builtin<compat/resolve>":
   version: 1.18.1
   resolution: "resolve@patch:resolve@npm%3A1.18.1#~builtin<compat/resolve>::version=1.18.1&hash=07638b"
@@ -18646,6 +18945,19 @@ resolve@^2.0.0-next.3:
     is-core-module: ^2.2.0
     path-parse: ^1.0.6
   checksum: a0dd7d16a8e47af23afa9386df2dff10e3e0debb2c7299a42e581d9d9b04d7ad5d2c53f24f1e043f7b3c250cbdc71150063e53d0b6559683d37f790b7c8c3cd5
+  languageName: node
+  linkType: hard
+
+"resolve@patch:resolve@^1.22.0#~builtin<compat/resolve>":
+  version: 1.22.1
+  resolution: "resolve@patch:resolve@npm%3A1.22.1#~builtin<compat/resolve>::version=1.22.1&hash=07638b"
+  dependencies:
+    is-core-module: ^2.9.0
+    path-parse: ^1.0.7
+    supports-preserve-symlinks-flag: ^1.0.0
+  bin:
+    resolve: bin/resolve
+  checksum: 5656f4d0bedcf8eb52685c1abdf8fbe73a1603bb1160a24d716e27a57f6cecbe2432ff9c89c2bd57542c3a7b9d14b1882b73bfe2e9d7849c9a4c0b8b39f02b8b
   languageName: node
   linkType: hard
 
@@ -18803,17 +19115,17 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"rollup@npm:^2.38.5":
-  version: 2.51.0
-  resolution: "rollup@npm:2.51.0"
+"rollup@npm:^2.59.0":
+  version: 2.75.7
+  resolution: "rollup@npm:2.75.7"
   dependencies:
-    fsevents: ~2.3.1
+    fsevents: ~2.3.2
   dependenciesMeta:
     fsevents:
       optional: true
   bin:
     rollup: dist/bin/rollup
-  checksum: f46236dc690746f231c66deecee341d190bedc5c195819d3bd363480a7986ba0ea92d63c31e6b4571d29b8e4b90a34a256eeeefa42c30659cb1e8398f9a64d87
+  checksum: a6331d46b01062b184efdcb42ce12caf2e1575f989963944534b02f5855f6f3bc239ed0c1a18893572d7695af6d83166f3aef59dbd0365084e1531cb67824674
   languageName: node
   linkType: hard
 
@@ -19524,6 +19836,13 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+"source-map-js@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "source-map-js@npm:1.0.2"
+  checksum: c049a7fc4deb9a7e9b481ae3d424cc793cb4845daa690bc5a05d428bf41bf231ced49b4cf0c9e77f9d42fdb3d20d6187619fc586605f5eabe995a316da8d377c
+  languageName: node
+  linkType: hard
+
 "source-map-resolve@npm:^0.5.0, source-map-resolve@npm:^0.5.2":
   version: 0.5.3
   resolution: "source-map-resolve@npm:0.5.3"
@@ -20197,6 +20516,13 @@ resolve@^2.0.0-next.3:
     has-flag: ^4.0.0
     supports-color: ^7.0.0
   checksum: aef04fb41f4a67f1bc128f7c3e88a81b6cf2794c800fccf137006efe5bafde281da3e42e72bf9206c2fcf42e6438f37e3a820a389214d0a88613ca1f2d36076a
+  languageName: node
+  linkType: hard
+
+"supports-preserve-symlinks-flag@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "supports-preserve-symlinks-flag@npm:1.0.0"
+  checksum: 53b1e247e68e05db7b3808b99b892bd36fb096e6fba213a06da7fab22045e97597db425c724f2bbd6c99a3c295e1e73f3e4de78592289f38431049e1277ca0ae
   languageName: node
   linkType: hard
 
@@ -21524,21 +21850,32 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"vite@npm:^2.5.3":
-  version: 2.5.3
-  resolution: "vite@npm:2.5.3"
+"vite@npm:^2.9.13":
+  version: 2.9.13
+  resolution: "vite@npm:2.9.13"
   dependencies:
-    esbuild: ^0.12.17
+    esbuild: ^0.14.27
     fsevents: ~2.3.2
-    postcss: ^8.3.6
-    resolve: ^1.20.0
-    rollup: ^2.38.5
+    postcss: ^8.4.13
+    resolve: ^1.22.0
+    rollup: ^2.59.0
+  peerDependencies:
+    less: "*"
+    sass: "*"
+    stylus: "*"
   dependenciesMeta:
     fsevents:
       optional: true
+  peerDependenciesMeta:
+    less:
+      optional: true
+    sass:
+      optional: true
+    stylus:
+      optional: true
   bin:
     vite: bin/vite.js
-  checksum: 118beba819a72af9d7ccf674583837d44794a08694f3a99ee5760add9e8df221d3db36f430db5e88d43fd4b094e213aa0d09998aef91b861e17ed0544b8a1864
+  checksum: a5e501b920a448c352e9b3836019dea56c523535f8e8540160708c2e164d84da6655ae39abbba1e2888092f5c6cd03dd06279852422359b51be601914645f49f
   languageName: node
   linkType: hard
 

@@ -1,4 +1,12 @@
-import { CW20Addr, HumanAddr, rs, terraswap, Token, u, UST } from '@libs/types';
+import {
+  CW20Addr,
+  HumanAddr,
+  rs,
+  terraswap,
+  Token,
+  u,
+  Luna,
+} from '@libs/types';
 import { CT } from '../tokens';
 
 export namespace cluster {
@@ -83,7 +91,7 @@ export namespace cluster {
 
   export interface ClusterStateResponse {
     outstanding_balance_tokens: u<CT>;
-    prices: UST[];
+    prices: Luna[];
     inv: u<Token>[];
     penalty: HumanAddr;
     cluster_token: CW20Addr;

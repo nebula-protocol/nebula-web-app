@@ -1,5 +1,5 @@
 import { formatUToken } from '@libs/formatter';
-import { u, UST, Token } from '@nebula-js/types';
+import { u, Luna, Token } from '@nebula-js/types';
 import { breakpoints, Button, useScreenSizeValue } from '@nebula-js/ui';
 import { ClusterInfo } from '@nebula-js/app-fns';
 import {
@@ -50,7 +50,7 @@ function MintBasicBase({
   // callbacks
   // ---------------------------------------------
   const proceed = useCallback(
-    (amounts: u<Token>[], txFee: u<UST>) => {
+    (amounts: u<Token>[], txFee: u<Luna>) => {
       const stream = postTx?.({
         amounts,
         txFee,
@@ -102,7 +102,7 @@ function MintBasicBase({
         {states.txFee !== null && (
           <li>
             <span>Tx Fee</span>
-            <span>{formatUToken(states.txFee)} UST</span>
+            <span>{formatUToken(states.txFee)} Luna</span>
           </li>
         )}
       </FeeBox>

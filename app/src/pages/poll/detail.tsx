@@ -108,7 +108,8 @@ function PollDetailBase({ className }: PollDetailProps) {
             </p>
             <p>
               <span>Estimated end time</span>
-              {parsedPoll?.endsIn.toLocaleString()}
+              {parsedPoll?.endsIn.toLocaleString()} (#
+              {parsedPoll?.endsInHeight.toLocaleString()})
             </p>
             {userVoterInfo && (
               <p>

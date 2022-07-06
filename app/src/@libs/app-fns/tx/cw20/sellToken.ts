@@ -18,7 +18,7 @@ import {
   terraswap,
   Token,
   u,
-  UST,
+  Luna,
 } from '@libs/types';
 import { pipe } from '@rx-stream/pipe';
 import { MsgExecuteContract, Fee } from '@terra-money/terra.js';
@@ -44,7 +44,7 @@ export function cw20SellTokenTx<T extends Token>(
     /** = slippage_tolerance */
     maxSpread: Rate;
     taxRate: Rate;
-    maxTaxUUSD: u<UST>;
+    maxTaxUUSD: u<Luna>;
     onTxSucceed?: () => void;
   } & TxCommonParams,
 ): Observable<TxResultRendering> {
@@ -68,7 +68,7 @@ export function cw20SellTokenTx<T extends Token>(
           },
         } as cw20.Send<T>),
       ],
-      fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
+      fee: new Fee($.gasWanted, floor($.txFee) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),
@@ -80,16 +80,16 @@ export function cw20SellTokenTx<T extends Token>(
         return helper.failedToFindRawLog();
       }
 
-      const fromContract = pickEvent(rawLog, 'from_contract');
+      const fromContract = pickEvent(rawLog, 'wasm');
       const transfer = pickEvent(rawLog, 'transfer');
 
       if (!fromContract || !transfer) {
-        return helper.failedToFindEvents('from_contract', 'transfer');
+        return helper.failedToFindEvents('wasm', 'transfer');
       }
 
       try {
         // sold
-        const offer_amount = pickAttributeValueByKey<u<UST>>(
+        const offer_amount = pickAttributeValueByKey<u<Luna>>(
           fromContract,
           'offer_amount',
         );
@@ -98,16 +98,16 @@ export function cw20SellTokenTx<T extends Token>(
           fromContract,
           'return_amount',
         );
-        const spread_amount = pickAttributeValueByKey<u<UST>>(
+        const spread_amount = pickAttributeValueByKey<u<Luna>>(
           fromContract,
           'spread_amount',
         );
-        const commission_amount = pickAttributeValueByKey<u<UST>>(
+        const commission_amount = pickAttributeValueByKey<u<Luna>>(
           fromContract,
           'commission_amount',
         );
         const transfer_amount = stripUUSD(
-          pickAttributeValueByKey<u<UST>>(
+          pickAttributeValueByKey<u<Luna>>(
             transfer,
             'amount',
             (attrs) => attrs[0],
@@ -116,13 +116,13 @@ export function cw20SellTokenTx<T extends Token>(
 
         const pricePerToken =
           return_amount && offer_amount
-            ? (big(return_amount).div(offer_amount) as UST<Big>)
+            ? (big(return_amount).div(offer_amount) as Luna<Big>)
             : undefined;
         const tradingFee =
           spread_amount && commission_amount
-            ? (big(spread_amount).plus(commission_amount) as u<UST<Big>>)
+            ? (big(spread_amount).plus(commission_amount) as u<Luna<Big>>)
             : undefined;
-        const txFee = big($.fixedFee).plus(transfer_amount) as u<UST<Big>>;
+        const txFee = big($.fixedFee).plus(transfer_amount) as u<Luna<Big>>;
 
         return {
           value: null,
@@ -137,15 +137,15 @@ export function cw20SellTokenTx<T extends Token>(
             },
             return_amount && {
               name: 'Received',
-              value: `${formatUTokenWithPostfixUnits(return_amount)} UST`,
+              value: `${formatUTokenWithPostfixUnits(return_amount)} Luna`,
             },
             pricePerToken && {
               name: `Price per ${$.tokenSymbol}`,
-              value: `${formatTokenWithPostfixUnits(pricePerToken)} UST`,
+              value: `${formatTokenWithPostfixUnits(pricePerToken)} Luna`,
             },
             tradingFee && {
               name: 'Trading Fee',
-              value: `${formatUTokenWithPostfixUnits(tradingFee)} UST`,
+              value: `${formatUTokenWithPostfixUnits(tradingFee)} Luna`,
             },
             helper.txHashReceipt(),
             helper.txFeeReceipt(txFee),

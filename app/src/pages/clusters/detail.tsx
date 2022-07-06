@@ -3,7 +3,7 @@ import {
   formatUTokenDecimal2,
   formatUToken,
 } from '@libs/formatter';
-import { HumanAddr, Rate } from '@nebula-js/types';
+import { HumanAddr, Rate, u, UST } from '@nebula-js/types';
 import {
   BarGraph,
   breakpoints,
@@ -17,7 +17,7 @@ import {
   TabItem,
   useScreenSizeValue,
 } from '@nebula-js/ui';
-import { useClusterInfoQuery } from '@nebula-js/app-provider';
+import { useClusterInfoQuery, useLunaPrice } from '@nebula-js/app-provider';
 import { MainLayout } from 'components/layouts/MainLayout';
 import { fixHMR } from 'fix-hmr';
 import { toClusterView } from 'pages/clusters/models/clusters';
@@ -36,6 +36,7 @@ import { ClusterMint } from './components/Mint';
 import { PriceCard } from './components/PriceCard';
 import { ClusterSell } from './components/Sell';
 import { useTwoSteps } from 'contexts/two-steps';
+import { Big } from 'big.js';
 
 export interface ClustersDetailProps
   extends RouteComponentProps<{ cluster: string }> {
@@ -58,11 +59,19 @@ function ClustersDetailBase({
 
   const { data: clusterInfo } = useClusterInfoQuery(clusterAddr);
 
+  const lunaPrice = useLunaPrice();
+
   const { validateAndNavigate } = useTwoSteps();
 
   const clusterView = useMemo(() => {
     return clusterInfo ? toClusterView(clusterInfo) : undefined;
   }, [clusterInfo]);
+
+  const netAssetValue = useMemo(() => {
+    return clusterView && lunaPrice
+      ? (clusterView.provided.mul(lunaPrice) as u<UST<Big>>)
+      : undefined;
+  }, [clusterView, lunaPrice]);
 
   const pageMatch = useRouteMatch<{ page: string }>(`${match.url}/:page`);
 
@@ -181,10 +190,9 @@ function ClustersDetailBase({
                     </InfoTooltip>
                   </>
                 ),
-                text:
-                  (clusterView?.provided
-                    ? formatUTokenDecimal2(clusterView.provided)
-                    : '0') + ' UST',
+                text: netAssetValue
+                  ? '$' + formatUTokenDecimal2(netAssetValue)
+                  : '-',
               },
             ]}
           />
@@ -237,7 +245,14 @@ function ClustersDetailBase({
                   <td>
                     {formatUToken(amount)} {token.symbol}
                   </td>
-                  <td>${formatUTokenDecimal2(marketcap)}</td>
+                  <td>
+                    $
+                    {lunaPrice
+                      ? formatUTokenDecimal2(
+                          lunaPrice.mul(marketcap) as u<UST<Big>>,
+                        )
+                      : '-'}
+                  </td>
                   <td className="portfolio-ratio">
                     {formatRate(portfolioRatio as Rate<number>)}%{' '}
                     <Sub

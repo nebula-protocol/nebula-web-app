@@ -56,7 +56,7 @@ function ClustersCardsBase({
             <IconAndLabels
               symbol={tokenInfo.symbol}
               text={name}
-              subtext={<>{formatToken(prices.clusterPrice)} UST </>}
+              subtext={<>{formatToken(prices.clusterPrice)} Luna </>}
               isActive={isActive}
               iconSize="4.28571429em"
               textSize="1.42857143em"
@@ -66,11 +66,11 @@ function ClustersCardsBase({
 
             <div className="values">
               <VerticalLabelAndValue label="MARKET CAP">
-                {formatUTokenDecimal2(marketCap)} UST
+                {formatUTokenDecimal2(marketCap)} Luna
               </VerticalLabelAndValue>
 
               <VerticalLabelAndValue label="TOTAL PROVIDED">
-                {formatUTokenDecimal2(provided)} UST
+                {formatUTokenDecimal2(provided)} Luna
               </VerticalLabelAndValue>
 
               <VerticalLabelAndValue label="PREMIUM">

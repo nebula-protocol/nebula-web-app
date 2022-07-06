@@ -41,7 +41,7 @@ export function useTokenSearch(
                 },
               },
               // TODO change to empty icon
-              icon: 'https://assets.terra.money/icon/60/UST.png',
+              icon: 'https://assets.terra.money/icon/60/Luna.png',
             },
           ]);
         })

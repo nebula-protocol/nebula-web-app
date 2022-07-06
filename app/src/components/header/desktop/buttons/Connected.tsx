@@ -1,4 +1,4 @@
-import { useUstBalance } from '@libs/app-provider';
+import { useLunaBalance } from '@libs/app-provider';
 import { demicrofy, formatTokenWithPostfixUnits } from '@libs/formatter';
 import { ClickAwayListener, Grow, Popper } from '@material-ui/core';
 import { ChevronRightIcon, WalletIcon } from '@nebula-js/icons';
@@ -16,7 +16,7 @@ export interface ConnectedProps
 function ConnectedBase({ ...buttonProps }: ConnectedProps) {
   const connectedWallet = useConnectedWallet();
 
-  const uUST = useUstBalance(connectedWallet?.walletAddress);
+  const uUST = useLunaBalance(connectedWallet?.walletAddress);
 
   const [anchorElement, setAnchorElement] = useState<HTMLElement | null>(null);
 
@@ -39,7 +39,7 @@ function ConnectedBase({ ...buttonProps }: ConnectedProps) {
             <EmptyIconHolder fontSize={16}>
               <WalletIcon />
             </EmptyIconHolder>
-            {formatTokenWithPostfixUnits(demicrofy(uUST))} UST
+            {formatTokenWithPostfixUnits(demicrofy(uUST))} Luna
             <EmptyIconHolder fontSize={8}>
               <ChevronRightIcon />
             </EmptyIconHolder>

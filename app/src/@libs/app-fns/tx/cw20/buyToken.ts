@@ -3,7 +3,7 @@ import {
   formatUTokenWithPostfixUnits,
   formatTokenWithPostfixUnits,
 } from '@libs/formatter';
-import { HumanAddr, Rate, terraswap, Token, u, UST } from '@libs/types';
+import { HumanAddr, Rate, terraswap, Token, u, Luna } from '@libs/types';
 import { pipe } from '@rx-stream/pipe';
 import { MsgExecuteContract, Fee } from '@terra-money/terra.js';
 import big, { Big } from 'big.js';
@@ -26,14 +26,14 @@ import { TxCommonParams } from '../TxCommonParams';
 export function cw20BuyTokenTx(
   $: {
     buyerAddr: HumanAddr;
-    buyAmount: u<UST>;
+    buyAmount: u<Luna>;
     tokenUstPairAddr: HumanAddr;
     tokenSymbol: string;
-    beliefPrice: UST;
+    beliefPrice: Luna;
     /** = slippage_tolerance */
     maxSpread: Rate;
     taxRate: Rate;
-    maxTaxUUSD: u<UST>;
+    maxTaxUUSD: u<Luna>;
     onTxSucceed?: () => void;
   } & TxCommonParams,
 ): Observable<TxResultRendering> {
@@ -51,18 +51,18 @@ export function cw20BuyTokenTx(
                 amount: $.buyAmount,
                 info: {
                   native_token: {
-                    denom: 'uusd',
+                    denom: 'uluna',
                   },
                 },
               },
               belief_price: $.beliefPrice,
               max_spread: $.maxSpread,
             },
-          } as terraswap.pair.Swap<UST>,
-          $.buyAmount + 'uusd',
+          } as terraswap.pair.Swap<Luna>,
+          $.buyAmount + 'uluna',
         ),
       ],
-      fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
+      fee: new Fee($.gasWanted, floor($.txFee) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),
@@ -74,10 +74,10 @@ export function cw20BuyTokenTx(
         return helper.failedToFindRawLog();
       }
 
-      const fromContract = pickEvent(rawLog, 'from_contract');
+      const fromContract = pickEvent(rawLog, 'wasm');
 
       if (!fromContract) {
-        return helper.failedToFindEvents('from_contract');
+        return helper.failedToFindEvents('wasm');
       }
 
       try {
@@ -85,7 +85,7 @@ export function cw20BuyTokenTx(
           fromContract,
           'return_amount',
         );
-        const offer_amount = pickAttributeValueByKey<u<UST>>(
+        const offer_amount = pickAttributeValueByKey<u<Luna>>(
           fromContract,
           'offer_amount',
         );
@@ -100,7 +100,7 @@ export function cw20BuyTokenTx(
 
         const pricePerToken =
           return_amount && offer_amount
-            ? (big(offer_amount).div(return_amount) as UST<Big>)
+            ? (big(offer_amount).div(return_amount) as Luna<Big>)
             : undefined;
         const tradingFee =
           spread_amount && commission_amount
@@ -109,7 +109,7 @@ export function cw20BuyTokenTx(
         const txFee = offer_amount
           ? (big($.fixedFee).plus(
               min(big(offer_amount).mul($.taxRate), $.maxTaxUUSD),
-            ) as u<UST<Big>>)
+            ) as u<Luna<Big>>)
           : undefined;
 
         return {
@@ -124,12 +124,12 @@ export function cw20BuyTokenTx(
               }`,
             },
             offer_amount && {
-              name: 'UST Paid',
-              value: `${formatUTokenWithPostfixUnits(offer_amount)} UST`,
+              name: 'Luna Paid',
+              value: `${formatUTokenWithPostfixUnits(offer_amount)} Luna`,
             },
             pricePerToken && {
               name: `Price Per ${$.tokenSymbol}`,
-              value: `${formatTokenWithPostfixUnits(pricePerToken)} UST`,
+              value: `${formatTokenWithPostfixUnits(pricePerToken)} Luna`,
             },
             tradingFee && {
               name: 'Trading Fee',

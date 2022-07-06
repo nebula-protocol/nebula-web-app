@@ -51,6 +51,8 @@ export function Providers({ children, ...chainOptions }: ProvidersProps) {
   return (
     <WalletProvider
       {...chainOptions}
+      // TODO: set default as pisco-1 (terra 2.0 testnet)
+      defaultNetwork={chainOptions.walletConnectChainIds[0]}
       connectorOpts={{
         bridge: WALLETCONNECT_BRIDGE_SERVER,
       }}

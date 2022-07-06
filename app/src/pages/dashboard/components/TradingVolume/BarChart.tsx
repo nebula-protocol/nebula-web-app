@@ -1,6 +1,6 @@
 import { formatToken } from '@libs/formatter';
 import { getCssVariable } from '@libs/style-router';
-import { JSDateTime, u, UST } from '@nebula-js/types';
+import { JSDateTime, u, Luna } from '@nebula-js/types';
 import { Chart } from 'chart.js';
 import { format } from 'date-fns';
 import React, { Component, createRef } from 'react';
@@ -8,7 +8,7 @@ import styled from 'styled-components';
 
 interface ChartData {
   y: number;
-  amount: u<UST>;
+  amount: u<Luna>;
   date: JSDateTime;
 }
 
@@ -89,7 +89,7 @@ export class BarChart extends Component<BarChartProps> {
             callbacks: {
               label: (tooltipItem): string | string[] => {
                 return (
-                  formatToken(tooltipItem.parsed.y as UST<number>) + ' UST'
+                  formatToken(tooltipItem.parsed.y as Luna<number>) + ' Luna'
                 );
               },
             },

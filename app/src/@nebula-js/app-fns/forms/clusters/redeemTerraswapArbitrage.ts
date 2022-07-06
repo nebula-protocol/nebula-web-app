@@ -1,5 +1,5 @@
 import {
-  computeMaxUstBalanceForUstTransfer,
+  computeMaxLunaBalanceForTransfer,
   GasPrice,
   terraswapSimulationQuery,
 } from '@libs/app-fns';
@@ -20,7 +20,7 @@ import {
   terraswap,
   Token,
   u,
-  UST,
+  Luna,
 } from '@nebula-js/types';
 import big, { Big, BigSource } from 'big.js';
 import { computeClusterTxFee } from '../../logics/clusters/computeClusterTxFee';
@@ -28,7 +28,7 @@ import { clusterRedeemQuery } from '../../queries/clusters/redeem';
 import { NebulaClusterFee } from '../../types';
 
 export interface ClusterRedeemTerraswapArbitrageFormInput {
-  ustAmount: UST & NoMicro;
+  lunaAmount: Luna & NoMicro;
   maxSpread: Rate;
 }
 
@@ -40,10 +40,10 @@ export interface ClusterRedeemTerraswapArbitrageFormDependency {
   terraswapPair: terraswap.factory.PairResponse;
   protocolFee: Rate;
   //
-  ustBalance: u<UST>;
+  lunaBalance: u<Luna>;
   taxRate: Rate;
-  maxTaxUUSD: u<UST>;
-  fixedFee: u<UST<BigSource>>;
+  maxTaxUUSD: u<Luna>;
+  fixedFee: u<Luna<BigSource>>;
   gasPrice: GasPrice;
   clusterFee: NebulaClusterFee;
   //
@@ -52,18 +52,18 @@ export interface ClusterRedeemTerraswapArbitrageFormDependency {
 
 export interface ClusterRedeemTerraswapArbitrageFormStates
   extends ClusterRedeemTerraswapArbitrageFormInput {
-  maxUstAmount: u<UST<BigSource>>;
+  maxUstAmount: u<Luna<BigSource>>;
   invalidUstAmount: string | null;
   invalidTxFee: string | null;
   invalidRedeemQuery: string | null;
-  txFee: u<UST> | null;
+  txFee: u<Luna> | null;
 }
 
 export interface ClusterRedeemTerraswapArbitrageFormAsyncStates {
   minBurntTokenAmount?: u<CT>;
   redeemTokenAmounts?: u<Token>[];
-  totalRedeemValue?: u<UST<Big>>;
-  pnl?: u<UST>;
+  totalRedeemValue?: u<Luna<Big>>;
+  pnl?: u<Luna>;
 }
 
 export const clusterRedeemTerraswapArbitrageForm = (
@@ -77,8 +77,8 @@ export const clusterRedeemTerraswapArbitrageForm = (
     dependency.clusterState.target.length,
   );
 
-  const maxUstAmount = computeMaxUstBalanceForUstTransfer(
-    dependency.ustBalance,
+  const maxUstAmount = computeMaxLunaBalanceForTransfer(
+    dependency.lunaBalance,
     dependency.taxRate,
     dependency.maxTaxUUSD,
     clusterTxFee,
@@ -95,7 +95,7 @@ export const clusterRedeemTerraswapArbitrageForm = (
     ClusterRedeemTerraswapArbitrageFormStates,
     ClusterRedeemTerraswapArbitrageFormAsyncStates
   > => {
-    if (input.ustAmount.trim().length === 0 || big(input.ustAmount).eq(0)) {
+    if (input.lunaAmount.trim().length === 0 || big(input.lunaAmount).eq(0)) {
       return [
         {
           ...input,
@@ -111,11 +111,12 @@ export const clusterRedeemTerraswapArbitrageForm = (
 
     if (
       !invalidUstAmount ||
-      dependency.ustBalance !== prevDependency?.ustBalance ||
-      input.ustAmount !== prevInput?.ustAmount
+      dependency.lunaBalance !== prevDependency?.lunaBalance ||
+      input.lunaAmount !== prevInput?.lunaAmount
     ) {
       invalidUstAmount =
-        big(input.ustAmount).gt(0) && microfy(input.ustAmount).gt(maxUstAmount)
+        big(input.lunaAmount).gt(0) &&
+        microfy(input.lunaAmount).gt(maxUstAmount)
           ? 'Not enough assets'
           : null;
     }
@@ -128,18 +129,18 @@ export const clusterRedeemTerraswapArbitrageForm = (
       dependency.clusterState !== prevDependency?.clusterState ||
       dependency.gasPrice !== prevDependency?.gasPrice ||
       dependency.protocolFee !== prevDependency.protocolFee ||
-      input.ustAmount !== prevInput?.ustAmount ||
+      input.lunaAmount !== prevInput?.lunaAmount ||
       input.maxSpread !== prevInput?.maxSpread
     ) {
-      let txFee: u<UST>;
+      let txFee: u<Luna>;
 
       asyncStates = terraswapSimulationQuery(
         dependency.terraswapPair.contract_addr,
         {
-          amount: microfy(input.ustAmount).toFixed() as u<UST>,
+          amount: microfy(input.lunaAmount).toFixed() as u<Luna>,
           info: {
             native_token: {
-              denom: 'uusd' as NativeDenom,
+              denom: 'uluna' as NativeDenom,
             },
           },
         },
@@ -169,19 +170,19 @@ export const clusterRedeemTerraswapArbitrageForm = (
           const totalRedeemValue = vectorDot(
             redeem.redeem_assets,
             dependency.clusterState.prices,
-          ) as u<UST<Big>>;
+          ) as u<Luna<Big>>;
 
           return {
             minBurntTokenAmount: redeem.token_cost,
             redeemTokenAmounts: redeem.redeem_assets,
             totalRedeemValue,
             pnl: totalRedeemValue
-              .minus(microfy(input.ustAmount))
-              .toFixed() as u<UST>,
+              .minus(microfy(input.lunaAmount))
+              .toFixed() as u<Luna>,
             txFee,
             invalidRedeemQuery: null,
             invalidTxFee:
-              dependency.connected && big(txFee).gt(dependency.ustBalance)
+              dependency.connected && big(txFee).gt(dependency.lunaBalance)
                 ? 'Not enough transaction fees'
                 : null,
           };

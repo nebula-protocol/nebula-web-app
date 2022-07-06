@@ -1,15 +1,15 @@
 import { GasPrice } from '@libs/app-fns';
-import { Gas, u, UST } from '@libs/types';
+import { Gas, u, Luna } from '@libs/types';
 import big from 'big.js';
 
 export function computeBulkSwapTxFee(
   gasPrice: GasPrice,
   swapGasWantedPerAsset: number,
   assetCount: number,
-): u<UST> {
+): u<Luna> {
   return big(computeBulkSwapGasWanted(swapGasWantedPerAsset, assetCount))
-    .mul(gasPrice.uusd)
-    .toFixed() as u<UST>;
+    .mul(gasPrice.uluna)
+    .toFixed() as u<Luna>;
 }
 
 export function computeBulkSwapGasWanted(

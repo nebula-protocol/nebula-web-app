@@ -4,9 +4,9 @@ import { cw20TokenDisplayInfosQuery } from '../cw20/tokenDisplayInfos';
 const NATIVE_TOKEN_DISPLAY_INFOS: TokenDisplayInfo[] = [
   {
     protocol: 'Terra',
-    symbol: 'UST',
-    asset: { native_token: { denom: 'uusd' } },
-    icon: 'https://assets.terra.money/icon/60/UST.png',
+    symbol: 'Luna',
+    asset: { native_token: { denom: 'uluna' } },
+    icon: 'https://assets.terra.money/icon/60/Luna.png',
   },
   {
     protocol: 'Terra',

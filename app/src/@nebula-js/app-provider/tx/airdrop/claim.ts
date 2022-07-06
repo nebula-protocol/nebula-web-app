@@ -1,6 +1,6 @@
 import { Airdrop, airdropClaimTx } from '@nebula-js/app-fns';
 import { useGasPrice, useRefetchQueries } from '@libs/app-provider';
-import { u, UST } from '@libs/types';
+import { u, Luna } from '@libs/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
 import { useNebulaApp } from '@nebula-js/app-provider/hooks/useNebulaApp';
@@ -18,7 +18,7 @@ export function useAirdropClaimTx() {
   const { queryClient, txErrorReporter, constants, contractAddress } =
     useNebulaApp();
 
-  const airdropFee = useGasPrice(constants.airdropGas, 'uusd');
+  const airdropFee = useGasPrice(constants.airdropGas, 'uluna');
 
   const refetchQueries = useRefetchQueries();
 
@@ -37,7 +37,7 @@ export function useAirdropClaimTx() {
         post: connectedWallet.post,
         gasAdjustment: constants.gasAdjustment,
         gasFee: constants.airdropGasWanted,
-        txFee: airdropFee as u<UST>,
+        txFee: airdropFee as u<Luna>,
         // query
         queryClient,
         // error

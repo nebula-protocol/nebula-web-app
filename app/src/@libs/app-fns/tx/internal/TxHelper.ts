@@ -1,5 +1,5 @@
 import { formatUToken } from '@libs/formatter';
-import { u, UST } from '@libs/types';
+import { u, Luna } from '@libs/types';
 import { NetworkInfo, TxResult } from '@terra-money/use-wallet';
 import { CreateTxOptions } from '@terra-money/terra.js';
 import { BigSource } from 'big.js';
@@ -9,7 +9,7 @@ export class TxHelper {
   private _savedTx: CreateTxOptions | null = null;
   private _savedTxResult: TxResult | null = null;
 
-  constructor(private $: { txFee: u<UST>; network: NetworkInfo }) {}
+  constructor(private $: { txFee: u<Luna>; network: NetworkInfo }) {}
 
   get savedTx(): CreateTxOptions {
     if (!this._savedTx) {
@@ -33,7 +33,7 @@ export class TxHelper {
 
     const networkName = this.$.network.name;
     const txhash = this._savedTxResult.result.txhash;
-    const html = `<a href="https://finder.extraterrestrial.money/${networkName}/tx/${txhash}" target="_blank" rel="noreferrer">${truncate(
+    const html = `<a href="https://finder.terra.money/${networkName}/tx/${txhash}" target="_blank" rel="noreferrer">${truncate(
       txhash,
     )}</a>`;
 
@@ -45,10 +45,10 @@ export class TxHelper {
     };
   };
 
-  txFeeReceipt = (txFee?: u<UST<BigSource>>): TxReceipt => {
+  txFeeReceipt = (txFee?: u<Luna<BigSource>>): TxReceipt => {
     return {
       name: 'Tx Fee',
-      value: formatUToken(txFee ?? this.$.txFee) + ' UST',
+      value: formatUToken(txFee ?? this.$.txFee) + ' Luna',
     };
   };
 

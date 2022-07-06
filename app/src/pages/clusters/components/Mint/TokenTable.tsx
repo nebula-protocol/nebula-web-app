@@ -1,5 +1,5 @@
 import { formatUToken } from '@libs/formatter';
-import { Token, u, UST } from '@nebula-js/types';
+import { Token, u, Luna } from '@nebula-js/types';
 import { TokenSpan } from '@nebula-js/ui';
 import { AssetTokenInfo } from '@nebula-js/app-fns';
 import { fixHMR } from 'fix-hmr';
@@ -11,7 +11,7 @@ export interface TokenTableProps {
   className?: string;
   name: string;
   amounts: u<Token>[];
-  prices: UST[];
+  prices: Luna[];
   assetTokenInfos: AssetTokenInfo[];
 }
 
@@ -43,7 +43,7 @@ function TokenTableBase({
                 {formatUToken(amount)} {assetTokenInfos[i].tokenInfo.symbol}
               </p>
               <p>
-                {formatUToken(big(amount).mul(prices[i]) as u<Token<Big>>)} UST
+                {formatUToken(big(amount).mul(prices[i]) as u<Token<Big>>)} Luna
               </p>
             </td>
           </tr>

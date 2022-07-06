@@ -23,9 +23,9 @@ export async function lcdFetch<WasmQueries>({
   const rawData = await Promise.all(
     wasmKeys.map((key) => {
       const { query, contractAddress } = wasmQuery[key];
-      const endpoint = `${lcdEndpoint}/wasm/contracts/${contractAddress}/store?query_msg=${JSON.stringify(
-        query,
-      )}${id ? '&' + id : ''}`;
+      const endpoint = `${lcdEndpoint}/cosmwasm/wasm/v1/contract/${contractAddress}/smart/${Buffer.from(
+        JSON.stringify(query),
+      ).toString('base64')}${id ? '?' + id : ''}`;
       return lcdFetcher<LcdResult<any>>(endpoint, requestInit);
     }),
   );
@@ -33,25 +33,16 @@ export async function lcdFetch<WasmQueries>({
   const result = wasmKeys.reduce((resultObject, key, i) => {
     const lcdResult = rawData[i];
 
-    if (!('result' in lcdResult)) {
-      if ('error' in lcdResult) {
-        throw new LcdFault((lcdResult as any).error);
+    if (!('data' in lcdResult)) {
+      if ('message' in lcdResult) {
+        throw new LcdFault((lcdResult as any).message);
       } else {
         throw new LcdFault('Unknown error: ' + String(lcdResult));
       }
     }
 
     //@ts-ignore
-    resultObject[key] = lcdResult.result;
-
-    const blockHeight: number = +lcdResult.height;
-
-    if (
-      typeof resultObject.$blockHeight !== 'number' ||
-      blockHeight < resultObject.$blockHeight
-    ) {
-      resultObject.$blockHeight = blockHeight;
-    }
+    resultObject[key] = lcdResult.data;
 
     return resultObject;
   }, {} as WasmQueryData<WasmQueries>);

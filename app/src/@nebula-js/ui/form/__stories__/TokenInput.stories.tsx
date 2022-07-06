@@ -1,6 +1,6 @@
 import { DeleteOutline } from '@material-ui/icons';
 import { WalletIcon } from '@nebula-js/icons';
-import { u, UST } from '@nebula-js/types';
+import { u, Luna } from '@nebula-js/types';
 import { EmptyButton, TokenInput, TokenSpan } from '@nebula-js/ui';
 import { Meta } from '@storybook/react';
 import big from 'big.js';
@@ -11,7 +11,7 @@ export default {
 } as Meta;
 
 export const Basic = () => {
-  const [value, setValue] = useState<u<UST>>('' as u<UST>);
+  const [value, setValue] = useState<u<Luna>>('' as u<Luna>);
 
   const invalidValue = useMemo(() => {
     return value.length > 0 && big(value).gt(1000)
@@ -25,16 +25,16 @@ export const Basic = () => {
       onChange={setValue}
       label="INPUT"
       suggest={
-        <EmptyButton onClick={() => setValue('100000' as u<UST>)}>
+        <EmptyButton onClick={() => setValue('100000' as u<Luna>)}>
           <WalletIcon
             style={{
               transform: 'translate(-0.3em, 0)',
             }}
           />{' '}
-          100,000 UST
+          100,000 Luna
         </EmptyButton>
       }
-      token={<TokenSpan>UST</TokenSpan>}
+      token={<TokenSpan>Luna</TokenSpan>}
       style={{ width: 400 }}
       error={invalidValue}
     />
@@ -42,7 +42,7 @@ export const Basic = () => {
 };
 
 export const Size = () => {
-  const [value, setValue] = useState<u<UST>>('' as u<UST>);
+  const [value, setValue] = useState<u<Luna>>('' as u<Luna>);
 
   const invalidValue = useMemo(() => {
     return value.length > 0 && big(value).gt(1000)
@@ -59,16 +59,16 @@ export const Size = () => {
           onChange={setValue}
           label={fontSize.toUpperCase()}
           suggest={
-            <EmptyButton onClick={() => setValue('100000' as u<UST>)}>
+            <EmptyButton onClick={() => setValue('100000' as u<Luna>)}>
               <WalletIcon
                 style={{
                   transform: 'translate(-0.3em, 0)',
                 }}
               />{' '}
-              100,000 UST
+              100,000 Luna
             </EmptyButton>
           }
-          token={<TokenSpan>UST</TokenSpan>}
+          token={<TokenSpan>Luna</TokenSpan>}
           style={{ width: 400, fontSize }}
           error={invalidValue}
         />
@@ -78,7 +78,7 @@ export const Size = () => {
 };
 
 export const Footer = () => {
-  const [value, setValue] = useState<u<UST>>('' as u<UST>);
+  const [value, setValue] = useState<u<Luna>>('' as u<Luna>);
 
   const invalidValue = useMemo(() => {
     return value.length > 0 && big(value).gt(1000)
@@ -95,16 +95,16 @@ export const Footer = () => {
           onChange={setValue}
           label={fontSize.toUpperCase()}
           suggest={
-            <EmptyButton onClick={() => setValue('100000' as u<UST>)}>
+            <EmptyButton onClick={() => setValue('100000' as u<Luna>)}>
               <WalletIcon
                 style={{
                   transform: 'translate(-0.3em, 0)',
                 }}
               />{' '}
-              100,000 UST
+              100,000 Luna
             </EmptyButton>
           }
-          token={<TokenSpan>UST</TokenSpan>}
+          token={<TokenSpan>Luna</TokenSpan>}
           style={{ width: 400, fontSize }}
           error={invalidValue}
         >
@@ -119,7 +119,7 @@ export const Footer = () => {
               <DeleteOutline />
             </EmptyButton>
             <span style={{ fontSize: 'max(0.85714286em, 12px)' }}>
-              Target: 1,000,000 UST
+              Target: 1,000,000 Luna
             </span>
           </div>
         </TokenInput>

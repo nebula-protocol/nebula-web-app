@@ -1,5 +1,5 @@
 import { TerraswapPool } from '@libs/app-fns';
-import { CW20Addr, NEB, Rate, u, UST } from '@nebula-js/types';
+import { CW20Addr, NEB, Rate, u, Luna } from '@nebula-js/types';
 import { DistributionSchedule, StakingPoolInfoList } from '@nebula-js/app-fns';
 import { computeStakedValue, computeAPR } from '@nebula-js/app-fns';
 
@@ -10,7 +10,7 @@ export type StakingView = Array<{
   name: string;
   nameLowerCase: string;
   apr: Rate;
-  totalStaked: u<UST>;
+  totalStaked: u<Luna>;
   isActive: boolean;
 }>;
 
@@ -43,8 +43,8 @@ export function toStakingView(
             index: i,
             id: tokenAddr,
             symbol: tokenInfo.symbol,
-            name: `${tokenInfo.symbol}-UST LP`,
-            nameLowerCase: `${tokenInfo.symbol}-UST LP`.toLowerCase(),
+            name: `${tokenInfo.symbol}-Luna LP`,
+            nameLowerCase: `${tokenInfo.symbol}-Luna LP`.toLowerCase(),
             apr,
             totalStaked: stakedLiquidityValue,
             isActive,

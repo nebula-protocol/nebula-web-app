@@ -33,7 +33,7 @@ function DashboardMainBase({ className }: DashboardMainProps) {
             Total Value Locked{' '}
             <InfoTooltip>
               Total value of all cluster inventory, withdrawable liquidity,
-              rewards, staked NEB and UST.
+              rewards, staked NEB and Luna.
             </InfoTooltip>
           </h3>
           <TotalValueLocked />
@@ -42,7 +42,7 @@ function DashboardMainBase({ className }: DashboardMainProps) {
           <h3>
             NEB Price{' '}
             <InfoTooltip>
-              NEB token price from the NEB-UST Astroport pool
+              NEB token price from the NEB-Luna Astroport pool
             </InfoTooltip>
           </h3>
           <NEBPrice />

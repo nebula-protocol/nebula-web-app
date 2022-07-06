@@ -1,5 +1,5 @@
 import { formatUToken } from '@libs/formatter';
-import { Token, u, UST } from '@nebula-js/types';
+import { Token, u, Luna } from '@nebula-js/types';
 import { TokenSpan } from '@nebula-js/ui';
 import { AssetTokenInfo } from '@nebula-js/app-fns';
 import { fixHMR } from 'fix-hmr';
@@ -10,7 +10,7 @@ import styled from 'styled-components';
 export interface WithdrawnTokenTableProps {
   className?: string;
   redeemTokenAmounts: u<Token>[];
-  prices: UST[];
+  prices: Luna[];
   assetTokenInfos: AssetTokenInfo[];
 }
 
@@ -41,7 +41,7 @@ function WithdrawnTokenTableBase({
                 {formatUToken(amount)} {assetTokenInfos[i].tokenInfo.symbol}
               </p>
               <p>
-                {formatUToken(big(amount).mul(prices[i]) as u<Token<Big>>)} UST
+                {formatUToken(big(amount).mul(prices[i]) as u<Token<Big>>)} Luna
               </p>
             </td>
           </tr>

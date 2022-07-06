@@ -1,6 +1,6 @@
 import { computeProvided, computeTotalProvided } from '@nebula-js/app-fns';
 import { useClustersInfoListQuery } from '@nebula-js/app-provider';
-import { Rate, u, UST } from '@nebula-js/types';
+import { Rate, u, Luna } from '@nebula-js/types';
 import { VerticalLabelAndValue } from '@nebula-js/ui';
 import big from 'big.js';
 import { fixHMR } from 'fix-hmr';
@@ -32,7 +32,7 @@ function ClusterDistributionBase({ className }: ClusterDistributionProps) {
 
     const distributions = clusterInfos.map<Item>(
       ({ clusterState, clusterTokenInfo }, i) => {
-        const provided = computeProvided(clusterState).toFixed() as u<UST>;
+        const provided = computeProvided(clusterState).toFixed() as u<Luna>;
 
         return {
           id: clusterState.cluster_contract_address,
@@ -61,7 +61,7 @@ function ClusterDistributionBase({ className }: ClusterDistributionProps) {
     const othersList = sortedDistributions.slice(3);
     const others = sortedDistributions.slice(3).reduce(
       (o, { provided, ratio }) => {
-        o.provided = big(o.provided).plus(provided).toFixed() as u<UST>;
+        o.provided = big(o.provided).plus(provided).toFixed() as u<Luna>;
         o.ratio = big(o.ratio).plus(ratio).toFixed() as Rate;
         return o;
       },
@@ -69,7 +69,7 @@ function ClusterDistributionBase({ className }: ClusterDistributionProps) {
         id: 'others',
         name: 'Others',
         color: colors[3],
-        provided: '0' as u<UST>,
+        provided: '0' as u<Luna>,
         symbol: 'others',
         ratio: '0' as Rate,
       } as Item,
@@ -84,7 +84,7 @@ function ClusterDistributionBase({ className }: ClusterDistributionProps) {
         className="inventory-value"
         label="INVENTORY VALUE"
       >
-        {formatUTokenWithPostfixUnits(totalProvided)} UST
+        {formatUTokenWithPostfixUnits(totalProvided)} Luna
       </VerticalLabelAndValue>
 
       <PieChart data={data} theme={theme} />

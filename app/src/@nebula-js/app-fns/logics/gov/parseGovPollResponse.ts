@@ -53,6 +53,8 @@ export interface ParsedPoll {
 
   endsIn: Date;
 
+  endsInHeight: number;
+
   type: string;
 
   executeMsgs: ParsedExecuteMsg[] | undefined;
@@ -92,9 +94,14 @@ export function parseGovPollResponse(
     .div(votesTotal)
     .toFixed() as Rate;
 
-  const endsIn = new Date(poll.end_time * 1000);
+  const endsInHeight = +poll.end_height;
 
-  const inProgressOver = poll.status === 'in_progress' && endsIn <= new Date();
+  const endsIn = new Date(Date.now() + (endsInHeight - blockHeight) * 6 * 1000);
+
+  console.log('endsInHeight', endsInHeight);
+
+  const inProgressOver =
+    poll.status === 'in_progress' && endsInHeight <= blockHeight;
 
   const executeMsgs: ParsedExecuteMsg[] | undefined = poll.execute_data
     ? poll.execute_data.map((data) => parseExecuteMsg(data))
@@ -105,7 +112,7 @@ export function parseGovPollResponse(
 
     status:
       poll.status === 'in_progress'
-        ? endsIn <= new Date()
+        ? endsInHeight <= blockHeight
           ? 'Poll Ended'
           : 'In Progress'
         : poll.status === 'passed'
@@ -149,6 +156,8 @@ export function parseGovPollResponse(
         },
 
     endsIn,
+
+    endsInHeight,
 
     type: parsePollType(executeMsgs, contractAddress),
 
@@ -203,6 +212,11 @@ function parsePollType(
     'spend' in executeMsg.msg
   ) {
     return 'Community Pool spend';
+  } else if (
+    executeMsg.contract === address.clusterFactory &&
+    'update_config' in executeMsg.msg
+  ) {
+    return 'Cluster Factory Parameter Change';
   } else if (
     executeMsg.contract !== address.gov &&
     'update_config' in executeMsg.msg

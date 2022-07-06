@@ -1,6 +1,6 @@
 import { useFixedFee, useRefetchQueries } from '@libs/app-provider';
 import { clusterArbMintTx, computeClusterGasWanted } from '@nebula-js/app-fns';
-import { HumanAddr, terraswap, Token, u, UST } from '@nebula-js/types';
+import { HumanAddr, terraswap, Token, u, Luna } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import big from 'big.js';
 import { useCallback } from 'react';
@@ -9,8 +9,8 @@ import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export interface ClusterArbMintTxParams {
   amounts: u<Token>[];
-  txFee: u<UST>;
-  minUust: u<UST>;
+  txFee: u<Luna>;
+  minUust: u<Luna>;
 
   onTxSucceed?: () => void;
 }

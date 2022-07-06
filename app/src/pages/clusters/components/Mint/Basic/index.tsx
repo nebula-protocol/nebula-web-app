@@ -19,13 +19,13 @@ function MintBasicBase({ className, clusterInfo }: MintBasicProps) {
     <div className={className}>
       <GuideInfo link="https://docs.neb.money/guide/clusters.html#mint-basic">
         <span>
-          Enables minting of new cluster tokens starting with only UST,
+          Enables minting of new cluster tokens starting with only Luna,
           involving two main steps
           <span id="extra">
             <br />
             <br />
             <span className="indent-text">
-              1. The UST is used to buy the cluster’s inventory assets at
+              1. The Luna is used to buy the cluster’s inventory assets at
               pro-rata amounts to the cluster’s inventory
             </span>
             <br />

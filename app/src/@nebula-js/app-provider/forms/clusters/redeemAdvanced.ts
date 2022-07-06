@@ -2,14 +2,14 @@ import { useCW20Balance, useTerraBalancesQuery } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
 import { clusterRedeemAdvancedForm } from '@nebula-js/app-fns';
 import { useProtocolFee } from '@nebula-js/app-provider';
-import { cluster, terraswap, CT, Token, UST } from '@nebula-js/types';
+import { cluster, terraswap, CT, Token, Luna } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useMemo } from 'react';
 import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export interface ClusterRedeemAdvancedFormParams {
   clusterState: cluster.ClusterStateResponse;
-  terraswapPool: terraswap.pair.PoolResponse<CT, UST>;
+  terraswapPool: terraswap.pair.PoolResponse<CT, Luna>;
 }
 
 export function useClusterRedeemAdvancedForm({

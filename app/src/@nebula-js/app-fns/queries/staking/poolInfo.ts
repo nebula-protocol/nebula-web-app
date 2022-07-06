@@ -12,7 +12,7 @@ import {
   staking,
   terraswap,
   Token,
-  UST,
+  Luna,
 } from '@nebula-js/types';
 
 interface StakingPoolInfoWasmQuery {
@@ -22,7 +22,7 @@ interface StakingPoolInfoWasmQuery {
 export type StakingPoolInfo = WasmQueryData<StakingPoolInfoWasmQuery> & {
   tokenAddr: CW20Addr;
   terraswapPair: terraswap.factory.PairResponse;
-  terraswapPool: terraswap.pair.PoolResponse<Token, UST>;
+  terraswapPool: terraswap.pair.PoolResponse<Token, Luna>;
   terraswapPoolInfo: TerraswapPoolInfo<Token>;
   tokenInfo: cw20.TokenInfoResponse<Token>;
 };

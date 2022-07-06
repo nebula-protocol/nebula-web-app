@@ -88,6 +88,7 @@ export async function txInfoQuery({
       ? queryClient
           .lcdFetcher<LcdTxs | LcdTxsFail>(
             `${queryClient.lcdEndpoint}/txs/${txhash}`,
+            queryClient.requestInit,
           )
           .then((result) => {
             if ('logs' in result) {

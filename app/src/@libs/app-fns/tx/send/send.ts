@@ -1,5 +1,5 @@
 import { floor } from '@libs/big-math';
-import { HumanAddr, Rate, terraswap, Token, u, UST } from '@libs/types';
+import { HumanAddr, Rate, terraswap, Token, u, Luna } from '@libs/types';
 import { pipe } from '@rx-stream/pipe';
 import { Coin, MsgExecuteContract, MsgSend, Fee } from '@terra-money/terra.js';
 import { Observable } from 'rxjs';
@@ -21,9 +21,9 @@ export function sendTx(
     asset: terraswap.AssetInfo;
     memo?: string;
     amount: u<Token>;
-    txFee: u<UST>;
+    txFee: u<Luna>;
     taxRate: Rate;
-    maxTaxUUSD: u<UST>;
+    maxTaxUUSD: u<Luna>;
     onTxSucceed?: () => void;
   } & TxCommonParams,
 ): Observable<TxResultRendering> {
@@ -50,7 +50,7 @@ export function sendTx(
                 },
               ),
             ],
-      fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
+      fee: new Fee($.gasWanted, floor($.txFee) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
       memo: $.memo,
     }),
@@ -63,11 +63,11 @@ export function sendTx(
         return helper.failedToFindRawLog();
       }
 
-      const fromContract = pickEvent(rawLog, 'from_contract');
+      const fromContract = pickEvent(rawLog, 'wasm');
       const transfer = pickEvent(rawLog, 'transfer');
 
       if (!fromContract || !transfer) {
-        return helper.failedToFindEvents('from_contract', 'transfer');
+        return helper.failedToFindEvents('wasm', 'transfer');
       }
 
       try {

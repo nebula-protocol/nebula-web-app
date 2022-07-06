@@ -46,7 +46,7 @@ function HistoryBase({ className }: HistoryProps) {
           <li key={'history' + i}>
             <div>
               <p>Trade</p>
-              <p>Bought 100.123456 NIAB with 100.12 UST</p>
+              <p>Bought 100.123456 NIAB with 100.12 Luna</p>
             </div>
             <div>Apr 19, 2021, 18:01 PM</div>
           </li>

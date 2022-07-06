@@ -21,7 +21,7 @@ import {
   staking,
   Token,
   u,
-  UST,
+  Luna,
 } from '@nebula-js/types';
 import { pipe } from '@rx-stream/pipe';
 import { Coin, Coins, MsgExecuteContract, Fee } from '@terra-money/terra.js';
@@ -30,7 +30,7 @@ import { Observable } from 'rxjs';
 export function stakingStakeTx(
   $: {
     walletAddr: HumanAddr;
-    ustAmount: u<UST>;
+    lunaAmount: u<Luna>;
     tokenAmount: u<Token>;
     stakingAddr: HumanAddr;
     tokenAddr: CW20Addr;
@@ -67,19 +67,19 @@ export function stakingStakeTx(
                 {
                   info: {
                     native_token: {
-                      denom: 'uusd',
+                      denom: 'uluna',
                     },
                   },
-                  amount: $.ustAmount,
+                  amount: $.lunaAmount,
                 },
               ],
               slippage_tolerance: $.slippageTolerance,
             },
-          } as staking.AutoStake<UST, Token>,
-          new Coins([new Coin('uusd', $.ustAmount)]),
+          } as staking.AutoStake<Luna, Token>,
+          new Coins([new Coin('uluna', $.lunaAmount)]),
         ),
       ],
-      fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
+      fee: new Fee($.gasWanted, floor($.txFee) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),
@@ -91,11 +91,11 @@ export function stakingStakeTx(
         return helper.failedToFindRawLog();
       }
 
-      const fromContract = pickEvent(rawLog, 'from_contract');
+      const fromContract = pickEvent(rawLog, 'wasm');
       const transfer = pickEvent(rawLog, 'transfer');
 
       if (!fromContract || !transfer) {
-        return helper.failedToFindEvents('from_contract', 'transfer');
+        return helper.failedToFindEvents('wasm', 'transfer');
       }
 
       try {

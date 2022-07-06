@@ -1,6 +1,6 @@
 import { terraswapPairQuery } from '@libs/app-fns';
 import { QueryClient } from '@libs/query-client';
-import { HumanAddr, terraswap, Token, u, UST } from '@nebula-js/types';
+import { HumanAddr, terraswap, Token, u, Luna } from '@nebula-js/types';
 import big, { Big, BigSource } from 'big.js';
 import { ClusterSimulatorWithPenalty } from './ClusterSimulatorWithPenalty';
 import { TerraswapPoolSimulation } from './TerraswapPoolSimulation';
@@ -49,7 +49,7 @@ export class EasyMintOptimizer {
             info,
             {
               native_token: {
-                denom: 'uusd',
+                denom: 'uluna',
               },
             },
           ],
@@ -73,13 +73,13 @@ export class EasyMintOptimizer {
     }
   };
 
-  findOptimalAllocation = (ust: u<UST<BigSource>>) => {
+  findOptimalAllocation = (ust: u<Luna<BigSource>>) => {
     const uusdAmount = big(ust);
     const tsSims = this.terraswapSimulators;
     const clusterSim = this.clusterSimulator;
     const orderUusd = Math.floor(Math.log10(uusdAmount.toNumber())) - 6;
     const numChunks = Math.max(Math.pow(10, orderUusd), 100);
-    const uusdPerChunk = uusdAmount.div(numChunks) as u<UST<Big>>;
+    const uusdPerChunk = uusdAmount.div(numChunks) as u<Luna<Big>>;
 
     const optimalAssetAllocation = this.clusterSimulator.clusterState.inv.map(
       () => big(0),
@@ -101,13 +101,13 @@ export class EasyMintOptimizer {
         //const asset = clusterSim.targetAssets[j];
         const tsSim = tsSims[j];
 
-        const offerAsset: terraswap.Asset<UST> = {
+        const offerAsset: terraswap.Asset<Luna> = {
           info: {
             native_token: {
-              denom: 'uusd',
+              denom: 'uluna',
             },
           },
-          amount: uusdPerChunk.toFixed() as u<UST>,
+          amount: uusdPerChunk.toFixed() as u<Luna>,
         };
 
         const { return_amount } = tsSim.simulateSwap(offerAsset);
@@ -134,11 +134,11 @@ export class EasyMintOptimizer {
 
       expectedClusterTokens = expectedClusterTokens.plus(maxClusterAmt);
 
-      const offerAsset: terraswap.Asset<UST> = {
-        amount: uusdPerChunk.toFixed() as u<UST>,
+      const offerAsset: terraswap.Asset<Luna> = {
+        amount: uusdPerChunk.toFixed() as u<Luna>,
         info: {
           native_token: {
-            denom: 'uusd',
+            denom: 'uluna',
           },
         },
       };

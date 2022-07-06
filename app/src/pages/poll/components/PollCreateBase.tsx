@@ -210,7 +210,7 @@ function PollCreateBaseBase({
         <FeeBox className="fee-box">
           <li>
             <span>Tx Fee</span>
-            <span>{formatUToken(fixedFee)} UST</span>
+            <span>{formatUToken(fixedFee)} Luna</span>
           </li>
         </FeeBox>
 

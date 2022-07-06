@@ -3,15 +3,15 @@ import {
   clusterArbRedeemTx,
   computeClusterGasWanted,
 } from '@nebula-js/app-fns';
-import { HumanAddr, terraswap, Rate, Token, u, UST } from '@nebula-js/types';
+import { HumanAddr, terraswap, Rate, Token, u, Luna } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
 import { NEBULA_TX_KEYS } from '../../env';
 import { useNebulaApp } from '../../hooks/useNebulaApp';
 
 export interface ClusterArbRedeemTxParams {
-  amount: u<UST>;
-  txFee: u<UST>;
+  amount: u<Luna>;
+  txFee: u<Luna>;
   maxSpread: Rate;
 
   onTxSucceed?: () => void;

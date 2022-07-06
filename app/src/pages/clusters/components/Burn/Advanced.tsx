@@ -6,7 +6,7 @@ import {
   useMintTab,
 } from '@nebula-js/app-provider';
 import { WalletIcon } from '@nebula-js/icons';
-import { CT, u, terraswap, UST, Token } from '@nebula-js/types';
+import { CT, u, terraswap, Luna, Token } from '@nebula-js/types';
 import {
   breakpoints,
   GuideInfo,
@@ -83,7 +83,7 @@ function BurnAdvancedBase({ className, clusterInfo }: BurnAdvancedProps) {
   }, [updateInput, clusterInfo.clusterState.target]);
 
   const proceed = useCallback(
-    (tokenAmount: CT, assetAmounts: Token[], txFee: u<UST>) => {
+    (tokenAmount: CT, assetAmounts: Token[], txFee: u<Luna>) => {
       const stream = postTx?.({
         tokenAmount: microfy(tokenAmount).toFixed() as u<CT>,
         assetAmounts: assetAmounts.map(
@@ -203,21 +203,21 @@ function BurnAdvancedBase({ className, clusterInfo }: BurnAdvancedProps) {
           {'totalRedeemValue' in states && states.totalRedeemValue && (
             <li>
               <span>Total Redeem Value</span>
-              <span>{formatUToken(states.totalRedeemValue)} UST</span>
+              <span>{formatUToken(states.totalRedeemValue)} Luna</span>
             </li>
           )}
 
           {'pnl' in states && states.pnl && (
             <li>
               <span>PNL</span>
-              <span>{formatUToken(states.pnl)} UST</span>
+              <span>{formatUToken(states.pnl)} Luna</span>
             </li>
           )}
 
           {states.txFee !== null && (
             <li>
               <span>Tx Fee</span>
-              <span>{formatUToken(states.txFee)} UST</span>
+              <span>{formatUToken(states.txFee)} Luna</span>
             </li>
           )}
         </FeeBox>

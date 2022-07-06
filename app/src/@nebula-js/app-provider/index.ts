@@ -47,6 +47,7 @@ export * from './queries/staking/distributionSchedule';
 export * from './queries/staking/poolInfo';
 export * from './queries/staking/poolInfoList';
 export * from './queries/staking/rewardInfo';
+export * from './queries/oracle-hub/price';
 export * from './tx/airdrop/claim';
 export * from './tx/clusters/arbMint';
 export * from './tx/clusters/arbRedeem';

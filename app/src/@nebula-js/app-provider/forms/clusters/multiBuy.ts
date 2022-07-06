@@ -1,7 +1,7 @@
-import { useUstBalance } from '@libs/app-provider';
+import { useLunaBalance } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
 import { clusterMultiBuyForm } from '@nebula-js/app-fns';
-import { cluster, terraswap, UST } from '@nebula-js/types';
+import { cluster, terraswap, Luna } from '@nebula-js/types';
 import { useConnectedWallet } from '@terra-money/use-wallet';
 import { useNebulaApp } from '../../hooks/useNebulaApp';
 import { useMintArbTxInfo } from '@nebula-js/app-provider';
@@ -21,7 +21,7 @@ export function useMultiBuyForm({
 
   const { queryClient, gasPrice, constants, contractAddress } = useNebulaApp();
 
-  const uUST = useUstBalance();
+  const uUST = useLunaBalance();
 
   const mintArbInfoTx = useMintArbTxInfo(clusterState, terraswapPair);
 
@@ -29,7 +29,7 @@ export function useMultiBuyForm({
     clusterMultiBuyForm,
     {
       queryClient,
-      ustBalance: uUST,
+      lunaBalance: uUST,
       clusterState,
       isArbitrage,
       terraswapFactoryAddr: contractAddress.terraswap.factory,
@@ -44,7 +44,7 @@ export function useMultiBuyForm({
     },
     () => {
       return {
-        ustAmount: '' as UST,
+        lunaAmount: '' as Luna,
       };
     },
   );

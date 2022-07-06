@@ -7,12 +7,12 @@ import {
 import { HumanAddr } from '@libs/types';
 
 export const TEST_HIVE_CLIENT: HiveQueryClient = {
-  hiveEndpoint: 'https://bombay-mantle.terra.dev',
+  hiveEndpoint: 'https://pisco-hive.terra.dev/graphql',
   hiveFetcher: defaultHiveFetcher,
 };
 
 export const TEST_LCD_CLIENT: LcdQueryClient = {
-  lcdEndpoint: 'https://bombay-lcd.terra.dev',
+  lcdEndpoint: 'https://pisco-lcd.terra.dev',
   lcdFetcher: defaultLcdFetcher,
 };
 
@@ -21,6 +21,7 @@ export const TEST_WALLET_ADDRESS =
 
 export const TEST_CONTRACT_ADDRESS = {
   terraswap: {
-    factory: 'terra18qpjm4zkvqnpjpw0zn0tdr8gdzvt8au35v45xf' as HumanAddr,
+    factory:
+      'terra1z3y69xas85r7egusa0c7m5sam0yk97gsztqmh8f2cc6rr4s4anysudp7k0' as HumanAddr,
   },
 };

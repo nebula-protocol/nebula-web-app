@@ -4,12 +4,12 @@ import {
   WasmQuery,
   WasmQueryData,
 } from '@libs/query-client';
-import { CT, penalty, terraswap, UST } from '@nebula-js/types';
+import { CT, penalty, terraswap, Luna } from '@nebula-js/types';
 
 interface SimulationWasmQuery {
   simulation: WasmQuery<
-    terraswap.pair.Simulation<UST>,
-    terraswap.pair.SimulationResponse<UST, CT>
+    terraswap.pair.Simulation<Luna>,
+    terraswap.pair.SimulationResponse<Luna, CT>
   >;
 }
 

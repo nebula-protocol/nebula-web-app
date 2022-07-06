@@ -1,6 +1,6 @@
 import { terraswapSimulationQuery } from '@libs/app-fns';
 import { FormReturn } from '@libs/use-form';
-import { terraswap, u, UST, Rate } from '@nebula-js/types';
+import { terraswap, u, Luna, Rate } from '@nebula-js/types';
 import {
   clusterMintAdvancedForm,
   ClusterMintAdvancedFormAsyncStates,
@@ -28,7 +28,7 @@ export interface ClusterMintArbAdvancedFormStates
 
 export interface ClusterMintArbAdvancedFormAsyncStates
   extends ClusterMintAdvancedFormAsyncStates {
-  returnedAmount: u<UST> | undefined;
+  returnedAmount: u<Luna> | undefined;
 }
 
 export const clusterMintArbAdvancedForm = (
@@ -71,13 +71,13 @@ export const clusterMintArbAdvancedForm = (
         );
 
         const minReceivedUust = computeMinReceivedAmount(
-          return_amount as u<UST>,
+          return_amount as u<Luna>,
           input.maxSpread,
         );
 
         const pnl = big(minReceivedUust)
           .minus(advancedAsyncStates.totalInputValue!)
-          .toFixed() as u<UST>;
+          .toFixed() as u<Luna>;
 
         return {
           ...advancedAsyncStates,

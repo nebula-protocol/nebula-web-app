@@ -10,7 +10,7 @@ import {
   useNebPrice,
   useStakingPoolInfoListQuery,
 } from '@nebula-js/app-provider';
-import { u, UST, Rate } from '@nebula-js/types';
+import { u, Luna, Rate } from '@nebula-js/types';
 import {
   PartitionBarGraph,
   partitionColor,
@@ -52,12 +52,12 @@ function TotalValueLockedBase({ className }: TotalValueLockedProps) {
   } = useMemo(() => {
     const totalProvided = computeTotalProvided(clusterInfos);
 
-    const totalLPStakedValue = poolInfoList.reduce<u<UST<Big>>>(
+    const totalLPStakedValue = poolInfoList.reduce<u<Luna<Big>>>(
       (acc, { terraswapPoolInfo, poolInfo }) =>
         acc.plus(computeStakedValue(terraswapPoolInfo, poolInfo)) as u<
-          UST<Big>
+          Luna<Big>
         >,
-      big('0') as u<UST<Big>>,
+      big('0') as u<Luna<Big>>,
     );
 
     const totalNebStakedValue = totalNebStaked.mul(nebPrice);
@@ -66,8 +66,8 @@ function TotalValueLockedBase({ className }: TotalValueLockedProps) {
 
     const _tvl = totalProvided
       .plus(totalLPStakedValue)
-      .plus(totalNebStakedValue) as u<UST<Big>>;
-    // .plus(communityNebValue) as u<UST<Big>>;
+      .plus(totalNebStakedValue) as u<Luna<Big>>;
+    // .plus(communityNebValue) as u<Luna<Big>>;
 
     return {
       tvl: _tvl,
@@ -108,7 +108,7 @@ function TotalValueLockedBase({ className }: TotalValueLockedProps) {
           <AnimateNumber format={formatUTokenWithPostfixUnits}>
             {tvl}
           </AnimateNumber>{' '}
-          <Sub>UST</Sub>
+          <Sub>Luna</Sub>
         </p>
       </section>
 

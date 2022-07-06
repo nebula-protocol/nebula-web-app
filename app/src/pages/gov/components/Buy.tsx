@@ -7,7 +7,7 @@ import {
 } from '@libs/formatter';
 import { useNebulaApp } from '@nebula-js/app-provider';
 import { ArrowSouthIcon, WalletIcon } from '@nebula-js/icons';
-import { NEB, Rate, u, UST } from '@nebula-js/types';
+import { NEB, Rate, u, Luna } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
@@ -50,20 +50,20 @@ function BuyBase({ className }: BuyProps) {
 
   const [updateInput, states] = useCW20BuyTokenForm<NEB>({
     tokenAddr: contractAddress.cw20.NEB,
-    ustTokenPairAddr: contractAddress.terraswap.nebUstPair,
+    lunaTokenPairAddr: contractAddress.terraswap.nebUstPair,
   });
 
   const initForm = useCallback(() => {
     updateInput({
-      ustAmount: '' as UST,
+      lunaAmount: '' as Luna,
       tokenAmount: '' as NEB,
     });
   }, [updateInput]);
 
   const proceed = useCallback(
     async (
-      ustAmount: UST,
-      txFee: u<UST<BigSource>>,
+      lunaAmount: Luna,
+      txFee: u<Luna<BigSource>>,
       maxSpread: Rate,
       warning: string | null,
     ) => {
@@ -80,8 +80,8 @@ function BuyBase({ className }: BuyProps) {
       }
 
       const stream = postTx?.({
-        buyAmount: microfy(ustAmount).toFixed() as u<UST>,
-        txFee: big(txFee).toFixed() as u<UST>,
+        buyAmount: microfy(lunaAmount).toFixed() as u<Luna>,
+        txFee: big(txFee).toFixed() as u<Luna>,
         maxSpread,
         onTxSucceed: initForm,
       });
@@ -107,18 +107,18 @@ function BuyBase({ className }: BuyProps) {
     <div className={className}>
       <TokenInput
         maxDecimalPoints={6}
-        value={states.ustAmount ?? ('' as UST)}
+        value={states.lunaAmount ?? ('' as Luna)}
         onChange={(nextUstAmount) =>
-          updateInput({ ustAmount: nextUstAmount, tokenAmount: undefined })
+          updateInput({ lunaAmount: nextUstAmount, tokenAmount: undefined })
         }
         placeholder="0.00"
-        label="UST AMOUNT"
+        label="Luna AMOUNT"
         suggest={
           <TextButton
             fontSize={12}
             onClick={() =>
               updateInput({
-                ustAmount: formatUInput(states.maxUstAmount) as UST,
+                lunaAmount: formatUInput(states.maxUstAmount) as Luna,
                 tokenAmount: undefined,
               })
             }
@@ -131,7 +131,7 @@ function BuyBase({ className }: BuyProps) {
             {formatUToken(states.maxUstAmount)}
           </TextButton>
         }
-        token={<TokenSpan symbol="UST">UST</TokenSpan>}
+        token={<TokenSpan symbol="Luna">Luna</TokenSpan>}
         error={states.invalidUstAmount}
       />
 
@@ -143,7 +143,7 @@ function BuyBase({ className }: BuyProps) {
         maxDecimalPoints={6}
         value={states.tokenAmount ?? ('' as NEB)}
         onChange={(nextNebAmount) =>
-          updateInput({ ustAmount: undefined, tokenAmount: nextNebAmount })
+          updateInput({ lunaAmount: undefined, tokenAmount: nextNebAmount })
         }
         placeholder="0.00"
         label="NEB AMOUNT"
@@ -172,7 +172,7 @@ function BuyBase({ className }: BuyProps) {
           <li>
             <span>Price</span>
             <ExchangeRateAB
-              symbolA="UST"
+              symbolA="Luna"
               symbolB="NEB"
               exchangeRateAB={states.beliefPrice}
               initialDirection="a/b"
@@ -195,7 +195,7 @@ function BuyBase({ className }: BuyProps) {
         {'txFee' in states && (
           <li>
             <span>Tx Fee</span>
-            <span>{formatUToken(states.txFee)} UST</span>
+            <span>{formatUToken(states.txFee)} Luna</span>
           </li>
         )}
       </FeeBox>
@@ -222,10 +222,10 @@ function BuyBase({ className }: BuyProps) {
           !states.availableTx
         }
         onClick={() =>
-          states.ustAmount &&
+          states.lunaAmount &&
           'txFee' in states &&
           proceed(
-            states.ustAmount,
+            states.lunaAmount,
             states.txFee,
             states.maxSpread,
             states.warningNextTxFee,

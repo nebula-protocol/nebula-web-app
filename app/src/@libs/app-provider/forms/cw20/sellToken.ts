@@ -9,16 +9,16 @@ import { useConnectedWallet } from '@terra-money/use-wallet';
 import { useApp } from '../../contexts/app';
 import { useFixedFee } from '../../hooks/useFixedFee';
 import { useCW20Balance } from '../../queries/cw20/balance';
-import { useUstBalance } from '../../queries/terra/nativeBalances';
+import { useLunaBalance } from '../../queries/terra/nativeBalances';
 import { useUstTax } from '../../queries/terra/tax';
 
 export interface CW20SellTokenFormParams {
-  ustTokenPairAddr: HumanAddr;
+  lunaTokenPairAddr: HumanAddr;
   tokenAddr: CW20Addr;
 }
 
 export function useCW20SellTokenForm<T extends Token>({
-  ustTokenPairAddr,
+  lunaTokenPairAddr,
   tokenAddr,
 }: CW20SellTokenFormParams) {
   const connectedWallet = useConnectedWallet();
@@ -29,7 +29,7 @@ export function useCW20SellTokenForm<T extends Token>({
 
   const { taxRate, maxTax } = useUstTax();
 
-  const uUST = useUstBalance(connectedWallet?.walletAddress);
+  const uUST = useLunaBalance(connectedWallet?.walletAddress);
 
   const uToken = useCW20Balance<T>(tokenAddr, connectedWallet?.terraAddress);
 
@@ -38,10 +38,10 @@ export function useCW20SellTokenForm<T extends Token>({
   return useForm(
     form,
     {
-      ustTokenPairAddr,
+      lunaTokenPairAddr,
       tokenAddr,
       queryClient,
-      ustBalance: uUST,
+      lunaBalance: uUST,
       tokenBalance: uToken,
       taxRate,
       maxTaxUUSD: maxTax,

@@ -12,6 +12,7 @@ export interface NebulaContractAddress extends AppContractAddress {
   incentivesCustody: HumanAddr;
   staking: HumanAddr;
   oracle: HumanAddr;
+  oracleHub: HumanAddr;
 
   terraswap: {
     factory: HumanAddr;

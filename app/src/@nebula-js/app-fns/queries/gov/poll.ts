@@ -52,6 +52,8 @@ export async function govPollQuery(
       lastSyncedHeight(),
     ]);
 
+  console.log(poll, blockHeight);
+
   const parsedPoll = parseGovPollResponse(
     poll,
     nebBalance!.tokenBalance,

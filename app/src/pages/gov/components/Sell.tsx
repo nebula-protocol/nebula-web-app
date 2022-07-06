@@ -7,7 +7,7 @@ import {
 } from '@libs/formatter';
 import { useNebulaApp } from '@nebula-js/app-provider';
 import { ArrowSouthIcon, WalletIcon } from '@nebula-js/icons';
-import { NEB, Rate, u, UST } from '@nebula-js/types';
+import { NEB, Rate, u, Luna } from '@nebula-js/types';
 import {
   breakpoints,
   Button,
@@ -51,21 +51,21 @@ function SellBase({ className }: SellProps) {
 
   const [updateInput, states] = useCW20SellTokenForm<NEB>({
     tokenAddr: contractAddress.cw20.NEB,
-    ustTokenPairAddr: contractAddress.terraswap.nebUstPair,
+    lunaTokenPairAddr: contractAddress.terraswap.nebUstPair,
   });
 
   const initForm = useCallback(() => {
     updateInput({
-      ustAmount: '' as UST,
+      lunaAmount: '' as Luna,
       tokenAmount: '' as NEB,
     });
   }, [updateInput]);
 
   const proceed = useCallback(
-    (tokenAmount: NEB, txFee: u<UST<BigSource>>, maxSpread: Rate) => {
+    (tokenAmount: NEB, txFee: u<Luna<BigSource>>, maxSpread: Rate) => {
       const stream = postTx?.({
-        sellAmount: microfy(tokenAmount).toFixed() as u<UST>,
-        txFee: big(txFee).toFixed() as u<UST>,
+        sellAmount: microfy(tokenAmount).toFixed() as u<Luna>,
+        txFee: big(txFee).toFixed() as u<Luna>,
         maxSpread,
         onTxSucceed: initForm,
       });
@@ -93,7 +93,7 @@ function SellBase({ className }: SellProps) {
         maxDecimalPoints={6}
         value={states.tokenAmount ?? ('' as NEB)}
         onChange={(nextTokenAmount) =>
-          updateInput({ tokenAmount: nextTokenAmount, ustAmount: undefined })
+          updateInput({ tokenAmount: nextTokenAmount, lunaAmount: undefined })
         }
         placeholder="0.00"
         label="FROM"
@@ -103,7 +103,7 @@ function SellBase({ className }: SellProps) {
             onClick={() =>
               updateInput({
                 tokenAmount: formatUInput(states.tokenBalance) as NEB,
-                ustAmount: undefined,
+                lunaAmount: undefined,
               })
             }
           >
@@ -125,13 +125,13 @@ function SellBase({ className }: SellProps) {
 
       <TokenInput
         maxDecimalPoints={6}
-        value={states.ustAmount ?? ('' as UST)}
+        value={states.lunaAmount ?? ('' as Luna)}
         onChange={(nextUstAmount) =>
-          updateInput({ ustAmount: nextUstAmount, tokenAmount: undefined })
+          updateInput({ lunaAmount: nextUstAmount, tokenAmount: undefined })
         }
         placeholder="0.00"
         label="TO"
-        token={<TokenSpan symbol="UST">UST</TokenSpan>}
+        token={<TokenSpan symbol="Luna">Luna</TokenSpan>}
       />
 
       <Disclosure
@@ -157,7 +157,7 @@ function SellBase({ className }: SellProps) {
             <span>Price</span>
             <ExchangeRateAB
               symbolA="NEB"
-              symbolB="UST"
+              symbolB="Luna"
               exchangeRateAB={states.beliefPrice}
               initialDirection="b/a"
               formatExchangeRate={(price) => formatFluidDecimalPoints(price, 6)}
@@ -167,19 +167,19 @@ function SellBase({ className }: SellProps) {
         {'minimumReceived' in states && (
           <li>
             <span>Minimum Received</span>
-            <span>{formatUToken(states.minimumReceived)} UST</span>
+            <span>{formatUToken(states.minimumReceived)} Luna</span>
           </li>
         )}
         {'tradingFee' in states && (
           <li>
             <span>Trading Fee</span>
-            <span>{formatUToken(states.tradingFee)} UST</span>
+            <span>{formatUToken(states.tradingFee)} Luna</span>
           </li>
         )}
         {'txFee' in states && (
           <li>
             <span>Tx Fee</span>
-            <span>{formatUToken(states.txFee)} UST</span>
+            <span>{formatUToken(states.txFee)} Luna</span>
           </li>
         )}
       </FeeBox>

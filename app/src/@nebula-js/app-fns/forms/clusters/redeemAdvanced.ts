@@ -11,7 +11,7 @@ import {
   Rate,
   Token,
   u,
-  UST,
+  Luna,
 } from '@nebula-js/types';
 import big, { Big } from 'big.js';
 import {
@@ -33,7 +33,7 @@ export interface ClusterRedeemAdvancedFormDependency {
   balances: TerraBalances | undefined;
   lastSyncedHeight: () => Promise<number>;
   clusterState: cluster.ClusterStateResponse;
-  terraswapPool: terraswap.pair.PoolResponse<CT, UST>;
+  terraswapPool: terraswap.pair.PoolResponse<CT, Luna>;
   protocolFee: Rate;
   tokenBalance: u<CT>;
   gasPrice: GasPrice;
@@ -48,14 +48,14 @@ export interface ClusterRedeemAdvancedFormStates
   remainAssets: terraswap.Asset<Token>[];
   tokenBalance: u<CT>;
   balances: TerraBalances | undefined;
-  txFee: u<UST> | null;
+  txFee: u<Luna> | null;
 }
 
 export interface ClusterRedeemAdvancedFormAsyncStates {
   burntTokenAmount?: u<CT>;
   redeemTokenAmounts?: u<Token>[];
-  totalRedeemValue?: u<UST<Big>>;
-  pnl?: u<UST>;
+  totalRedeemValue?: u<Luna<Big>>;
+  pnl?: u<Luna>;
 }
 
 export const clusterRedeemAdvancedForm = (
@@ -173,23 +173,23 @@ export const clusterRedeemAdvancedForm = (
 
           // burnCTValue = burnToken * clusterPrice
           const burnCTValue = big(tokenCostWithFee).mul(clusterPrice) as u<
-            UST<Big>
+            Luna<Big>
           >;
 
           // total redeem assets value
           const totalRedeemValue = vectorDot(
             redeem.redeem_assets,
             dependency.clusterState.prices,
-          ) as u<UST<Big>>;
+          ) as u<Luna<Big>>;
 
           return {
             burntTokenAmount: tokenCostWithFee,
             redeemTokenAmounts: redeem.redeem_assets,
             totalRedeemValue,
-            pnl: totalRedeemValue.minus(burnCTValue).toFixed() as u<UST>,
+            pnl: totalRedeemValue.minus(burnCTValue).toFixed() as u<Luna>,
             invalidBurntAmount,
             invalidRedeemQuery,
-            txFee: clusterTxFee as u<UST>,
+            txFee: clusterTxFee as u<Luna>,
           };
         })
         .catch((err) => {

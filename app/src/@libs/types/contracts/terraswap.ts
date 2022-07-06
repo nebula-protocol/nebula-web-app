@@ -8,7 +8,7 @@ import {
   rs,
   Token,
   u,
-  UST,
+  Luna,
 } from '@libs/types';
 
 export namespace terraswap {
@@ -61,7 +61,7 @@ export namespace terraswap {
     export interface Swap<T extends Token> {
       swap: {
         offer_asset: Asset<T>;
-        belief_price?: UST<rs.Decimal>;
+        belief_price?: Luna<rs.Decimal>;
         max_spread?: Rate<rs.Decimal>;
         to?: HumanAddr;
       };
@@ -72,7 +72,7 @@ export namespace terraswap {
     // ---------------------------------------------
     export interface SwapHook {
       swap: {
-        belief_price?: UST<rs.Decimal>;
+        belief_price?: Luna<rs.Decimal>;
         max_spread?: Rate<rs.Decimal>;
         to?: HumanAddr;
       };

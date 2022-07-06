@@ -1,4 +1,4 @@
-import { cluster, u, UST } from '@nebula-js/types';
+import { cluster, u, Luna } from '@nebula-js/types';
 import { vectorDot } from '@libs/big-math';
 import { Big } from 'big.js';
 
@@ -6,6 +6,6 @@ import { Big } from 'big.js';
 // provided = dot(inv, prices)
 export function computeProvided(
   clusterState: cluster.ClusterStateResponse,
-): u<UST<Big>> {
-  return vectorDot(clusterState.inv, clusterState.prices) as u<UST<Big>>;
+): u<Luna<Big>> {
+  return vectorDot(clusterState.inv, clusterState.prices) as u<Luna<Big>>;
 }

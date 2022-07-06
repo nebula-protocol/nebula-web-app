@@ -2,7 +2,7 @@ import { useCW20PoolInfoQuery } from '@libs/app-provider';
 import { formatRate, formatUTokenWithPostfixUnits } from '@libs/formatter';
 import { useMypageStakingQuery, useNebulaApp } from '@nebula-js/app-provider';
 import { useStakingAPR } from '@nebula-js/app-provider';
-import { NEB, Token, u, UST } from '@nebula-js/types';
+import { NEB, Token, u, Luna } from '@nebula-js/types';
 import {
   Button,
   Descriptions,
@@ -42,11 +42,11 @@ function StakingBase({ className }: StakingProps) {
           .mul(rewardInfo.bond_amount)
           .div(
             terraswapPoolInfo.lpShare === '0' ? 1 : terraswapPoolInfo.lpShare,
-          ) as u<UST<Big>>;
+          ) as u<Luna<Big>>;
 
         const withdrawableValue = withdrawableToken
           .mul(terraswapPoolInfo.tokenPrice)
-          .plus(withdrawableUst) as u<UST<Big>>;
+          .plus(withdrawableUst) as u<Luna<Big>>;
 
         return {
           symbol: tokenInfo.symbol,
@@ -59,7 +59,7 @@ function StakingBase({ className }: StakingProps) {
             ? big(rewardInfo.pending_reward).mul(
                 nebInfo.terraswapPoolInfo.tokenPrice,
               )
-            : big(0)) as u<UST<Big>>,
+            : big(0)) as u<Luna<Big>>,
           to: `/staking/${tokenAddr}/unstake`,
           apr: getStakingAPR(tokenAddr, terraswapPoolInfo, poolInfo),
         };
@@ -71,18 +71,18 @@ function StakingBase({ className }: StakingProps) {
     return stakings.reduce(
       (total, { rewardAmount, rewardAmountValue, withdrawableValue }) => {
         total.farmValue = total.farmValue.plus(withdrawableValue) as u<
-          UST<Big>
+          Luna<Big>
         >;
         total.reward = total.reward.plus(rewardAmount) as u<NEB<Big>>;
         total.rewardValue = total.rewardValue.plus(rewardAmountValue) as u<
-          UST<Big>
+          Luna<Big>
         >;
         return total;
       },
       {
-        farmValue: big(0) as u<UST<Big>>,
+        farmValue: big(0) as u<Luna<Big>>,
         reward: big(0) as u<NEB<Big>>,
-        rewardValue: big(0) as u<UST<Big>>,
+        rewardValue: big(0) as u<Luna<Big>>,
       },
     );
   }, [stakings]);
@@ -133,7 +133,7 @@ function StakingBase({ className }: StakingProps) {
                 label: 'Total Farm Value',
                 text: `${formatUTokenWithPostfixUnits(
                   stakingsTotal.farmValue,
-                )} UST`,
+                )} Luna`,
               },
               {
                 label: 'Total Reward',
@@ -145,7 +145,7 @@ function StakingBase({ className }: StakingProps) {
                 label: 'Total Reward Value',
                 text: `${formatUTokenWithPostfixUnits(
                   stakingsTotal.rewardValue,
-                )} UST`,
+                )} Luna`,
               },
             ]}
           />
@@ -199,7 +199,7 @@ function StakingBase({ className }: StakingProps) {
             <tr key={'staking' + symbol}>
               <td>
                 <TwoLine
-                  text={`${symbol}-UST LP`}
+                  text={`${symbol}-Luna LP`}
                   subText={`${formatRate(apr)}%`}
                 />
               </td>
@@ -210,10 +210,10 @@ function StakingBase({ className }: StakingProps) {
                     withdrawableToken,
                   )} ${symbol} + ${formatUTokenWithPostfixUnits(
                     withdrawableUst,
-                  )} UST`}
+                  )} Luna`}
                   subText={`${formatUTokenWithPostfixUnits(
                     withdrawableValue,
-                  )} UST`}
+                  )} Luna`}
                 />
               </td>
               <td>
@@ -221,7 +221,7 @@ function StakingBase({ className }: StakingProps) {
                   text={`${formatUTokenWithPostfixUnits(rewardAmount)} NEB`}
                   subText={`${formatUTokenWithPostfixUnits(
                     rewardAmountValue,
-                  )} UST`}
+                  )} Luna`}
                 />
               </td>
               <td>

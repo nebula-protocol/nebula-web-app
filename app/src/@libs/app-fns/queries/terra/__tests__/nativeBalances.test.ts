@@ -9,7 +9,7 @@ describe('terraNativeBalancesQuery()', () => {
       TEST_LCD_CLIENT,
     );
 
-    expect(big(balances.uUST).gt(0)).toBeTruthy();
+    expect(big(balances.uLuna).gt(0)).toBeTruthy();
     expect(big(balances.uSDR).eq(0)).toBeTruthy();
   });
 });

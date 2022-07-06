@@ -8,7 +8,7 @@ import {
   useMypageStakingQuery,
   useNebulaApp,
 } from '../../../@nebula-js/app-provider';
-import { u, UST, NEB, Token } from '@nebula-js/types';
+import { u, Luna, NEB, Token } from '@nebula-js/types';
 import { useCW20PoolInfoQuery } from '../../../@libs/app-provider';
 import { useConnectedWallet } from '@terra-money/use-wallet';
 
@@ -36,7 +36,7 @@ const useTotalValue = () => {
         }) => {
           const price = terraswapPoolInfo.tokenPrice;
           const balance = tokenBalance.balance;
-          const value = big(balance).mul(price) as u<UST<Big>>;
+          const value = big(balance).mul(price) as u<Luna<Big>>;
 
           return {
             symbol: tokenInfo.symbol,
@@ -54,7 +54,7 @@ const useTotalValue = () => {
   }, [contractAddress.cw20.NEB, holdingData]);
 
   const totalHoldingsValue = useMemo(() => {
-    return sum(...holdings.map(({ value }) => value)) as u<UST<Big>>;
+    return sum(...holdings.map(({ value }) => value)) as u<Luna<Big>>;
   }, [holdings]);
 
   const stakings = useMemo(() => {
@@ -70,11 +70,11 @@ const useTotalValue = () => {
           .mul(rewardInfo.bond_amount)
           .div(
             terraswapPoolInfo.lpShare === '0' ? 1 : terraswapPoolInfo.lpShare,
-          ) as u<UST<Big>>;
+          ) as u<Luna<Big>>;
 
         const withdrawableValue = withdrawableToken.mul(
           terraswapPoolInfo.tokenPrice,
-        ) as u<UST<Big>>;
+        ) as u<Luna<Big>>;
 
         return {
           symbol: tokenInfo.symbol,
@@ -87,7 +87,7 @@ const useTotalValue = () => {
             ? big(rewardInfo.pending_reward).mul(
                 nebInfo.terraswapPoolInfo.tokenPrice,
               )
-            : big(0)) as u<UST<Big>>,
+            : big(0)) as u<Luna<Big>>,
           to: `/staking/${tokenAddr}/unstake`,
         };
       },
@@ -98,18 +98,18 @@ const useTotalValue = () => {
     return stakings.reduce(
       (total, { rewardAmount, rewardAmountValue, withdrawableValue }) => {
         total.farmValue = total.farmValue.plus(withdrawableValue) as u<
-          UST<Big>
+          Luna<Big>
         >;
         total.reward = total.reward.plus(rewardAmount) as u<NEB<Big>>;
         total.rewardValue = total.rewardValue.plus(rewardAmountValue) as u<
-          UST<Big>
+          Luna<Big>
         >;
         return total;
       },
       {
-        farmValue: big(0) as u<UST<Big>>,
+        farmValue: big(0) as u<Luna<Big>>,
         reward: big(0) as u<NEB<Big>>,
-        rewardValue: big(0) as u<UST<Big>>,
+        rewardValue: big(0) as u<Luna<Big>>,
       },
     );
   }, [stakings]);
@@ -135,7 +135,7 @@ const useTotalValue = () => {
     totalStakingValue: stakingsTotal.farmValue,
     totalGovValue: big(govStaker?.balance || '0').mul(
       nebInfo?.terraswapPoolInfo?.tokenPrice || '1',
-    ) as u<UST<Big>>,
+    ) as u<Luna<Big>>,
     stakingReward: stakingsTotal.reward,
     govReward: govValues.votingReward,
     incentiveReward,
@@ -144,7 +144,7 @@ const useTotalValue = () => {
       .plus(incentiveReward) as u<NEB<Big>>,
     totalRewardValue: stakingsTotal.rewardValue
       .plus(govVotingRewardValue)
-      .plus(incentiveRewardValue) as u<UST<Big>>,
+      .plus(incentiveRewardValue) as u<Luna<Big>>,
     stakingsTotal,
     govValues,
     nebPrice: nebInfo?.terraswapPoolInfo?.tokenPrice || '0',
